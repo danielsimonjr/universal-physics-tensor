@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 333,
-    "totalTestFiles": 419,
-    "testedCount": 331,
+    "totalSourceFiles": 336,
+    "totalTestFiles": 420,
+    "testedCount": 334,
     "untestedCount": 2,
     "coveragePercent": "99.4"
   },
@@ -13,6 +13,9 @@
   "testedFiles": [
     "src/atlas/applicability.ts",
     "src/atlas/association.ts",
+    "src/atlas/benchmark/leakage.ts",
+    "src/atlas/benchmark/loader.ts",
+    "src/atlas/benchmark/types.ts",
     "src/atlas/composition-table.ts",
     "src/atlas/conventions.ts",
     "src/atlas/coverage.ts",
@@ -351,6 +354,15 @@
       "tests/atlas/association.test.ts",
       "tests/composition/poster-source.test.ts"
     ],
+    "src/atlas/benchmark/leakage.ts": [
+      "tests/atlas/benchmark.test.ts"
+    ],
+    "src/atlas/benchmark/loader.ts": [
+      "tests/atlas/benchmark.test.ts"
+    ],
+    "src/atlas/benchmark/types.ts": [
+      "tests/atlas/benchmark.test.ts"
+    ],
     "src/atlas/composition-table.ts": [
       "tests/atlas/composition-table.test.ts",
       "tests/atlas/path-bound.test.ts"
@@ -402,6 +414,7 @@
     ],
     "src/atlas/families.ts": [
       "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/benchmark.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/families.test.ts",
       "tests/atlas/formal-sanity.test.ts",
@@ -3699,6 +3712,7 @@
     ],
     "src/dimensional/ast-builders.ts": [
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/witness-results.test.ts",
@@ -3715,6 +3729,7 @@
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark.test.ts",
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/witness-runners.test.ts",
       "tests/bridges/be-11-fix.test.ts",
@@ -5150,6 +5165,14 @@
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/bridges-coarse.ts"
+    ],
+    "tests/atlas/benchmark.test.ts": [
+      "src/atlas/benchmark/leakage.ts",
+      "src/atlas/benchmark/loader.ts",
+      "src/atlas/benchmark/types.ts",
+      "src/atlas/families.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts"
     ],
     "tests/atlas/bound-machine-form.test.ts": [
       "src/atlas/oscillators/bridges-limits.ts",

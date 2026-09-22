@@ -10,6 +10,20 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S5.1 — the benchmark item schema, loader and leakage checks, plus two corrections to the
+  plan.** `src/atlas/benchmark/{types,leakage,loader}.ts`, `docs/planning/Atlas-Phase-5-Design.md`
+  (L5.1), and `tests/fixtures/atlas/benchmark/{public,scorer,contested}/`, which are all
+  **EMPTY on purpose**: no agent may author a frozen item, and the loader refuses any frozen item
+  whose authorship is not `'independent'`. An import guard with a positive control keeps every
+  `src/` file out of the answer half. **Correction 1: `normalForm` is NAME-sensitive**
+  (`x/t` ≠ `y/s`, measured), so it cannot detect renamed variants as briefed. `leakageKey` renames
+  dimensioned symbols by dimension first. That over-merges, which is the safe direction for
+  leakage. **Correction 2: the held-out family.** The plan's "first-order relaxation" is ALREADY
+  ENCODED in Phase 0 as `model-first-order` (b x′ + k x = 0). The held-out family is now **fluid
+  statics**, which has zero footprint in `src/atlas/`. The absence scan carries a positive control
+  that finds `model-first-order` under the original family's marker. Sprint 5 is promoted in
+  `ACTIVE.md`. Phase 4 is recorded as delivered, with "≥ 5 reviewed `formalRef`" OPEN at 1 of 5
+  beside the MET 20-bridge criterion.
 - **Sprint 4 closure: 20 bridges, the exit criterion MET with nothing cut.** Eight witnessed
   bridges were added: `ab-langevin-diffusion` (Einstein D = k_BT/γ, from the Langevin moment
   equations), `ab-stokes-einstein` (a hyperedge; CAS plus agreement with CE-stokes-einstein up

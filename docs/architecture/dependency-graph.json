@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 336,
+    "totalFiles": 339,
     "totalModules": 11,
-    "totalExports": 2310
+    "totalExports": 2332
   },
   "entryPoints": [
     {
@@ -85,6 +85,139 @@
         ],
         "constants": [
           "ASSOCIATIONS"
+        ]
+      },
+      "src/atlas/benchmark/leakage.ts": {
+        "description": "Atlas Phase 5, S5.1 — leakage checks for the invalid-bridge benchmark.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../canonical/normal-form.js",
+            "imports": [
+              "normalForm"
+            ]
+          },
+          {
+            "file": "../../dimensional/ast-types.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "BenchmarkItem"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "leakageKey",
+          "findCrossSplitLeakage",
+          "checkRenamedVariants"
+        ],
+        "interfaces": [
+          "LeakageCollision",
+          "VariantProblem"
+        ],
+        "functions": [
+          "leakageKey",
+          "findCrossSplitLeakage",
+          "checkRenamedVariants"
+        ]
+      },
+      "src/atlas/benchmark/loader.ts": {
+        "description": "Atlas Phase 5, S5.1 — load and validate benchmark items.",
+        "externalDependencies": [],
+        "nodeDependencies": [
+          {
+            "module": "fs",
+            "imports": [
+              "readFileSync"
+            ]
+          },
+          {
+            "module": "path",
+            "imports": [
+              "join"
+            ]
+          }
+        ],
+        "internalDependencies": [
+          {
+            "file": "./types.js",
+            "imports": [
+              "FAILURE_KINDS",
+              "HELD_OUT_FAMILY"
+            ]
+          },
+          {
+            "file": "./types.js",
+            "imports": [
+              "BenchmarkItem"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "validateItems",
+          "loadFrozenItems",
+          "loadContestedDrafts",
+          "BenchmarkAdmissionError"
+        ],
+        "classes": [
+          "BenchmarkAdmissionError"
+        ],
+        "interfaces": [
+          "ItemProblem"
+        ],
+        "functions": [
+          "validateItems",
+          "loadFrozenItems",
+          "loadContestedDrafts"
+        ]
+      },
+      "src/atlas/benchmark/types.ts": {
+        "description": "Atlas Phase 5, S5.1 — the invalid-bridge benchmark's item schema.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/ast-types.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "RelationType"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "FAILURE_KINDS",
+          "HELD_OUT_FAMILY",
+          "HELD_OUT_MARKERS"
+        ],
+        "interfaces": [
+          "BenchmarkItem"
+        ],
+        "constants": [
+          "FAILURE_KINDS",
+          "HELD_OUT_FAMILY",
+          "HELD_OUT_MARKERS"
         ]
       },
       "src/atlas/composition-table.ts": {
@@ -913,6 +1046,42 @@
             "reExport": true
           },
           {
+            "file": "./benchmark/types.js",
+            "imports": [
+              "FAILURE_KINDS",
+              "HELD_OUT_FAMILY",
+              "HELD_OUT_MARKERS"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./benchmark/types.js",
+            "imports": [
+              "Authorship",
+              "BenchmarkItem",
+              "BenchmarkSplit",
+              "FailureKind"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./benchmark/leakage.js",
+            "imports": [
+              "checkRenamedVariants",
+              "findCrossSplitLeakage",
+              "leakageKey"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./benchmark/leakage.js",
+            "imports": [
+              "LeakageCollision",
+              "VariantProblem"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./witness-artifact.js",
             "imports": [
               "runWitnessRegistry",
@@ -1059,6 +1228,12 @@
           "WAVE_MODELS",
           "DIFFUSION_CLOSURE_BRIDGES",
           "WAVE_CLOSURE_BRIDGES",
+          "FAILURE_KINDS",
+          "HELD_OUT_FAMILY",
+          "HELD_OUT_MARKERS",
+          "checkRenamedVariants",
+          "findCrossSplitLeakage",
+          "leakageKey",
           "runWitnessRegistry",
           "artifactPassingWitnessIds",
           "WITNESS_REGISTRY",
@@ -1097,6 +1272,12 @@
           "UnresolvedReason",
           "WitnessRunResult",
           "WitnessStatus",
+          "Authorship",
+          "BenchmarkItem",
+          "BenchmarkSplit",
+          "FailureKind",
+          "LeakageCollision",
+          "VariantProblem",
           "WitnessResultRecord",
           "WitnessResultsArtifact",
           "RegisteredNumericWitness",
@@ -1188,6 +1369,18 @@
           "WAVE_MODELS",
           "DIFFUSION_CLOSURE_BRIDGES",
           "WAVE_CLOSURE_BRIDGES",
+          "FAILURE_KINDS",
+          "HELD_OUT_FAMILY",
+          "HELD_OUT_MARKERS",
+          "Authorship",
+          "BenchmarkItem",
+          "BenchmarkSplit",
+          "FailureKind",
+          "checkRenamedVariants",
+          "findCrossSplitLeakage",
+          "leakageKey",
+          "LeakageCollision",
+          "VariantProblem",
           "runWitnessRegistry",
           "artifactPassingWitnessIds",
           "WitnessResultRecord",
@@ -22529,6 +22722,9 @@
         "files": [
           "src/atlas/applicability.ts",
           "src/atlas/association.ts",
+          "src/atlas/benchmark/leakage.ts",
+          "src/atlas/benchmark/loader.ts",
+          "src/atlas/benchmark/types.ts",
           "src/atlas/composition-table.ts",
           "src/atlas/conventions.ts",
           "src/atlas/coverage.ts",
@@ -22918,18 +23114,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 336,
+    "totalTypeScriptFiles": 339,
     "totalModules": 11,
-    "totalLinesOfCode": 66727,
-    "totalExports": 2310,
-    "totalClasses": 57,
-    "totalInterfaces": 334,
-    "totalFunctions": 526,
+    "totalLinesOfCode": 67055,
+    "totalExports": 2332,
+    "totalClasses": 58,
+    "totalInterfaces": 338,
+    "totalFunctions": 532,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 598,
-    "totalReExports": 1128,
-    "totalTypeOnlyImports": 466,
+    "totalConstants": 601,
+    "totalReExports": 1140,
+    "totalTypeOnlyImports": 472,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

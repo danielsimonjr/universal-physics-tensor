@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 43 files
+- **atlas**: 46 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 30 files
@@ -75,6 +75,57 @@ The codebase is organized into the following modules:
 - Interfaces: `Association`
 - Functions: `associationFor`
 - Constants: `ASSOCIATIONS`
+
+---
+
+### `src/atlas/benchmark/leakage.ts` - Atlas Phase 5, S5.1 — leakage checks for the invalid-bridge benchmark.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../canonical/normal-form.js` | `normalForm` | Import |
+| `../../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `./types.js` | `BenchmarkItem` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `LeakageCollision`, `VariantProblem`
+- Functions: `leakageKey`, `findCrossSplitLeakage`, `checkRenamedVariants`
+
+---
+
+### `src/atlas/benchmark/loader.ts` - Atlas Phase 5, S5.1 — load and validate benchmark items.
+
+**Node.js Built-in Dependencies:**
+| Module | Import |
+|--------|--------|
+| `fs` | `readFileSync` |
+| `path` | `join` |
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `FAILURE_KINDS, HELD_OUT_FAMILY` | Import |
+| `./types.js` | `BenchmarkItem` | Import (type-only) |
+
+**Exports:**
+- Classes: `BenchmarkAdmissionError`
+- Interfaces: `ItemProblem`
+- Functions: `validateItems`, `loadFrozenItems`, `loadContestedDrafts`
+
+---
+
+### `src/atlas/benchmark/types.ts` - Atlas Phase 5, S5.1 — the invalid-bridge benchmark's item schema.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
+| `../types.js` | `RelationType` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `BenchmarkItem`
+- Constants: `FAILURE_KINDS`, `HELD_OUT_FAMILY`, `HELD_OUT_MARKERS`
 
 ---
 
@@ -303,6 +354,10 @@ The codebase is organized into the following modules:
 | `./waves/models.js` | `WAVE_MODELS` | Re-export |
 | `./diffusion/bridges-closure.js` | `DIFFUSION_CLOSURE_BRIDGES` | Re-export |
 | `./waves/bridges-closure.js` | `WAVE_CLOSURE_BRIDGES` | Re-export |
+| `./benchmark/types.js` | `FAILURE_KINDS, HELD_OUT_FAMILY, HELD_OUT_MARKERS` | Re-export |
+| `./benchmark/types.js` | `Authorship, BenchmarkItem, BenchmarkSplit, FailureKind` | Re-export |
+| `./benchmark/leakage.js` | `checkRenamedVariants, findCrossSplitLeakage, leakageKey` | Re-export |
+| `./benchmark/leakage.js` | `LeakageCollision, VariantProblem` | Re-export |
 | `./witness-artifact.js` | `runWitnessRegistry, artifactPassingWitnessIds` | Re-export |
 | `./witness-artifact.js` | `WitnessResultRecord, WitnessResultsArtifact` | Re-export |
 | `./witness-specs.js` | `WITNESS_REGISTRY` | Re-export |
@@ -317,7 +372,7 @@ The codebase is organized into the following modules:
 | `./derivation.js` | `CompositeFormed, CompositeRefused, Derivation, DerivationCompositionResult, DerivationId, DerivationSpec, NoCompositeReason` | Re-export |
 
 **Exports:**
-- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `FormalFidelity`, `FormalRef`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `ATLAS_FAMILIES`, `DIFFUSION_FAMILY`, `BRIDGE_HEAT_DIFFUSION`, `BRIDGE_SCHRODINGER_DIFFUSION`, `BRIDGE_WALK_DIFFUSION`, `DIFFUSION_BRIDGES`, `DIFFUSION_MODELS`, `getDiffusionModel`, `WAVES_FAMILY`, `BRIDGE_KLEIN_GORDON_WAVE`, `BRIDGE_SOUND_SPEED`, `BRIDGE_STRING_WAVE`, `BRIDGE_WAVE_DALEMBERT`, `WAVE_BRIDGES`, `WAVE_MODELS`, `DIFFUSION_CLOSURE_BRIDGES`, `WAVE_CLOSURE_BRIDGES`, `runWitnessRegistry`, `artifactPassingWitnessIds`, `WitnessResultRecord`, `WitnessResultsArtifact`, `WITNESS_REGISTRY`, `RegisteredNumericWitness`, `RegisteredSymbolicWitness`, `RegisteredWitness`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `FormalFidelity`, `FormalRef`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `ATLAS_FAMILIES`, `DIFFUSION_FAMILY`, `BRIDGE_HEAT_DIFFUSION`, `BRIDGE_SCHRODINGER_DIFFUSION`, `BRIDGE_WALK_DIFFUSION`, `DIFFUSION_BRIDGES`, `DIFFUSION_MODELS`, `getDiffusionModel`, `WAVES_FAMILY`, `BRIDGE_KLEIN_GORDON_WAVE`, `BRIDGE_SOUND_SPEED`, `BRIDGE_STRING_WAVE`, `BRIDGE_WAVE_DALEMBERT`, `WAVE_BRIDGES`, `WAVE_MODELS`, `DIFFUSION_CLOSURE_BRIDGES`, `WAVE_CLOSURE_BRIDGES`, `FAILURE_KINDS`, `HELD_OUT_FAMILY`, `HELD_OUT_MARKERS`, `Authorship`, `BenchmarkItem`, `BenchmarkSplit`, `FailureKind`, `checkRenamedVariants`, `findCrossSplitLeakage`, `leakageKey`, `LeakageCollision`, `VariantProblem`, `runWitnessRegistry`, `artifactPassingWitnessIds`, `WitnessResultRecord`, `WitnessResultsArtifact`, `WITNESS_REGISTRY`, `RegisteredNumericWitness`, `RegisteredSymbolicWitness`, `RegisteredWitness`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
 
 ---
 
@@ -5742,6 +5797,9 @@ The codebase is organized into the following modules:
 |------|--------------|------------|
 | `applicability` | 5 files | 1 files |
 | `association` | 0 files | 2 files |
+| `leakage` | 4 files | 1 files |
+| `loader` | 1 files | 0 files |
+| `types` | 2 files | 3 files |
 | `composition-table` | 1 files | 3 files |
 | `conventions` | 1 files | 4 files |
 | `coverage` | 1 files | 0 files |
@@ -5755,7 +5813,7 @@ The codebase is organized into the following modules:
 | `numerics` | 0 files | 2 files |
 | `error-algebra` | 1 files | 2 files |
 | `families` | 3 files | 1 files |
-| `index` | 25 files | 0 files |
+| `index` | 27 files | 0 files |
 | `model` | 2 files | 10 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
@@ -5767,9 +5825,6 @@ The codebase is organized into the following modules:
 | `path-bound` | 4 files | 1 files |
 | `associations` | 2 files | 1 files |
 | `derivations` | 5 files | 0 files |
-| `statements` | 2 files | 1 files |
-| `regime` | 3 files | 13 files |
-| `serialize` | 4 files | 1 files |
 
 ---
 
@@ -5785,10 +5840,10 @@ graph TD
     subgraph Atlas
         N0[applicability]
         N1[association]
-        N2[composition-table]
-        N3[conventions]
-        N4[coverage]
-        N5[...38 more]
+        N2[leakage]
+        N3[loader]
+        N4[types]
+        N5[...41 more]
     end
 
     subgraph Bridges
@@ -5869,7 +5924,10 @@ graph TD
     end
 
     N0 --> N42
-    N0 --> N3
+    N2 --> N42
+    N2 --> N4
+    N3 --> N4
+    N4 --> N42
     N10 --> N33
     N12 --> N44
     N13 --> N44
@@ -5894,10 +5952,7 @@ graph TD
     N24 --> N27
     N24 --> N26
     N24 --> N25
-    N24 --> N3
     N27 --> N26
-    N27 --> N28
-    N28 --> N44
 ```
 
 ---
@@ -5906,17 +5961,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 336 |
+| Total TypeScript Files | 339 |
 | Total Modules | 11 |
-| Total Lines of Code | 66727 |
-| Total Exports | 2310 |
-| Total Re-exports | 1128 |
-| Total Classes | 57 |
-| Total Interfaces | 334 |
-| Total Functions | 526 |
+| Total Lines of Code | 67055 |
+| Total Exports | 2332 |
+| Total Re-exports | 1140 |
+| Total Classes | 58 |
+| Total Interfaces | 338 |
+| Total Functions | 532 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 466 |
+| Type-only Imports | 472 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

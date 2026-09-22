@@ -1,0 +1,109 @@
+# Atlas Phase 5 — design note (L5.1): the invalid-bridge benchmark
+
+Authorized by the Sprint 5 entry in [`ACTIVE.md`](ACTIVE.md). Briefs:
+[`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) §Sprint 5.
+
+## 0. The independence wall — read this first
+
+**No agent authors a frozen benchmark item.** That covers this session, every subagent, and
+every local model. Agents build the harness, the loader, the leakage checks, the scorer
+plumbing, the statistics and the pre-registration template. They may draft candidate items
+ONLY into `tests/fixtures/atlas/benchmark/contested/`, with `authorship: 'contested-draft'`.
+The loader refuses any frozen item whose authorship is not `'independent'`.
+
+The consequence must be stated before any code exists, or the harness will be mistaken for
+the study. **ROADMAP Phase 5's exit criteria are "κ reported; held-out family fixed;
+thresholds frozen in a pre-registration note before any condition is run".** Two of the three
+need people: κ needs two named human raters, and a frozen item set needs independent authors.
+The harness can fix the held-out family, freeze the thresholds and make everything else
+mechanical. It cannot supply the items. The repo cannot enforce independence, so the
+pre-registration note names the raters and authors, and Eve checks the note.
+
+## 1. The eight failure kinds
+
+One worked example each. **These are TAXONOMY ILLUSTRATIONS, not benchmark items.** They
+appear in this design note, which the independence rule forbids as a source for frozen items,
+so none of them may be frozen.
+
+| Kind | Worked example |
+|---|---|
+| `omitted-premise` | "Spring ↔ LC is exact" stated for the DAMPED pair without the side condition b/√(mk) = R√(C/L). The equivalence holds only on that condition (`ab-damped-rlc`). |
+| `domain-violation` | Using the small-angle period 2π√(ℓ/g) at θ0 = 2 rad, far outside the θ0 ≤ 0.5 domain of `ab-pendulum-linear`. |
+| `convention-mismatch` | Composing a first-law step written dU = Q − W with one written dU = Q + W, with no sign conversion. |
+| `notation-collision` | Reading `k` as a spring constant in one premise and as a wavenumber in the other, so ω² = k/m silently becomes ω² = (wavenumber)/m. |
+| `dimensional-coincidence` | Promoting two quantities to a bridge because they share a dimension (both L²T⁻¹: kinematic viscosity and a diffusion coefficient), when no mechanism connects them. |
+| `non-uniform-limit` | Presenting the small-angle pendulum as uniform in time. At θ0 = 0.2 the phase drift reaches π/2 after about 100 cycles (W7b). |
+| `false-inverse` | Presenting quantization as the inverse of the classical limit. Deformation quantization is not a left inverse of ħ → 0, because operator ordering is lost. |
+| `analogy-promoted` | Promoting the cubic spring ↔ LC ANALOGY to an exact equivalence. The cubic spring keeps the group βx0²/k, and LC has nothing to match it (the Sprint 0 rejection `ax-cubic-spring-lc`). |
+
+## 2. The item schema
+
+```ts
+interface BenchmarkItem {
+  id: string;
+  kind: 'valid' | 'invalid';
+  failureKind?: FailureKind;        // REQUIRED iff kind === 'invalid'
+  premises: string[];               // model descriptions, prose
+  conclusion: string;
+  claimedRelation: RelationType;
+  family: string;                   // 'fluid-statics' for the held-out split
+  split: 'in-distribution' | 'held-out';
+  expr: ExprNode;                   // the claimed relation, for the leakage check
+  renamedVariant?: string;          // id of the item this one renames
+  authorship: 'independent' | 'contested-draft';
+  source: string;                   // where the item came from (erratum, misconception, textbook)
+}
+```
+
+The public half (`public/items.json`) never carries the answer. The label (`accept`, `reject`
+or `abstain` expected, plus the failure kind a correct rejection names) lives in `scorer/`,
+and no `src/` file may read `scorer/` (import-guard test, with a positive control).
+
+## 3. Leakage — CORRECTION to the plan
+
+The plan says renamed-variable variants "are detected as the same item by normal form".
+**`normalForm` cannot do that, as measured:** it keys symbols by NAME, so `x/t` and `y/s` give
+`/(sym:x,sym:t)` and `/(sym:y,sym:s)`, which are not equal. A leakage check built on it as
+briefed would miss exactly the renamed variants it exists to catch.
+
+**As built:** `leakageKey(expr)` renames every dimensioned symbol to its DIMENSION signature
+before `normalForm`. Two items that differ only in variable names therefore collide. The rule
+over-merges in one direction: it also merges genuinely different quantities of the same
+dimension. **That direction is chosen on purpose.** For leakage, a false collision gets flagged
+and reviewed, and a missed one contaminates the study. Dimensionless stubs keep their names,
+because `normalForm` already tags them.
+
+## 4. The held-out family — CORRECTION to the plan: fluid statics, not first-order relaxation
+
+The plan fixes the held-out family as **first-order relaxation** on the premise that it is "not
+encoded under `src/atlas/` by Sprint 4". **That premise is false, as measured.** Phase 0 encodes
+`model-first-order` (`b x′ + k x = 0`), the conclusion of the singular limit
+`ab-damped-massless`. That model IS the abstract first-order relaxation ODE, and RC discharge,
+Newton cooling and radioactive decay are relabellings of it. Scoring the atlas on that family
+would score it on structure it already contains, which is precisely the leakage the rule
+forbids.
+
+**Held-out family, as built: FLUID STATICS** — hydrostatic pressure p = p₀ + ρgh, Archimedes'
+buoyancy, Pascal's principle, and the isothermal barometric formula. The measured footprint in
+`src/atlas/` is zero: `hydrostat|buoyan|archimed|bernoulli|poiseuille` matches nothing.
+Candidates were rejected for measured reasons. Orbits: poster statement 12 is universal
+gravitation. Optics: 6 matches. Ideal-gas processes: 5 matches, and the adiabatic EOS is a
+wave-family model. Circuits: 9. Electrostatics: 25. Steady viscous and inviscid FLOW was also set
+aside by judgement, because it borders `model-stokes-drag` and `model-euler-linear` even where
+no keyword matches.
+
+`tests/atlas/benchmark.test.ts` pins the absence by scanning every model id, dynamics string and
+bridge id across `ATLAS_FAMILIES`. A **positive control** runs the same scan with the ORIGINAL
+family's markers and confirms it finds `model-first-order`, so the scan is shown to fire on
+exactly the defect it caught here. **Fluid statics must never be added to `src/atlas/` while the
+benchmark is live.**
+
+## 5. Pre-registration
+
+The template lives at `docs/research/atlas-benchmark-preregistration.md` (S5.5). All six
+Blueprint §7.3 criteria are written there before any condition runs: false promotion = 0;
+invalid-bridge rejection against the best LLM baseline, with a paired 95% interval excluding
+zero; recall at depth 10 against embeddings; abstention reported; practical value; and
+curation cost. The note is committed with the hash of the frozen item set. **While no
+independent items exist, the note records the EMPTY set's hash and says so.** No condition
+may be scored against an empty set and reported as a result.

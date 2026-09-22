@@ -495,8 +495,8 @@ in every output.
 | 1 — Relation contracts overlay | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 1 — additive overlay; relation and evidence fields land as `undefined` / `not-yet-audited` rather than fabricated |
 | 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
 | 3 — Hyperedges, models, poster index | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 3 — `Model`, `Statement`, `Derivation`, multicategory composition, the sixteen poster entries with their hidden nodes, and `upt map --source=poster` |
-| 4 — Verification workflow, checked bridges | in progress | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 4 — promoted 2026-09-22 |
-| 5 — Invalid-bridge benchmark | not started | — |
+| 4 — Verification workflow, checked bridges | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 4 — 20 bridges across 6 relation types (MET); ≥ 5 reviewed `formalRef` is OPEN at 1 of 5 |
+| 5 — Invalid-bridge benchmark | in progress | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 5 — promoted 2026-09-22; the frozen item set needs independent human authors |
 | 6 — Study and scoped release | not started | — |
 
 > **This table is updated at the END of every sprint, and the risk register above is why.** Its own

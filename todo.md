@@ -274,7 +274,14 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] **Atlas Sprint 4 — verification workflow and checked bridges (IN FLIGHT).** Promoted in
+- [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (IN FLIGHT).** Promoted in `docs/planning/ACTIVE.md`
+      2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,
+      leakage checks (renamed variants keyed by dimension; held-out family corrected to FLUID STATICS).
+      - [ ] **Frozen item set needs INDEPENDENT human authors and two named κ raters.** No agent may
+        author a frozen item; until authors exist, Phase 5's "κ reported" exit criterion cannot be met
+        by code. Route to the user via Mothership.
+
+- [ ] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
       `docs/planning/ACTIVE.md` 2026-09-22; design note `docs/planning/Atlas-Phase-4-Design.md`.
       Eighteen tasks assigned to this lane: **S4.1–S4.6, S5.1–S5.5, S6.1–S6.7.**
       **Done so far: S4.1** — `src/atlas/applicability.ts`, the applicability checker (dimensions,

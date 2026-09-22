@@ -105,6 +105,13 @@ export { WAVE_MODELS } from './waves/models.js';
 export { DIFFUSION_CLOSURE_BRIDGES } from './diffusion/bridges-closure.js';
 export { WAVE_CLOSURE_BRIDGES } from './waves/bridges-closure.js';
 
+// Phase 5 benchmark: the PURE parts only. `benchmark/loader.ts` reads files and is
+// deliberately not re-exported, so importing this barrel never pulls in file I/O.
+export { FAILURE_KINDS, HELD_OUT_FAMILY, HELD_OUT_MARKERS } from './benchmark/types.js';
+export type { Authorship, BenchmarkItem, BenchmarkSplit, FailureKind } from './benchmark/types.js';
+export { checkRenamedVariants, findCrossSplitLeakage, leakageKey } from './benchmark/leakage.js';
+export type { LeakageCollision, VariantProblem } from './benchmark/leakage.js';
+
 export { runWitnessRegistry, artifactPassingWitnessIds } from './witness-artifact.js';
 export type { WitnessResultRecord, WitnessResultsArtifact } from './witness-artifact.js';
 

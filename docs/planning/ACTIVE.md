@@ -12,7 +12,7 @@ Ongoing work that requires domain judgment rather than code completion lives in 
 
 No open items.
 
-## Active sprint — Atlas Roadmap, Sprint 4 (verification workflow and checked bridges, target v0.53–v0.55)
+## Active sprint — Atlas Roadmap, Sprint 5 (the invalid-bridge benchmark, target v0.56)
 
 > **Heading corrected 2026-09-21.** It read "Phase 0 (oscillator pilot, target v0.46)" while the
 > entries below had moved on to Sprint 2 — the ENTRIES were current and only their title was not.
@@ -28,9 +28,14 @@ No open items.
 > **Heading moved to Sprint 4 on 2026-09-22** when Sprint 4 was promoted. Sprint 3 is CLOSED
 > (landed on `master` at 786dceb, CI green, 4,326 tests); its entry stays below as the record.
 >
-> **Sprints 5–6 are NOT authorized.** They have briefs in the implementation plan and no entry
-> here, which is exactly the state that means "not promoted". This line said "3–6" until 05:50 and
-> "4–6" until 12:1x today; each promotion below made the previous wording FALSE. A note that is
+>
+> **Heading moved to Sprint 5 on 2026-09-22** when Sprint 5 was promoted. Sprint 4's code is
+> complete (a3b5de2) and its box stays OPEN on purpose: one ROADMAP exit criterion is unmet (see
+> its entry).
+>
+> **Sprint 6 is NOT authorized.** It has briefs in the implementation plan and no entry
+> here, which is exactly the state that means "not promoted". This line said "3–6" until 05:50,
+> "4–6" until 12:1x and "5–6" until 15:1x today; each promotion below made the previous wording FALSE. A note that is
 > corrected once and then not re-checked when the thing it describes moves is the same rot it was
 > written to fix, so **narrowing this range is part of promoting a sprint, not a follow-up.**
 
@@ -154,7 +159,27 @@ No open items.
   review argued it is backwards, but that rests on an entry identification nobody can verify without
   Blueprint v2 Appendix A, which is not in the repo. It is neither fixed nor filed as a defect.
 
-- [ ] **Sprint 4 — Verification workflow and checked bridges.** Promoted 2026-09-22 by the Lead
+- [ ] **Sprint 5 — The invalid-bridge benchmark.** Promoted 2026-09-22 by the Lead on Mothership's
+  assignment of S5.1–S5.5 to the Atlas-Roadmap session. **This line is what authorizes the plan's
+  Sprint 5 briefs.** **Scope:** item schema, loader and leakage checks; the atlas condition runner;
+  deterministic in-tree baselines; statistics and power report; the pre-registration note.
+  **The independence wall, stated where it binds:** no agent — this session or any subagent —
+  authors a FROZEN item. Agents build the harness and may draft only into `contested/`, marked
+  `authorship: 'contested-draft'`. The frozen set, its two named κ raters, and therefore the
+  pre-registration's item-set hash all require independent human authors. Until they exist the
+  Phase 5 exit criteria ("κ reported"; "thresholds frozen before any condition runs") cannot be
+  met by code, and the entry says so rather than letting the harness stand in for the study.
+  **Held-out family: FLUID STATICS** (hydrostatic pressure, buoyancy, Pascal, barometric formula) —
+  never added to `src/atlas/` while the benchmark is live. **Corrected from the plan's
+  "first-order relaxation"**, which Phase 0 already encodes as `model-first-order` (b x′ + k x = 0);
+  measured and argued in `Atlas-Phase-5-Design.md` §4.
+
+- [ ] **Sprint 4 — Verification workflow and checked bridges.** Code COMPLETE 2026-09-22 (S4.1–S4.6 +
+  closure, a3b5de2). **Box held OPEN on purpose:** ROADMAP exit "≥ 5 bridges with a reviewed
+  `formalRef`" is **OPEN at 1 of 5** (Physlib has one real counterpart; the S4.6 table in the
+  Phase 4 design note). Side by side, not merged: "≥ 20 bridges across ≥ 5 relation types" is
+  **MET** (20 / 6). Closing the formalRef criterion needs an out-of-tree proof repository — an
+  outward-facing decision now with the user. Promoted 2026-09-22 by the Lead
   under the same standing instruction to run Sprints 0–6 continuously, and on Mothership's direct
   assignment of S4.1–S6.7 to the Atlas-Roadmap session. **This line is what authorizes the plan's
   Sprint 4 briefs.**
