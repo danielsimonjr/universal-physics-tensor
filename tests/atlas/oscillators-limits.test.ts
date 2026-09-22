@@ -72,8 +72,18 @@ describe('ab-pendulum-linear — W7: relative period error and its residual', ()
     expect(Math.abs(residual - nextTerm)).toBeLessThan(2e-8);
   });
 
-  it('states θ0²/16 as the bound delta at the edge of the parameter range', () => {
-    expect(AB_PENDULUM_LINEAR.bound?.delta).toBeCloseTo(0.5 ** 2 / 16, 15);
+  it('states the EXACT edge error as the bound delta, not the series term', () => {
+    // This assertion used to pin delta to 0.5²/16, the SERIES evaluated at the
+    // edge of the parameter range. The exact error there is 0.0158525311, so
+    // the pinned value was a bound violated at its own boundary — and this
+    // test, measuring the positive residual at θ0 = 0.2 just above, was
+    // measuring the very term that makes the series fall short. delta is now
+    // the exact edge value; the series relationship is asserted instead of
+    // substituted for it.
+    const delta = AB_PENDULUM_LINEAR.bound?.delta ?? Number.NaN;
+    expect(delta).toBeCloseTo(periodRatio(0.5) - 1, 15);
+    expect(delta).toBeGreaterThan(0.5 ** 2 / 16);
+    expect(delta - 0.5 ** 2 / 16).toBeCloseTo((11 * 0.5 ** 4) / 3072, 5);
     expect(AB_PENDULUM_LINEAR.bound?.limitCharacter).toBe('regular');
   });
 });
