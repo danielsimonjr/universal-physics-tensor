@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 342,
-    "totalTestFiles": 427,
-    "testedCount": 340,
+    "totalSourceFiles": 343,
+    "totalTestFiles": 428,
+    "testedCount": 341,
     "untestedCount": 2,
     "coveragePercent": "99.4"
   },
@@ -33,6 +33,7 @@
     "src/atlas/diffusion/models.ts",
     "src/atlas/diffusion/numerics.ts",
     "src/atlas/error-algebra.ts",
+    "src/atlas/export.ts",
     "src/atlas/families.ts",
     "src/atlas/link-prediction.ts",
     "src/atlas/model.ts",
@@ -440,10 +441,14 @@
       "tests/atlas/error-algebra.test.ts",
       "tests/atlas/path-bound.test.ts"
     ],
+    "src/atlas/export.ts": [
+      "tests/atlas/export.test.ts"
+    ],
     "src/atlas/families.ts": [
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/export.test.ts",
       "tests/atlas/families.test.ts",
       "tests/atlas/formal-sanity.test.ts",
       "tests/atlas/link-prediction.test.ts",
@@ -5331,6 +5336,10 @@
     ],
     "tests/atlas/evidence-rule.test.ts": [
       "src/atlas/types.ts",
+      "src/atlas/families.ts"
+    ],
+    "tests/atlas/export.test.ts": [
+      "src/atlas/export.ts",
       "src/atlas/families.ts"
     ],
     "tests/atlas/exports-subpath.test.ts": [],

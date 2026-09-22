@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 345
+  totalFiles: 346
   totalModules: 11
-  totalExports: 2389
+  totalExports: 2396
 entryPoints:
   - file: src/index.ts
     type: main
@@ -670,6 +670,29 @@ modules:
         - composeBoundPath
       constants:
         - IDENTITY_BOUND
+    src/atlas/export.ts:
+      description: "Atlas Phase 6, S6.4 — the versioned export: one combined JSON artifact for"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./oscillators/index.js
+          imports:
+            - AtlasFamily
+          typeOnly: true
+        - file: ./serialize.js
+          imports:
+            - toAtlasJson
+      exports:
+        - ATLAS_ID_PREFIX
+        - toCombinedAtlasJson
+        - toAtlasJsonLd
+      interfaces:
+        - QudtResolution
+      functions:
+        - toCombinedAtlasJson
+        - toAtlasJsonLd
+      constants:
+        - ATLAS_ID_PREFIX
     src/atlas/families.ts:
       description: Every registered atlas family, in the order they were built.
       externalDependencies: []
@@ -803,6 +826,16 @@ modules:
         - file: ./link-prediction.js
           imports:
             - runLinkPrediction
+          reExport: true
+        - file: ./export.js
+          imports:
+            - ATLAS_ID_PREFIX
+            - toAtlasJsonLd
+            - toCombinedAtlasJson
+          reExport: true
+        - file: ./export.js
+          imports:
+            - QudtResolution
           reExport: true
         - file: ./link-prediction.js
           imports:
@@ -1033,6 +1066,9 @@ modules:
         - passingWitnessIds
         - ATLAS_FAMILIES
         - runLinkPrediction
+        - ATLAS_ID_PREFIX
+        - toAtlasJsonLd
+        - toCombinedAtlasJson
         - DIFFUSION_FAMILY
         - BRIDGE_HEAT_DIFFUSION
         - BRIDGE_SCHRODINGER_DIFFUSION
@@ -1111,6 +1147,7 @@ modules:
         - UnresolvedReason
         - WitnessRunResult
         - WitnessStatus
+        - QudtResolution
         - LinkPredictionResult
         - LinkPredictionTrial
         - Authorship
@@ -1211,6 +1248,10 @@ modules:
         - WitnessStatus
         - ATLAS_FAMILIES
         - runLinkPrediction
+        - ATLAS_ID_PREFIX
+        - toAtlasJsonLd
+        - toCombinedAtlasJson
+        - QudtResolution
         - LinkPredictionResult
         - LinkPredictionTrial
         - DIFFUSION_FAMILY
@@ -16094,6 +16135,7 @@ dependencyGraph:
         - src/atlas/diffusion/models.ts
         - src/atlas/diffusion/numerics.ts
         - src/atlas/error-algebra.ts
+        - src/atlas/export.ts
         - src/atlas/families.ts
         - src/atlas/index.ts
         - src/atlas/link-prediction.ts
@@ -16438,18 +16480,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 345
+  totalTypeScriptFiles: 346
   totalModules: 11
-  totalLinesOfCode: 68141
-  totalExports: 2389
+  totalLinesOfCode: 68270
+  totalExports: 2396
   totalClasses: 58
-  totalInterfaces: 356
-  totalFunctions: 548
+  totalInterfaces: 357
+  totalFunctions: 550
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 604
-  totalReExports: 1178
-  totalTypeOnlyImports: 481
+  totalConstants: 605
+  totalReExports: 1182
+  totalTypeOnlyImports: 482
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

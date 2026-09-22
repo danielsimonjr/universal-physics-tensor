@@ -35,3 +35,27 @@ Two corrections to the naive method were made before any number was recorded:
   are counted, not dropped silently.
 - **Chance level and MRR are reported.** Each query has about 20 candidates, so a random ranking
   hits the top 10 almost half the time. A bare recall@10 would read as success.
+
+## 2. Versioned export (S6.4) — as built
+
+`bun run atlas:json` writes the per-family artifacts and now also writes:
+
+- **`data/atlas/atlas.json`**, every family under one version stamp. `schemaVersion` stays `'0'`,
+  because Phase 4's only field change (`formalRef`) is additive and optional, and the plan bumps
+  to v1 only on a breaking change.
+- **`data/atlas/atlas.jsonld`**, the JSON-LD projection. Ids are stable URNs
+  (`urn:upt:atlas:model:<id>`, `…:bridge:<id>`), so no id depends on a host that could move.
+  Bridges are `prov:Entity` with `prov:wasDerivedFrom` pointing at their premises, and their
+  citations are `dcterms:source`.
+- **`data/atlas/qudt-resolution.json`**, the checked-in resolution table. Every IRI returned HTTP
+  200 on the probe date, and a positive control (Mass → 200) and a negative control (a fabricated
+  name → 404) show that the probe can tell the difference. **10 of the 54 parameters are
+  deliberately blank.** SpringConstant, FlexuralRigidity and DampingCoefficient return 404.
+  MassPerTime matches the DIMENSION of a damping coefficient but means a mass flow rate, so it is
+  not used. The table is keyed by (model, parameter) because `kappa` is a spring constant in
+  `model-chain` and a thermal conductivity in `model-heat`, which is a notation collision in the
+  atlas's own data. The export THROWS on a parameter with no entry rather than exporting it blank.
+
+`tests/atlas/export.test.ts` pins freshness, URN uniqueness, endpoint resolution, table coverage,
+the collision and the unresolved set. It lives beside `atlas-json.test.ts` rather than inside it,
+which is a deviation from the plan's wording.

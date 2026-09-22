@@ -1,0 +1,2794 @@
+{
+  "schemaVersion": "0",
+  "packageVersion": "0.45.2",
+  "families": [
+    {
+      "$schema": "../schemas/atlas-record.v0.json",
+      "schemaVersion": "0",
+      "family": "oscillators",
+      "models": [
+        {
+          "id": "model-spring",
+          "family": "oscillators",
+          "stateSpace": "(x, x′) ∈ ℝ²",
+          "dynamics": "m x″ + k x = 0",
+          "observables": [
+            "x",
+            "x′",
+            "energy"
+          ],
+          "parameters": [
+            {
+              "name": "m",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "k",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [
+            "CE-simple-harmonic-frequency",
+            "CE-spring-potential-energy",
+            "CE-oscillator-energy"
+          ],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-lc",
+          "family": "oscillators",
+          "stateSpace": "(q, q′) ∈ ℝ²",
+          "dynamics": "L q″ + q/C = 0",
+          "observables": [
+            "q",
+            "q′",
+            "energy"
+          ],
+          "parameters": [
+            {
+              "name": "L",
+              "dim": {
+                "L": 2,
+                "M": 1,
+                "T": -2,
+                "I": -2,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "C",
+              "dim": {
+                "L": -2,
+                "M": -1,
+                "T": 4,
+                "I": 2,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [
+            "CE-lc-resonance"
+          ],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-damped-spring",
+          "family": "oscillators",
+          "stateSpace": "(x, x′) ∈ ℝ²",
+          "dynamics": "m x″ + b x′ + k x = 0",
+          "observables": [
+            "x",
+            "x′"
+          ],
+          "parameters": [
+            {
+              "name": "m",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "b",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "k",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {
+              "m · b^-2 · k": {
+                "exponents": {
+                  "b": -2,
+                  "k": 1,
+                  "m": 1
+                },
+                "formula": "m · b^-2 · k"
+              }
+            }
+          }
+        },
+        {
+          "id": "model-rlc",
+          "family": "oscillators",
+          "stateSpace": "(q, q′) ∈ ℝ²",
+          "dynamics": "L q″ + R q′ + q/C = 0",
+          "observables": [
+            "q",
+            "q′"
+          ],
+          "parameters": [
+            {
+              "name": "L",
+              "dim": {
+                "L": 2,
+                "M": 1,
+                "T": -2,
+                "I": -2,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "R",
+              "dim": {
+                "L": 2,
+                "M": 1,
+                "T": -3,
+                "I": -2,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "C",
+              "dim": {
+                "L": -2,
+                "M": -1,
+                "T": 4,
+                "I": 2,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {
+              "L · R^-2 · C^-1": {
+                "exponents": {
+                  "C": -1,
+                  "L": 1,
+                  "R": -2
+                },
+                "formula": "L · R^-2 · C^-1"
+              }
+            }
+          }
+        },
+        {
+          "id": "model-pendulum",
+          "family": "oscillators",
+          "stateSpace": "(θ, θ′) ∈ S¹ × ℝ",
+          "dynamics": "θ″ + (g/ℓ) sin θ = 0",
+          "observables": [
+            "theta",
+            "theta′",
+            "period"
+          ],
+          "parameters": [
+            {
+              "name": "g",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "ell",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [
+            "theta0"
+          ],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {
+              "theta0": {
+                "exponents": {
+                  "ell": 0,
+                  "g": 0,
+                  "theta0": 1
+                },
+                "formula": "theta0"
+              }
+            }
+          }
+        },
+        {
+          "id": "model-chain",
+          "family": "oscillators",
+          "stateSpace": "(u_n, u_n′) ∈ ℝ^N × ℝ^N",
+          "dynamics": "m u_n″ = κ(u_{n+1} − 2u_n + u_{n−1})",
+          "observables": [
+            "u_n",
+            "u_n′",
+            "dispersion"
+          ],
+          "parameters": [
+            {
+              "name": "m",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "kappa",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "a",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [
+            "qa"
+          ],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {
+              "qa": {
+                "exponents": {
+                  "a": 0,
+                  "kappa": 0,
+                  "m": 0,
+                  "qa": 1
+                },
+                "formula": "qa"
+              }
+            }
+          }
+        },
+        {
+          "id": "model-wave-1d",
+          "family": "oscillators",
+          "stateSpace": "u(x, t), a field on ℝ × ℝ",
+          "dynamics": "u_tt = c² u_xx",
+          "observables": [
+            "u",
+            "u_t",
+            "dispersion"
+          ],
+          "parameters": [
+            {
+              "name": "c",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [
+            "CE-wave-speed"
+          ],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-cubic-spring",
+          "family": "oscillators",
+          "stateSpace": "(x, x′) ∈ ℝ²",
+          "dynamics": "m x″ + k x + β x³ = 0",
+          "observables": [
+            "x",
+            "x′",
+            "amplitude-dependent period"
+          ],
+          "parameters": [
+            {
+              "name": "m",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "k",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "beta",
+              "dim": {
+                "L": -2,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "x0",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {
+              "k · beta^-1 · x0^-2": {
+                "exponents": {
+                  "beta": -1,
+                  "k": 1,
+                  "m": 0,
+                  "x0": -2
+                },
+                "formula": "k · beta^-1 · x0^-2"
+              }
+            }
+          }
+        },
+        {
+          "id": "model-first-order",
+          "family": "oscillators",
+          "stateSpace": "x ∈ ℝ",
+          "dynamics": "b x′ + k x = 0",
+          "observables": [
+            "x"
+          ],
+          "parameters": [
+            {
+              "name": "b",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "k",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        }
+      ],
+      "bridges": [
+        {
+          "id": "ab-spring-lc",
+          "relation": "exact-equivalence",
+          "premises": [
+            "model-spring"
+          ],
+          "conclusion": "model-lc",
+          "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+          "inverse": "x = x0 u, t = τ/ω0",
+          "preserves": [
+            "natural frequency",
+            "energy up to scale",
+            "phase portrait"
+          ],
+          "doesNotPreserve": [
+            "physical interpretation",
+            "units"
+          ],
+          "sideConditions": [
+            "m, k, L, C > 0",
+            "lossless",
+            "unforced",
+            "x0, q0 nonzero"
+          ],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {
+              "m · k^-1 · L^-1 · C^-1": {
+                "exponents": {
+                  "C": -1,
+                  "L": -1,
+                  "k": -1,
+                  "m": 1
+                },
+                "formula": "m · k^-1 · L^-1 · C^-1"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "adding R to bridge 1 breaks it: the same L, C with R = 4 has ζ_RLC = 0.5, which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π",
+              "witness": "W2b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "W1",
+              "kind": "symbolic",
+              "test": "tests/atlas/oscillators-exact.test.ts",
+              "tolerance": "exact — rational exponent arithmetic, no floating point"
+            },
+            {
+              "id": "W1a",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-exact.test.ts",
+              "tolerance": "|u_spring − u_lc| < 1e-8; each within 1e-8 of cos τ"
+            },
+            {
+              "id": "W1b",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-exact.test.ts",
+              "tolerance": "round-trip within 1e-12"
+            },
+            {
+              "id": "W2b",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-exact.test.ts",
+              "tolerance": "separation > 1e-2 at τ = π"
+            },
+            {
+              "id": "W1s",
+              "kind": "symbolic",
+              "test": "tests/atlas/witness-results.test.ts",
+              "tolerance": "CAS: k/m under m ↔ L, k ↔ 1/C minus 1/(LC) simplifies to literal 0"
+            }
+          ],
+          "citations": [
+            "Olson, Dynamical Analogies - the force-voltage (impedance) analogy between a mass-spring–damper and a series RLC circuit",
+            "Feynman, Lectures on Physics Vol. II, chapter on resonance - the LC oscillator and its mechanical counterpart"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-damped-rlc",
+          "relation": "exact-equivalence",
+          "premises": [
+            "model-damped-spring"
+          ],
+          "conclusion": "model-rlc",
+          "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+          "inverse": "x = x0 u, t = τ/ω0",
+          "preserves": [
+            "natural frequency",
+            "damping ratio",
+            "phase portrait"
+          ],
+          "doesNotPreserve": [
+            "physical interpretation",
+            "units"
+          ],
+          "sideConditions": [
+            "b/√(mk) = R√(C/L), equivalently ζ_mech = b/(2√(mk)) equals ζ_RLC = (R/2)√(C/L)",
+            "m, b, k, L, R, C > 0",
+            "unforced",
+            "x0, q0 nonzero"
+          ],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [],
+            "groupDefinitions": {
+              "m · b^-1 · L^-1 · R": {
+                "exponents": {
+                  "C": 0,
+                  "L": -1,
+                  "R": 1,
+                  "b": -1,
+                  "k": 0,
+                  "m": 1
+                },
+                "formula": "m · b^-1 · L^-1 · R"
+              },
+              "m · b^-2 · k": {
+                "exponents": {
+                  "C": 0,
+                  "L": 0,
+                  "R": 0,
+                  "b": -2,
+                  "k": 1,
+                  "m": 1
+                },
+                "formula": "m · b^-2 · k"
+              },
+              "m^2 · b^-2 · L^-1 · C^-1": {
+                "exponents": {
+                  "C": -1,
+                  "L": -1,
+                  "R": 0,
+                  "b": -2,
+                  "k": 0,
+                  "m": 2
+                },
+                "formula": "m^2 · b^-2 · L^-1 · C^-1"
+              }
+            }
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "W2",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-exact.test.ts",
+              "tolerance": "R derived exactly; |u_mech − u_rlc| < 1e-8 at four τ"
+            },
+            {
+              "id": "W2s",
+              "kind": "symbolic",
+              "test": "tests/atlas/witness-results.test.ts",
+              "tolerance": "CAS: b²/(4mk) under m ↔ L, k ↔ 1/C, b ↔ R minus R²C/(4L) simplifies to literal 0"
+            }
+          ],
+          "citations": [
+            "Olson, Dynamical Analogies - the force-voltage (impedance) analogy between a mass-spring–damper and a series RLC circuit",
+            "Feynman, Lectures on Physics Vol. II, chapter on resonance - the LC oscillator and its mechanical counterpart"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-pendulum-linear",
+          "relation": "approximation",
+          "premises": [
+            "model-pendulum"
+          ],
+          "conclusion": "model-spring",
+          "transformation": "sin θ → θ, with x ↔ ℓ θ and ω0² = g/ℓ",
+          "preserves": [
+            "harmonic frequency ω0 to O(θ0²)",
+            "energy conservation",
+            "time-reversal symmetry"
+          ],
+          "doesNotPreserve": [
+            "the amplitude dependence of the period",
+            "phase over times t ≳ 16 T0/θ0²"
+          ],
+          "sideConditions": [
+            "θ0 ≤ 0.5 rad",
+            "the bound is a PERIOD error and is not uniform in time"
+          ],
+          "bound": {
+            "K": 1,
+            "delta": 0.015852531101436806,
+            "norm": "relative period error",
+            "domain": "θ0 ≤ 0.5 rad",
+            "horizon": "t ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time",
+            "parameterRange": "θ0 ≤ 0.5 rad",
+            "limitCharacter": "regular"
+          },
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [
+              {
+                "group": "theta0",
+                "op": "<=",
+                "bound": 0.5,
+                "alias": "θ0 ≤ 0.5 rad"
+              }
+            ],
+            "groupDefinitions": {
+              "theta0": {
+                "exponents": {
+                  "ell": 0,
+                  "g": 0,
+                  "theta0": 1
+                },
+                "formula": "theta0"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "the approximation is non-uniform in time: at θ0 = 0.2 the phase drift reaches π/2 after ~100 cycles, however small the per-cycle error is",
+              "witness": "W7b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported"
+          ],
+          "witnesses": [
+            {
+              "id": "W7",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-limits.test.ts",
+              "tolerance": "T/T0 − 1 ∈ [0.002505, 0.002507]; residual ∈ [5.70e-6, 5.76e-6] at θ0 = 0.2"
+            },
+            {
+              "id": "W7b",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-limits.test.ts",
+              "tolerance": "cycles to π/2 drift ∈ [99, 101] at θ0 = 0.2"
+            },
+            {
+              "id": "W7c",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-limits.test.ts",
+              "tolerance": "RK4 zero-crossing lag within 0.05° of the elliptic prediction 89.98°"
+            }
+          ],
+          "citations": [
+            "Landau & Lifshitz, Mechanics §11 (pendulum period as a complete elliptic integral)",
+            "Abramowitz & Stegun §17.6 (AGM evaluation of K)"
+          ],
+          "reviewStatus": "proposed",
+          "formalRef": {
+            "system": "lean4-physlib",
+            "statement": "ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff: for a smooth lift θ, θ̈ + ω²θ = 0 iff θ solves the equation of motion of toHarmonicOscillator (mass mℓ², spring constant mgℓ); with toHarmonicOscillator_ω, ω = √(g/ℓ)",
+            "version": "physlib@5ad56e24de155462acd8478458292347393d5908 lean4:v4.34.0",
+            "axioms": [
+              "propext",
+              "Classical.choice",
+              "Quot.sound"
+            ],
+            "fidelity": "sanity-lemmas"
+          }
+        },
+        {
+          "id": "ab-damped-massless",
+          "relation": "approximation",
+          "premises": [
+            "model-damped-spring"
+          ],
+          "conclusion": "model-first-order",
+          "transformation": "m → 0, dropping the m x″ term",
+          "preserves": [
+            "the slow relaxation rate k/b to O(m)",
+            "the sign and monotonicity of the decay"
+          ],
+          "doesNotPreserve": [
+            "the order of the system (two → one)",
+            "the initial condition x'(0), which the reduced model cannot satisfy",
+            "the fast mode r ≈ −b/m"
+          ],
+          "sideConditions": [
+            "overdamped: m k / b² < 1/4",
+            "the bound holds only outside the boundary layer, t ≥ 5 m/b"
+          ],
+          "bound": {
+            "K": 1,
+            "delta": 3,
+            "norm": "sup |x − x_reduced| for t ≥ 5 m/b",
+            "domain": "t ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1",
+            "horizon": "t ≥ 5 m/b (outside the boundary layer)",
+            "parameterRange": "m k / b² < 1/4, |v0| ≤ 5; with b = k = 1 this is m < 1/4",
+            "limitCharacter": "singular"
+          },
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [
+              {
+                "group": "m · b^-2 · k",
+                "op": "<",
+                "bound": 0.25,
+                "alias": "ζ > 1"
+              }
+            ],
+            "groupDefinitions": {
+              "m · b^-2 · k": {
+                "exponents": {
+                  "b": -2,
+                  "k": 1,
+                  "m": 1
+                },
+                "formula": "m · b^-2 · k"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "inside the boundary layer the reduced model's velocity is wrong by O(1): at t = 0.5 m/b with v0 = 5 the velocity error is 3.6, against x'_red = −1",
+              "witness": "W8b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported"
+          ],
+          "witnesses": [
+            {
+              "id": "W8",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-limits.test.ts",
+              "tolerance": "|r_slow + k/b| < 2m and |r_fast·m + b| < 2m for m ∈ {1e-1, 1e-2, 1e-3}"
+            },
+            {
+              "id": "W8b",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-limits.test.ts",
+              "tolerance": "|x_full − x_red| < 2(1+v0)·m for t ≥ 5 m/b; |x'| error > 1 at 0.5 m/b and < 0.05 at 5 m/b"
+            }
+          ],
+          "citations": [
+            "Kevorkian & Cole, Multiple Scale and Singular Perturbation Methods §2 (Tikhonov's theorem)",
+            "Verhulst, Methods and Applications of Singular Perturbations §8 (boundary layers)"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-chain-wave",
+          "relation": "coarse-graining",
+          "premises": [
+            "model-chain"
+          ],
+          "conclusion": "model-wave-1d",
+          "transformation": "u_n(t) ↦ u(x = n a, t), with c² = κ a² / m",
+          "preserves": [
+            "long-wavelength dispersion ω ≈ c q",
+            "wave speed c = a √(κ/m)",
+            "linearity"
+          ],
+          "doesNotPreserve": [
+            "modes with q > π/a",
+            "the band edge ω_max = 2 √(κ/m) at qa = π",
+            "the discrete lattice spacing a as an independent scale"
+          ],
+          "sideConditions": [
+            "long-wavelength, qa ≪ 1"
+          ],
+          "regime": {
+            "family": "oscillators",
+            "inequalities": [
+              {
+                "group": "qa",
+                "op": "<",
+                "bound": 1,
+                "alias": "qa ≪ 1"
+              }
+            ],
+            "groupDefinitions": {
+              "m · kappa^-1 · a^-2 · c^2": {
+                "exponents": {
+                  "a": -2,
+                  "c": 2,
+                  "kappa": -1,
+                  "m": 1,
+                  "qa": 0
+                },
+                "formula": "m · kappa^-1 · a^-2 · c^2"
+              },
+              "qa": {
+                "exponents": {
+                  "a": 0,
+                  "c": 0,
+                  "kappa": 0,
+                  "m": 0,
+                  "qa": 1
+                },
+                "formula": "qa"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "A mode at the band edge qa = π has ω = 2√(κ/m) on the lattice, while the continuum relation ω = c q is unbounded: the coarse-grained model has no band edge at all.",
+              "witness": "W9"
+            }
+          ],
+          "evidence": [
+            "dimension-checked",
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "W9",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-coarse.test.ts",
+              "tolerance": "relative dispersion error matches (qa)²/24 within 0.5% of itself"
+            }
+          ],
+          "citations": [
+            "Kittel, Introduction to Solid State Physics - Phonons I: the monatomic linear chain, its dispersion relation and the qa << 1 continuum limit",
+            "Ashcroft & Mermin, Solid State Physics - the one-dimensional monatomic Bravais lattice and the first Brillouin zone band edge at qa = pi"
+          ],
+          "reviewStatus": "proposed"
+        }
+      ],
+      "rejections": [
+        {
+          "id": "ax-cubic-spring-lc",
+          "claimedRelation": "exact-equivalence",
+          "premises": [
+            "model-cubic-spring",
+            "model-lc"
+          ],
+          "conclusion": "model-lc",
+          "reason": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity. The LC variable set is dimensionally independent and has no group to match it, so no change of variables can make the two models exactly equivalent. A nonlinear oscillator cannot be an exact image of a linear one.",
+          "survivingGroup": "β x0² / k",
+          "counterexample": {
+            "description": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity. The LC variable set is dimensionally independent and has no group to match it, so no change of variables can make the two models exactly equivalent. A nonlinear oscillator cannot be an exact image of a linear one."
+          },
+          "witnesses": [
+            {
+              "id": "W3",
+              "kind": "symbolic",
+              "test": "tests/atlas/oscillators-coarse.test.ts",
+              "tolerance": "exact integer π-group exponents; LC verdict dimensionally-independent"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "$schema": "../schemas/atlas-record.v0.json",
+      "schemaVersion": "0",
+      "family": "diffusion",
+      "models": [
+        {
+          "id": "model-random-walk",
+          "family": "diffusion",
+          "stateSpace": "P(n, k): probability at lattice site n ∈ ℤ after k ∈ ℕ steps",
+          "dynamics": "P(n, k+1) = ½ P(n−1, k) + ½ P(n+1, k), sites Δx apart, steps Δt apart",
+          "observables": [
+            "P(n, k)",
+            "mean-square displacement ⟨x²⟩"
+          ],
+          "parameters": [
+            {
+              "name": "dx",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "dt",
+              "dim": {
+                "L": 0,
+                "M": 0,
+                "T": 1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-fick",
+          "family": "diffusion",
+          "stateSpace": "c(x, t), x ∈ ℝ",
+          "dynamics": "∂c/∂t = D ∂²c/∂x² (Fick’s second law)",
+          "observables": [
+            "c(x, t)",
+            "total amount ∫c dx",
+            "variance of c"
+          ],
+          "parameters": [
+            {
+              "name": "D",
+              "dim": {
+                "L": 2,
+                "M": 0,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "ell",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-heat",
+          "family": "diffusion",
+          "stateSpace": "T(x, t), x ∈ ℝ",
+          "dynamics": "ρ c_p ∂T/∂t = κ ∂²T/∂x²",
+          "observables": [
+            "T(x, t)",
+            "heat content ∫ρ c_p T dx"
+          ],
+          "parameters": [
+            {
+              "name": "kappa",
+              "dim": {
+                "L": 1,
+                "M": 1,
+                "T": -3,
+                "I": 0,
+                "Theta": -1,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "rho",
+              "dim": {
+                "L": -3,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "cp",
+              "dim": {
+                "L": 2,
+                "M": 0,
+                "T": -2,
+                "I": 0,
+                "Theta": -1,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "ell",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [
+            "CE-thermal-diffusivity"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-schrodinger-free",
+          "family": "diffusion",
+          "stateSpace": "ψ(x, t) ∈ ℂ, x ∈ ℝ",
+          "dynamics": "i ħ ∂ψ/∂t = −(ħ²/2m) ∂²ψ/∂x²",
+          "observables": [
+            "|ψ|²",
+            "position spread σx"
+          ],
+          "parameters": [
+            {
+              "name": "hbar",
+              "dim": {
+                "L": 2,
+                "M": 1,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "m",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-langevin",
+          "family": "diffusion",
+          "stateSpace": "(x, v)(t), a Brownian particle",
+          "dynamics": "m v̇ = −γ v + ξ(t), ⟨ξ(t)ξ(t′)⟩ = 2γ k_B T δ(t − t′), ẋ = v",
+          "observables": [
+            "⟨x²⟩(t)",
+            "⟨v²⟩ = k_B T/m"
+          ],
+          "parameters": [
+            {
+              "name": "m",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "gamma",
+              "dim": {
+                "L": 0,
+                "M": 1,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "kT",
+              "dim": {
+                "L": 2,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-stokes-drag",
+          "family": "diffusion",
+          "stateSpace": "a sphere of radius a moving at speed v through a viscous fluid",
+          "dynamics": "F = −6π η a v (creeping flow, Re ≪ 1)",
+          "observables": [
+            "drag force F",
+            "friction coefficient γ = 6πηa"
+          ],
+          "parameters": [
+            {
+              "name": "eta",
+              "dim": {
+                "L": -1,
+                "M": 1,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "a",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [
+            "CE-stokes-drag"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-telegraph",
+          "family": "diffusion",
+          "stateSpace": "u(x, t), x ∈ ℝ",
+          "dynamics": "τ u_tt + u_t = D u_xx (Cattaneo: diffusion with a relaxation time)",
+          "observables": [
+            "u(x, t)",
+            "mode decay rates",
+            "signal speed √(D/τ)"
+          ],
+          "parameters": [
+            {
+              "name": "tau",
+              "dim": {
+                "L": 0,
+                "M": 0,
+                "T": 1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "D",
+              "dim": {
+                "L": 2,
+                "M": 0,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-laplace-1d",
+          "family": "diffusion",
+          "stateSpace": "T(x) on [0, ℓ] with fixed end values",
+          "dynamics": "T_xx = 0, so T is linear between T(0) and T(ℓ)",
+          "observables": [
+            "T(x)",
+            "steady heat flux"
+          ],
+          "parameters": [
+            {
+              "name": "ell",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        }
+      ],
+      "bridges": [
+        {
+          "id": "ab-walk-diffusion",
+          "relation": "coarse-graining",
+          "premises": [
+            "model-random-walk"
+          ],
+          "conclusion": "model-fick",
+          "transformation": "P(n, k)/(2Δx) ↦ c(x = nΔx, t = kΔt), with the closure D = Δx²/(2Δt)",
+          "preserves": [
+            "mean-square displacement ⟨x²⟩ = 2Dt, exactly at every step",
+            "total probability",
+            "the Gaussian long-time profile"
+          ],
+          "doesNotPreserve": [
+            "the lattice spacing Δx and the step Δt as independent scales — only Δx²/Δt survives",
+            "parity: after an even number of steps only even sites are occupied",
+            "the finite propagation speed Δx/Δt: diffusion is positive everywhere at once"
+          ],
+          "sideConditions": [
+            "the closure D = Δx²/(2Δt) is held fixed as Δx, Δt → 0",
+            "many steps: Δt/t ≪ 1",
+            "symmetric, unbiased steps"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [
+              {
+                "group": "dt · t^-1",
+                "op": "<=",
+                "bound": 0.01,
+                "alias": "Δt/t ≪ 1 (machine form ≤ 0.01, the coarse resolution WD1 measures)"
+              }
+            ],
+            "groupDefinitions": {
+              "dt · t^-1": {
+                "exponents": {
+                  "D": 0,
+                  "dt": 1,
+                  "dx": 0,
+                  "t": -1
+                },
+                "formula": "dt · t^-1"
+              },
+              "dx^2 · dt^-1 · D^-1": {
+                "exponents": {
+                  "D": -1,
+                  "dt": -1,
+                  "dx": 2,
+                  "t": 0
+                },
+                "formula": "dx^2 · dt^-1 · D^-1"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "After 100 steps the walker cannot be more than 100 sites from the origin, so its density at site 101 is exactly 0, while the diffusion kernel there is positive: the coarse-grained model has no light cone.",
+              "witness": "WD1b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WD1",
+              "kind": "numeric",
+              "test": "tests/atlas/diffusion.test.ts",
+              "tolerance": "density at the origin within 1e-4 of (4πDt)^-1/2 at 1000 steps; error shrinks with refinement"
+            },
+            {
+              "id": "WD1b",
+              "kind": "numeric",
+              "test": "tests/atlas/diffusion.test.ts",
+              "tolerance": "walk density exactly 0 beyond the light cone while the kernel is > 0"
+            }
+          ],
+          "citations": [
+            "Einstein, Ann. Phys. 17 (1905) 549 - Brownian motion; the mean-square displacement grows as 2Dt",
+            "Feller, An Introduction to Probability Theory and Its Applications, Vol. I - the symmetric random walk and the de Moivre-Laplace limit"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-heat-diffusion",
+          "relation": "exact-equivalence",
+          "premises": [
+            "model-heat"
+          ],
+          "conclusion": "model-fick",
+          "transformation": "T ↦ c, κ/(ρ c_p) ↦ D",
+          "inverse": "c ↦ T, D ↦ κ/(ρ c_p) (any κ, ρ, c_p with that ratio)",
+          "preserves": [
+            "the solution operator: equal initial data give equal solutions at every t",
+            "Fourier-mode decay rates D q²",
+            "the Fourier number D t/ℓ²"
+          ],
+          "doesNotPreserve": [
+            "physical interpretation: temperature versus concentration",
+            "units",
+            "the separate values of κ, ρ and c_p — only their ratio survives"
+          ],
+          "sideConditions": [
+            "homogeneous isotropic medium: κ, ρ, c_p constant",
+            "no sources and no advection (the Péclet number is not applicable to either model)"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {
+              "kappa · rho^-1 · cp^-1 · D^-1": {
+                "exponents": {
+                  "D": -1,
+                  "cp": -1,
+                  "ell": 0,
+                  "kappa": 1,
+                  "rho": -1,
+                  "t": 0
+                },
+                "formula": "kappa · rho^-1 · cp^-1 · D^-1"
+              },
+              "kappa · rho^-1 · cp^-1 · ell^-2 · t": {
+                "exponents": {
+                  "D": 0,
+                  "cp": -1,
+                  "ell": -2,
+                  "kappa": 1,
+                  "rho": -1,
+                  "t": 1
+                },
+                "formula": "kappa · rho^-1 · cp^-1 · ell^-2 · t"
+              }
+            }
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WD2",
+              "kind": "numeric",
+              "test": "tests/atlas/diffusion.test.ts",
+              "tolerance": "FTCS heat solution at x = 0 within 5e-4 of the Fick solution with D = κ/(ρ c_p) at 160 cells"
+            },
+            {
+              "id": "WD2s",
+              "kind": "symbolic",
+              "test": "tests/atlas/witness-results.test.ts",
+              "tolerance": "CAS: κq²/(ρ c_p) under κ ↦ D ρ c_p minus D q² simplifies to literal 0"
+            }
+          ],
+          "citations": [
+            "Carslaw & Jaeger, Conduction of Heat in Solids - the heat equation and the thermal diffusivity κ/(ρ c_p)",
+            "Crank, The Mathematics of Diffusion - Fick’s second law and its identity with the heat-conduction equation"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-schrodinger-diffusion",
+          "relation": "analytic-continuation",
+          "premises": [
+            "model-schrodinger-free"
+          ],
+          "conclusion": "model-fick",
+          "transformation": "t = −iτ: ψ(x, −iτ) ↦ c(x, τ), with D = ħ/(2m)",
+          "preserves": [
+            "linearity",
+            "the Gaussian kernel structure, with a spread growing linearly in time"
+          ],
+          "doesNotPreserve": [
+            "unitarity: ∫|ψ|² dx is conserved, ∫φ² dx decays",
+            "oscillation and phase: the oscillating propagator becomes a decaying Gaussian",
+            "time-reversal symmetry: diffusion is irreversible"
+          ],
+          "sideConditions": [
+            "V = 0 (free particle)",
+            "the continuation is formal: real Schrödinger time maps to imaginary diffusion time"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {
+              "hbar · m^-1 · D^-1": {
+                "exponents": {
+                  "D": -1,
+                  "hbar": 1,
+                  "m": -1
+                },
+                "formula": "hbar · m^-1 · D^-1"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "The squared norm of the Wick-rotated kernel falls from 1.755 at τ = 0 to 0.580 at τ = 4 (ħ = 1, m = 0.5, s = 0.7), where the Schrödinger norm would be conserved.",
+              "witness": "WD3b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "W5",
+              "kind": "numeric",
+              "test": "tests/atlas/quantum-support.test.ts",
+              "tolerance": "coefficients ħ/2m, −1, 1/ħ; free-kernel sup-norm residual ratio of ∂τφ = (ħ/2m)∂²φ below 1e-4"
+            },
+            {
+              "id": "WD3",
+              "kind": "numeric",
+              "test": "tests/atlas/diffusion.test.ts",
+              "tolerance": "finite-difference residual of ∂τφ = (ħ/2m)∂²φ below 1e-3 at h = 0.025"
+            },
+            {
+              "id": "WD3b",
+              "kind": "numeric",
+              "test": "tests/atlas/diffusion.test.ts",
+              "tolerance": "∫φ² dx matches s²√(2π/σ(τ)) within 1e-9 and decreases in τ"
+            }
+          ],
+          "citations": [
+            "Feynman & Hibbs, Quantum Mechanics and Path Integrals - the free-particle kernel and its imaginary-time form",
+            "Nelson, J. Math. Phys. 5 (1964) 332 - Feynman integrals and the Schrödinger equation (the analytic continuation to the heat kernel)"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-langevin-diffusion",
+          "relation": "coarse-graining",
+          "premises": [
+            "model-langevin"
+          ],
+          "conclusion": "model-fick",
+          "transformation": "average over times t ≫ τ_p = m/γ: ⟨x²⟩ → 2Dt with D = k_B T/γ (Einstein)",
+          "preserves": [
+            "the long-time mean-square displacement",
+            "the equilibrium velocity variance k_B T/m"
+          ],
+          "doesNotPreserve": [
+            "the velocity as a state variable",
+            "the ballistic regime t ≲ τ_p, where ⟨x²⟩ ≈ (k_B T/m) t²",
+            "the momentum relaxation time τ_p as an independent scale"
+          ],
+          "sideConditions": [
+            "overdamped observation times: τ_p/t ≪ 1",
+            "white thermal noise, fluctuation–dissipation 2γk_BT"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [
+              {
+                "group": "m · gamma^-1 · t^-1",
+                "op": "<=",
+                "bound": 0.01,
+                "alias": "τ_p/t ≪ 1 (machine form ≤ 0.01)"
+              }
+            ],
+            "groupDefinitions": {
+              "gamma · kT^-1 · D": {
+                "exponents": {
+                  "D": 1,
+                  "gamma": 1,
+                  "kT": -1,
+                  "m": 0,
+                  "t": 0
+                },
+                "formula": "gamma · kT^-1 · D"
+              },
+              "m · gamma^-1 · t^-1": {
+                "exponents": {
+                  "D": 0,
+                  "gamma": -1,
+                  "kT": 0,
+                  "m": 1,
+                  "t": -1
+                },
+                "formula": "m · gamma^-1 · t^-1"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "At t = 0.1 τ_p the Langevin mean-square displacement is 0.048 of 2Dt: the particle is still ballistic, ⟨x²⟩ ≈ (k_BT/m)t², and the diffusion model does not describe it.",
+              "witness": "WD4b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WD4",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "⟨x²⟩/(2Dt) within 0.02 of 1 at t = 100 τ_p, from the Langevin moment equations by RK4"
+            },
+            {
+              "id": "WD4b",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "⟨x²⟩/(2Dt) = 0.0484 at t = 0.1 τ_p"
+            }
+          ],
+          "citations": [
+            "Uhlenbeck & Ornstein, Phys. Rev. 36 (1930) 823 - On the theory of the Brownian motion",
+            "Einstein, Ann. Phys. 17 (1905) 549 - the relation D = k_B T/γ"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-stokes-einstein",
+          "relation": "derivation",
+          "premises": [
+            "model-langevin",
+            "model-stokes-drag"
+          ],
+          "conclusion": "model-fick",
+          "transformation": "substitute γ = 6πηa into D = k_B T/γ: D = k_B T/(6πηa)",
+          "preserves": [
+            "the long-time diffusion coefficient of a sphere"
+          ],
+          "doesNotPreserve": [
+            "the particle mass (it drops out)",
+            "the shape beyond the radius a"
+          ],
+          "sideConditions": [
+            "creeping flow around the sphere, Re ≪ 1",
+            "no-slip boundary",
+            "overdamped times t ≫ m/γ"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [],
+            "groupDefinitions": {
+              "gamma · eta^-1 · a^-1": {
+                "exponents": {
+                  "D": 0,
+                  "a": -1,
+                  "eta": -1,
+                  "gamma": 1,
+                  "kT": 0
+                },
+                "formula": "gamma · eta^-1 · a^-1"
+              },
+              "kT · gamma^-1 · D^-1": {
+                "exponents": {
+                  "D": -1,
+                  "a": 0,
+                  "eta": 0,
+                  "gamma": -1,
+                  "kT": 1
+                },
+                "formula": "kT · gamma^-1 · D^-1"
+              }
+            }
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WD5",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "agrees with CE-stokes-einstein to 1e-12 relative; a 1 µm sphere in water at 20 °C gives D = 4.29e-13 m²/s"
+            },
+            {
+              "id": "WD5s",
+              "kind": "symbolic",
+              "test": "tests/atlas/witness-results.test.ts",
+              "tolerance": "CAS: k_BT/γ under γ ↦ 6πηa minus k_BT/(6πηa) simplifies to literal 0"
+            }
+          ],
+          "citations": [
+            "Einstein, Ann. Phys. 17 (1905) 549 - Brownian motion of a sphere, D = k_B T/(6πηa)",
+            "Stokes, Trans. Camb. Phil. Soc. 9 (1851) 8 - the drag on a sphere in creeping flow"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-telegraph-diffusion",
+          "relation": "approximation",
+          "premises": [
+            "model-telegraph"
+          ],
+          "conclusion": "model-fick",
+          "transformation": "drop τ u_tt: the slow mode decays at Dq²(1 + ε + 2ε² + …) → Dq², ε = τDq²",
+          "preserves": [
+            "the slow decay rate of each Fourier mode to O(ε)",
+            "the total amount ∫u dx"
+          ],
+          "doesNotPreserve": [
+            "the finite signal speed √(D/τ)",
+            "the second initial condition u_t(x, 0)",
+            "oscillatory modes, which exist for ε > 1/4"
+          ],
+          "sideConditions": [
+            "ε = τDq² ≤ 0.05",
+            "after the initial layer: t ≫ τ"
+          ],
+          "bound": {
+            "K": 1,
+            "delta": 0.055728090000841446,
+            "norm": "relative error of the slow-mode decay rate of a Fourier mode",
+            "domain": "ε = τDq² ≤ 0.05",
+            "horizon": "τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; machine form 5τ < t < 0.1/(δ D q²)",
+            "parameterRange": "ε = τDq² ≤ 0.05",
+            "limitCharacter": "singular"
+          },
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [
+              {
+                "group": "tau · D · q^2",
+                "op": "<=",
+                "bound": 0.05,
+                "alias": "ε = τDq² ≤ 0.05"
+              }
+            ],
+            "groupDefinitions": {
+              "tau · D · q^2": {
+                "exponents": {
+                  "D": 1,
+                  "q": 2,
+                  "tau": 1
+                },
+                "formula": "tau · D · q^2"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "At ε = τDq² = 1 the telegraph mode is OSCILLATORY (complex rate, NaN on the slow branch): no diffusion mode oscillates.",
+              "witness": "WD6b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WD6",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "slow rate / Dq² within 0.03 of 1 at τ = 0.025 (D = q = 1); error halves with τ"
+            },
+            {
+              "id": "WD6b",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "no real slow rate at ε = 1"
+            }
+          ],
+          "citations": [
+            "Cattaneo, Atti Sem. Mat. Fis. Univ. Modena 3 (1948) 83 - heat conduction with a relaxation time",
+            "Goldstein, Q. J. Mech. Appl. Math. 4 (1951) 129 - On diffusion by discontinuous movements, and on the telegraph equation"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-telegraph-wave",
+          "relation": "approximation",
+          "premises": [
+            "model-telegraph"
+          ],
+          "conclusion": "model-wave-1d",
+          "transformation": "drop u_t: τ u_tt = D u_xx, a wave with c² = D/τ",
+          "preserves": [
+            "the signal speed √(D/τ)",
+            "the oscillation frequency to O(1/ε)"
+          ],
+          "doesNotPreserve": [
+            "damping: telegraph modes decay as e^{−t/(2τ)}",
+            "relaxation to diffusion at long times"
+          ],
+          "sideConditions": [
+            "ε = τDq² ≥ 25",
+            "short times t ≪ τ (the bound is not uniform in time)"
+          ],
+          "bound": {
+            "K": 1,
+            "delta": 0.005012562893380035,
+            "norm": "relative error of the oscillation frequency of a Fourier mode",
+            "domain": "ε = τDq² ≥ 25",
+            "horizon": "t ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)",
+            "parameterRange": "ε = τDq² ≥ 25",
+            "limitCharacter": "regular"
+          },
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [
+              {
+                "group": "tau · D · q^2",
+                "op": ">=",
+                "bound": 25,
+                "alias": "ε = τDq² ≥ 25"
+              }
+            ],
+            "groupDefinitions": {
+              "tau · D · q^2": {
+                "exponents": {
+                  "D": 1,
+                  "c": 0,
+                  "q": 2,
+                  "tau": 1
+                },
+                "formula": "tau · D · q^2"
+              },
+              "tau · D^-1 · c^2": {
+                "exponents": {
+                  "D": -1,
+                  "c": 2,
+                  "q": 0,
+                  "tau": 1
+                },
+                "formula": "tau · D^-1 · c^2"
+              }
+            }
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WD7",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "frequency ratio within 3e-3 of 1 at ε = 50; error halves as ε doubles"
+            }
+          ],
+          "citations": [
+            "Goldstein, Q. J. Mech. Appl. Math. 4 (1951) 129 - On diffusion by discontinuous movements, and on the telegraph equation"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-heat-laplace",
+          "relation": "restriction",
+          "premises": [
+            "model-heat"
+          ],
+          "conclusion": "model-laplace-1d",
+          "transformation": "∂T/∂t = 0: κ T_xx = 0, T linear between the end temperatures",
+          "preserves": [
+            "the end temperatures",
+            "the steady heat flux κ(T_b − T_a)/ℓ"
+          ],
+          "doesNotPreserve": [
+            "the transient",
+            "ρ and c_p, which drop out of the steady state"
+          ],
+          "sideConditions": [
+            "fixed end temperatures",
+            "Fourier number αt/ℓ² ≥ 1 (transients decayed)"
+          ],
+          "regime": {
+            "family": "diffusion",
+            "inequalities": [
+              {
+                "group": "kappa · rho^-1 · cp^-1 · ell^-2 · t",
+                "op": ">=",
+                "bound": 1,
+                "alias": "Fo = αt/ℓ² ≥ 1"
+              }
+            ],
+            "groupDefinitions": {
+              "kappa · rho^-1 · cp^-1 · ell^-2 · t": {
+                "exponents": {
+                  "cp": -1,
+                  "ell": -2,
+                  "kappa": 1,
+                  "rho": -1,
+                  "t": 1
+                },
+                "formula": "kappa · rho^-1 · cp^-1 · ell^-2 · t"
+              }
+            }
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WD8",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "max deviation from the linear profile below 0.025 at αt/ℓ² = 0.4; shrinks with time"
+            }
+          ],
+          "citations": [
+            "Carslaw & Jaeger, Conduction of Heat in Solids - steady linear flow in a slab"
+          ],
+          "reviewStatus": "proposed"
+        }
+      ],
+      "rejections": []
+    },
+    {
+      "$schema": "../schemas/atlas-record.v0.json",
+      "schemaVersion": "0",
+      "family": "waves",
+      "models": [
+        {
+          "id": "model-string",
+          "family": "waves",
+          "stateSpace": "y(x, t), transverse displacement of a string on [0, ℓ]",
+          "dynamics": "μ y_tt = F y_xx (small slopes, |y_x| ≪ 1)",
+          "observables": [
+            "y",
+            "y_t",
+            "normal-mode frequencies"
+          ],
+          "parameters": [
+            {
+              "name": "F",
+              "dim": {
+                "L": 1,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "mu",
+              "dim": {
+                "L": -1,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [
+            "CE-string-wave-speed"
+          ],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-dalembert",
+          "family": "waves",
+          "stateSpace": "u(x, t) = f(x − ct) + g(x + ct), f and g twice differentiable",
+          "dynamics": "two profiles translating rigidly at ±c",
+          "observables": [
+            "u",
+            "the two travelling profiles"
+          ],
+          "parameters": [
+            {
+              "name": "c",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-euler-linear",
+          "family": "waves",
+          "stateSpace": "(ρ′, v)(x, t), small perturbations of a fluid at rest",
+          "dynamics": "∂ρ′/∂t = −ρ₀ ∂v/∂x,  ρ₀ ∂v/∂t = −∂p′/∂x",
+          "observables": [
+            "ρ′",
+            "v",
+            "p′"
+          ],
+          "parameters": [
+            {
+              "name": "rho0",
+              "dim": {
+                "L": -3,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "p0",
+              "dim": {
+                "L": -1,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-adiabatic-eos",
+          "family": "waves",
+          "stateSpace": "p(ρ), a barotropic closure",
+          "dynamics": "p = p₀ (ρ/ρ₀)^γ",
+          "observables": [
+            "p",
+            "dp/dρ"
+          ],
+          "parameters": [
+            {
+              "name": "rho0",
+              "dim": {
+                "L": -3,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "p0",
+              "dim": {
+                "L": -1,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [
+            "gamma"
+          ],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {
+              "gamma": {
+                "exponents": {
+                  "gamma": 1,
+                  "p0": 0,
+                  "rho0": 0
+                },
+                "formula": "gamma"
+              }
+            }
+          }
+        },
+        {
+          "id": "model-sound",
+          "family": "waves",
+          "stateSpace": "p′(x, t), the acoustic pressure",
+          "dynamics": "p′_tt = c_s² p′_xx with c_s² = γ p₀/ρ₀",
+          "observables": [
+            "p′",
+            "sound speed c_s"
+          ],
+          "parameters": [
+            {
+              "name": "rho0",
+              "dim": {
+                "L": -3,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "p0",
+              "dim": {
+                "L": -1,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [
+            "gamma"
+          ],
+          "canonicalRefs": [
+            "CE-sound-speed"
+          ],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {
+              "gamma": {
+                "exponents": {
+                  "gamma": 1,
+                  "p0": 0,
+                  "rho0": 0
+                },
+                "formula": "gamma"
+              }
+            }
+          }
+        },
+        {
+          "id": "model-klein-gordon",
+          "family": "waves",
+          "stateSpace": "u(x, t), a field on ℝ × ℝ",
+          "dynamics": "u_tt = c² u_xx − ω₀² u (dispersive: ω² = c²k² + ω₀²)",
+          "observables": [
+            "u",
+            "dispersion ω(k)",
+            "phase velocity"
+          ],
+          "parameters": [
+            {
+              "name": "c",
+              "dim": {
+                "L": 1,
+                "M": 0,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "omega0",
+              "dim": {
+                "L": 0,
+                "M": 0,
+                "T": -1,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        },
+        {
+          "id": "model-stiff-string",
+          "family": "waves",
+          "stateSpace": "y(x, t), transverse displacement of a string with bending stiffness",
+          "dynamics": "μ y_tt = F y_xx − EI y_xxxx (dispersive: ω² = (F/μ)k² + (EI/μ)k⁴)",
+          "observables": [
+            "y",
+            "partial frequencies (inharmonicity)"
+          ],
+          "parameters": [
+            {
+              "name": "F",
+              "dim": {
+                "L": 1,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "mu",
+              "dim": {
+                "L": -1,
+                "M": 1,
+                "T": 0,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            },
+            {
+              "name": "EI",
+              "dim": {
+                "L": 3,
+                "M": 1,
+                "T": -2,
+                "I": 0,
+                "Theta": 0,
+                "N": 0,
+                "J": 0
+              }
+            }
+          ],
+          "dimensionlessInputs": [],
+          "canonicalRefs": [],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {}
+          }
+        }
+      ],
+      "bridges": [
+        {
+          "id": "ab-string-wave",
+          "relation": "restriction",
+          "premises": [
+            "model-string"
+          ],
+          "conclusion": "model-wave-1d",
+          "transformation": "y ↦ u, with c² = F/μ",
+          "preserves": [
+            "the solution operator for small slopes",
+            "normal-mode frequencies nπc/ℓ"
+          ],
+          "doesNotPreserve": [
+            "the separate values of F and μ — only F/μ survives",
+            "the transverse geometry: the wave equation does not know u is a displacement"
+          ],
+          "sideConditions": [
+            "small slopes |y_x| ≪ 1",
+            "uniform tension and density",
+            "perfectly flexible"
+          ],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {
+              "F · mu^-1 · c^-2": {
+                "exponents": {
+                  "F": 1,
+                  "c": -2,
+                  "mu": -1
+                },
+                "formula": "F · mu^-1 · c^-2"
+              }
+            }
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WS1",
+              "kind": "numeric",
+              "test": "tests/atlas/waves.test.ts",
+              "tolerance": "leapfrog string solution at the midpoint within 2e-4 of sin(πx)cos(πct), c = √(F/μ), at 80 cells"
+            }
+          ],
+          "citations": [
+            "Morse & Ingard, Theoretical Acoustics - the flexible string and its wave equation with c² = T/ρ"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-wave-dalembert",
+          "relation": "derivation",
+          "premises": [
+            "model-wave-1d"
+          ],
+          "conclusion": "model-dalembert",
+          "transformation": "characteristics ξ = x − ct, η = x + ct turn u_tt = c²u_xx into u_ξη = 0",
+          "preserves": [
+            "every C² solution on the whole line",
+            "the speed c"
+          ],
+          "doesNotPreserve": [
+            "boundary conditions: on a bounded domain f and g are fixed only up to reflections"
+          ],
+          "sideConditions": [
+            "infinite line, or boundaries handled by the method of images",
+            "u ∈ C²"
+          ],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {}
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WS2",
+              "kind": "numeric",
+              "test": "tests/atlas/waves.test.ts",
+              "tolerance": "finite-difference residual |u_tt − c²u_xx| below 2e-3 at h = 0.0125"
+            }
+          ],
+          "citations": [
+            "d'Alembert, Recherches sur la courbe que forme une corde tendue mise en vibration (1747)",
+            "Strauss, Partial Differential Equations: An Introduction - §2.1, the wave equation on the line"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-sound-speed",
+          "relation": "derivation",
+          "premises": [
+            "model-euler-linear",
+            "model-adiabatic-eos"
+          ],
+          "conclusion": "model-sound",
+          "transformation": "close the Euler pair with p′ = (dp/dρ)|ρ₀ ρ′ = (γp₀/ρ₀) ρ′, then eliminate v: p′_tt = (γp₀/ρ₀) p′_xx",
+          "preserves": [
+            "linearity",
+            "the sound speed c_s² = γp₀/ρ₀"
+          ],
+          "doesNotPreserve": [
+            "nonlinear steepening and shocks at finite amplitude",
+            "viscous and thermal attenuation"
+          ],
+          "sideConditions": [
+            "small perturbations: |p′| ≪ p₀",
+            "adiabatic compression (no heat exchange within a wavelength)",
+            "fluid at rest, no ambient flow"
+          ],
+          "regime": {
+            "family": "waves",
+            "inequalities": [
+              {
+                "group": "p0 · p1^-1",
+                "op": ">=",
+                "bound": 100,
+                "alias": "|p′| ≪ p₀ (machine form p₀/p₁ ≥ 100)"
+              }
+            ],
+            "groupDefinitions": {
+              "gamma": {
+                "exponents": {
+                  "c": 0,
+                  "gamma": 1,
+                  "p0": 0,
+                  "p1": 0,
+                  "rho0": 0
+                },
+                "formula": "gamma"
+              },
+              "p0 · p1^-1": {
+                "exponents": {
+                  "c": 0,
+                  "gamma": 0,
+                  "p0": 1,
+                  "p1": -1,
+                  "rho0": 0
+                },
+                "formula": "p0 · p1^-1"
+              },
+              "rho0 · p0^-1 · c^2": {
+                "exponents": {
+                  "c": 2,
+                  "gamma": 0,
+                  "p0": -1,
+                  "p1": 0,
+                  "rho0": 1
+                },
+                "formula": "rho0 · p0^-1 · c^2"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "The adiabatic premise is necessary. Closing the same Euler pair ISOTHERMALLY (Newton) gives √(p₀/ρ₀) = 290.1 m/s for air at 20 °C, 15% below the measured ≈343 m/s; the adiabatic closure gives 343.2 m/s.",
+              "witness": "WS3b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WS3",
+              "kind": "numeric",
+              "test": "tests/atlas/waves.test.ts",
+              "tolerance": "staggered Euler + adiabatic-closure solution within 2e-4 of the sound model’s sin(2πx)cos(2πc_s t) at 128 cells"
+            },
+            {
+              "id": "WS3b",
+              "kind": "numeric",
+              "test": "tests/atlas/waves.test.ts",
+              "tolerance": "air, 101325 Pa, 1.204 kg/m³, γ = 1.4: adiabatic 343.25 m/s, isothermal 290.10 m/s"
+            }
+          ],
+          "citations": [
+            "Laplace, Ann. Chim. Phys. 3 (1816) 238 - the adiabatic correction to Newton’s speed of sound",
+            "Landau & Lifshitz, Fluid Mechanics §64 - sound waves from the linearized equations of motion"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-klein-gordon-wave",
+          "relation": "approximation",
+          "premises": [
+            "model-klein-gordon"
+          ],
+          "conclusion": "model-wave-1d",
+          "transformation": "drop the mass term ω₀²u; ω(k) = √(c²k² + ω₀²) → ck",
+          "preserves": [
+            "the wave speed c for short wavelengths",
+            "linearity"
+          ],
+          "doesNotPreserve": [
+            "dispersion: wave packets spread under Klein–Gordon and not under the wave equation",
+            "the gap: Klein–Gordon has no mode below ω₀"
+          ],
+          "sideConditions": [
+            "short wavelengths: ω₀/(ck) ≤ 0.1",
+            "the bound is a PHASE-VELOCITY error, not uniform in time"
+          ],
+          "bound": {
+            "K": 1,
+            "delta": 0.00498756211208895,
+            "norm": "relative phase-velocity error of a Fourier mode",
+            "domain": "ω₀/(c k) ≤ 0.1",
+            "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 c k δ(ω₀, c, k))",
+            "parameterRange": "ω₀/(c k) ≤ 0.1",
+            "limitCharacter": "regular"
+          },
+          "regime": {
+            "family": "waves",
+            "inequalities": [
+              {
+                "group": "c · omega0^-1 · k",
+                "op": ">=",
+                "bound": 10,
+                "alias": "ω₀/(c k) ≤ 0.1"
+              }
+            ],
+            "groupDefinitions": {
+              "c · omega0^-1 · k": {
+                "exponents": {
+                  "c": 1,
+                  "k": 1,
+                  "omega0": -1
+                },
+                "formula": "c · omega0^-1 · k"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "At ω₀/(c k) = 1 the phase velocity is √2 c: a 41% error. The dispersion-free limit is a short-wavelength statement and fails for the long waves the domain excludes.",
+              "witness": "WS4b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WS4",
+              "kind": "numeric",
+              "test": "tests/atlas/waves.test.ts",
+              "tolerance": "phase velocity within 2e-3 of c at k = 20 (ω₀ = c = 1); error falls ≈4× per doubling of k"
+            },
+            {
+              "id": "WS4b",
+              "kind": "numeric",
+              "test": "tests/atlas/waves.test.ts",
+              "tolerance": "relative phase error √2 − 1 at ω₀/(ck) = 1"
+            }
+          ],
+          "citations": [
+            "Whitham, Linear and Nonlinear Waves - §11.1, dispersive waves and the Klein-Gordon equation"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-kg-schrodinger",
+          "relation": "approximation",
+          "premises": [
+            "model-klein-gordon"
+          ],
+          "conclusion": "model-schrodinger-free",
+          "transformation": "u = Re(ψ e^{−iω₀t}) with ψ slowly varying; ħ/m ↦ c²/ω₀: ω − ω₀ = ω₀(√(1 + x²) − 1) → ω₀x²/2, x = ck/ω₀",
+          "preserves": [
+            "the kinetic frequency ħk²/(2m) to O(x²)",
+            "linearity"
+          ],
+          "doesNotPreserve": [
+            "the rest-frequency phase e^{−iω₀t}",
+            "the negative-frequency branch",
+            "relativistic dispersion at x ≳ 1"
+          ],
+          "sideConditions": [
+            "non-relativistic modes: x = ck/ω₀ ≤ 0.1",
+            "the bound is a FREQUENCY error, not uniform in time"
+          ],
+          "bound": {
+            "K": 1,
+            "delta": 0.0024875775822101875,
+            "norm": "relative error of the kinetic frequency ω − ω₀",
+            "domain": "x = ck/ω₀ ≤ 0.1",
+            "horizon": "t ≪ π/(δ ω₀ x²): the kinetic-phase drift reaches π/2; machine form t < π/(δ ω₀ x²)",
+            "parameterRange": "x = ck/ω₀ ≤ 0.1",
+            "limitCharacter": "regular"
+          },
+          "regime": {
+            "family": "waves",
+            "inequalities": [
+              {
+                "group": "c · omega0^-1 · k",
+                "op": "<=",
+                "bound": 0.1,
+                "alias": "ck/ω₀ ≤ 0.1"
+              }
+            ],
+            "groupDefinitions": {
+              "c · omega0^-1 · k": {
+                "exponents": {
+                  "c": 1,
+                  "hbar": 0,
+                  "k": 1,
+                  "m": 0,
+                  "omega0": -1
+                },
+                "formula": "c · omega0^-1 · k"
+              },
+              "c^2 · omega0^-1 · hbar^-1 · m": {
+                "exponents": {
+                  "c": 2,
+                  "hbar": -1,
+                  "k": 0,
+                  "m": 1,
+                  "omega0": -1
+                },
+                "formula": "c^2 · omega0^-1 · hbar^-1 · m"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "At x = ck/ω₀ = 1 the non-relativistic kinetic frequency is 17% too high: the limit is a long-wavelength statement.",
+              "witness": "WS5b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WS5",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "kinetic-frequency error below 1e-3 at x = 0.05; falls ≈4× per halving of x"
+            },
+            {
+              "id": "WS5b",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "relative error 3 − 2√2 = 0.1716 at x = 1"
+            }
+          ],
+          "citations": [
+            "Greiner, Relativistic Quantum Mechanics: Wave Equations - Ch. 1, the Klein-Gordon equation and its non-relativistic limit"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-kg-oscillator",
+          "relation": "restriction",
+          "premises": [
+            "model-klein-gordon"
+          ],
+          "conclusion": "model-spring",
+          "transformation": "u(x, t) = u(t): u_tt = −ω₀² u; u ↦ x, ω₀² ↦ k/m",
+          "preserves": [
+            "the k = 0 mode exactly",
+            "the frequency ω₀"
+          ],
+          "doesNotPreserve": [
+            "every mode with k ≠ 0",
+            "spatial structure"
+          ],
+          "sideConditions": [
+            "spatially uniform initial data",
+            "periodic or infinite domain (no boundary forcing)"
+          ],
+          "regime": {
+            "family": "waves",
+            "inequalities": [],
+            "groupDefinitions": {
+              "omega0^2 · m · k^-1": {
+                "exponents": {
+                  "k": -1,
+                  "m": 1,
+                  "omega0": 2
+                },
+                "formula": "omega0^2 · m · k^-1"
+              }
+            }
+          },
+          "counterexamples": [],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WS6",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "uniform leapfrog field within 3e-4 of cos(ω₀t) at 100 steps (ω₀ = 2, t = 3); ≈4× per halving"
+            }
+          ],
+          "citations": [
+            "Whitham, Linear and Nonlinear Waves - §11.1, dispersive waves and the Klein-Gordon equation"
+          ],
+          "reviewStatus": "proposed"
+        },
+        {
+          "id": "ab-stiff-string",
+          "relation": "approximation",
+          "premises": [
+            "model-stiff-string"
+          ],
+          "conclusion": "model-string",
+          "transformation": "drop EI y_xxxx: ω² = (F/μ)k² + (EI/μ)k⁴ → (F/μ)k²",
+          "preserves": [
+            "the wave speed √(F/μ) for long wavelengths",
+            "harmonic partials to O(β)"
+          ],
+          "doesNotPreserve": [
+            "inharmonicity: high partials of a stiff string are sharp",
+            "the fourth-order boundary conditions"
+          ],
+          "sideConditions": [
+            "β = EIk²/F ≤ 0.01",
+            "the bound is a PHASE-VELOCITY error, not uniform in time"
+          ],
+          "bound": {
+            "K": 1,
+            "delta": 0.00498756211208895,
+            "norm": "relative phase-velocity error of a Fourier mode",
+            "domain": "β = EIk²/F ≤ 0.01",
+            "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 √(F/μ) k δ)",
+            "parameterRange": "β = EIk²/F ≤ 0.01",
+            "limitCharacter": "regular"
+          },
+          "regime": {
+            "family": "waves",
+            "inequalities": [
+              {
+                "group": "F · EI^-1 · k^-2",
+                "op": ">=",
+                "bound": 100,
+                "alias": "β = EIk²/F ≤ 0.01"
+              }
+            ],
+            "groupDefinitions": {
+              "F · EI^-1 · k^-2": {
+                "exponents": {
+                  "EI": -1,
+                  "F": 1,
+                  "k": -2,
+                  "mu": 0
+                },
+                "formula": "F · EI^-1 · k^-2"
+              }
+            }
+          },
+          "counterexamples": [
+            {
+              "description": "The partials of a stiff string are sharp: at β = 1 the phase velocity is √2 times the flexible-string value, the inharmonicity piano tuners stretch octaves to accommodate.",
+              "witness": "WS7b"
+            }
+          ],
+          "evidence": [
+            "numerically-supported",
+            "proposed"
+          ],
+          "witnesses": [
+            {
+              "id": "WS7",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "phase velocity within 0.15 of √(F/μ) = 100 at k = 5 (EI/F = 1e-4); ≈4× per halving of k"
+            },
+            {
+              "id": "WS7b",
+              "kind": "numeric",
+              "test": "tests/atlas/closure.test.ts",
+              "tolerance": "relative phase error √2 − 1 at β = 1"
+            }
+          ],
+          "citations": [
+            "Fletcher, J. Acoust. Soc. Am. 36 (1964) 203 - Normal vibration frequencies of a stiff piano string"
+          ],
+          "reviewStatus": "proposed"
+        }
+      ],
+      "rejections": []
+    }
+  ]
+}

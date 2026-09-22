@@ -10,6 +10,15 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S6.4 — the versioned export.** `bun run atlas:json` now also writes `data/atlas/atlas.json`,
+  every family under one stamp (schema stays v0, since `formalRef` is additive), and
+  `data/atlas/atlas.jsonld`, which has stable URN ids, PROV-O `wasDerivedFrom`, `dcterms:source`
+  citations, and QUDT quantity kinds from the checked-in `data/atlas/qudt-resolution.json`. Every
+  IRI returned HTTP 200, with probe controls of Mass → 200 and a fabricated name → 404. **10 of 54
+  parameters are deliberately blank**, because no same-meaning QUDT kind exists. MassPerTime
+  matches a damping coefficient's dimension but means mass flow. The table is keyed by (model,
+  parameter), because `kappa` means a spring constant in one model and a thermal conductivity in
+  another. The export throws on a parameter with no entry. 10 tests.
 - **S6.3 — link prediction, whose one result does NOT support the hypothesis.**
   `src/atlas/link-prediction.ts` runs leave-one-bridge-out over the 24-model typed graph. The typed
   predictor (common neighbours) is compared with a word-overlap baseline. Over 20 trials, recall@10

@@ -86,6 +86,8 @@ export type {
 
 export { ATLAS_FAMILIES } from './families.js';
 export { runLinkPrediction } from './link-prediction.js';
+export { ATLAS_ID_PREFIX, toAtlasJsonLd, toCombinedAtlasJson } from './export.js';
+export type { QudtResolution } from './export.js';
 export type { LinkPredictionResult, LinkPredictionTrial } from './link-prediction.js';
 export { DIFFUSION_FAMILY } from './diffusion/index.js';
 export {

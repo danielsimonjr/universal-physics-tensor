@@ -1,0 +1,1771 @@
+{
+  "@context": {
+    "upt": "urn:upt:atlas:vocab:",
+    "prov": "http://www.w3.org/ns/prov#",
+    "qudt": "http://qudt.org/schema/qudt/",
+    "dcterms": "http://purl.org/dc/terms/"
+  },
+  "@id": "urn:upt:atlas:release:0.45.2",
+  "upt:qudtProbedAt": "2026-09-22",
+  "@graph": [
+    {
+      "@id": "urn:upt:atlas:model:model-spring",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "m x″ + k x = 0",
+      "upt:parameter": [
+        {
+          "upt:symbol": "m",
+          "upt:dimension": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Mass"
+          }
+        },
+        {
+          "upt:symbol": "k",
+          "upt:dimension": [
+            0,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ],
+      "upt:canonicalRef": [
+        "CE-simple-harmonic-frequency",
+        "CE-spring-potential-energy",
+        "CE-oscillator-energy"
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-lc",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "L q″ + q/C = 0",
+      "upt:parameter": [
+        {
+          "upt:symbol": "L",
+          "upt:dimension": [
+            2,
+            1,
+            -2,
+            -2,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Inductance"
+          }
+        },
+        {
+          "upt:symbol": "C",
+          "upt:dimension": [
+            -2,
+            -1,
+            4,
+            2,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Capacitance"
+          }
+        }
+      ],
+      "upt:canonicalRef": [
+        "CE-lc-resonance"
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-damped-spring",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "m x″ + b x′ + k x = 0",
+      "upt:parameter": [
+        {
+          "upt:symbol": "m",
+          "upt:dimension": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Mass"
+          }
+        },
+        {
+          "upt:symbol": "b",
+          "upt:dimension": [
+            0,
+            1,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "upt:symbol": "k",
+          "upt:dimension": [
+            0,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-rlc",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "L q″ + R q′ + q/C = 0",
+      "upt:parameter": [
+        {
+          "upt:symbol": "L",
+          "upt:dimension": [
+            2,
+            1,
+            -2,
+            -2,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Inductance"
+          }
+        },
+        {
+          "upt:symbol": "R",
+          "upt:dimension": [
+            2,
+            1,
+            -3,
+            -2,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Resistance"
+          }
+        },
+        {
+          "upt:symbol": "C",
+          "upt:dimension": [
+            -2,
+            -1,
+            4,
+            2,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Capacitance"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-pendulum",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "θ″ + (g/ℓ) sin θ = 0",
+      "upt:parameter": [
+        {
+          "upt:symbol": "g",
+          "upt:dimension": [
+            1,
+            0,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Acceleration"
+          }
+        },
+        {
+          "upt:symbol": "ell",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-chain",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "m u_n″ = κ(u_{n+1} − 2u_n + u_{n−1})",
+      "upt:parameter": [
+        {
+          "upt:symbol": "m",
+          "upt:dimension": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Mass"
+          }
+        },
+        {
+          "upt:symbol": "kappa",
+          "upt:dimension": [
+            0,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "upt:symbol": "a",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-wave-1d",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "u_tt = c² u_xx",
+      "upt:parameter": [
+        {
+          "upt:symbol": "c",
+          "upt:dimension": [
+            1,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Speed"
+          }
+        }
+      ],
+      "upt:canonicalRef": [
+        "CE-wave-speed"
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-cubic-spring",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "m x″ + k x + β x³ = 0",
+      "upt:parameter": [
+        {
+          "upt:symbol": "m",
+          "upt:dimension": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Mass"
+          }
+        },
+        {
+          "upt:symbol": "k",
+          "upt:dimension": [
+            0,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "upt:symbol": "beta",
+          "upt:dimension": [
+            -2,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "upt:symbol": "x0",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-first-order",
+      "@type": "upt:Model",
+      "upt:family": "oscillators",
+      "upt:dynamics": "b x′ + k x = 0",
+      "upt:parameter": [
+        {
+          "upt:symbol": "b",
+          "upt:dimension": [
+            0,
+            1,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "upt:symbol": "k",
+          "upt:dimension": [
+            0,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-spring-lc",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "exact-equivalence",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-spring"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-lc"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-spring"
+        }
+      ],
+      "dcterms:source": [
+        "Olson, Dynamical Analogies - the force-voltage (impedance) analogy between a mass-spring–damper and a series RLC circuit",
+        "Feynman, Lectures on Physics Vol. II, chapter on resonance - the LC oscillator and its mechanical counterpart"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "W1",
+          "upt:kind": "symbolic",
+          "upt:test": "tests/atlas/oscillators-exact.test.ts"
+        },
+        {
+          "upt:id": "W1a",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-exact.test.ts"
+        },
+        {
+          "upt:id": "W1b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-exact.test.ts"
+        },
+        {
+          "upt:id": "W2b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-exact.test.ts"
+        },
+        {
+          "upt:id": "W1s",
+          "upt:kind": "symbolic",
+          "upt:test": "tests/atlas/witness-results.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-damped-rlc",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "exact-equivalence",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-damped-spring"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-rlc"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-damped-spring"
+        }
+      ],
+      "dcterms:source": [
+        "Olson, Dynamical Analogies - the force-voltage (impedance) analogy between a mass-spring–damper and a series RLC circuit",
+        "Feynman, Lectures on Physics Vol. II, chapter on resonance - the LC oscillator and its mechanical counterpart"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "W2",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-exact.test.ts"
+        },
+        {
+          "upt:id": "W2s",
+          "upt:kind": "symbolic",
+          "upt:test": "tests/atlas/witness-results.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-pendulum-linear",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "approximation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-pendulum"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-spring"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-pendulum"
+        }
+      ],
+      "dcterms:source": [
+        "Landau & Lifshitz, Mechanics §11 (pendulum period as a complete elliptic integral)",
+        "Abramowitz & Stegun §17.6 (AGM evaluation of K)"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "W7",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-limits.test.ts"
+        },
+        {
+          "upt:id": "W7b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-limits.test.ts"
+        },
+        {
+          "upt:id": "W7c",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-limits.test.ts"
+        }
+      ],
+      "upt:formalRef": {
+        "upt:statement": "ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff: for a smooth lift θ, θ̈ + ω²θ = 0 iff θ solves the equation of motion of toHarmonicOscillator (mass mℓ², spring constant mgℓ); with toHarmonicOscillator_ω, ω = √(g/ℓ)",
+        "upt:fidelity": "sanity-lemmas"
+      }
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-damped-massless",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "approximation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-damped-spring"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-first-order"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-damped-spring"
+        }
+      ],
+      "dcterms:source": [
+        "Kevorkian & Cole, Multiple Scale and Singular Perturbation Methods §2 (Tikhonov's theorem)",
+        "Verhulst, Methods and Applications of Singular Perturbations §8 (boundary layers)"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "W8",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-limits.test.ts"
+        },
+        {
+          "upt:id": "W8b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-limits.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-chain-wave",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "coarse-graining",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-chain"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-wave-1d"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-chain"
+        }
+      ],
+      "dcterms:source": [
+        "Kittel, Introduction to Solid State Physics - Phonons I: the monatomic linear chain, its dispersion relation and the qa << 1 continuum limit",
+        "Ashcroft & Mermin, Solid State Physics - the one-dimensional monatomic Bravais lattice and the first Brillouin zone band edge at qa = pi"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "W9",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-coarse.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-random-walk",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "P(n, k+1) = ½ P(n−1, k) + ½ P(n+1, k), sites Δx apart, steps Δt apart",
+      "upt:parameter": [
+        {
+          "upt:symbol": "dx",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        },
+        {
+          "upt:symbol": "dt",
+          "upt:dimension": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Time"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-fick",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "∂c/∂t = D ∂²c/∂x² (Fick’s second law)",
+      "upt:parameter": [
+        {
+          "upt:symbol": "D",
+          "upt:dimension": [
+            2,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/DiffusionCoefficient"
+          }
+        },
+        {
+          "upt:symbol": "ell",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-heat",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "ρ c_p ∂T/∂t = κ ∂²T/∂x²",
+      "upt:parameter": [
+        {
+          "upt:symbol": "kappa",
+          "upt:dimension": [
+            1,
+            1,
+            -3,
+            0,
+            -1,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/ThermalConductivity"
+          }
+        },
+        {
+          "upt:symbol": "rho",
+          "upt:dimension": [
+            -3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Density"
+          }
+        },
+        {
+          "upt:symbol": "cp",
+          "upt:dimension": [
+            2,
+            0,
+            -2,
+            0,
+            -1,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/SpecificHeatCapacity"
+          }
+        },
+        {
+          "upt:symbol": "ell",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        }
+      ],
+      "upt:canonicalRef": [
+        "CE-thermal-diffusivity"
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-schrodinger-free",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "i ħ ∂ψ/∂t = −(ħ²/2m) ∂²ψ/∂x²",
+      "upt:parameter": [
+        {
+          "upt:symbol": "hbar",
+          "upt:dimension": [
+            2,
+            1,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Action"
+          }
+        },
+        {
+          "upt:symbol": "m",
+          "upt:dimension": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Mass"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-langevin",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "m v̇ = −γ v + ξ(t), ⟨ξ(t)ξ(t′)⟩ = 2γ k_B T δ(t − t′), ẋ = v",
+      "upt:parameter": [
+        {
+          "upt:symbol": "m",
+          "upt:dimension": [
+            0,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Mass"
+          }
+        },
+        {
+          "upt:symbol": "gamma",
+          "upt:dimension": [
+            0,
+            1,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "upt:symbol": "kT",
+          "upt:dimension": [
+            2,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/ThermalEnergy"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-stokes-drag",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "F = −6π η a v (creeping flow, Re ≪ 1)",
+      "upt:parameter": [
+        {
+          "upt:symbol": "eta",
+          "upt:dimension": [
+            -1,
+            1,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/DynamicViscosity"
+          }
+        },
+        {
+          "upt:symbol": "a",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        }
+      ],
+      "upt:canonicalRef": [
+        "CE-stokes-drag"
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-telegraph",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "τ u_tt + u_t = D u_xx (Cattaneo: diffusion with a relaxation time)",
+      "upt:parameter": [
+        {
+          "upt:symbol": "tau",
+          "upt:dimension": [
+            0,
+            0,
+            1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Time"
+          }
+        },
+        {
+          "upt:symbol": "D",
+          "upt:dimension": [
+            2,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/DiffusionCoefficient"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-laplace-1d",
+      "@type": "upt:Model",
+      "upt:family": "diffusion",
+      "upt:dynamics": "T_xx = 0, so T is linear between T(0) and T(ℓ)",
+      "upt:parameter": [
+        {
+          "upt:symbol": "ell",
+          "upt:dimension": [
+            1,
+            0,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Length"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-walk-diffusion",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "coarse-graining",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-random-walk"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-fick"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-random-walk"
+        }
+      ],
+      "dcterms:source": [
+        "Einstein, Ann. Phys. 17 (1905) 549 - Brownian motion; the mean-square displacement grows as 2Dt",
+        "Feller, An Introduction to Probability Theory and Its Applications, Vol. I - the symmetric random walk and the de Moivre-Laplace limit"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WD1",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/diffusion.test.ts"
+        },
+        {
+          "upt:id": "WD1b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/diffusion.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-heat-diffusion",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "exact-equivalence",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-heat"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-fick"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-heat"
+        }
+      ],
+      "dcterms:source": [
+        "Carslaw & Jaeger, Conduction of Heat in Solids - the heat equation and the thermal diffusivity κ/(ρ c_p)",
+        "Crank, The Mathematics of Diffusion - Fick’s second law and its identity with the heat-conduction equation"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WD2",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/diffusion.test.ts"
+        },
+        {
+          "upt:id": "WD2s",
+          "upt:kind": "symbolic",
+          "upt:test": "tests/atlas/witness-results.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-schrodinger-diffusion",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "analytic-continuation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-schrodinger-free"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-fick"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-schrodinger-free"
+        }
+      ],
+      "dcterms:source": [
+        "Feynman & Hibbs, Quantum Mechanics and Path Integrals - the free-particle kernel and its imaginary-time form",
+        "Nelson, J. Math. Phys. 5 (1964) 332 - Feynman integrals and the Schrödinger equation (the analytic continuation to the heat kernel)"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "W5",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/quantum-support.test.ts"
+        },
+        {
+          "upt:id": "WD3",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/diffusion.test.ts"
+        },
+        {
+          "upt:id": "WD3b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/diffusion.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-langevin-diffusion",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "coarse-graining",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-langevin"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-fick"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-langevin"
+        }
+      ],
+      "dcterms:source": [
+        "Uhlenbeck & Ornstein, Phys. Rev. 36 (1930) 823 - On the theory of the Brownian motion",
+        "Einstein, Ann. Phys. 17 (1905) 549 - the relation D = k_B T/γ"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WD4",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        },
+        {
+          "upt:id": "WD4b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-stokes-einstein",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "derivation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-langevin"
+        },
+        {
+          "@id": "urn:upt:atlas:model:model-stokes-drag"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-fick"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-langevin"
+        },
+        {
+          "@id": "urn:upt:atlas:model:model-stokes-drag"
+        }
+      ],
+      "dcterms:source": [
+        "Einstein, Ann. Phys. 17 (1905) 549 - Brownian motion of a sphere, D = k_B T/(6πηa)",
+        "Stokes, Trans. Camb. Phil. Soc. 9 (1851) 8 - the drag on a sphere in creeping flow"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WD5",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        },
+        {
+          "upt:id": "WD5s",
+          "upt:kind": "symbolic",
+          "upt:test": "tests/atlas/witness-results.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-telegraph-diffusion",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "approximation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-telegraph"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-fick"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-telegraph"
+        }
+      ],
+      "dcterms:source": [
+        "Cattaneo, Atti Sem. Mat. Fis. Univ. Modena 3 (1948) 83 - heat conduction with a relaxation time",
+        "Goldstein, Q. J. Mech. Appl. Math. 4 (1951) 129 - On diffusion by discontinuous movements, and on the telegraph equation"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WD6",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        },
+        {
+          "upt:id": "WD6b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-telegraph-wave",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "approximation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-telegraph"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-wave-1d"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-telegraph"
+        }
+      ],
+      "dcterms:source": [
+        "Goldstein, Q. J. Mech. Appl. Math. 4 (1951) 129 - On diffusion by discontinuous movements, and on the telegraph equation"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WD7",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-heat-laplace",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "restriction",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-heat"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-laplace-1d"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-heat"
+        }
+      ],
+      "dcterms:source": [
+        "Carslaw & Jaeger, Conduction of Heat in Solids - steady linear flow in a slab"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WD8",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-string",
+      "@type": "upt:Model",
+      "upt:family": "waves",
+      "upt:dynamics": "μ y_tt = F y_xx (small slopes, |y_x| ≪ 1)",
+      "upt:parameter": [
+        {
+          "upt:symbol": "F",
+          "upt:dimension": [
+            1,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Force"
+          }
+        },
+        {
+          "upt:symbol": "mu",
+          "upt:dimension": [
+            -1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/LinearDensity"
+          }
+        }
+      ],
+      "upt:canonicalRef": [
+        "CE-string-wave-speed"
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-dalembert",
+      "@type": "upt:Model",
+      "upt:family": "waves",
+      "upt:dynamics": "two profiles translating rigidly at ±c",
+      "upt:parameter": [
+        {
+          "upt:symbol": "c",
+          "upt:dimension": [
+            1,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Speed"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-euler-linear",
+      "@type": "upt:Model",
+      "upt:family": "waves",
+      "upt:dynamics": "∂ρ′/∂t = −ρ₀ ∂v/∂x,  ρ₀ ∂v/∂t = −∂p′/∂x",
+      "upt:parameter": [
+        {
+          "upt:symbol": "rho0",
+          "upt:dimension": [
+            -3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Density"
+          }
+        },
+        {
+          "upt:symbol": "p0",
+          "upt:dimension": [
+            -1,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Pressure"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-adiabatic-eos",
+      "@type": "upt:Model",
+      "upt:family": "waves",
+      "upt:dynamics": "p = p₀ (ρ/ρ₀)^γ",
+      "upt:parameter": [
+        {
+          "upt:symbol": "rho0",
+          "upt:dimension": [
+            -3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Density"
+          }
+        },
+        {
+          "upt:symbol": "p0",
+          "upt:dimension": [
+            -1,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Pressure"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-sound",
+      "@type": "upt:Model",
+      "upt:family": "waves",
+      "upt:dynamics": "p′_tt = c_s² p′_xx with c_s² = γ p₀/ρ₀",
+      "upt:parameter": [
+        {
+          "upt:symbol": "rho0",
+          "upt:dimension": [
+            -3,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Density"
+          }
+        },
+        {
+          "upt:symbol": "p0",
+          "upt:dimension": [
+            -1,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Pressure"
+          }
+        }
+      ],
+      "upt:canonicalRef": [
+        "CE-sound-speed"
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-klein-gordon",
+      "@type": "upt:Model",
+      "upt:family": "waves",
+      "upt:dynamics": "u_tt = c² u_xx − ω₀² u (dispersive: ω² = c²k² + ω₀²)",
+      "upt:parameter": [
+        {
+          "upt:symbol": "c",
+          "upt:dimension": [
+            1,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Speed"
+          }
+        },
+        {
+          "upt:symbol": "omega0",
+          "upt:dimension": [
+            0,
+            0,
+            -1,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/AngularFrequency"
+          }
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:model:model-stiff-string",
+      "@type": "upt:Model",
+      "upt:family": "waves",
+      "upt:dynamics": "μ y_tt = F y_xx − EI y_xxxx (dispersive: ω² = (F/μ)k² + (EI/μ)k⁴)",
+      "upt:parameter": [
+        {
+          "upt:symbol": "F",
+          "upt:dimension": [
+            1,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/Force"
+          }
+        },
+        {
+          "upt:symbol": "mu",
+          "upt:dimension": [
+            -1,
+            1,
+            0,
+            0,
+            0,
+            0,
+            0
+          ],
+          "qudt:hasQuantityKind": {
+            "@id": "http://qudt.org/vocab/quantitykind/LinearDensity"
+          }
+        },
+        {
+          "upt:symbol": "EI",
+          "upt:dimension": [
+            3,
+            1,
+            -2,
+            0,
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-string-wave",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "restriction",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-string"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-wave-1d"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-string"
+        }
+      ],
+      "dcterms:source": [
+        "Morse & Ingard, Theoretical Acoustics - the flexible string and its wave equation with c² = T/ρ"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WS1",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/waves.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-wave-dalembert",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "derivation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-wave-1d"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-dalembert"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-wave-1d"
+        }
+      ],
+      "dcterms:source": [
+        "d'Alembert, Recherches sur la courbe que forme une corde tendue mise en vibration (1747)",
+        "Strauss, Partial Differential Equations: An Introduction - §2.1, the wave equation on the line"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WS2",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/waves.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-sound-speed",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "derivation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-euler-linear"
+        },
+        {
+          "@id": "urn:upt:atlas:model:model-adiabatic-eos"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-sound"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-euler-linear"
+        },
+        {
+          "@id": "urn:upt:atlas:model:model-adiabatic-eos"
+        }
+      ],
+      "dcterms:source": [
+        "Laplace, Ann. Chim. Phys. 3 (1816) 238 - the adiabatic correction to Newton’s speed of sound",
+        "Landau & Lifshitz, Fluid Mechanics §64 - sound waves from the linearized equations of motion"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WS3",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/waves.test.ts"
+        },
+        {
+          "upt:id": "WS3b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/waves.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-klein-gordon-wave",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "approximation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-klein-gordon"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-wave-1d"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-klein-gordon"
+        }
+      ],
+      "dcterms:source": [
+        "Whitham, Linear and Nonlinear Waves - §11.1, dispersive waves and the Klein-Gordon equation"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WS4",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/waves.test.ts"
+        },
+        {
+          "upt:id": "WS4b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/waves.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-kg-schrodinger",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "approximation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-klein-gordon"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-schrodinger-free"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-klein-gordon"
+        }
+      ],
+      "dcterms:source": [
+        "Greiner, Relativistic Quantum Mechanics: Wave Equations - Ch. 1, the Klein-Gordon equation and its non-relativistic limit"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WS5",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        },
+        {
+          "upt:id": "WS5b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-kg-oscillator",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "restriction",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-klein-gordon"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-spring"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-klein-gordon"
+        }
+      ],
+      "dcterms:source": [
+        "Whitham, Linear and Nonlinear Waves - §11.1, dispersive waves and the Klein-Gordon equation"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WS6",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        }
+      ]
+    },
+    {
+      "@id": "urn:upt:atlas:bridge:ab-stiff-string",
+      "@type": [
+        "upt:Bridge",
+        "prov:Entity"
+      ],
+      "upt:relation": "approximation",
+      "upt:premise": [
+        {
+          "@id": "urn:upt:atlas:model:model-stiff-string"
+        }
+      ],
+      "upt:conclusion": {
+        "@id": "urn:upt:atlas:model:model-string"
+      },
+      "prov:wasDerivedFrom": [
+        {
+          "@id": "urn:upt:atlas:model:model-stiff-string"
+        }
+      ],
+      "dcterms:source": [
+        "Fletcher, J. Acoust. Soc. Am. 36 (1964) 203 - Normal vibration frequencies of a stiff piano string"
+      ],
+      "upt:reviewStatus": "proposed",
+      "upt:witness": [
+        {
+          "upt:id": "WS7",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        },
+        {
+          "upt:id": "WS7b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/closure.test.ts"
+        }
+      ]
+    }
+  ]
+}

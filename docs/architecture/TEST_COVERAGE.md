@@ -10,9 +10,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 342 |
-| Total Test Files | 427 |
-| Source Files with Tests | 340 |
+| Total Source Files | 343 |
+| Total Test Files | 428 |
+| Source Files with Tests | 341 |
 | Source Files without Tests | 2 |
 | Coverage | 99.4% |
 
@@ -55,7 +55,8 @@ The following 2 source files are not directly imported by any test file:
 | `diffusion/models.ts` | `diffusion.test.ts` |
 | `diffusion/numerics.ts` | `closure.test.ts`, `diffusion.test.ts` |
 | `atlas/error-algebra.ts` | `error-algebra.test.ts`, `path-bound.test.ts` |
-| `atlas/families.ts` | `atlas-json.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts` |
+| `atlas/export.ts` | `export.test.ts` |
+| `atlas/families.ts` | `atlas-json.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts` |
 | `atlas/link-prediction.ts` | `link-prediction.test.ts` |
 | `atlas/model.ts` | `applicability.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `oscillators/bridges-coarse.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-coarse.test.ts` |
@@ -404,6 +405,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/diffusion.test.ts` | 12 files |
 | `atlas/error-algebra.test.ts` | 2 files |
 | `atlas/evidence-rule.test.ts` | 2 files |
+| `atlas/export.test.ts` | 2 files |
 | `atlas/exports-subpath.test.ts` | 0 files |
 | `atlas/families.test.ts` | 1 files |
 | `atlas/formal-sanity.test.ts` | 3 files |

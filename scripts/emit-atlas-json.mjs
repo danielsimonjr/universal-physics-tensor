@@ -40,3 +40,14 @@ for (const family of ATLAS_FAMILIES) {
       `${record.rejections.length} rejections, schema v${record.schemaVersion}, package v${pkg.version})`,
   );
 }
+
+// Phase 6 S6.4: the combined artifact and its JSON-LD projection. The QUDT
+// resolution table is data the Lead maintains; the export module receives it.
+const { toCombinedAtlasJson, toAtlasJsonLd } = await distImport('atlas', 'export.js');
+const qudt = JSON.parse(readFileSync(resolve(outDir, 'qudt-resolution.json'), 'utf-8'));
+const combined = resolve(outDir, 'atlas.json');
+writeFileSync(combined, JSON.stringify(toCombinedAtlasJson(ATLAS_FAMILIES, pkg.version), null, 2) + '\n');
+console.log(`Wrote ${combined} (${ATLAS_FAMILIES.length} families)`);
+const jsonld = resolve(outDir, 'atlas.jsonld');
+writeFileSync(jsonld, JSON.stringify(toAtlasJsonLd(ATLAS_FAMILIES, pkg.version, qudt), null, 2) + '\n');
+console.log(`Wrote ${jsonld}`);
