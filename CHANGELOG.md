@@ -10,6 +10,27 @@ from v0.1.0 onward.
 
 ### Added
 
+- **The canonical-entry count is now gated against the live registry** (`tests/canonical/canonical-count-prose.test.ts`).
+  Sprint 3 adds L1 entries, which moves this number, and measuring first showed the scale of the
+  exposure. MEASURED: the registry holds 103. The Sprint 3 plan states the count "lives only in
+  `CHANGELOG.md`, `ROADMAP.md`, and the architecture docs" — three locations. The literal is in
+  **22 files**, and the live product docs the plan did not name include `README.md`, `todo.md`,
+  `docs/specification/Part-V.md` and three files under `docs/research/`. Adding one entry would
+  leave at least seven live prose statements stale with every test still green.
+  **This is the third time in this repo** that a number restated in several places arrived with an
+  INCOMPLETE list of the places — the CLI command count was in four, two of which disagreed with
+  each other by four. The recurring defect is not the stale number; it is trusting a
+  hand-maintained list of where a number lives. So the test DISCOVERS every product doc stating
+  the count rather than enumerating them, and a file added later is covered without anyone
+  remembering. History is deliberately excluded: a release note recording 103 at v0.40.0 stays
+  true forever, and rewriting it would be the drift rather than the fix.
+  Carries three guards, because a gate nobody has watched fire is not a gate — a vacuity guard
+  asserting the patterns match the real count in real files, a negative control proving the
+  matcher is sensitive to the NUMBER and not merely the words, and a registry-size floor.
+  **Proven to bite:** changing `README.md`'s "103 canonical equations" to 102 failed the test
+  with the file, the text and the registry value named; restored and `git diff` clean. `README.md`
+  is one of the files the plan's list omitted.
+
 - **Sprint 2 lead wrap.** `DATAFLOW.md` gains Flow 13 (Atlas Path Query), documenting the three
   gates of `boundPath` and, more importantly, WHAT THE FLOW REFUSES: a `no-claim` carries no number
   BY TYPE, because the composed number would often be unchanged — composing with the identity is
