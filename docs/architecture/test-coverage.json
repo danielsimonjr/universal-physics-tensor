@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 341,
-    "totalTestFiles": 426,
-    "testedCount": 339,
+    "totalSourceFiles": 342,
+    "totalTestFiles": 427,
+    "testedCount": 340,
     "untestedCount": 2,
     "coveragePercent": "99.4"
   },
@@ -34,6 +34,7 @@
     "src/atlas/diffusion/numerics.ts",
     "src/atlas/error-algebra.ts",
     "src/atlas/families.ts",
+    "src/atlas/link-prediction.ts",
     "src/atlas/model.ts",
     "src/atlas/oscillators/bridges-coarse.ts",
     "src/atlas/oscillators/bridges-exact.ts",
@@ -377,7 +378,8 @@
       "tests/atlas/benchmark-run-atlas.test.ts"
     ],
     "src/atlas/benchmark/stats.ts": [
-      "tests/atlas/benchmark-stats.test.ts"
+      "tests/atlas/benchmark-stats.test.ts",
+      "tests/atlas/link-prediction.test.ts"
     ],
     "src/atlas/benchmark/study.ts": [
       "tests/atlas/benchmark-ablation.test.ts",
@@ -444,11 +446,16 @@
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/families.test.ts",
       "tests/atlas/formal-sanity.test.ts",
+      "tests/atlas/link-prediction.test.ts",
       "tests/atlas/regime-admission.test.ts"
     ],
     "src/atlas/index.ts": [],
+    "src/atlas/link-prediction.ts": [
+      "tests/atlas/link-prediction.test.ts"
+    ],
     "src/atlas/model.ts": [
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/link-prediction.test.ts",
       "tests/atlas/model.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
@@ -481,6 +488,7 @@
     "src/atlas/oscillators/index.ts": [
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/link-prediction.test.ts",
       "tests/atlas/model.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/serialize.test.ts",
@@ -541,6 +549,7 @@
       "tests/atlas/error-algebra.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/link-prediction.test.ts",
       "tests/atlas/oscillators-limits.test.ts",
       "tests/atlas/overlay-types.test.ts",
       "tests/atlas/path-bound.test.ts",
@@ -5378,6 +5387,14 @@
       "src/bridges/be52-mercury-confrontation.ts"
     ],
     "tests/atlas/import-graph.test.ts": [],
+    "tests/atlas/link-prediction.test.ts": [
+      "src/atlas/link-prediction.ts",
+      "src/atlas/families.ts",
+      "src/atlas/benchmark/stats.ts",
+      "src/atlas/oscillators/index.ts",
+      "src/atlas/types.ts",
+      "src/atlas/model.ts"
+    ],
     "tests/atlas/model.test.ts": [
       "src/atlas/oscillators/models.ts",
       "src/atlas/serialize.ts",

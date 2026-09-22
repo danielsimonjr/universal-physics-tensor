@@ -10,6 +10,17 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S6.3 — link prediction, whose one result does NOT support the hypothesis.**
+  `src/atlas/link-prediction.ts` runs leave-one-bridge-out over the 24-model typed graph. The typed
+  predictor (common neighbours) is compared with a word-overlap baseline. Over 20 trials, recall@10
+  is 0.70 against 0.80, the paired Newcombe difference −0.10 spans zero, and the MRR is 0.28
+  against 0.42. Both sit only modestly above a chance level of 0.456. Two pairs that stay connected
+  through another bridge are excluded and counted, and the chance level and MRR are reported
+  because bare recall@10 on about 20 candidates reads as success. `docs/research/atlas-link-
+  prediction.md` is bound to `tests/atlas/link-prediction.test.ts`, which recomputes every figure;
+  its first run caught a minus-sign mismatch between note and code. A guard with a positive
+  control pins that nothing in `src/atlas/` imports Product A's `discovery.ts`. New
+  `Atlas-Phase-6-Design.md` records that the study's success path has never run.
 - **S6.2 — the ablation.** `ABLATION_CONFIGS` defines four cumulative configurations of the atlas
   runner (types only, + assumptions, + dimensions & conventions, + regimes). Applicability
   findings are split by instrument. `scoreAblation` pairs each row against the one before it on

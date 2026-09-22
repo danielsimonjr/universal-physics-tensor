@@ -10,9 +10,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 341 |
-| Total Test Files | 426 |
-| Source Files with Tests | 339 |
+| Total Source Files | 342 |
+| Total Test Files | 427 |
+| Source Files with Tests | 340 |
 | Source Files without Tests | 2 |
 | Coverage | 99.4% |
 
@@ -40,7 +40,7 @@ The following 2 source files are not directly imported by any test file:
 | `benchmark/leakage.ts` | `benchmark.test.ts` |
 | `benchmark/loader.ts` | `benchmark-preregistration.test.ts`, `benchmark.test.ts` |
 | `benchmark/run-atlas.ts` | `benchmark-ablation.test.ts`, `benchmark-run-atlas.test.ts` |
-| `benchmark/stats.ts` | `benchmark-stats.test.ts` |
+| `benchmark/stats.ts` | `benchmark-stats.test.ts`, `link-prediction.test.ts` |
 | `benchmark/study.ts` | `benchmark-ablation.test.ts`, `benchmark-study.test.ts` |
 | `benchmark/types.ts` | `benchmark-ablation.test.ts`, `benchmark-preregistration.test.ts`, `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
 | `atlas/composition-table.ts` | `composition-table.test.ts`, `path-bound.test.ts` |
@@ -55,13 +55,14 @@ The following 2 source files are not directly imported by any test file:
 | `diffusion/models.ts` | `diffusion.test.ts` |
 | `diffusion/numerics.ts` | `closure.test.ts`, `diffusion.test.ts` |
 | `atlas/error-algebra.ts` | `error-algebra.test.ts`, `path-bound.test.ts` |
-| `atlas/families.ts` | `atlas-json.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `regime-admission.test.ts` |
-| `atlas/model.ts` | `applicability.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `atlas/families.ts` | `atlas-json.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts` |
+| `atlas/link-prediction.ts` | `link-prediction.test.ts` |
+| `atlas/model.ts` | `applicability.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `oscillators/bridges-coarse.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-coarse.test.ts` |
 | `oscillators/bridges-exact.ts` | `audited-catalog.test.ts`, `oscillators-exact.test.ts`, `witness-results.test.ts` |
 | `oscillators/bridges-limits.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `formal-sanity.test.ts`, `oscillators-limits.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts` |
 | `oscillators/dimensions.ts` | `models.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `witness-results.test.ts` |
-| `oscillators/index.ts` | `atlas-json.test.ts`, `audited-catalog.test.ts`, `model.test.ts`, `regime-admission.test.ts`, `serialize.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `oscillators/index.ts` | `atlas-json.test.ts`, `audited-catalog.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `regime-admission.test.ts`, `serialize.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `oscillators/models.ts` | `model.test.ts`, `models.test.ts`, `oscillators-coarse.test.ts`, `poster.test.ts` |
 | `oscillators/rejections.ts` | `oscillators-coarse.test.ts` |
 | `atlas/path-bound.ts` | `path-bound.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
@@ -71,7 +72,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/regime.ts` | `bound-machine-form.test.ts`, `closure.test.ts`, `diffusion.test.ts`, `gr-spine-regime.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `waves.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/serialize.ts` | `atlas-json.test.ts`, `model.test.ts`, `serialize.test.ts` |
 | `atlas/statement.ts` | `poster.test.ts`, `statement-derivation.test.ts`, `poster-source.test.ts` |
-| `atlas/types.ts` | `applicability.test.ts`, `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `statement-derivation.test.ts`, `witness-results.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
+| `atlas/types.ts` | `applicability.test.ts`, `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `link-prediction.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `statement-derivation.test.ts`, `witness-results.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
 | `waves/bridges-closure.ts` | `closure.test.ts` |
 | `waves/bridges.ts` | `waves.test.ts` |
 | `waves/index.ts` | `waves.test.ts` |
@@ -408,6 +409,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/formal-sanity.test.ts` | 3 files |
 | `atlas/gr-spine-regime.test.ts` | 42 files |
 | `atlas/import-graph.test.ts` | 0 files |
+| `atlas/link-prediction.test.ts` | 6 files |
 | `atlas/model.test.ts` | 5 files |
 | `atlas/models.test.ts` | 5 files |
 | `atlas/ode-helper.test.ts` | 1 files |

@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 344,
+    "totalFiles": 345,
     "totalModules": 11,
-    "totalExports": 2385
+    "totalExports": 2389
   },
   "entryPoints": [
     {
@@ -1188,6 +1188,21 @@
             "reExport": true
           },
           {
+            "file": "./link-prediction.js",
+            "imports": [
+              "runLinkPrediction"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./link-prediction.js",
+            "imports": [
+              "LinkPredictionResult",
+              "LinkPredictionTrial"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./diffusion/index.js",
             "imports": [
               "DIFFUSION_FAMILY"
@@ -1513,6 +1528,7 @@
           "checkApplicability",
           "passingWitnessIds",
           "ATLAS_FAMILIES",
+          "runLinkPrediction",
           "DIFFUSION_FAMILY",
           "BRIDGE_HEAT_DIFFUSION",
           "BRIDGE_SCHRODINGER_DIFFUSION",
@@ -1591,6 +1607,8 @@
           "UnresolvedReason",
           "WitnessRunResult",
           "WitnessStatus",
+          "LinkPredictionResult",
+          "LinkPredictionTrial",
           "Authorship",
           "BenchmarkItem",
           "BenchmarkSplit",
@@ -1689,6 +1707,9 @@
           "WitnessRunResult",
           "WitnessStatus",
           "ATLAS_FAMILIES",
+          "runLinkPrediction",
+          "LinkPredictionResult",
+          "LinkPredictionTrial",
           "DIFFUSION_FAMILY",
           "BRIDGE_HEAT_DIFFUSION",
           "BRIDGE_SCHRODINGER_DIFFUSION",
@@ -1787,6 +1808,37 @@
           "DerivationId",
           "DerivationSpec",
           "NoCompositeReason"
+        ]
+      },
+      "src/atlas/link-prediction.ts": {
+        "description": "Atlas Phase 6, S6.3 — link prediction over the typed model graph: ONE result,",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./oscillators/index.js",
+            "imports": [
+              "AtlasFamily"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./model.js",
+            "imports": [
+              "AtlasModel"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "runLinkPrediction"
+        ],
+        "interfaces": [
+          "LinkPredictionTrial",
+          "LinkPredictionResult"
+        ],
+        "functions": [
+          "runLinkPrediction"
         ]
       },
       "src/atlas/model.ts": {
@@ -23115,6 +23167,7 @@
           "src/atlas/error-algebra.ts",
           "src/atlas/families.ts",
           "src/atlas/index.ts",
+          "src/atlas/link-prediction.ts",
           "src/atlas/model.ts",
           "src/atlas/oscillators/bridges-coarse.ts",
           "src/atlas/oscillators/bridges-exact.ts",
@@ -23490,18 +23543,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 344,
+    "totalTypeScriptFiles": 345,
     "totalModules": 11,
-    "totalLinesOfCode": 67977,
-    "totalExports": 2385,
+    "totalLinesOfCode": 68141,
+    "totalExports": 2389,
     "totalClasses": 58,
-    "totalInterfaces": 354,
-    "totalFunctions": 547,
+    "totalInterfaces": 356,
+    "totalFunctions": 548,
     "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 604,
-    "totalReExports": 1175,
-    "totalTypeOnlyImports": 479,
+    "totalReExports": 1178,
+    "totalTypeOnlyImports": 481,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

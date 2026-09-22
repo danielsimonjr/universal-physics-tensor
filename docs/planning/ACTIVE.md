@@ -168,7 +168,9 @@ No open items.
   **Two dependencies stated where they bind:** (1) S6.1/S6.2 score the FROZEN set, which is empty
   until independent authors exist, so the study script REFUSES (exit 3, writes nothing) rather
   than report a table from nothing; (2) S6.7 moves symbols onto the public API, an ADR-level call
-  that goes to Mothership — the review is prepared, not applied.
+  that goes to Mothership — the review is prepared, not applied. **Measured is not exercised:** the
+  study's empty-set refusal is measured; its success path on a real frozen set has NEVER RUN
+  (`Atlas-Phase-6-Design.md` §0).
 
 - [ ] **Sprint 5 — The invalid-bridge benchmark.** Promoted 2026-09-22 by the Lead on Mothership's
   assignment of S5.1–S5.5 to the Atlas-Roadmap session. **This line is what authorizes the plan's

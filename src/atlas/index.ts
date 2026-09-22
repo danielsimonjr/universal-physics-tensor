@@ -85,6 +85,8 @@ export type {
 } from './witness-result.js';
 
 export { ATLAS_FAMILIES } from './families.js';
+export { runLinkPrediction } from './link-prediction.js';
+export type { LinkPredictionResult, LinkPredictionTrial } from './link-prediction.js';
 export { DIFFUSION_FAMILY } from './diffusion/index.js';
 export {
   BRIDGE_HEAT_DIFFUSION,
