@@ -10,6 +10,15 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S5.5 — the benchmark pre-registration, REGISTERED before any condition runs.**
+  `docs/research/atlas-benchmark-preregistration.md` freezes the six criteria, the held-out
+  family (fluid statics), the conditions, the even sampling of failure kinds, and the power
+  statement. It records the SHA-256 of the frozen item set. That set is EMPTY, and the hash
+  `4f53cda1…` equals `sha256("[]")`, checked a second way with `sha256sum`.
+  `tests/atlas/benchmark-preregistration.test.ts` recomputes the hash from the committed items,
+  with a positive control, so the set cannot change without an amendment. **Raters and items are
+  "TO BE NAMED"**: no agent may author a frozen item, so Phase 5's "κ reported" criterion waits on
+  independent people.
 - **S5.4 — the statistics and the power report.** `src/atlas/benchmark/stats.ts` provides the
   Wilson interval, McNemar (continuity χ² and exact binomial p), Cohen's κ, the Newcombe method-10
   paired-difference interval, and `powerReport`. Each value was checked against a number computed

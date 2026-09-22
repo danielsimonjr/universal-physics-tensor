@@ -169,6 +169,10 @@ No open items.
   pre-registration's item-set hash all require independent human authors. Until they exist the
   Phase 5 exit criteria ("κ reported"; "thresholds frozen before any condition runs") cannot be
   met by code, and the entry says so rather than letting the harness stand in for the study.
+  **Status 2026-09-22: code COMPLETE (S5.1–S5.5, pre-registration registered). Box held OPEN on
+  purpose:** ROADMAP exit "κ reported" is UNMET — it needs two named raters and independent item
+  authors, which no agent can supply. "Held-out family fixed" MET; "thresholds frozen in a
+  pre-registration note before any condition is run" MET (no condition has run).
   **Held-out family: FLUID STATICS** (hydrostatic pressure, buoyancy, Pascal, barometric formula) —
   never added to `src/atlas/` while the benchmark is live. **Corrected from the plan's
   "first-order relaxation"**, which Phase 0 already encodes as `model-first-order` (b x′ + k x = 0);

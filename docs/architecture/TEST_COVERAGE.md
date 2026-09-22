@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 340 |
-| Total Test Files | 423 |
+| Total Test Files | 424 |
 | Source Files with Tests | 338 |
 | Source Files without Tests | 2 |
 | Coverage | 99.4% |
@@ -38,10 +38,10 @@ The following 2 source files are not directly imported by any test file:
 | `benchmark/backend-shapes.ts` | `benchmark-baselines.test.ts` |
 | `benchmark/baselines.ts` | `benchmark-baselines.test.ts` |
 | `benchmark/leakage.ts` | `benchmark.test.ts` |
-| `benchmark/loader.ts` | `benchmark.test.ts` |
+| `benchmark/loader.ts` | `benchmark-preregistration.test.ts`, `benchmark.test.ts` |
 | `benchmark/run-atlas.ts` | `benchmark-run-atlas.test.ts` |
 | `benchmark/stats.ts` | `benchmark-stats.test.ts` |
-| `benchmark/types.ts` | `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
+| `benchmark/types.ts` | `benchmark-preregistration.test.ts`, `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
 | `atlas/composition-table.ts` | `composition-table.test.ts`, `path-bound.test.ts` |
 | `atlas/conventions.ts` | `conventions.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/coverage.ts` | `audited-catalog.test.ts`, `coverage.test.ts` |
@@ -272,7 +272,7 @@ The following 2 source files are not directly imported by any test file:
 | `probe/run-manifest.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `modules.test.ts` |
 | `probe/scoring.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `modules.test.ts` |
 | `probe/search-budget.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `coverage-backfill.test.ts`, `modules.test.ts` |
-| `probe/serialize.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `serialize.test.ts` |
+| `probe/serialize.ts` | `benchmark-preregistration.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `serialize.test.ts` |
 | `probe/structure.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `coverage-backfill.test.ts`, `modules.test.ts` |
 | `probe/types.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `modules.test.ts` |
 | `composition/proposed-bridges.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `proposed-bridges.test.ts` |
@@ -386,6 +386,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/atlas-json.test.ts` | 3 files |
 | `atlas/audited-catalog.test.ts` | 22 files |
 | `atlas/benchmark-baselines.test.ts` | 4 files |
+| `atlas/benchmark-preregistration.test.ts` | 3 files |
 | `atlas/benchmark-run-atlas.test.ts` | 4 files |
 | `atlas/benchmark-stats.test.ts` | 1 files |
 | `atlas/benchmark.test.ts` | 6 files |

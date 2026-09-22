@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 340,
-    "totalTestFiles": 423,
+    "totalTestFiles": 424,
     "testedCount": 338,
     "untestedCount": 2,
     "coveragePercent": "99.4"
@@ -368,6 +368,7 @@
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/benchmark/loader.ts": [
+      "tests/atlas/benchmark-preregistration.test.ts",
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/benchmark/run-atlas.ts": [
@@ -377,6 +378,7 @@
       "tests/atlas/benchmark-stats.test.ts"
     ],
     "src/atlas/benchmark/types.ts": [
+      "tests/atlas/benchmark-preregistration.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts"
     ],
@@ -3248,6 +3250,7 @@
       "tests/composition/probe/modules.test.ts"
     ],
     "src/composition/probe/serialize.ts": [
+      "tests/atlas/benchmark-preregistration.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/serialize.test.ts"
@@ -5192,6 +5195,11 @@
       "src/atlas/benchmark/backend-shapes.ts",
       "src/dimensional/ast-builders.ts",
       "src/dimensional/ast-types.ts"
+    ],
+    "tests/atlas/benchmark-preregistration.test.ts": [
+      "src/atlas/benchmark/loader.ts",
+      "src/atlas/benchmark/types.ts",
+      "src/composition/probe/serialize.ts"
     ],
     "tests/atlas/benchmark-run-atlas.test.ts": [
       "src/atlas/benchmark/run-atlas.ts",
