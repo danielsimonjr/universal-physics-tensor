@@ -1,0 +1,24 @@
+
+20 atlas bridges across 3 families:
+  ab-spring-lc                 exact-equivalence      [oscillators]
+  ab-damped-rlc                exact-equivalence      [oscillators]
+  ab-pendulum-linear           approximation          [oscillators]
+  ab-damped-massless           approximation          [oscillators]
+  ab-chain-wave                coarse-graining        [oscillators]
+  ab-walk-diffusion            coarse-graining        [diffusion]
+  ab-heat-diffusion            exact-equivalence      [diffusion]
+  ab-schrodinger-diffusion     analytic-continuation  [diffusion]
+  ab-langevin-diffusion        coarse-graining        [diffusion]
+  ab-stokes-einstein           derivation             [diffusion]
+  ab-telegraph-diffusion       approximation          [diffusion]
+  ab-telegraph-wave            approximation          [diffusion]
+  ab-heat-laplace              restriction            [diffusion]
+  ab-string-wave               restriction            [waves]
+  ab-wave-dalembert            derivation             [waves]
+  ab-sound-speed               derivation             [waves]
+  ab-klein-gordon-wave         approximation          [waves]
+  ab-kg-schrodinger            approximation          [waves]
+  ab-kg-oscillator             restriction            [waves]
+  ab-stiff-string              approximation          [waves]
+
+Run `upt atlas <bridge-id>` for one bridge with every qualification.

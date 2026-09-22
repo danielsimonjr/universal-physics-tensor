@@ -39,7 +39,7 @@ The codebase is organized into the following modules:
 - **atlas**: 53 files
 - **bridges**: 89 files
 - **canonical**: 17 files
-- **cli**: 30 files
+- **cli**: 31 files
 - **root**: 1 file
 - **composition**: 71 files
 - **core**: 11 files
@@ -621,7 +621,7 @@ The codebase is organized into the following modules:
 | `./composition-table.js` | `composeRelation, NO_COMPOSITE_CLAIM` | Import |
 | `./composition-table.js` | `CompositionResult` | Import (type-only) |
 | `./types.js` | `AtlasBridge, RelationType` | Import (type-only) |
-| `./oscillators/index.js` | `OSCILLATOR_FAMILY` | Import |
+| `./families.js` | `ATLAS_FAMILIES` | Import |
 | `./oscillators/index.js` | `AtlasFamily` | Import (type-only) |
 
 **Exports:**
@@ -2717,7 +2717,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `CommandCtx`, `Command`
-- Functions: `registerCommand`, `resolveCommand`, `registerForTest`, `clearRegistryForTest`
+- Functions: `registerCommand`, `resolveCommand`, `listCommandNames`, `registerForTest`, `clearRegistryForTest`
 
 ---
 
@@ -2732,6 +2732,21 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `parseDiscoveryOpts`
+
+---
+
+### `src/cli/commands/atlas.ts` - `upt atlas [<bridge-id>]` — one atlas bridge with EVERY qualification visible.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../args.js` | `FlagSpec` | Import (type-only) |
+| `../command.js` | `registerCommand, Command, CommandCtx` | Import |
+| `../errors.js` | `CliError` | Import |
+| `../output.js` | `emitJson` | Import |
+
+**Exports:**
+- Constants: `command`
 
 ---
 
@@ -2961,6 +2976,7 @@ The codebase is organized into the following modules:
 | `./probe.js` | `*` | Import |
 | `./regime.js` | `*` | Import |
 | `./path.js` | `*` | Import |
+| `./atlas.js` | `*` | Import |
 
 ---
 
@@ -3203,6 +3219,8 @@ The codebase is organized into the following modules:
 | `./composition/grounding.js` | `describeGrounding` | Re-export |
 | `./composition/grounding.js` | `CandidateGrounding` | Re-export |
 | `./atlas/oscillators/index.js` | `OSCILLATOR_FAMILY` | Re-export |
+| `./atlas/families.js` | `ATLAS_FAMILIES` | Re-export |
+| `./atlas/derive-evidence.js` | `deriveEvidence, NO_PASSING_WITNESSES` | Re-export |
 | `./atlas/oscillators/index.js` | `AtlasFamily` | Re-export |
 | `./atlas/regime.js` | `regimeHolds, regimeOverlap, uncoveredRegions` | Re-export |
 | `./atlas/regime.js` | `RegimeCheck, RegimeOverlap, RegionSample` | Re-export |
@@ -3212,7 +3230,7 @@ The codebase is organized into the following modules:
 | `./atlas/model.js` | `AtlasModel, ModelId` | Re-export |
 
 **Exports:**
-- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `filterEdges`, `deriveEdgeEvidence`, `formatFilterLegend`, `POSTER_GRAPH`, `posterJunctions`, `validatePoster`, `describePosterSource`, `PosterGraph`, `PosterValidation`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `regimeHolds`, `regimeOverlap`, `uncoveredRegions`, `RegimeCheck`, `RegimeOverlap`, `RegionSample`, `findPath`, `boundPath`, `PathBoundResult`, `PathBoundClaim`, `PathNoClaim`, `AtlasBridge`, `RegimeInequality`, `AtlasModel`, `ModelId`
+- Re-exports: `explainQuantity`, `CATALOG_GRAPH`, `CANONICAL_GRAPH`, `M_SUN_KG`, `composeSymbolic`, `be42Edge`, `be16Edge`, `lawSchwarzschildRadius`, `be42ViaRsEdge`, `format`, `buildVizModel`, `renderDotToSvg`, `equationLanding`, `analyzeUserEquation`, `buckinghamPi`, `dimensionallyDetermines`, `bridgePriority`, `attemptDerivation`, `dimensionalFreedom`, `linkageMap`, `proposeLinkCandidates`, `proposeOrphanConnectors`, `getFormulaParser`, `getFormulaParserKind`, `getFormulaDimensionChecker`, `parseDimensionSpec`, `predictMissingBridges`, `rankDiscoveries`, `auditCoverage`, `CONFRONTATIONS`, `listConfrontations`, `runConfrontation`, `confrontationRigor`, `rigorDistribution`, `ConfrontationEntry`, `RigorTier`, `ConfrontationOutcome`, `decidingMeasurement`, `BRIDGE_EVALUATORS`, `evaluateBridge`, `EvaluatorSpec`, `auditAxisDiscrimination`, `AxisDiscrimination`, `AXES`, `AxisSpec`, `simplifyObservable`, `CANONICAL_EQUATIONS`, `bridgesWithoutCanonicalPartner`, `scanLinkages`, `deriveProposedBridges`, `filterEdges`, `deriveEdgeEvidence`, `formatFilterLegend`, `POSTER_GRAPH`, `posterJunctions`, `validatePoster`, `describePosterSource`, `PosterGraph`, `PosterValidation`, `DEFAULT_SEARCH_BUDGET`, `scanFrontier`, `findFrontierGap`, `problemFromResidualGap`, `makeResidualGap`, `loadSearchProblemFromJson`, `parseExprJson`, `runProbeSearch`, `formatProbeReport`, `formatFrontierScan`, `formatFrontierGap`, `suggestDiscriminatingPoint`, `parseDesignBounds`, `runFalsification`, `rankPareto`, `annotateAdjudications`, `adjudicationFor`, `candidateId`, `ADJUDICATIONS`, `AnnotatedCandidate`, `CandidateAdjudication`, `annotateConsequences`, `ConsequenceAnnotatedCandidate`, `ConsequenceSignal`, `ConsequenceEvidence`, `checkConventions`, `unknownConventionKeys`, `ConventionKey`, `describeGrounding`, `CandidateGrounding`, `OSCILLATOR_FAMILY`, `ATLAS_FAMILIES`, `deriveEvidence`, `NO_PASSING_WITNESSES`, `AtlasFamily`, `regimeHolds`, `regimeOverlap`, `uncoveredRegions`, `RegimeCheck`, `RegimeOverlap`, `RegionSample`, `findPath`, `boundPath`, `PathBoundResult`, `PathBoundClaim`, `PathNoClaim`, `AtlasBridge`, `RegimeInequality`, `AtlasModel`, `ModelId`
 
 ---
 
@@ -5922,7 +5940,7 @@ The codebase is organized into the following modules:
 | `conventions` | 1 files | 4 files |
 | `coverage` | 1 files | 0 files |
 | `derivation` | 3 files | 3 files |
-| `derive-evidence` | 1 files | 1 files |
+| `derive-evidence` | 1 files | 2 files |
 | `bridges-closure` | 9 files | 2 files |
 | `bridges` | 5 files | 2 files |
 | `dimensions` | 2 files | 6 files |
@@ -5931,7 +5949,7 @@ The codebase is organized into the following modules:
 | `numerics` | 0 files | 2 files |
 | `error-algebra` | 1 files | 2 files |
 | `export` | 2 files | 1 files |
-| `families` | 3 files | 1 files |
+| `families` | 3 files | 3 files |
 | `index` | 34 files | 0 files |
 | `link-prediction` | 2 files | 1 files |
 | `model` | 2 files | 11 files |
@@ -5981,9 +5999,9 @@ graph TD
         N18[args]
         N19[command]
         N20[_discovery-opts]
-        N21[audit]
-        N22[axes]
-        N23[...25 more]
+        N21[atlas]
+        N22[audit]
+        N23[...26 more]
     end
 
     subgraph Root
@@ -6074,17 +6092,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 346 |
+| Total TypeScript Files | 347 |
 | Total Modules | 11 |
-| Total Lines of Code | 68270 |
-| Total Exports | 2396 |
-| Total Re-exports | 1182 |
+| Total Lines of Code | 68495 |
+| Total Exports | 2401 |
+| Total Re-exports | 1185 |
 | Total Classes | 58 |
 | Total Interfaces | 357 |
-| Total Functions | 550 |
+| Total Functions | 551 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 482 |
+| Type-only Imports | 483 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

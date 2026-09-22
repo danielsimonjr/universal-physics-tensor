@@ -41,4 +41,6 @@ export const GOLDEN_CASES = [
   { name: 'eval',                args: ['eval', 'hbar*c^3/(8*pi*G*M*k_B)', 'hbar=1.054571817e-34', 'c=299792458', 'G=6.6743e-11', 'M=1.989e30', 'k_B=1.380649e-23'] },
   { name: 'derive-plain',        args: ['derive', 'period:time', 'length:length', 'gravity:acceleration'] },
   { name: 'derive-formula',      args: ['derive', 'period:time', 'length:length', 'gravity:acceleration', '--formula', '2*pi*sqrt(length/gravity)'] },
+  { name: 'atlas-list',          args: ['atlas'] },
+  { name: 'atlas-pendulum',      args: ['atlas', 'ab-pendulum-linear'] },
 ];

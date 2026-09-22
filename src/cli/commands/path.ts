@@ -38,8 +38,6 @@ const HELP = `upt path <from> <to> [--at group=value ...] [--json]
         That refusal is the answer, and no number is invented in its place.
         e.g.  upt path model-pendulum model-spring --at theta0=0.2 T0=1 t=10`;
 
-const FAMILY = 'oscillators';
-
 const EPISTEMICS =
   'a path EXISTING is not a warrant: the bound is the warrant. A no-claim carries no number, ' +
   'and none is synthesized for it.';
@@ -69,9 +67,25 @@ async function run(ctx: CommandCtx): Promise<number> {
   const point = parseAt(assignments, 'path');
   const t = point['t'];
 
+  // The family is read off the endpoints — this used to be the oscillator
+  // family, hard-coded, so no path in the diffusion or wave families could be
+  // asked for. A route stays inside ONE family (findPath's scope); two
+  // endpoints in different families are reported as exactly that.
+  const familyOf = (id: string): string | undefined =>
+    api.ATLAS_FAMILIES.find((f) => f.models.some((m) => m.id === id))?.family;
+  const fromFamily = familyOf(from);
+  const toFamily = familyOf(to);
+  if (fromFamily !== undefined && toFamily !== undefined && fromFamily !== toFamily) {
+    throw new CliError(
+      `upt path: '${from}' is in family '${fromFamily}' and '${to}' in '${toFamily}'; ` +
+        'routes are searched within one family, and cross-family routes are not supported',
+    );
+  }
+  const family = fromFamily ?? toFamily ?? api.ATLAS_FAMILIES[0]!.family;
+
   let bridges: readonly import('../../cli-api.js').AtlasBridge[] | null;
   try {
-    bridges = api.findPath(FAMILY, from, to);
+    bridges = api.findPath(family, from, to);
   } catch (e) {
     // RangeError: an unknown endpoint. Reported as a CliError (exit 1) rather
     // than surfaced as a crash — and NOT as `null`, which would be

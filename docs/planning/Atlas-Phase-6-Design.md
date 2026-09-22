@@ -59,3 +59,31 @@ Two corrections to the naive method were made before any number was recorded:
 `tests/atlas/export.test.ts` pins freshness, URN uniqueness, endpoint resolution, table coverage,
 the collision and the unresolved set. It lives beside `atlas-json.test.ts` rather than inside it,
 which is a deviation from the plan's wording.
+
+## 3. `upt atlas` (S6.5) — as built
+
+`upt atlas [<bridge-id>]` prints one bridge with every qualification. **An empty section prints
+`none stated` and a regime with no inequality prints `VACUOUS`**, so an absent qualification is
+visible as an absence. `formally-proved` is printed with its SCOPE: "the statement above ONLY —
+not the bound". Without that line, the pendulum's YES would read as certifying a period bound the
+formal statement does not cover. `symbolically-checked` is decided by the witness-results
+artifact, which is not shipped in the package, so the command names the symbolic witnesses and
+prints no verdict it cannot see. Eve E6 is a test: three bridges (an approximation with a
+formalRef, an exact equivalence with an empty regime, and a hyperedge) have every field of their
+source record found in the output.
+
+**Three defects found and fixed on the way:**
+
+- **The command-count gate could not see the registry.** It counted commands by parsing
+  `upt --help`, which is a STATIC string in `main.ts`, so `upt atlas` ran while `upt help` did not
+  list it. The new `listCommandNames()` plus `tests/cli/help-covers-registry.test.ts` compare the
+  registry itself with the help text. The first version of that test used a `` that landed as a
+  single backslash-b inside a template literal, which is a BACKSPACE, so it reported every command
+  undocumented. Its control now checks both directions: an absent name IS reported, and a present
+  one is NOT.
+- **`upt regime`** accepted only the oscillator family, and **`upt path`** / `findPath` searched
+  only it. All three now use `ATLAS_FAMILIES`. `upt path` reads the family off its endpoints and
+  refuses a cross-family pair with that reason. Routes stay inside one family, which is stated,
+  not hidden.
+- The CLI now has 22 data-bearing commands; `CLAUDE.md` and `cli/README.md` are updated, and the
+  count gate holds them to the registry.

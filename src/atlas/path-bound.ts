@@ -59,13 +59,21 @@ import type { BoundPair } from './error-algebra.js';
 import { composeRelation, NO_COMPOSITE_CLAIM } from './composition-table.js';
 import type { CompositionResult } from './composition-table.js';
 import type { AtlasBridge, RelationType } from './types.js';
-import { OSCILLATOR_FAMILY } from './oscillators/index.js';
+import { ATLAS_FAMILIES } from './families.js';
 import type { AtlasFamily } from './oscillators/index.js';
 
-/** Families {@link findPath} can search. One, this sprint. @internal */
-const FAMILIES: Readonly<Record<string, AtlasFamily>> = {
-  oscillators: OSCILLATOR_FAMILY,
-};
+/**
+ * Families {@link findPath} can search: every registered family. This was the
+ * oscillator family alone, which made the diffusion and wave families
+ * unsearchable once they existed. A route stays INSIDE one family: a bridge
+ * that ends in another family's model is not followed across (stated, not
+ * hidden — cross-family routes are out of this function's scope).
+ *
+ * @internal
+ */
+const FAMILIES: Readonly<Record<string, AtlasFamily>> = Object.fromEntries(
+  ATLAS_FAMILIES.map((f) => [f.family, f]),
+);
 
 /**
  * One traversable direction of one bridge.

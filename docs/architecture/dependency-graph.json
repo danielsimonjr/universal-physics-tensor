@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 346,
+    "totalFiles": 347,
     "totalModules": 11,
-    "totalExports": 2396
+    "totalExports": 2401
   },
   "entryPoints": [
     {
@@ -2326,9 +2326,9 @@
             "typeOnly": true
           },
           {
-            "file": "./oscillators/index.js",
+            "file": "./families.js",
             "imports": [
-              "OSCILLATOR_FAMILY"
+              "ATLAS_FAMILIES"
             ]
           },
           {
@@ -9223,6 +9223,7 @@
         "exports": [
           "registerCommand",
           "resolveCommand",
+          "listCommandNames",
           "registerForTest",
           "clearRegistryForTest"
         ],
@@ -9233,6 +9234,7 @@
         "functions": [
           "registerCommand",
           "resolveCommand",
+          "listCommandNames",
           "registerForTest",
           "clearRegistryForTest"
         ]
@@ -9268,6 +9270,46 @@
         ],
         "functions": [
           "parseDiscoveryOpts"
+        ]
+      },
+      "src/cli/commands/atlas.ts": {
+        "description": "`upt atlas [<bridge-id>]` — one atlas bridge with EVERY qualification visible.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../args.js",
+            "imports": [
+              "FlagSpec"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../command.js",
+            "imports": [
+              "registerCommand",
+              "Command",
+              "CommandCtx"
+            ]
+          },
+          {
+            "file": "../errors.js",
+            "imports": [
+              "CliError"
+            ]
+          },
+          {
+            "file": "../output.js",
+            "imports": [
+              "emitJson"
+            ]
+          }
+        ],
+        "exports": [
+          "command"
+        ],
+        "constants": [
+          "command"
         ]
       },
       "src/cli/commands/audit.ts": {
@@ -9954,6 +9996,12 @@
           },
           {
             "file": "./path.js",
+            "imports": [
+              "*"
+            ]
+          },
+          {
+            "file": "./atlas.js",
             "imports": [
               "*"
             ]
@@ -10802,6 +10850,21 @@
             "reExport": true
           },
           {
+            "file": "./atlas/families.js",
+            "imports": [
+              "ATLAS_FAMILIES"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./atlas/derive-evidence.js",
+            "imports": [
+              "deriveEvidence",
+              "NO_PASSING_WITNESSES"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./atlas/oscillators/index.js",
             "imports": [
               "AtlasFamily"
@@ -10936,6 +10999,9 @@
           "unknownConventionKeys",
           "describeGrounding",
           "OSCILLATOR_FAMILY",
+          "ATLAS_FAMILIES",
+          "deriveEvidence",
+          "NO_PASSING_WITNESSES",
           "regimeHolds",
           "regimeOverlap",
           "uncoveredRegions",
@@ -11059,6 +11125,9 @@
           "describeGrounding",
           "CandidateGrounding",
           "OSCILLATOR_FAMILY",
+          "ATLAS_FAMILIES",
+          "deriveEvidence",
+          "NO_PASSING_WITNESSES",
           "AtlasFamily",
           "regimeHolds",
           "regimeOverlap",
@@ -23379,6 +23448,7 @@
           "src/cli/args.ts",
           "src/cli/command.ts",
           "src/cli/commands/_discovery-opts.ts",
+          "src/cli/commands/atlas.ts",
           "src/cli/commands/audit.ts",
           "src/cli/commands/axes.ts",
           "src/cli/commands/candidates.ts",
@@ -23603,18 +23673,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 346,
+    "totalTypeScriptFiles": 347,
     "totalModules": 11,
-    "totalLinesOfCode": 68270,
-    "totalExports": 2396,
+    "totalLinesOfCode": 68495,
+    "totalExports": 2401,
     "totalClasses": 58,
     "totalInterfaces": 357,
-    "totalFunctions": 550,
+    "totalFunctions": 551,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 605,
-    "totalReExports": 1182,
-    "totalTypeOnlyImports": 482,
+    "totalConstants": 606,
+    "totalReExports": 1185,
+    "totalTypeOnlyImports": 483,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

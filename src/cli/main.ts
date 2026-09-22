@@ -195,6 +195,13 @@ Usage:
         carries no bound: it prints 'no composite claim' and exits 0.
         e.g.  upt path model-pendulum model-spring --at theta0=0.2 T0=1 t=10
 
+  upt atlas [<bridge-id>]
+        One atlas bridge with EVERY qualification visible: relation, side
+        conditions, regime, bound and horizon, witnesses, counterexamples and
+        formal reference. Empty sections print as "none stated". With no id,
+        lists every bridge of every family.
+        e.g.  upt atlas ab-pendulum-linear
+
   upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
         Experimental expression/residual search (Product B). Orthogonal to
         \`upt discover\`, which vets quantity identifications a≡b and is frozen.

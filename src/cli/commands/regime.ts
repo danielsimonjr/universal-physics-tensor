@@ -88,9 +88,14 @@ async function run(ctx: CommandCtx): Promise<number> {
   if (rest.length > 0) {
     throw new CliError(`upt regime: unexpected argument '${rest[0]}' (one family at a time)`);
   }
-  const family = api.OSCILLATOR_FAMILY;
-  if (familyArg !== family.family) {
-    throw new CliError(`upt regime: unknown family '${familyArg}' (known: ${family.family})`);
+  // Every registered family, not one by name: this command used to hard-code
+  // the oscillator family and so could not report the diffusion or wave
+  // families at all once they existed.
+  const family = api.ATLAS_FAMILIES.find((f) => f.family === familyArg);
+  if (family === undefined) {
+    throw new CliError(
+      `upt regime: unknown family '${familyArg}' (known: ${api.ATLAS_FAMILIES.map((f) => f.family).join(', ')})`,
+    );
   }
 
   const point = parseAt(assignments, 'regime');

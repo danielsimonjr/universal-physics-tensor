@@ -279,6 +279,7 @@ warning-silencing, not debug logging).
       **S6.2** — ablation: four cumulative configurations, paired step statistics.
       **S6.3** — link prediction: ONE result, hypothesis NOT supported (typed 0.70 vs text 0.80 recall@10).
       **S6.4** — versioned export: atlas.json + atlas.jsonld (URN ids, PROV-O, QUDT where it resolves).
+      **S6.5** — `upt atlas`; count gate now sees the registry; regime/path search every family.
 
 - [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
       2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,

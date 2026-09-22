@@ -66,7 +66,7 @@ node bin/upt.mjs help        # also: --help, -h
 
 ## Command reference
 
-23 commands, grouped by what they do. Several accept aliases (shown in
+24 commands, grouped by what they do. Several accept aliases (shown in
 parentheses). Every data-bearing command (all but `help` and `version`)
 also accepts `--json` for a machine-readable envelope instead of text — see
 [JSON output](#json-output).
@@ -126,8 +126,9 @@ catalog, which relates QUANTITIES. One family exists today: `oscillators`.
 
 | Command (aliases) | What it does |
 |---|---|
-| `regime <family> [--at group=value …]` | Where in parameter space each model and bridge of a family is claimed to apply. `--at` states a point in REGIME COORDINATES — a π-group formula, or a dimensionless input's own name (`--at theta0=0.2`). Each record reads **valid**, **VIOLATED** (naming the failed inequality) or **unknown**. `unknown` means a coordinate was never supplied, and it is NOT a pass. A regime that states no inequality is marked **VACUOUS** for the same reason. Also prints the pairwise regime overlap and, over the box `--at` states, the points no constraining regime covers. No box is synthesized: with no `--at`, no coverage is reported. |
+| `regime <family> [--at group=value …]` | Where in parameter space each model and bridge of a family (`oscillators`, `diffusion` or `waves`) is claimed to apply. `--at` states a point in REGIME COORDINATES — a π-group formula, or a dimensionless input's own name (`--at theta0=0.2`). Each record reads **valid**, **VIOLATED** (naming the failed inequality) or **unknown**. `unknown` means a coordinate was never supplied, and it is NOT a pass. A regime that states no inequality is marked **VACUOUS** for the same reason. Also prints the pairwise regime overlap and, over the box `--at` states, the points no constraining regime covers. No box is synthesized: with no `--at`, no coverage is reported. |
 | `path <from> <to> [--at group=value …]` | The chain of bridges between two models, the relation it composes to via the composition table, the composed `(K, delta)` with the norm it holds in, and whether every horizon still holds at `--at` (pass `t=<time>` plus the horizon's parameters). When the table declines to compose, the path carries **no bound**: the command prints `no composite claim` and **exits 0** — the refusal is the answer, and no number is invented in its place. A path EXISTING is not a warrant; the bound is the warrant. |
+| `atlas [<bridge-id>]` | One atlas bridge with **every qualification visible**: relation, premises and conclusion (with their families), transformation and inverse, side conditions, regime (a regime with no inequality prints **VACUOUS**), bound with its horizon and limit character, what it preserves and loses, witnesses, counterexamples, formal reference with its fidelity and what it covers, citations and review status. An empty section prints `none stated` rather than disappearing. `formally-proved` is derived from `formalRef`. `symbolically-checked` is decided by `data/atlas/witness-results.json`, which is not shipped in the package, so the command names the witnesses it is decided over and does not print a verdict it cannot see. With no id, lists every bridge of every family. |
 
 ```bash
 # A bounded route, with its horizon evaluated:
@@ -208,7 +209,7 @@ An unrecognised value exits with an error and status `1`.
 
 ## JSON output
 
-Every data-bearing command (all 21 — every command in the tables above except
+Every data-bearing command (all 22 — every command in the tables above except
 `help` and `version`) accepts a global `--json` flag: instead of the text
 report, it prints one JSON envelope to stdout and exits `0`.
 
@@ -365,7 +366,7 @@ candidates.
 | Flag | Commands | Effect |
 |---|---|---|
 | `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map`, `explain`, `priority`, `audit`, `predict`, `connectors` | Choose the graph (default `catalog`; `map` and `connectors` default to `both` instead — see [The `--source` flag](#the---source-flag)). |
-| `--json` | All 21 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
+| `--json` | All 22 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
 | `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |

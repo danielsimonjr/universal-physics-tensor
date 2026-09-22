@@ -10,9 +10,9 @@
 
 | Metric | Count |
 |--------|-------|
-| Total Source Files | 343 |
-| Total Test Files | 428 |
-| Source Files with Tests | 341 |
+| Total Source Files | 344 |
+| Total Test Files | 430 |
+| Source Files with Tests | 342 |
 | Source Files without Tests | 2 |
 | Coverage | 99.4% |
 
@@ -47,7 +47,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/conventions.ts` | `conventions.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/coverage.ts` | `audited-catalog.test.ts`, `coverage.test.ts` |
 | `atlas/derivation.ts` | `poster.test.ts`, `statement-derivation.test.ts`, `poster-source.test.ts` |
-| `atlas/derive-evidence.ts` | `coverage.test.ts`, `derive-evidence.test.ts`, `formal-sanity.test.ts`, `witness-results.test.ts` |
+| `atlas/derive-evidence.ts` | `coverage.test.ts`, `derive-evidence.test.ts`, `formal-sanity.test.ts`, `witness-results.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `diffusion/bridges-closure.ts` | `closure.test.ts`, `witness-results.test.ts` |
 | `diffusion/bridges.ts` | `diffusion.test.ts`, `witness-results.test.ts` |
 | `diffusion/dimensions.ts` | `diffusion.test.ts` |
@@ -56,7 +56,7 @@ The following 2 source files are not directly imported by any test file:
 | `diffusion/numerics.ts` | `closure.test.ts`, `diffusion.test.ts` |
 | `atlas/error-algebra.ts` | `error-algebra.test.ts`, `path-bound.test.ts` |
 | `atlas/export.ts` | `export.test.ts` |
-| `atlas/families.ts` | `atlas-json.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts` |
+| `atlas/families.ts` | `atlas-json.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/link-prediction.ts` | `link-prediction.test.ts` |
 | `atlas/model.ts` | `applicability.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `oscillators/bridges-coarse.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-coarse.test.ts` |
@@ -73,7 +73,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/regime.ts` | `bound-machine-form.test.ts`, `closure.test.ts`, `diffusion.test.ts`, `gr-spine-regime.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `waves.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/serialize.ts` | `atlas-json.test.ts`, `model.test.ts`, `serialize.test.ts` |
 | `atlas/statement.ts` | `poster.test.ts`, `statement-derivation.test.ts`, `poster-source.test.ts` |
-| `atlas/types.ts` | `applicability.test.ts`, `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `link-prediction.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `statement-derivation.test.ts`, `witness-results.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
+| `atlas/types.ts` | `applicability.test.ts`, `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `link-prediction.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `statement-derivation.test.ts`, `witness-results.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
 | `waves/bridges-closure.ts` | `closure.test.ts` |
 | `waves/bridges.ts` | `waves.test.ts` |
 | `waves/index.ts` | `waves.test.ts` |
@@ -192,33 +192,34 @@ The following 2 source files are not directly imported by any test file:
 | `canonical/seed-l-layer.ts` | `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `src/cli-api.ts` | `graphs.test.ts`, `recover-conventions.test.ts` |
 | `cli/args.ts` | `args.test.ts`, `main-dispatch.test.ts` |
-| `cli/command.ts` | `main-dispatch.test.ts`, `recover-conventions.test.ts` |
+| `cli/command.ts` | `help-covers-registry.test.ts`, `main-dispatch.test.ts`, `recover-conventions.test.ts` |
 | `commands/_discovery-opts.ts` | `helper-coverage.test.ts` |
-| `commands/audit.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/axes.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/candidates.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/canonical.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/confront.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/connectors.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/coverage.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/derive.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/discover.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/eval.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/evaluate.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/explain.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/ground.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/index.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/map.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/path.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/predict.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/priority.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/probe.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/recover.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/regime.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
-| `commands/symbolic.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/atlas.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/audit.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/axes.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/candidates.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/canonical.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/confront.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/connectors.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/coverage.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/derive.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/discover.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/eval.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/evaluate.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/explain.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/ground.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/index.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/map.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/path.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/predict.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/priority.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/probe.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/recover.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/regime.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `commands/symbolic.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
 | `cli/errors.ts` | `args.test.ts`, `graphs.test.ts`, `main-dispatch.test.ts` |
 | `cli/graphs.ts` | `graphs.test.ts` |
-| `cli/main.ts` | `gr-spine-regime.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
+| `cli/main.ts` | `gr-spine-regime.test.ts`, `atlas-command.test.ts`, `cli-from-src.test.ts`, `command-count-prose.test.ts`, `confront.test.ts`, `explain-bridge-redirect.test.ts`, `help-covers-registry.test.ts`, `inprocess-golden.test.ts`, `json-contract.test.ts`, `main-dispatch.test.ts`, `map-filters.test.ts`, `new-commands.test.ts`, `path.test.ts`, `probe.test.ts`, `recover-conventions.test.ts`, `regime.test.ts`, `source-extension.test.ts`, `upt-discover-opts.test.ts` |
 | `cli/output.ts` | `output.test.ts` |
 | `cli/version.ts` | `output.test.ts` |
 | `composition/adjudication.ts` | `public-surface.test.ts`, `association.test.ts`, `bridge-equations-facade.test.ts`, `catalog-json.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `adjudication-annotate.test.ts`, `adjudication-id.test.ts`, `adjudication-registry.test.ts`, `discovery-calibration.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
@@ -409,7 +410,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/exports-subpath.test.ts` | 0 files |
 | `atlas/families.test.ts` | 1 files |
 | `atlas/formal-sanity.test.ts` | 3 files |
-| `atlas/gr-spine-regime.test.ts` | 42 files |
+| `atlas/gr-spine-regime.test.ts` | 43 files |
 | `atlas/import-graph.test.ts` | 0 files |
 | `atlas/link-prediction.test.ts` | 6 files |
 | `atlas/model.test.ts` | 5 files |
@@ -558,25 +559,27 @@ The following 2 source files are not directly imported by any test file:
 | `canonical/statistical-mechanics.test.ts` | 5 files |
 | `canonical/thermo-nuclear-cosmo.test.ts` | 5 files |
 | `cli/args.test.ts` | 2 files |
-| `cli/cli-from-src.test.ts` | 23 files |
-| `cli/command-count-prose.test.ts` | 23 files |
-| `cli/confront.test.ts` | 23 files |
-| `cli/explain-bridge-redirect.test.ts` | 23 files |
-| `cli/graphs.test.ts` | 165 files |
+| `cli/atlas-command.test.ts` | 26 files |
+| `cli/cli-from-src.test.ts` | 24 files |
+| `cli/command-count-prose.test.ts` | 24 files |
+| `cli/confront.test.ts` | 24 files |
+| `cli/explain-bridge-redirect.test.ts` | 24 files |
+| `cli/graphs.test.ts` | 167 files |
 | `cli/hardening.test.ts` | 0 files |
-| `cli/inprocess-golden.test.ts` | 23 files |
-| `cli/json-contract.test.ts` | 23 files |
-| `cli/main-dispatch.test.ts` | 26 files |
-| `cli/map-filters.test.ts` | 23 files |
-| `cli/new-commands.test.ts` | 23 files |
+| `cli/help-covers-registry.test.ts` | 25 files |
+| `cli/inprocess-golden.test.ts` | 24 files |
+| `cli/json-contract.test.ts` | 24 files |
+| `cli/main-dispatch.test.ts` | 27 files |
+| `cli/map-filters.test.ts` | 24 files |
+| `cli/new-commands.test.ts` | 24 files |
 | `cli/output.test.ts` | 2 files |
-| `cli/path.test.ts` | 23 files |
-| `cli/probe.test.ts` | 23 files |
-| `cli/recover-conventions.test.ts` | 187 files |
-| `cli/regime.test.ts` | 23 files |
-| `cli/source-extension.test.ts` | 23 files |
+| `cli/path.test.ts` | 24 files |
+| `cli/probe.test.ts` | 24 files |
+| `cli/recover-conventions.test.ts` | 190 files |
+| `cli/regime.test.ts` | 24 files |
+| `cli/source-extension.test.ts` | 24 files |
 | `cli/upt-derive.test.ts` | 0 files |
-| `cli/upt-discover-opts.test.ts` | 23 files |
+| `cli/upt-discover-opts.test.ts` | 24 files |
 | `cli/upt-eval-inputs.test.ts` | 0 files |
 | `cli/upt-explain-inputs.test.ts` | 0 files |
 | `cli/upt-golden.test.ts` | 0 files |

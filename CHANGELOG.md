@@ -10,6 +10,19 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S6.5 — `upt atlas [<bridge-id>]`, one bridge with every qualification visible.** Empty sections
+  print `none stated`, a regime with no inequality prints `VACUOUS`, and `formally-proved` is
+  shown WITH its scope (the statement only, not the bound). Eve E6's check is a test: three
+  bridges have every field of their source record found in the output.
+  **Defects fixed:** (1) the command-count gate counted commands from a STATIC help string, so
+  `upt atlas` ran while `upt help` hid it. New `listCommandNames()` and
+  `tests/cli/help-covers-registry.test.ts` compare the registry with the help. That test's first
+  draft used a `` that became a backspace in a template literal and flagged every command, so
+  its control now checks both directions. (2) `upt regime`, `upt path` and `findPath` searched
+  the oscillator family only. They now use every registered family, and `upt path` refuses a
+  cross-family pair with a stated reason. CLI count 21 → 22 in `CLAUDE.md` and `cli/README.md`.
+  The help golden is regenerated; 16 other goldens showed line-ending churn only, verified
+  content-identical and not committed as changes.
 - **S6.4 — the versioned export.** `bun run atlas:json` now also writes `data/atlas/atlas.json`,
   every family under one stamp (schema stays v0, since `formalRef` is additive), and
   `data/atlas/atlas.jsonld`, which has stable URN ids, PROV-O `wasDerivedFrom`, `dcterms:source`

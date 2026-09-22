@@ -44,6 +44,17 @@ export function resolveCommand(nameOrAlias: string): Command | undefined {
   return registry.get(nameOrAlias);
 }
 
+/**
+ * The PRIMARY names of every registered command, sorted (aliases excluded).
+ *
+ * The authority on what the CLI can run. `upt --help` is a static text in
+ * `main.ts`, so a command registered without a help entry would be runnable and
+ * invisible; `tests/cli/help-covers-registry.test.ts` compares the two.
+ */
+export function listCommandNames(): string[] {
+  return [...new Set([...registry.values()].map((c) => c.name))].sort();
+}
+
 /** Test-only registration hook. Same behavior as `registerCommand` — kept as
  * a distinct, deliberately-unexciting name so it reads as test scaffolding
  * (not part of the CLI's own porting surface) at call sites in

@@ -147,6 +147,8 @@ export type { CandidateGrounding } from './composition/grounding.js';
 // Atlas Phase 2 CLI surface (`upt regime`, `upt path`). Regime admission and
 // route bounds are `@internal`; the CLI is their only consumer today.
 export { OSCILLATOR_FAMILY } from './atlas/oscillators/index.js';
+export { ATLAS_FAMILIES } from './atlas/families.js';
+export { deriveEvidence, NO_PASSING_WITNESSES } from './atlas/derive-evidence.js';
 export type { AtlasFamily } from './atlas/oscillators/index.js';
 export { regimeHolds, regimeOverlap, uncoveredRegions } from './atlas/regime.js';
 export type { RegimeCheck, RegimeOverlap, RegionSample } from './atlas/regime.js';
