@@ -281,6 +281,8 @@ warning-silencing, not debug logging).
       **S6.4** — versioned export: atlas.json + atlas.jsonld (URN ids, PROV-O, QUDT where it resolves).
       **S6.5** — `upt atlas`; count gate now sees the registry; regime/path search every family.
       **S6.6** — `docs/planning/Atlas-Governance.md` (maintainers, contested entries, small PRs, licensing).
+      **S6.7** — `docs/planning/Atlas-API-Review.md`: recommendation only; decision with Mothership (ADR-level).
+      - [ ] Mothership decision on the atlas public API (Tier 1 promote y/n; namespace vs named; close the barrel gap).
       - [ ] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
 
 - [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`

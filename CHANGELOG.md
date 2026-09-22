@@ -10,6 +10,16 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S6.7 — the atlas API review. A RECOMMENDATION only; nothing is applied.**
+  `docs/planning/Atlas-API-Review.md` sorts symbols into three tiers against three criteria:
+  settled semantics, independent evidence, and no repository coupling. It found no name
+  collisions (154 atlas names against 514 root names). It found a pre-existing gap: `deriveEvidence`,
+  `composeRelation`, `COMPOSITION_TABLE`, `findPath`, `boundPath` and three constants are not in
+  the atlas barrel at all. It recommends a namespace facade, and notes that the public-tag
+  invariant test does not yet parse `export * as ns`. An adversarial review (Gemini, inlined text,
+  canary-verified) showed that the first Tier 1 broke the review's own criterion 1 and
+  contradicted its own coupling rule. The symbols involved moved to Tier 2, and the dispositions
+  are recorded. The decision goes to Mothership, because it is ADR-level.
 - **S6.6 — the atlas governance note.** `docs/planning/Atlas-Governance.md` covers maintainers, the
   contested-entry policy (a disputed record stays `proposed` and is corrected or REJECTED with a
   witness, never quietly removed or weakened), contribution by small single-claim PRs with their
