@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 340
+  totalFiles: 342
   totalModules: 11
-  totalExports: 2337
+  totalExports: 2353
 entryPoints:
   - file: src/index.ts
     type: main
@@ -57,6 +57,48 @@ modules:
         - associationFor
       constants:
         - ASSOCIATIONS
+    src/atlas/benchmark/backend-shapes.ts:
+      description: Atlas Phase 5, S5.3 — request and response SHAPES for the out-of-process
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../types.js
+          imports:
+            - RelationType
+          typeOnly: true
+      exports:
+        - parseBackendResponse
+      interfaces:
+        - BenchmarkBackendRequest
+        - BenchmarkBackendResponse
+        - BackendShapeError
+      functions:
+        - parseBackendResponse
+    src/atlas/benchmark/baselines.ts:
+      description: Atlas Phase 5, S5.3 — the deterministic, in-tree BASELINE conditions and the
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./leakage.js
+          imports:
+            - leakageKey
+      exports:
+        - rankByTextOverlap
+        - rankBySymbolOverlap
+        - rankByStructure
+        - recallAtK
+      interfaces:
+        - CorpusRecord
+        - RetrievalQuery
+      functions:
+        - rankByTextOverlap
+        - rankBySymbolOverlap
+        - rankByStructure
+        - recallAtK
     src/atlas/benchmark/leakage.ts:
       description: Atlas Phase 5, S5.1 — leakage checks for the invalid-bridge benchmark.
       externalDependencies: []
@@ -767,6 +809,29 @@ modules:
           imports:
             - AtlasVerdict
           reExport: true
+        - file: ./benchmark/baselines.js
+          imports:
+            - rankBySymbolOverlap
+            - rankByStructure
+            - rankByTextOverlap
+            - recallAtK
+          reExport: true
+        - file: ./benchmark/baselines.js
+          imports:
+            - CorpusRecord
+            - Ranking
+            - RetrievalQuery
+          reExport: true
+        - file: ./benchmark/backend-shapes.js
+          imports:
+            - parseBackendResponse
+          reExport: true
+        - file: ./benchmark/backend-shapes.js
+          imports:
+            - BackendShapeError
+            - BenchmarkBackendRequest
+            - BenchmarkBackendResponse
+          reExport: true
         - file: ./witness-artifact.js
           imports:
             - runWitnessRegistry
@@ -885,6 +950,11 @@ modules:
         - leakageKey
         - runAtlasCondition
         - runAtlasOnItem
+        - rankBySymbolOverlap
+        - rankByStructure
+        - rankByTextOverlap
+        - recallAtK
+        - parseBackendResponse
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WITNESS_REGISTRY
@@ -930,6 +1000,12 @@ modules:
         - LeakageCollision
         - VariantProblem
         - AtlasVerdict
+        - CorpusRecord
+        - Ranking
+        - RetrievalQuery
+        - BackendShapeError
+        - BenchmarkBackendRequest
+        - BenchmarkBackendResponse
         - WitnessResultRecord
         - WitnessResultsArtifact
         - RegisteredNumericWitness
@@ -1035,6 +1111,17 @@ modules:
         - runAtlasCondition
         - runAtlasOnItem
         - AtlasVerdict
+        - rankBySymbolOverlap
+        - rankByStructure
+        - rankByTextOverlap
+        - recallAtK
+        - CorpusRecord
+        - Ranking
+        - RetrievalQuery
+        - parseBackendResponse
+        - BackendShapeError
+        - BenchmarkBackendRequest
+        - BenchmarkBackendResponse
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WitnessResultRecord
@@ -15813,6 +15900,8 @@ dependencyGraph:
       files:
         - src/atlas/applicability.ts
         - src/atlas/association.ts
+        - src/atlas/benchmark/backend-shapes.ts
+        - src/atlas/benchmark/baselines.ts
         - src/atlas/benchmark/leakage.ts
         - src/atlas/benchmark/loader.ts
         - src/atlas/benchmark/run-atlas.ts
@@ -16172,18 +16261,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 340
+  totalTypeScriptFiles: 342
   totalModules: 11
-  totalLinesOfCode: 67268
-  totalExports: 2337
+  totalLinesOfCode: 67496
+  totalExports: 2353
   totalClasses: 58
-  totalInterfaces: 339
-  totalFunctions: 534
+  totalInterfaces: 344
+  totalFunctions: 539
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 601
-  totalReExports: 1143
-  totalTypeOnlyImports: 475
+  totalReExports: 1154
+  totalTypeOnlyImports: 477
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

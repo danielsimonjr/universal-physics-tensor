@@ -10,6 +10,12 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S5.3 — the deterministic baselines and recall@k.** `src/atlas/benchmark/baselines.ts` ranks by
+  text overlap, by symbol overlap, or by typed structure (dimension-renamed normal form), with
+  ties broken on id so reruns cannot reorder across the depth cut. `recallAtK` counts an
+  unranked query as a miss, and throws on an answer key with no correct reference.
+  `backend-shapes.ts` defines the out-of-process embeddings/LLM request and response shapes,
+  with a strict parser: a malformed answer is an error, never a default `abstain`. 11 tests.
 - **S5.2 — the atlas condition runner.** `src/atlas/benchmark/run-atlas.ts` applies the
   applicability checker, the composition table and the regime check to each item. It emits
   `accept`, `reject` or `abstain`, with the failure kind the firing rule maps to. **Accept is the

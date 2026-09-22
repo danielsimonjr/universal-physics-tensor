@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 337,
-    "totalTestFiles": 421,
-    "testedCount": 335,
+    "totalSourceFiles": 339,
+    "totalTestFiles": 422,
+    "testedCount": 337,
     "untestedCount": 2,
     "coveragePercent": "99.4"
   },
@@ -13,6 +13,8 @@
   "testedFiles": [
     "src/atlas/applicability.ts",
     "src/atlas/association.ts",
+    "src/atlas/benchmark/backend-shapes.ts",
+    "src/atlas/benchmark/baselines.ts",
     "src/atlas/benchmark/leakage.ts",
     "src/atlas/benchmark/loader.ts",
     "src/atlas/benchmark/run-atlas.ts",
@@ -354,6 +356,12 @@
     "src/atlas/association.ts": [
       "tests/atlas/association.test.ts",
       "tests/composition/poster-source.test.ts"
+    ],
+    "src/atlas/benchmark/backend-shapes.ts": [
+      "tests/atlas/benchmark-baselines.test.ts"
+    ],
+    "src/atlas/benchmark/baselines.ts": [
+      "tests/atlas/benchmark-baselines.test.ts"
     ],
     "src/atlas/benchmark/leakage.ts": [
       "tests/atlas/benchmark.test.ts"
@@ -3717,6 +3725,7 @@
     ],
     "src/dimensional/ast-builders.ts": [
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark-baselines.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/models.test.ts",
@@ -3735,6 +3744,7 @@
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark-baselines.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/diffusion.test.ts",
@@ -5172,6 +5182,12 @@
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/bridges-coarse.ts"
+    ],
+    "tests/atlas/benchmark-baselines.test.ts": [
+      "src/atlas/benchmark/baselines.ts",
+      "src/atlas/benchmark/backend-shapes.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts"
     ],
     "tests/atlas/benchmark-run-atlas.test.ts": [
       "src/atlas/benchmark/run-atlas.ts",

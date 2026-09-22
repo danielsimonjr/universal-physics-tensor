@@ -113,6 +113,19 @@ export { checkRenamedVariants, findCrossSplitLeakage, leakageKey } from './bench
 export type { LeakageCollision, VariantProblem } from './benchmark/leakage.js';
 export { runAtlasCondition, runAtlasOnItem } from './benchmark/run-atlas.js';
 export type { AtlasVerdict } from './benchmark/run-atlas.js';
+export {
+  rankBySymbolOverlap,
+  rankByStructure,
+  rankByTextOverlap,
+  recallAtK,
+} from './benchmark/baselines.js';
+export type { CorpusRecord, Ranking, RetrievalQuery } from './benchmark/baselines.js';
+export { parseBackendResponse } from './benchmark/backend-shapes.js';
+export type {
+  BackendShapeError,
+  BenchmarkBackendRequest,
+  BenchmarkBackendResponse,
+} from './benchmark/backend-shapes.js';
 
 export { runWitnessRegistry, artifactPassingWitnessIds } from './witness-artifact.js';
 export type { WitnessResultRecord, WitnessResultsArtifact } from './witness-artifact.js';

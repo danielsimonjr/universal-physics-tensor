@@ -135,3 +135,19 @@ is a question, never a rejection. A weaker claim that is still true must not be 
 **Failure-kind naming is a mapping, and it is only as good as the mapping.** Dimensional
 inconsistency is reported as `notation-collision`, its commonest cause. The scorer grades
 "rejected" and "named the right kind" separately (S5.3).
+
+## 7. Baselines (S5.3) — as built
+
+`src/atlas/benchmark/baselines.ts` holds three deterministic retrieval baselines, in rising order
+of structure: word-token Jaccard, symbol-name Jaccard, and typed structural search. The
+structural search ranks an exact leakage-key match first and breaks ties on symbol overlap.
+`recallAtK` scores them. Every ranking breaks ties on the reference id, so a rerun cannot
+reorder a tie across the depth cut. A query with no ranking counts as a MISS in the
+denominator. An answer key with no correct reference throws, and an empty truth set yields NaN,
+never a flattering number. The tests pin the point of the ladder: symbol matching misses a
+renamed claim, and structural search finds it.
+
+`backend-shapes.ts` holds only the request and response shapes for embeddings and LLMs, which run
+out of process through the probe's NDJSON worker protocol. It also holds a strict parser: **a
+malformed response is an error, never a default**. An outcome defaulted to `abstain` would credit a
+broken worker with the benchmark's preferred behaviour.
