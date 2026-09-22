@@ -1,0 +1,441 @@
+{
+  "$schema": "../schemas/atlas-record.v0.json",
+  "schemaVersion": "0",
+  "packageVersion": "0.45.2",
+  "family": "diffusion",
+  "models": [
+    {
+      "id": "model-random-walk",
+      "family": "diffusion",
+      "stateSpace": "P(n, k): probability at lattice site n ∈ ℤ after k ∈ ℕ steps",
+      "dynamics": "P(n, k+1) = ½ P(n−1, k) + ½ P(n+1, k), sites Δx apart, steps Δt apart",
+      "observables": [
+        "P(n, k)",
+        "mean-square displacement ⟨x²⟩"
+      ],
+      "parameters": [
+        {
+          "name": "dx",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "dt",
+          "dim": {
+            "L": 0,
+            "M": 0,
+            "T": 1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-fick",
+      "family": "diffusion",
+      "stateSpace": "c(x, t), x ∈ ℝ",
+      "dynamics": "∂c/∂t = D ∂²c/∂x² (Fick’s second law)",
+      "observables": [
+        "c(x, t)",
+        "total amount ∫c dx",
+        "variance of c"
+      ],
+      "parameters": [
+        {
+          "name": "D",
+          "dim": {
+            "L": 2,
+            "M": 0,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "ell",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-heat",
+      "family": "diffusion",
+      "stateSpace": "T(x, t), x ∈ ℝ",
+      "dynamics": "ρ c_p ∂T/∂t = κ ∂²T/∂x²",
+      "observables": [
+        "T(x, t)",
+        "heat content ∫ρ c_p T dx"
+      ],
+      "parameters": [
+        {
+          "name": "kappa",
+          "dim": {
+            "L": 1,
+            "M": 1,
+            "T": -3,
+            "I": 0,
+            "Theta": -1,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "rho",
+          "dim": {
+            "L": -3,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "cp",
+          "dim": {
+            "L": 2,
+            "M": 0,
+            "T": -2,
+            "I": 0,
+            "Theta": -1,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "ell",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [
+        "CE-thermal-diffusivity"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-schrodinger-free",
+      "family": "diffusion",
+      "stateSpace": "ψ(x, t) ∈ ℂ, x ∈ ℝ",
+      "dynamics": "i ħ ∂ψ/∂t = −(ħ²/2m) ∂²ψ/∂x²",
+      "observables": [
+        "|ψ|²",
+        "position spread σx"
+      ],
+      "parameters": [
+        {
+          "name": "hbar",
+          "dim": {
+            "L": 2,
+            "M": 1,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "m",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    }
+  ],
+  "bridges": [
+    {
+      "id": "ab-walk-diffusion",
+      "relation": "coarse-graining",
+      "premises": [
+        "model-random-walk"
+      ],
+      "conclusion": "model-fick",
+      "transformation": "P(n, k)/(2Δx) ↦ c(x = nΔx, t = kΔt), with the closure D = Δx²/(2Δt)",
+      "preserves": [
+        "mean-square displacement ⟨x²⟩ = 2Dt, exactly at every step",
+        "total probability",
+        "the Gaussian long-time profile"
+      ],
+      "doesNotPreserve": [
+        "the lattice spacing Δx and the step Δt as independent scales — only Δx²/Δt survives",
+        "parity: after an even number of steps only even sites are occupied",
+        "the finite propagation speed Δx/Δt: diffusion is positive everywhere at once"
+      ],
+      "sideConditions": [
+        "the closure D = Δx²/(2Δt) is held fixed as Δx, Δt → 0",
+        "many steps: Δt/t ≪ 1",
+        "symmetric, unbiased steps"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [
+          {
+            "group": "dt · t^-1",
+            "op": "<=",
+            "bound": 0.01,
+            "alias": "Δt/t ≪ 1 (machine form ≤ 0.01, the coarse resolution WD1 measures)"
+          }
+        ],
+        "groupDefinitions": {
+          "dt · t^-1": {
+            "exponents": {
+              "D": 0,
+              "dt": 1,
+              "dx": 0,
+              "t": -1
+            },
+            "formula": "dt · t^-1"
+          },
+          "dx^2 · dt^-1 · D^-1": {
+            "exponents": {
+              "D": -1,
+              "dt": -1,
+              "dx": 2,
+              "t": 0
+            },
+            "formula": "dx^2 · dt^-1 · D^-1"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "After 100 steps the walker cannot be more than 100 sites from the origin, so its density at site 101 is exactly 0, while the diffusion kernel there is positive: the coarse-grained model has no light cone.",
+          "witness": "WD1b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WD1",
+          "kind": "numeric",
+          "test": "tests/atlas/diffusion.test.ts",
+          "tolerance": "density at the origin within 1e-4 of (4πDt)^-1/2 at 1000 steps; error shrinks with refinement"
+        },
+        {
+          "id": "WD1b",
+          "kind": "numeric",
+          "test": "tests/atlas/diffusion.test.ts",
+          "tolerance": "walk density exactly 0 beyond the light cone while the kernel is > 0"
+        }
+      ],
+      "citations": [
+        "Einstein, Ann. Phys. 17 (1905) 549 - Brownian motion; the mean-square displacement grows as 2Dt",
+        "Feller, An Introduction to Probability Theory and Its Applications, Vol. I - the symmetric random walk and the de Moivre-Laplace limit"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-heat-diffusion",
+      "relation": "exact-equivalence",
+      "premises": [
+        "model-heat"
+      ],
+      "conclusion": "model-fick",
+      "transformation": "T ↦ c, κ/(ρ c_p) ↦ D",
+      "inverse": "c ↦ T, D ↦ κ/(ρ c_p) (any κ, ρ, c_p with that ratio)",
+      "preserves": [
+        "the solution operator: equal initial data give equal solutions at every t",
+        "Fourier-mode decay rates D q²",
+        "the Fourier number D t/ℓ²"
+      ],
+      "doesNotPreserve": [
+        "physical interpretation: temperature versus concentration",
+        "units",
+        "the separate values of κ, ρ and c_p — only their ratio survives"
+      ],
+      "sideConditions": [
+        "homogeneous isotropic medium: κ, ρ, c_p constant",
+        "no sources and no advection (the Péclet number is not applicable to either model)"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {
+          "kappa · rho^-1 · cp^-1 · D^-1": {
+            "exponents": {
+              "D": -1,
+              "cp": -1,
+              "ell": 0,
+              "kappa": 1,
+              "rho": -1,
+              "t": 0
+            },
+            "formula": "kappa · rho^-1 · cp^-1 · D^-1"
+          },
+          "kappa · rho^-1 · cp^-1 · ell^-2 · t": {
+            "exponents": {
+              "D": 0,
+              "cp": -1,
+              "ell": -2,
+              "kappa": 1,
+              "rho": -1,
+              "t": 1
+            },
+            "formula": "kappa · rho^-1 · cp^-1 · ell^-2 · t"
+          }
+        }
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WD2",
+          "kind": "numeric",
+          "test": "tests/atlas/diffusion.test.ts",
+          "tolerance": "FTCS heat solution at x = 0 within 5e-4 of the Fick solution with D = κ/(ρ c_p) at 160 cells"
+        },
+        {
+          "id": "WD2s",
+          "kind": "symbolic",
+          "test": "tests/atlas/witness-results.test.ts",
+          "tolerance": "CAS: κq²/(ρ c_p) under κ ↦ D ρ c_p minus D q² simplifies to literal 0"
+        }
+      ],
+      "citations": [
+        "Carslaw & Jaeger, Conduction of Heat in Solids - the heat equation and the thermal diffusivity κ/(ρ c_p)",
+        "Crank, The Mathematics of Diffusion - Fick’s second law and its identity with the heat-conduction equation"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-schrodinger-diffusion",
+      "relation": "analytic-continuation",
+      "premises": [
+        "model-schrodinger-free"
+      ],
+      "conclusion": "model-fick",
+      "transformation": "t = −iτ: ψ(x, −iτ) ↦ c(x, τ), with D = ħ/(2m)",
+      "preserves": [
+        "linearity",
+        "the Gaussian kernel structure, with a spread growing linearly in time"
+      ],
+      "doesNotPreserve": [
+        "unitarity: ∫|ψ|² dx is conserved, ∫φ² dx decays",
+        "oscillation and phase: the oscillating propagator becomes a decaying Gaussian",
+        "time-reversal symmetry: diffusion is irreversible"
+      ],
+      "sideConditions": [
+        "V = 0 (free particle)",
+        "the continuation is formal: real Schrödinger time maps to imaginary diffusion time"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {
+          "hbar · m^-1 · D^-1": {
+            "exponents": {
+              "D": -1,
+              "hbar": 1,
+              "m": -1
+            },
+            "formula": "hbar · m^-1 · D^-1"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "The squared norm of the Wick-rotated kernel falls from 1.755 at τ = 0 to 0.580 at τ = 4 (ħ = 1, m = 0.5, s = 0.7), where the Schrödinger norm would be conserved.",
+          "witness": "WD3b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "W5",
+          "kind": "numeric",
+          "test": "tests/atlas/quantum-support.test.ts",
+          "tolerance": "coefficients ħ/2m, −1, 1/ħ; free-kernel sup-norm residual ratio of ∂τφ = (ħ/2m)∂²φ below 1e-4"
+        },
+        {
+          "id": "WD3",
+          "kind": "numeric",
+          "test": "tests/atlas/diffusion.test.ts",
+          "tolerance": "finite-difference residual of ∂τφ = (ħ/2m)∂²φ below 1e-3 at h = 0.025"
+        },
+        {
+          "id": "WD3b",
+          "kind": "numeric",
+          "test": "tests/atlas/diffusion.test.ts",
+          "tolerance": "∫φ² dx matches s²√(2π/σ(τ)) within 1e-9 and decreases in τ"
+        }
+      ],
+      "citations": [
+        "Feynman & Hibbs, Quantum Mechanics and Path Integrals - the free-particle kernel and its imaginary-time form",
+        "Nelson, J. Math. Phys. 5 (1964) 332 - Feynman integrals and the Schrödinger equation (the analytic continuation to the heat kernel)"
+      ],
+      "reviewStatus": "proposed"
+    }
+  ],
+  "rejections": []
+}

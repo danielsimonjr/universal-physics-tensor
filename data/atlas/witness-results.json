@@ -14,6 +14,49 @@
       "kind": "symbolic",
       "status": "checked",
       "detail": "lhs − rhs simplified to literal 0."
+    },
+    {
+      "recordId": "ab-walk-diffusion",
+      "witnessId": "WD1",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.00007051487111636723 is within tolerance 0.0001, and refinement reduced the error by a factor of 9.988594363526142.",
+      "convergence": {
+        "coarse": 0.000704344444177718,
+        "fine": 0.00007051487111636723,
+        "ratio": 9.988594363526142
+      }
+    },
+    {
+      "recordId": "ab-heat-diffusion",
+      "witnessId": "WD2",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.00011182665624459576 is within tolerance 0.0005, and refinement reduced the error by a factor of 4.002480589030518.",
+      "convergence": {
+        "coarse": 0.0004475840209551829,
+        "fine": 0.00011182665624459576,
+        "ratio": 4.002480589030518
+      }
+    },
+    {
+      "recordId": "ab-heat-diffusion",
+      "witnessId": "WD2s",
+      "kind": "symbolic",
+      "status": "checked",
+      "detail": "lhs − rhs simplified to literal 0."
+    },
+    {
+      "recordId": "ab-schrodinger-diffusion",
+      "witnessId": "WD3",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.0002027397470084069 is within tolerance 0.001, and refinement reduced the error by a factor of 16.110434012273277.",
+      "convergence": {
+        "coarse": 0.003266225315843918,
+        "fine": 0.0002027397470084069,
+        "ratio": 16.110434012273277
+      }
     }
   ]
 }

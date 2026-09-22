@@ -10,6 +10,19 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S4.4 — the diffusion family.** `src/atlas/diffusion/` defines four models (random walk, Fick,
+  heat, free Schrödinger) and three bridges of three relation types: `ab-walk-diffusion`
+  (coarse-graining, closure D = Δx²/(2Δt)), `ab-heat-diffusion` (exact equivalence,
+  κ/(ρc_p) ↦ D), and `ab-schrodinger-diffusion` (analytic continuation, t = −iτ, reusing W5).
+  Numeric witnesses WD1, WD2 and WD3 run at two resolutions into
+  `data/atlas/witness-results.json` with their convergence ratios (9.99, 4.00, 16.1). WD2s is a
+  CAS check of the decay-rate dictionary. WD1b and WD3b witness what each bridge discards: the
+  walk's light cone, and unitarity. Every tolerance was set after measurement, and every numeric
+  witness has a negative control. The Fourier number is derived. Péclet is stated as NOT
+  APPLICABLE, because no model has advection, and no group is invented for it.
+  **Whole-atlas gates now iterate `ATLAS_FAMILIES`**: the evidence rule, admission, and
+  `bun run atlas:json`, which now writes one artifact per family (`data/atlas/diffusion.json`
+  is new, and `oscillators.json` is reproduced byte-for-byte).
 - **S4.3 — `formalRef`, the witness-results artifact, and the two derived tags.**
   `FormalRef` / `FormalFidelity` in `src/atlas/types.ts` and optional `AtlasBridge.formalRef`.
   `formally-proved` is derived iff `formalRef.fidelity !== 'unreviewed'`, so an unreviewed

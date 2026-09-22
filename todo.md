@@ -284,6 +284,9 @@ warning-silencing, not debug logging).
       reason for every non-answer, two-resolution `convergence`. **S4.3** — `FormalRef`, the
       committed `data/atlas/witness-results.json` (Lead-run `bun run atlas:witness-results`),
       `formally-proved` / `symbolically-checked` derived only, file allow-list lint.
+      **S4.4** — `src/atlas/diffusion/` (4 models, 3 bridges: coarse-graining, exact-equivalence,
+      analytic-continuation), witnesses WD1–WD3 with measured convergence; gates iterate
+      `ATLAS_FAMILIES`.
       **Standing trap for anyone picking this up:** the plan says the canonical-equation count
       "lives only in `CHANGELOG.md`, `ROADMAP.md` and the architecture docs". **It is in 22
       files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,

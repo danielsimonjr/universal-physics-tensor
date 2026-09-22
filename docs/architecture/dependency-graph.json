@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 324,
+    "totalFiles": 330,
     "totalModules": 11,
-    "totalExports": 2211
+    "totalExports": 2243
   },
   "entryPoints": [
     {
@@ -278,6 +278,214 @@
           "NO_PASSING_WITNESSES"
         ]
       },
+      "src/atlas/diffusion/bridges.ts": {
+        "description": "Atlas Phase 4, S4.4 — the three bridges of the diffusion family.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "LENGTH",
+              "MASS",
+              "ACTION",
+              "TIME"
+            ]
+          },
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasBridge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./dimensions.js",
+            "imports": [
+              "DENSITY",
+              "DIFFUSIVITY",
+              "SPECIFIC_HEAT",
+              "THERMAL_CONDUCTIVITY"
+            ]
+          },
+          {
+            "file": "./models.js",
+            "imports": [
+              "DIFFUSION_FAMILY_NAME"
+            ]
+          }
+        ],
+        "exports": [
+          "WALK_MAX_STEP_FRACTION",
+          "BRIDGE_WALK_DIFFUSION",
+          "BRIDGE_HEAT_DIFFUSION",
+          "BRIDGE_SCHRODINGER_DIFFUSION",
+          "DIFFUSION_BRIDGES"
+        ],
+        "constants": [
+          "WALK_MAX_STEP_FRACTION",
+          "BRIDGE_WALK_DIFFUSION",
+          "BRIDGE_HEAT_DIFFUSION",
+          "BRIDGE_SCHRODINGER_DIFFUSION",
+          "DIFFUSION_BRIDGES"
+        ]
+      },
+      "src/atlas/diffusion/dimensions.ts": {
+        "description": "Dimension constants the diffusion family needs that the canonical entry",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/ast-builders.js",
+            "imports": [
+              "dim"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "DIFFUSIVITY",
+          "THERMAL_CONDUCTIVITY",
+          "DENSITY",
+          "SPECIFIC_HEAT"
+        ],
+        "constants": [
+          "DIFFUSIVITY",
+          "THERMAL_CONDUCTIVITY",
+          "DENSITY",
+          "SPECIFIC_HEAT"
+        ]
+      },
+      "src/atlas/diffusion/index.ts": {
+        "description": "Diffusion-family assembly (Atlas Phase 4, S4.4).",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../oscillators/index.js",
+            "imports": [
+              "AtlasFamily"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./bridges.js",
+            "imports": [
+              "DIFFUSION_BRIDGES"
+            ]
+          },
+          {
+            "file": "./models.js",
+            "imports": [
+              "DIFFUSION_FAMILY_NAME",
+              "DIFFUSION_MODELS"
+            ]
+          }
+        ],
+        "exports": [
+          "DIFFUSION_FAMILY"
+        ],
+        "constants": [
+          "DIFFUSION_FAMILY"
+        ]
+      },
+      "src/atlas/diffusion/models.ts": {
+        "description": "Atlas Phase 4, S4.4 — the four models of the diffusion family.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/buckingham.js",
+            "imports": [
+              "DimensionalVariable"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "ACTION",
+              "LENGTH",
+              "MASS",
+              "TIME"
+            ]
+          },
+          {
+            "file": "../model.js",
+            "imports": [
+              "AtlasModel"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "./dimensions.js",
+            "imports": [
+              "DENSITY",
+              "DIFFUSIVITY",
+              "SPECIFIC_HEAT",
+              "THERMAL_CONDUCTIVITY"
+            ]
+          }
+        ],
+        "exports": [
+          "DIFFUSION_FAMILY_NAME",
+          "DIFFUSION_MODELS",
+          "getDiffusionModel"
+        ],
+        "functions": [
+          "getDiffusionModel"
+        ],
+        "constants": [
+          "DIFFUSION_FAMILY_NAME",
+          "DIFFUSION_MODELS"
+        ]
+      },
+      "src/atlas/diffusion/numerics.ts": {
+        "description": "Atlas Phase 4, S4.4 — the numerics behind the diffusion family's witnesses.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "diffusionKernel",
+          "randomWalkCentralDensity",
+          "randomWalkDensity",
+          "gaussianSpread",
+          "heatFtcsCentre",
+          "wickHeatResidual",
+          "wickKernelSquaredNorm"
+        ],
+        "interfaces": [
+          "HeatFixture",
+          "WickFixture"
+        ],
+        "functions": [
+          "diffusionKernel",
+          "randomWalkCentralDensity",
+          "randomWalkDensity",
+          "gaussianSpread",
+          "heatFtcsCentre",
+          "wickHeatResidual",
+          "wickKernelSquaredNorm"
+        ]
+      },
       "src/atlas/error-algebra.ts": {
         "description": "The Phase 0 error algebra: composition of Lipschitz-plus-offset bounds.",
         "externalDependencies": [],
@@ -305,6 +513,38 @@
         ],
         "constants": [
           "IDENTITY_BOUND"
+        ]
+      },
+      "src/atlas/families.ts": {
+        "description": "Every registered atlas family, in the order they were built.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "./diffusion/index.js",
+            "imports": [
+              "DIFFUSION_FAMILY"
+            ]
+          },
+          {
+            "file": "./oscillators/index.js",
+            "imports": [
+              "OSCILLATOR_FAMILY"
+            ]
+          },
+          {
+            "file": "./oscillators/index.js",
+            "imports": [
+              "AtlasFamily"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "ATLAS_FAMILIES"
+        ],
+        "constants": [
+          "ATLAS_FAMILIES"
         ]
       },
       "src/atlas/index.ts": {
@@ -463,6 +703,38 @@
             "reExport": true
           },
           {
+            "file": "./families.js",
+            "imports": [
+              "ATLAS_FAMILIES"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diffusion/index.js",
+            "imports": [
+              "DIFFUSION_FAMILY"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diffusion/bridges.js",
+            "imports": [
+              "BRIDGE_HEAT_DIFFUSION",
+              "BRIDGE_SCHRODINGER_DIFFUSION",
+              "BRIDGE_WALK_DIFFUSION",
+              "DIFFUSION_BRIDGES"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./diffusion/models.js",
+            "imports": [
+              "DIFFUSION_MODELS",
+              "getDiffusionModel"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./witness-artifact.js",
             "imports": [
               "runWitnessRegistry",
@@ -592,6 +864,14 @@
           "blockingFindings",
           "checkApplicability",
           "passingWitnessIds",
+          "ATLAS_FAMILIES",
+          "DIFFUSION_FAMILY",
+          "BRIDGE_HEAT_DIFFUSION",
+          "BRIDGE_SCHRODINGER_DIFFUSION",
+          "BRIDGE_WALK_DIFFUSION",
+          "DIFFUSION_BRIDGES",
+          "DIFFUSION_MODELS",
+          "getDiffusionModel",
           "runWitnessRegistry",
           "artifactPassingWitnessIds",
           "WITNESS_REGISTRY",
@@ -704,6 +984,14 @@
           "UnresolvedReason",
           "WitnessRunResult",
           "WitnessStatus",
+          "ATLAS_FAMILIES",
+          "DIFFUSION_FAMILY",
+          "BRIDGE_HEAT_DIFFUSION",
+          "BRIDGE_SCHRODINGER_DIFFUSION",
+          "BRIDGE_WALK_DIFFUSION",
+          "DIFFUSION_BRIDGES",
+          "DIFFUSION_MODELS",
+          "getDiffusionModel",
           "runWitnessRegistry",
           "artifactPassingWitnessIds",
           "WitnessResultRecord",
@@ -1692,6 +1980,7 @@
             "file": "../dimensional/types.js",
             "imports": [
               "DIMENSIONLESS",
+              "LENGTH",
               "MASS"
             ]
           },
@@ -1712,6 +2001,39 @@
             ]
           },
           {
+            "file": "./diffusion/numerics.js",
+            "imports": [
+              "diffusionKernel",
+              "gaussianSpread",
+              "heatFtcsCentre",
+              "randomWalkCentralDensity",
+              "wickHeatResidual"
+            ]
+          },
+          {
+            "file": "./diffusion/numerics.js",
+            "imports": [
+              "HeatFixture",
+              "WickFixture"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./diffusion/dimensions.js",
+            "imports": [
+              "DENSITY",
+              "DIFFUSIVITY",
+              "SPECIFIC_HEAT",
+              "THERMAL_CONDUCTIVITY"
+            ]
+          },
+          {
+            "file": "./witnesses/quantum-support.js",
+            "imports": [
+              "wickRotatedFreeKernel"
+            ]
+          },
+          {
             "file": "./witness-numeric.js",
             "imports": [
               "NumericWitnessSpec"
@@ -1727,6 +2049,9 @@
           }
         ],
         "exports": [
+          "WD1_FIXTURE",
+          "WD2_FIXTURE",
+          "WD3_FIXTURE",
           "WITNESS_REGISTRY"
         ],
         "interfaces": [
@@ -1734,6 +2059,9 @@
           "RegisteredNumericWitness"
         ],
         "constants": [
+          "WD1_FIXTURE",
+          "WD2_FIXTURE",
+          "WD3_FIXTURE",
           "WITNESS_REGISTRY"
         ]
       },
@@ -21652,7 +21980,13 @@
           "src/atlas/coverage.ts",
           "src/atlas/derivation.ts",
           "src/atlas/derive-evidence.ts",
+          "src/atlas/diffusion/bridges.ts",
+          "src/atlas/diffusion/dimensions.ts",
+          "src/atlas/diffusion/index.ts",
+          "src/atlas/diffusion/models.ts",
+          "src/atlas/diffusion/numerics.ts",
           "src/atlas/error-algebra.ts",
+          "src/atlas/families.ts",
           "src/atlas/index.ts",
           "src/atlas/model.ts",
           "src/atlas/oscillators/bridges-coarse.ts",
@@ -22024,18 +22358,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 324,
+    "totalTypeScriptFiles": 330,
     "totalModules": 11,
-    "totalLinesOfCode": 64197,
-    "totalExports": 2211,
+    "totalLinesOfCode": 64938,
+    "totalExports": 2243,
     "totalClasses": 57,
-    "totalInterfaces": 327,
-    "totalFunctions": 502,
+    "totalInterfaces": 329,
+    "totalFunctions": 510,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 540,
-    "totalReExports": 1111,
-    "totalTypeOnlyImports": 449,
+    "totalConstants": 556,
+    "totalReExports": 1119,
+    "totalTypeOnlyImports": 456,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,

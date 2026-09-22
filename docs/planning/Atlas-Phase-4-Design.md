@@ -204,3 +204,30 @@ finished.
 `formalRef` and is reported as such. Five is a target, not a quota; `fidelity: 'unreviewed'`
 exists precisely so an unreviewed reference can be recorded without earning a tag, and
 `formally-proved` is unreachable from it by construction.
+
+**As built (S4.4) — the diffusion family** (`src/atlas/diffusion/`, `data/atlas/diffusion.json`).
+Four models: random walk, Fick, heat, free Schrödinger. Three bridges with three relation types:
+
+| Bridge | Relation | Witnesses (measured) |
+|---|---|---|
+| `ab-walk-diffusion` | coarse-graining | WD1: walk density at the origin → (4πDt)^-1/2; error 7.04e-4 → 7.05e-5 for 100 → 1000 steps (ratio 9.99). WD1b: exactly 0 outside the light cone |
+| `ab-heat-diffusion` | exact-equivalence | WD2: FTCS heat solution in κ, ρ, c_p vs Fick with D = κ/(ρc_p); 4.48e-4 → 1.12e-4 for 80 → 160 cells (ratio 4.00). WD2s: CAS |
+| `ab-schrodinger-diffusion` | analytic-continuation | W5 (reused), WD3: residual of ∂τφ = (ħ/2m)∂²φ, 3.27e-3 → 2.03e-4 for h 0.1 → 0.025 (ratio 16.1). WD3b: ∫φ² decays |
+
+- **Every tolerance was set AFTER measurement** at three or more resolutions, and each numeric
+  witness has a NEGATIVE CONTROL. The wrong heat dictionary D = κρ/c_p misses by 0.32 (650× the
+  tolerance). The wrong Wick coefficient ħ/m leaves a residual above 0.1 however small h gets.
+- **A leak removed before it landed:** the first FTCS solver took its Dirichlet edge values from
+  the Fick solution with D = κ/(ρc_p). That fed the claim under test into the side meant to be
+  independent of it. The edges are now 0. The true edge value is 5e-8, and the measured errors
+  did not change in any printed digit.
+- **Fourier number** is derived on the heat bridge (`kappa · rho^-1 · cp^-1 · ell^-2 · t`).
+  **Péclet is NOT applicable:** no model has an advection velocity. That is stated as a side
+  condition, and no group is invented for it.
+- **Canonical references:** only `model-heat` cites one (`CE-thermal-diffusivity`, dimension-
+  checked in the test). The registry has no Fick, heat-PDE, random-walk or Schrödinger entry, and
+  the other models carry `[]` rather than a nearby entry that states something else. No canonical
+  entry was added, so the count gate is untouched.
+- **Whole-atlas gates now iterate `ATLAS_FAMILIES`** (`src/atlas/families.ts`): the evidence rule,
+  admission, and the per-family JSON artifacts (`bun run atlas:json` now writes one file per
+  family). A gate that named the oscillator family would have passed forever over the new one.

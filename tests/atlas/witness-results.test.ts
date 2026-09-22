@@ -22,6 +22,7 @@ import { WITNESS_REGISTRY } from '../../src/atlas/witness-specs.js';
 import type { RegisteredWitness } from '../../src/atlas/witness-specs.js';
 import { deriveEvidence, NO_PASSING_WITNESSES } from '../../src/atlas/derive-evidence.js';
 import { BRIDGE_DAMPED_RLC, BRIDGE_SPRING_LC } from '../../src/atlas/oscillators/bridges-exact.js';
+import { BRIDGE_HEAT_DIFFUSION } from '../../src/atlas/diffusion/bridges.js';
 import type { FormalFidelity } from '../../src/atlas/types.js';
 import { isSimplifierAvailable } from '../../src/composition/expr-simplify.js';
 import { sym } from '../../src/dimensional/ast-builders.js';
@@ -93,6 +94,25 @@ describe('W1s / W2s — the spring ↔ circuit dictionary, checked by the CAS', 
       expect(r.reason).toBe('peer-absent');
     }
     expect(artifactPassingWitnessIds(absent, 'ab-spring-lc').size).toBe(0);
+  });
+});
+
+describe('WD2s — the heat ↔ Fick dictionary on the Fourier decay rate, checked by the CAS', () => {
+  it('WD2s is recorded as checked, and earns ab-heat-diffusion symbolically-checked', () => {
+    const ids = artifactPassingWitnessIds(committed, 'ab-heat-diffusion');
+    expect(ids.has('WD2s')).toBe(true);
+    expect(deriveEvidence(BRIDGE_HEAT_DIFFUSION, ids).has('symbolically-checked')).toBe(true);
+  });
+});
+
+describe('numeric rows carry their convergence record', () => {
+  it('every numeric row that ran records coarse, fine and ratio, and a checked one has ratio > 1', () => {
+    const numeric = committed.results.filter((r) => r.kind === 'numeric');
+    expect(numeric.length).toBeGreaterThan(0);
+    for (const r of numeric) {
+      expect(r.convergence).toBeDefined();
+      if (r.status === 'checked') expect(r.convergence!.ratio).toBeGreaterThan(1);
+    }
   });
 });
 

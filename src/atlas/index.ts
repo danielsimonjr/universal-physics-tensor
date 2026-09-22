@@ -84,6 +84,16 @@ export type {
   WitnessStatus,
 } from './witness-result.js';
 
+export { ATLAS_FAMILIES } from './families.js';
+export { DIFFUSION_FAMILY } from './diffusion/index.js';
+export {
+  BRIDGE_HEAT_DIFFUSION,
+  BRIDGE_SCHRODINGER_DIFFUSION,
+  BRIDGE_WALK_DIFFUSION,
+  DIFFUSION_BRIDGES,
+} from './diffusion/bridges.js';
+export { DIFFUSION_MODELS, getDiffusionModel } from './diffusion/models.js';
+
 export { runWitnessRegistry, artifactPassingWitnessIds } from './witness-artifact.js';
 export type { WitnessResultRecord, WitnessResultsArtifact } from './witness-artifact.js';
 

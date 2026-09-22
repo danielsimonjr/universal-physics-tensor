@@ -27,6 +27,7 @@ import {
 import { MissingHorizonError } from '../../src/atlas/types.js';
 import type { AtlasBridge, Regime } from '../../src/atlas/types.js';
 import { OSCILLATOR_FAMILY } from '../../src/atlas/oscillators/index.js';
+import { ATLAS_FAMILIES } from '../../src/atlas/families.js';
 import {
   AB_PENDULUM_LINEAR,
   AB_DAMPED_MASSLESS,
@@ -344,6 +345,12 @@ describe('admitApproximation', () => {
     for (const bridge of OSCILLATOR_FAMILY.bridges) {
       expect(admitApproximation(bridge)).toBe(bridge);
     }
+  });
+
+  it('admits every bridge of EVERY registered family', () => {
+    const all = ATLAS_FAMILIES.flatMap((f) => f.bridges);
+    expect(all.length).toBeGreaterThan(OSCILLATOR_FAMILY.bridges.length);
+    for (const bridge of all) expect(admitApproximation(bridge)).toBe(bridge);
   });
 
   it('THROWS on an empty horizon', () => {

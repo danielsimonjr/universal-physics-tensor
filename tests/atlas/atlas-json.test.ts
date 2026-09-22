@@ -12,6 +12,7 @@ import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import { toAtlasJson } from '../../src/atlas/serialize.js';
 import { OSCILLATOR_FAMILY } from '../../src/atlas/oscillators/index.js';
+import { ATLAS_FAMILIES } from '../../src/atlas/families.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
@@ -51,5 +52,21 @@ describe('data/atlas/oscillators.json — committed artifact integrity', () => {
 
   it('FRESHNESS: the committed artifact deep-equals the live projection (re-run npm run atlas:json)', () => {
     expect(artifact).toEqual(live);
+  });
+});
+
+describe('every registered family has a committed, fresh artifact', () => {
+  it.each(ATLAS_FAMILIES.map((f) => [f.family, f] as const))(
+    'data/atlas/%s.json deep-equals the live projection (re-run bun run atlas:json)',
+    (name, family) => {
+      const path = resolve(here, `../../data/atlas/${name}.json`);
+      const committedFamily = JSON.parse(readFileSync(path, 'utf-8')) as unknown;
+      const liveFamily = JSON.parse(JSON.stringify(toAtlasJson(family, pkg.version))) as unknown;
+      expect(committedFamily).toEqual(liveFamily);
+    },
+  );
+
+  it('the family list is not just the oscillators (a one-family loop would prove nothing new)', () => {
+    expect(ATLAS_FAMILIES.map((f) => f.family)).toContain('diffusion');
   });
 });

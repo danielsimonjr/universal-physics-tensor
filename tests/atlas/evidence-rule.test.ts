@@ -23,7 +23,7 @@ import { readFileSync, readdirSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve } from 'node:path';
 import type { AtlasBridge, AtlasRejection, Witness } from '../../src/atlas/types.js';
-import { OSCILLATOR_FAMILY } from '../../src/atlas/oscillators/index.js';
+import { ATLAS_FAMILIES } from '../../src/atlas/families.js';
 
 /** The closed list of Phase 0 witness ids (design note §6). */
 const KNOWN_WITNESSES: readonly string[] = [
@@ -46,6 +46,14 @@ const KNOWN_WITNESSES: readonly string[] = [
   // data/atlas/witness-results.json and named in tests/atlas/witness-results.test.ts.
   'W1s',
   'W2s',
+  // Phase 4 S4.4 — the diffusion family (tests/atlas/diffusion.test.ts) and its
+  // CAS witness (tests/atlas/witness-results.test.ts).
+  'WD1',
+  'WD1b',
+  'WD2',
+  'WD2s',
+  'WD3',
+  'WD3b',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));
@@ -72,8 +80,10 @@ const namedInTitle = (id: string, title: string): boolean =>
 const witnessNamedIn = (w: Witness): boolean =>
   (TITLES.get(w.test.replace(/\\/g, '/')) ?? []).some((t) => namedInTitle(w.id, t));
 
-const bridges: readonly AtlasBridge[] = OSCILLATOR_FAMILY.bridges;
-const rejections: readonly AtlasRejection[] = OSCILLATOR_FAMILY.rejections;
+// EVERY registered family, not one by name: a gate that named the oscillator
+// family would pass forever over a family it never read.
+const bridges: readonly AtlasBridge[] = ATLAS_FAMILIES.flatMap((f) => f.bridges);
+const rejections: readonly AtlasRejection[] = ATLAS_FAMILIES.flatMap((f) => f.rejections);
 const records: ReadonlyArray<{ id: string; witnesses: readonly Witness[] }> = [
   ...bridges,
   ...rejections,
@@ -113,7 +123,7 @@ describe('evidence-rule — every tag is witness-backed', () => {
 });
 
 describe('evidence-rule — every witness id is known and named by a test', () => {
-  it('uses only ids from the closed list of fifteen', () => {
+  it('uses only ids from the closed list', () => {
     const unknown: string[] = [];
     for (const r of records) {
       for (const w of r.witnesses) {

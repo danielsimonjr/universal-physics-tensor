@@ -24,7 +24,7 @@
 
 import type { ExprNode } from '../dimensional/ast-types.js';
 import { sym } from '../dimensional/ast-builders.js';
-import { DIMENSIONLESS, MASS } from '../dimensional/types.js';
+import { DIMENSIONLESS, LENGTH, MASS } from '../dimensional/types.js';
 import { substitute } from '../composition/expr-subst.js';
 import {
   CAPACITANCE,
@@ -33,6 +33,16 @@ import {
   RESISTANCE,
   SPRING_CONSTANT,
 } from './oscillators/dimensions.js';
+import {
+  diffusionKernel,
+  gaussianSpread,
+  heatFtcsCentre,
+  randomWalkCentralDensity,
+  wickHeatResidual,
+} from './diffusion/numerics.js';
+import type { HeatFixture, WickFixture } from './diffusion/numerics.js';
+import { DENSITY, DIFFUSIVITY, SPECIFIC_HEAT, THERMAL_CONDUCTIVITY } from './diffusion/dimensions.js';
+import { wickRotatedFreeKernel } from './witnesses/quantum-support.js';
 import type { NumericWitnessSpec } from './witness-numeric.js';
 import type { SymbolicWitnessSpec } from './witness-symbolic.js';
 
@@ -94,6 +104,36 @@ const SPRING_TO_CIRCUIT: Readonly<Record<string, ExprNode>> = {
   b: R,
 };
 
+// ── Diffusion family (S4.4) ────────────────────────────────────────────────
+
+/** WD1 fixture: D and t, fixed while the walk is refined. @internal */
+export const WD1_FIXTURE = { D: 0.5, t: 2 } as const;
+
+/**
+ * WD2 fixture. κ, ρ and c_p are chosen so the heat equation's own variables
+ * are all different from 1 while κ/(ρ c_p) = 1: a dictionary that dropped or
+ * inverted a factor would move the answer.
+ *
+ * @internal
+ */
+export const WD2_FIXTURE: HeatFixture = {
+  kappa: 2,
+  rho: 4,
+  cp: 0.5,
+  s0: 0.05,
+  tEnd: 0.2,
+  halfWidth: 4,
+};
+
+/** WD3 fixture: an off-centre point, so no symmetry zeroes a derivative. @internal */
+export const WD3_FIXTURE: WickFixture = { hbar: 1, m: 0.5, s: 0.7, x: 0.3, tau: 0.4, h0: 0.1 };
+
+const kappa = sym('kappa', THERMAL_CONDUCTIVITY);
+const rho = sym('rho', DENSITY);
+const cp = sym('cp', SPECIFIC_HEAT);
+const D = sym('D', DIFFUSIVITY);
+const q = sym('q', { ...LENGTH, L: -1 });
+
 /**
  * Every witness the results artifact covers, in a fixed order (the artifact is
  * emitted in this order, so reordering is a reviewable diff, not churn).
@@ -121,6 +161,66 @@ export const WITNESS_REGISTRY: readonly RegisteredWitness[] = [
       id: 'W2s',
       lhs: applyDictionary(op('/', op('^', b, n(2)), op('*', n(4), m, k)), SPRING_TO_CIRCUIT),
       rhs: op('/', op('*', op('^', R, n(2)), C), op('*', n(4), L)),
+    },
+  },
+  {
+    // Coarse-graining: the walk's density at the origin converges to the
+    // diffusion kernel as the closure D = Δx²/(2Δt) is held and Δt → 0.
+    recordId: 'ab-walk-diffusion',
+    kind: 'numeric',
+    spec: {
+      id: 'WD1',
+      evaluate: (steps) => randomWalkCentralDensity(steps, WD1_FIXTURE.D, WD1_FIXTURE.t),
+      target: diffusionKernel(0, WD1_FIXTURE.t, WD1_FIXTURE.D),
+      coarseResolution: 100,
+      fineResolution: 1000,
+      tolerance: 1e-4,
+    },
+  },
+  {
+    // Exact equivalence: the HEAT equation, solved in κ, ρ, c_p, reproduces the
+    // FICK solution with D = κ/(ρ c_p).
+    recordId: 'ab-heat-diffusion',
+    kind: 'numeric',
+    spec: {
+      id: 'WD2',
+      evaluate: (cells) => heatFtcsCentre(cells, WD2_FIXTURE),
+      target: gaussianSpread(
+        0,
+        WD2_FIXTURE.tEnd,
+        WD2_FIXTURE.kappa / (WD2_FIXTURE.rho * WD2_FIXTURE.cp),
+        WD2_FIXTURE.s0,
+      ),
+      coarseResolution: 80,
+      fineResolution: 160,
+      tolerance: 5e-4,
+    },
+  },
+  {
+    // The heat side's Fourier-mode decay rate κq²/(ρ c_p), pushed through the
+    // inverse dictionary κ ↦ D ρ c_p, is the Fick side's D q².
+    recordId: 'ab-heat-diffusion',
+    kind: 'symbolic',
+    spec: {
+      id: 'WD2s',
+      lhs: applyDictionary(op('/', op('*', kappa, op('^', q, n(2))), op('*', rho, cp)), {
+        kappa: op('*', D, rho, cp),
+      }),
+      rhs: op('*', D, op('^', q, n(2))),
+    },
+  },
+  {
+    // Analytic continuation: the Wick-rotated free kernel satisfies the
+    // diffusion equation with D = ħ/(2m); the residual's target is zero.
+    recordId: 'ab-schrodinger-diffusion',
+    kind: 'numeric',
+    spec: {
+      id: 'WD3',
+      evaluate: (resolution) => wickHeatResidual(resolution, WD3_FIXTURE, wickRotatedFreeKernel),
+      target: 0,
+      coarseResolution: 1,
+      fineResolution: 4,
+      tolerance: 1e-3,
     },
   },
 ];

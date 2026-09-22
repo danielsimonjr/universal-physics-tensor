@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 321,
-    "totalTestFiles": 414,
-    "testedCount": 320,
+    "totalSourceFiles": 327,
+    "totalTestFiles": 415,
+    "testedCount": 326,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -17,7 +17,13 @@
     "src/atlas/coverage.ts",
     "src/atlas/derivation.ts",
     "src/atlas/derive-evidence.ts",
+    "src/atlas/diffusion/bridges.ts",
+    "src/atlas/diffusion/dimensions.ts",
+    "src/atlas/diffusion/index.ts",
+    "src/atlas/diffusion/models.ts",
+    "src/atlas/diffusion/numerics.ts",
     "src/atlas/error-algebra.ts",
+    "src/atlas/families.ts",
     "src/atlas/model.ts",
     "src/atlas/oscillators/bridges-coarse.ts",
     "src/atlas/oscillators/bridges-exact.ts",
@@ -362,9 +368,30 @@
       "tests/atlas/derive-evidence.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
+    "src/atlas/diffusion/bridges.ts": [
+      "tests/atlas/diffusion.test.ts",
+      "tests/atlas/witness-results.test.ts"
+    ],
+    "src/atlas/diffusion/dimensions.ts": [
+      "tests/atlas/diffusion.test.ts"
+    ],
+    "src/atlas/diffusion/index.ts": [
+      "tests/atlas/diffusion.test.ts"
+    ],
+    "src/atlas/diffusion/models.ts": [
+      "tests/atlas/diffusion.test.ts"
+    ],
+    "src/atlas/diffusion/numerics.ts": [
+      "tests/atlas/diffusion.test.ts"
+    ],
     "src/atlas/error-algebra.ts": [
       "tests/atlas/error-algebra.test.ts",
       "tests/atlas/path-bound.test.ts"
+    ],
+    "src/atlas/families.ts": [
+      "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/regime-admission.test.ts"
     ],
     "src/atlas/index.ts": [],
     "src/atlas/model.ts": [
@@ -400,7 +427,6 @@
     "src/atlas/oscillators/index.ts": [
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/audited-catalog.test.ts",
-      "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/model.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/serialize.test.ts",
@@ -432,6 +458,7 @@
     ],
     "src/atlas/regime.ts": [
       "tests/atlas/bound-machine-form.test.ts",
+      "tests/atlas/diffusion.test.ts",
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
@@ -480,12 +507,14 @@
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witness-specs.ts": [
+      "tests/atlas/diffusion.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/witness-symbolic.ts": [
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witnesses/quantum-support.ts": [
+      "tests/atlas/diffusion.test.ts",
       "tests/atlas/quantum-support.test.ts"
     ],
     "src/bridges/be11-decoherence-confrontation.ts": [
@@ -1664,6 +1693,7 @@
       "tests/api/public-surface.test.ts",
       "tests/atlas/association.test.ts",
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/diffusion.test.ts",
       "tests/atlas/model.test.ts",
       "tests/atlas/models.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
@@ -3577,6 +3607,7 @@
     ],
     "src/dimensional/algebra.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/diffusion.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
       "tests/bridges/be-13-encoding.test.ts",
@@ -3649,6 +3680,7 @@
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/diffusion.test.ts",
       "tests/atlas/witness-runners.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
@@ -4215,6 +4247,7 @@
     ],
     "src/dimensional/validator.ts": [
       "tests/api/public-surface.test.ts",
+      "tests/atlas/diffusion.test.ts",
       "tests/bridges/be-11-fix.test.ts",
       "tests/bridges/be-12-encoding.test.ts",
       "tests/bridges/be-13-encoding.test.ts",
@@ -5056,7 +5089,8 @@
     ],
     "tests/atlas/atlas-json.test.ts": [
       "src/atlas/serialize.ts",
-      "src/atlas/oscillators/index.ts"
+      "src/atlas/oscillators/index.ts",
+      "src/atlas/families.ts"
     ],
     "tests/atlas/audited-catalog.test.ts": [
       "src/bridges/index.ts",
@@ -5137,13 +5171,27 @@
       "src/bridges/rejected.ts"
     ],
     "tests/atlas/derived-tag-literals.test.ts": [],
+    "tests/atlas/diffusion.test.ts": [
+      "src/atlas/diffusion/index.ts",
+      "src/atlas/diffusion/bridges.ts",
+      "src/atlas/diffusion/dimensions.ts",
+      "src/atlas/diffusion/models.ts",
+      "src/atlas/diffusion/numerics.ts",
+      "src/atlas/witness-specs.ts",
+      "src/atlas/witnesses/quantum-support.ts",
+      "src/atlas/regime.ts",
+      "src/canonical/registry.ts",
+      "src/dimensional/algebra.ts",
+      "src/dimensional/validator.ts",
+      "src/dimensional/ast-types.ts"
+    ],
     "tests/atlas/error-algebra.test.ts": [
       "src/atlas/error-algebra.ts",
       "src/atlas/types.ts"
     ],
     "tests/atlas/evidence-rule.test.ts": [
       "src/atlas/types.ts",
-      "src/atlas/oscillators/index.ts"
+      "src/atlas/families.ts"
     ],
     "tests/atlas/exports-subpath.test.ts": [],
     "tests/atlas/gr-spine-regime.test.ts": [
@@ -5255,6 +5303,7 @@
       "src/atlas/regime.ts",
       "src/atlas/types.ts",
       "src/atlas/oscillators/index.ts",
+      "src/atlas/families.ts",
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/dimensions.ts",
       "src/dimensional/types.ts"
@@ -5280,6 +5329,7 @@
       "src/atlas/witness-specs.ts",
       "src/atlas/derive-evidence.ts",
       "src/atlas/oscillators/bridges-exact.ts",
+      "src/atlas/diffusion/bridges.ts",
       "src/atlas/types.ts",
       "src/composition/expr-simplify.ts",
       "src/dimensional/ast-builders.ts",
