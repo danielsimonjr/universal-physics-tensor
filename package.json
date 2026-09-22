@@ -55,6 +55,7 @@
     "audit:plans": "bun tools/plan-doc-audit/audit.ts",
     "catalog:json": "npm run build && node scripts/emit-catalog-json.mjs",
     "atlas:json": "npm run build && node scripts/emit-atlas-json.mjs",
+    "atlas:witness-results": "npm run build && node scripts/emit-witness-results.mjs",
     "typecheck": "tsc --noEmit && tsc -p tsconfig.tests.json",
     "validate": "npm run build && npm run typecheck && npm test && npm run audit:plans && npm run package:check",
     "package:check": "node scripts/package-smoke.mjs"

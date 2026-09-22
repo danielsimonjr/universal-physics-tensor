@@ -10,6 +10,21 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S4.3 — `formalRef`, the witness-results artifact, and the two derived tags.**
+  `FormalRef` / `FormalFidelity` in `src/atlas/types.ts` and optional `AtlasBridge.formalRef`.
+  `formally-proved` is derived iff `formalRef.fidelity !== 'unreviewed'`, so an unreviewed
+  reference is recordable but can never earn the tag. `symbolically-checked` is derived from
+  `data/atlas/witness-results.json`, which is written by the Lead-run `bun run
+  atlas:witness-results` (`scripts/emit-witness-results.mjs`) and pinned by
+  `tests/atlas/witness-results.test.ts` with a deep-equal against a fresh run. **No test writes
+  it.** The artifact's first two witnesses, `W1s` and `W2s`, push the premise model's
+  expression through the bridge's dictionary and make the CAS reduce the difference to zero.
+  Both CHECK, and a wrong dictionary does not. The emitter refuses to run without the CAS peer.
+  `tests/atlas/derived-tag-literals.test.ts` allows the two tag literals under `src/atlas/` in
+  `types.ts` and `derive-evidence.ts` only. It is a file allow-list, comments are stripped, and
+  every quote style is matched. **Visible consequence:** `ab-spring-lc` no longer STORES
+  `symbolically-checked`, so `data/atlas/oscillators.json` drops it from that record. The tag
+  is now earned through the artifact, and `ab-damped-rlc` earns it for the first time.
 - **S4.2 — the witness runners.** `src/atlas/witness-result.ts`, `witness-symbolic.ts`,
   `witness-numeric.ts`. `runSymbolicWitness` simplifies `lhs − rhs` through an INJECTED
   simplifier: `null` is the absent peer, a stub is the present one, and no test touches the

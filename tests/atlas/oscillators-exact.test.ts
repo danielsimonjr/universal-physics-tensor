@@ -290,13 +290,14 @@ describe('bridge records', () => {
     expect(BRIDGE_SPRING_LC.premises).toEqual(['model-spring']);
     expect(BRIDGE_SPRING_LC.conclusion).toBe('model-lc');
     expect(BRIDGE_SPRING_LC.inverse).toBe('x = x0 u, t = τ/ω0');
-    expect([...BRIDGE_SPRING_LC.evidence].sort()).toEqual([
-      'numerically-supported',
-      'proposed',
-      'symbolically-checked',
-    ]);
-    expect(BRIDGE_SPRING_LC.witnesses.map((w) => w.id)).toEqual(['W1', 'W1a', 'W1b', 'W2b']);
-    for (const w of BRIDGE_SPRING_LC.witnesses) expect(w.test).toBe(TEST_PATH);
+    // `symbolically-checked` is no longer STORED: Phase 4 S4.3 derives it from
+    // data/atlas/witness-results.json (W1s). tests/atlas/witness-results.test.ts
+    // pins the derivation.
+    expect([...BRIDGE_SPRING_LC.evidence].sort()).toEqual(['numerically-supported', 'proposed']);
+    expect(BRIDGE_SPRING_LC.witnesses.map((w) => w.id)).toEqual(['W1', 'W1a', 'W1b', 'W2b', 'W1s']);
+    for (const w of BRIDGE_SPRING_LC.witnesses) {
+      expect(w.test).toBe(w.id === 'W1s' ? 'tests/atlas/witness-results.test.ts' : TEST_PATH);
+    }
     expect(BRIDGE_SPRING_LC.counterexamples).toHaveLength(1);
     expect(BRIDGE_SPRING_LC.counterexamples[0].witness).toBe('W2b');
   });
@@ -311,8 +312,10 @@ describe('bridge records', () => {
       'numerically-supported',
       'proposed',
     ]);
-    expect(BRIDGE_DAMPED_RLC.witnesses.map((w) => w.id)).toEqual(['W2']);
-    for (const w of BRIDGE_DAMPED_RLC.witnesses) expect(w.test).toBe(TEST_PATH);
+    expect(BRIDGE_DAMPED_RLC.witnesses.map((w) => w.id)).toEqual(['W2', 'W2s']);
+    for (const w of BRIDGE_DAMPED_RLC.witnesses) {
+      expect(w.test).toBe(w.id === 'W2s' ? 'tests/atlas/witness-results.test.ts' : TEST_PATH);
+    }
     // The counterexample belongs to bridge 1, not here.
     expect(BRIDGE_DAMPED_RLC.counterexamples).toEqual([]);
   });

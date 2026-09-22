@@ -36,6 +36,8 @@ export type {
   Counterexample,
   AtlasBridge,
   AtlasRejection,
+  FormalFidelity,
+  FormalRef,
 } from './types.js';
 export { MissingHorizonError, MissingLipschitzError } from './types.js';
 
@@ -81,6 +83,16 @@ export type {
   WitnessRunResult,
   WitnessStatus,
 } from './witness-result.js';
+
+export { runWitnessRegistry, artifactPassingWitnessIds } from './witness-artifact.js';
+export type { WitnessResultRecord, WitnessResultsArtifact } from './witness-artifact.js';
+
+export { WITNESS_REGISTRY } from './witness-specs.js';
+export type {
+  RegisteredNumericWitness,
+  RegisteredSymbolicWitness,
+  RegisteredWitness,
+} from './witness-specs.js';
 
 export { runSymbolicWitness } from './witness-symbolic.js';
 export type { SymbolicSimplifier, SymbolicWitnessSpec } from './witness-symbolic.js';

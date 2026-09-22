@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 319,
-    "totalTestFiles": 412,
-    "testedCount": 318,
+    "totalSourceFiles": 321,
+    "totalTestFiles": 414,
+    "testedCount": 320,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -34,8 +34,10 @@
     "src/atlas/serialize.ts",
     "src/atlas/statement.ts",
     "src/atlas/types.ts",
+    "src/atlas/witness-artifact.ts",
     "src/atlas/witness-numeric.ts",
     "src/atlas/witness-result.ts",
+    "src/atlas/witness-specs.ts",
     "src/atlas/witness-symbolic.ts",
     "src/atlas/witnesses/quantum-support.ts",
     "src/bridges/be11-decoherence-confrontation.ts",
@@ -357,7 +359,8 @@
     ],
     "src/atlas/derive-evidence.ts": [
       "tests/atlas/coverage.test.ts",
-      "tests/atlas/derive-evidence.test.ts"
+      "tests/atlas/derive-evidence.test.ts",
+      "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/error-algebra.ts": [
       "tests/atlas/error-algebra.test.ts",
@@ -377,7 +380,8 @@
     ],
     "src/atlas/oscillators/bridges-exact.ts": [
       "tests/atlas/audited-catalog.test.ts",
-      "tests/atlas/oscillators-exact.test.ts"
+      "tests/atlas/oscillators-exact.test.ts",
+      "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/oscillators/bridges-limits.ts": [
       "tests/atlas/audited-catalog.test.ts",
@@ -390,7 +394,8 @@
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/regime-admission.test.ts",
-      "tests/atlas/regime.test.ts"
+      "tests/atlas/regime.test.ts",
+      "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/oscillators/index.ts": [
       "tests/atlas/atlas-json.test.ts",
@@ -445,6 +450,7 @@
     ],
     "src/atlas/types.ts": [
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/audited-catalog.test.ts",
       "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/composition-table.test.ts",
       "tests/atlas/conventions.test.ts",
@@ -458,16 +464,23 @@
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
       "tests/atlas/statement-derivation.test.ts",
+      "tests/atlas/witness-results.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/compose-relation.test.ts",
       "tests/composition/graph-viz-filters.test.ts"
+    ],
+    "src/atlas/witness-artifact.ts": [
+      "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/witness-numeric.ts": [
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witness-result.ts": [
       "tests/atlas/witness-runners.test.ts"
+    ],
+    "src/atlas/witness-specs.ts": [
+      "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/witness-symbolic.ts": [
       "tests/atlas/witness-runners.test.ts"
@@ -2822,6 +2835,7 @@
       "tests/tensor.test.ts"
     ],
     "src/composition/expr-simplify.ts": [
+      "tests/atlas/witness-results.test.ts",
       "tests/atlas/witness-runners.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
@@ -3621,6 +3635,7 @@
       "tests/atlas/applicability.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
+      "tests/atlas/witness-results.test.ts",
       "tests/atlas/witness-runners.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
@@ -5061,6 +5076,7 @@
       "src/composition/catalog-graph.ts",
       "src/canonical/registry.ts",
       "src/atlas/coverage.ts",
+      "src/atlas/types.ts",
       "src/atlas/oscillators/index.ts",
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/oscillators/bridges-limits.ts",
@@ -5082,8 +5098,8 @@
     ],
     "tests/atlas/coverage.test.ts": [
       "src/atlas/coverage.ts",
-      "src/atlas/derive-evidence.ts",
       "src/atlas/types.ts",
+      "src/atlas/derive-evidence.ts",
       "src/bridges/index.ts",
       "src/bridges/gravitational-lensing.ts",
       "src/bridges/perihelion-precession.ts",
@@ -5120,6 +5136,7 @@
       "src/bridges/membership.ts",
       "src/bridges/rejected.ts"
     ],
+    "tests/atlas/derived-tag-literals.test.ts": [],
     "tests/atlas/error-algebra.test.ts": [
       "src/atlas/error-algebra.ts",
       "src/atlas/types.ts"
@@ -5257,6 +5274,16 @@
       "src/atlas/statement.ts",
       "src/atlas/derivation.ts",
       "src/atlas/types.ts"
+    ],
+    "tests/atlas/witness-results.test.ts": [
+      "src/atlas/witness-artifact.ts",
+      "src/atlas/witness-specs.ts",
+      "src/atlas/derive-evidence.ts",
+      "src/atlas/oscillators/bridges-exact.ts",
+      "src/atlas/types.ts",
+      "src/composition/expr-simplify.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/atlas/oscillators/dimensions.ts"
     ],
     "tests/atlas/witness-runners.test.ts": [
       "src/dimensional/ast-builders.ts",

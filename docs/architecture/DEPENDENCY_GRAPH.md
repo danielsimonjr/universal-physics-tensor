@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 29 files
+- **atlas**: 31 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 30 files
@@ -108,12 +108,14 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
+| `./types.js` | `ALL_EVIDENCE_TAGS` | Import |
 | `./types.js` | `EvidenceTag` | Import (type-only) |
+| `./types.js` | `ALL_EVIDENCE_TAGS` | Re-export |
 
 **Exports:**
 - Interfaces: `EvidenceCoverage`, `OverlayCoverage`, `OverlayBearing`, `ReviewStatusBearing`
 - Functions: `summarizeEvidence`, `overlayCoverage`
-- Constants: `ALL_EVIDENCE_TAGS`
+- Re-exports: `ALL_EVIDENCE_TAGS`
 
 ---
 
@@ -140,7 +142,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `Conventions, EvidenceTag` | Import (type-only) |
+| `./types.js` | `Conventions, EvidenceTag, FormalFidelity` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `WitnessLike`, `CounterexampleLike`, `RejectionLike`, `EvidenceInput`
@@ -168,7 +170,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `RelationType, EvidenceTag, LimitCharacter, RegimeInequality, Regime, ApproximationBound, Witness, Counterexample, AtlasBridge, AtlasRejection` | Re-export |
+| `./types.js` | `RelationType, EvidenceTag, LimitCharacter, RegimeInequality, Regime, ApproximationBound, Witness, Counterexample, AtlasBridge, AtlasRejection, FormalFidelity, FormalRef` | Re-export |
 | `./types.js` | `MissingHorizonError, MissingLipschitzError` | Re-export |
 | `./model.js` | `AtlasModel, ModelId` | Re-export |
 | `./error-algebra.js` | `composeBounds, composeBoundPath, IDENTITY_BOUND` | Re-export |
@@ -185,6 +187,10 @@ The codebase is organized into the following modules:
 | `./applicability.js` | `ApplicabilityFinding, ApplicabilityFindingKind, ApplicabilityInput, ApplicabilitySeverity` | Re-export |
 | `./witness-result.js` | `passingWitnessIds` | Re-export |
 | `./witness-result.js` | `UnresolvedReason, WitnessRunResult, WitnessStatus` | Re-export |
+| `./witness-artifact.js` | `runWitnessRegistry, artifactPassingWitnessIds` | Re-export |
+| `./witness-artifact.js` | `WitnessResultRecord, WitnessResultsArtifact` | Re-export |
+| `./witness-specs.js` | `WITNESS_REGISTRY` | Re-export |
+| `./witness-specs.js` | `RegisteredNumericWitness, RegisteredSymbolicWitness, RegisteredWitness` | Re-export |
 | `./witness-symbolic.js` | `runSymbolicWitness` | Re-export |
 | `./witness-symbolic.js` | `SymbolicSimplifier, SymbolicWitnessSpec` | Re-export |
 | `./witness-numeric.js` | `runNumericWitness` | Re-export |
@@ -195,7 +201,7 @@ The codebase is organized into the following modules:
 | `./derivation.js` | `CompositeFormed, CompositeRefused, Derivation, DerivationCompositionResult, DerivationId, DerivationSpec, NoCompositeReason` | Re-export |
 
 **Exports:**
-- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `FormalFidelity`, `FormalRef`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `runWitnessRegistry`, `artifactPassingWitnessIds`, `WitnessResultRecord`, `WitnessResultsArtifact`, `WITNESS_REGISTRY`, `RegisteredNumericWitness`, `RegisteredSymbolicWitness`, `RegisteredWitness`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
 
 ---
 
@@ -448,7 +454,27 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Classes: `MissingHorizonError`, `MissingDeltaAtError`, `MissingLipschitzError`
-- Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `Conventions`
+- Interfaces: `FormalRef`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `Conventions`
+- Constants: `ALL_EVIDENCE_TAGS`
+
+---
+
+### `src/atlas/witness-artifact.ts` - Atlas Phase 4, S4.3 — the witness-results ARTIFACT: its shape, the run that
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./witness-numeric.js` | `Convergence` | Import (type-only) |
+| `./witness-numeric.js` | `runNumericWitness` | Import |
+| `./witness-result.js` | `UnresolvedReason, WitnessRunResult, WitnessStatus` | Import (type-only) |
+| `./witness-symbolic.js` | `SymbolicSimplifier` | Import (type-only) |
+| `./witness-symbolic.js` | `runSymbolicWitness` | Import |
+| `./witness-specs.js` | `RegisteredWitness` | Import (type-only) |
+| `./witness-specs.js` | `WITNESS_REGISTRY` | Import |
+
+**Exports:**
+- Interfaces: `WitnessResultRecord`, `WitnessResultsArtifact`
+- Functions: `runWitnessRegistry`, `artifactPassingWitnessIds`
 
 ---
 
@@ -470,6 +496,25 @@ The codebase is organized into the following modules:
 **Exports:**
 - Interfaces: `WitnessRunResult`
 - Functions: `passingWitnessIds`
+
+---
+
+### `src/atlas/witness-specs.ts` - Atlas Phase 4, S4.3 — the EXECUTABLE witness registry.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/ast-builders.js` | `sym` | Import |
+| `../dimensional/types.js` | `DIMENSIONLESS, MASS` | Import |
+| `../composition/expr-subst.js` | `substitute` | Import |
+| `./oscillators/dimensions.js` | `CAPACITANCE, DAMPING, INDUCTANCE, RESISTANCE, SPRING_CONSTANT` | Import |
+| `./witness-numeric.js` | `NumericWitnessSpec` | Import (type-only) |
+| `./witness-symbolic.js` | `SymbolicWitnessSpec` | Import (type-only) |
+
+**Exports:**
+- Interfaces: `RegisteredSymbolicWitness`, `RegisteredNumericWitness`
+- Constants: `WITNESS_REGISTRY`
 
 ---
 
@@ -5502,12 +5547,12 @@ The codebase is organized into the following modules:
 | `derivation` | 3 files | 3 files |
 | `derive-evidence` | 1 files | 1 files |
 | `error-algebra` | 1 files | 2 files |
-| `index` | 14 files | 0 files |
+| `index` | 16 files | 0 files |
 | `model` | 2 files | 8 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
 | `bridges-limits` | 5 files | 1 files |
-| `dimensions` | 2 files | 4 files |
+| `dimensions` | 2 files | 5 files |
 | `index` | 7 files | 4 files |
 | `models` | 5 files | 3 files |
 | `rejections` | 1 files | 1 files |
@@ -5519,11 +5564,11 @@ The codebase is organized into the following modules:
 | `serialize` | 4 files | 1 files |
 | `statement` | 4 files | 6 files |
 | `types` | 1 files | 27 files |
-| `witness-numeric` | 1 files | 1 files |
-| `witness-result` | 0 files | 3 files |
-| `witness-symbolic` | 3 files | 1 files |
-| `quantum-support` | 0 files | 0 files |
-| `be11-decoherence-confrontation` | 1 files | 2 files |
+| `witness-artifact` | 4 files | 1 files |
+| `witness-numeric` | 1 files | 3 files |
+| `witness-result` | 0 files | 4 files |
+| `witness-specs` | 7 files | 2 files |
+| `witness-symbolic` | 3 files | 3 files |
 
 ---
 
@@ -5542,7 +5587,7 @@ graph TD
         N2[composition-table]
         N3[conventions]
         N4[coverage]
-        N5[...24 more]
+        N5[...26 more]
     end
 
     subgraph Bridges
@@ -5660,17 +5705,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 322 |
+| Total TypeScript Files | 324 |
 | Total Modules | 11 |
-| Total Lines of Code | 63853 |
-| Total Exports | 2197 |
-| Total Re-exports | 1100 |
+| Total Lines of Code | 64197 |
+| Total Exports | 2211 |
+| Total Re-exports | 1111 |
 | Total Classes | 57 |
-| Total Interfaces | 322 |
-| Total Functions | 500 |
+| Total Interfaces | 327 |
+| Total Functions | 502 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 442 |
+| Type-only Imports | 449 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

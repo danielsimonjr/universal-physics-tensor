@@ -44,6 +44,69 @@ export type EvidenceTag =
   | 'contradicted'
   | 'unresolved';
 
+/**
+ * Every `EvidenceTag`, in declaration order, so a report can name all of them.
+ *
+ * Lives HERE, not in `coverage.ts` (which re-exports it), because
+ * `tests/atlas/derived-tag-literals.test.ts` allows the literals
+ * `'formally-proved'` and `'symbolically-checked'` under `src/atlas/` in
+ * exactly two files: this one and `derive-evidence.ts`. A tag that can only be
+ * DERIVED must not be spellable anywhere a record could hand-set it.
+ *
+ * @internal
+ */
+export const ALL_EVIDENCE_TAGS = [
+  'proposed',
+  'reviewed',
+  'dimension-checked',
+  'convention-checked',
+  'symbolically-checked',
+  'numerically-supported',
+  'formally-proved',
+  'empirically-supported',
+  'contradicted',
+  'unresolved',
+] as const satisfies readonly EvidenceTag[];
+
+/**
+ * How a formal reference's statement was checked against the physics it claims
+ * to state (Phase 4 design note §3).
+ *
+ * - `'two-formalizers'` — two people formalized it independently and agreed.
+ * - `'back-translation'` — a reviewer who had not seen the source translated
+ *   the formal statement back to prose and it matched.
+ * - `'sanity-lemmas'` — the statement was instantiated on known cases in
+ *   `tests/atlas/formal-sanity.test.ts`.
+ * - `'unreviewed'` — recorded, not checked. **Earns no tag, by construction.**
+ *
+ * @internal
+ */
+export type FormalFidelity =
+  | 'two-formalizers'
+  | 'back-translation'
+  | 'sanity-lemmas'
+  | 'unreviewed';
+
+/**
+ * A machine-checked counterpart of a record's claim in a proof assistant.
+ *
+ * A proof of the WRONG statement proves nothing about the physics, so the
+ * reference carries its `fidelity` — how anyone knows the formal statement says
+ * what the bridge says. `formally-proved` is derived from it and never set.
+ *
+ * @internal
+ */
+export interface FormalRef {
+  readonly system: 'lean4-physlib' | 'other';
+  /** The formal statement's name or text, as it appears in `system`. */
+  readonly statement: string;
+  /** The library version or commit the statement was checked against. */
+  readonly version: string;
+  /** Axioms the proof depends on beyond the system's core. */
+  readonly axioms: readonly string[];
+  readonly fidelity: FormalFidelity;
+}
+
 /** Whether the limit a bridge takes is regular or singular. @internal */
 export type LimitCharacter = 'regular' | 'singular' | 'unknown';
 
@@ -172,6 +235,12 @@ export interface AtlasBridge {
   readonly witnesses: readonly Witness[];
   readonly citations: readonly string[];
   readonly reviewStatus: 'proposed' | 'reviewed';
+  /**
+   * A machine-checked counterpart, when one genuinely exists (Phase 4, S4.6).
+   * Absent is the honest default: a statement with no checked counterpart gets
+   * no reference rather than an `'unreviewed'` placeholder.
+   */
+  readonly formalRef?: FormalRef;
 }
 
 /** A claimed bridge the atlas records as REJECTED, with the reason. @internal */

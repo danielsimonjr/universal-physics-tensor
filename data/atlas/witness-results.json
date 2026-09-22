@@ -1,0 +1,19 @@
+{
+  "schemaVersion": "0",
+  "results": [
+    {
+      "recordId": "ab-spring-lc",
+      "witnessId": "W1s",
+      "kind": "symbolic",
+      "status": "checked",
+      "detail": "lhs − rhs simplified to literal 0."
+    },
+    {
+      "recordId": "ab-damped-rlc",
+      "witnessId": "W2s",
+      "kind": "symbolic",
+      "status": "checked",
+      "detail": "lhs − rhs simplified to literal 0."
+    }
+  ]
+}

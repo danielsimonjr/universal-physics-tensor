@@ -156,6 +156,33 @@ appear under `src/atlas/` only in `types.ts` and `derive-evidence.ts`. **An allo
 FILES, not a heuristic over initializers** — a heuristic that inspects how a tag is assigned is
 defeated by assigning it a different way, and that is the defeat that matters.
 
+**As built (S4.3).**
+
+- **Where the symbolic witnesses come from.** `src/atlas/witness-specs.ts` holds the executable
+  form of each witness the artifact covers. The first two, `W1s` (`ab-spring-lc`) and `W2s`
+  (`ab-damped-rlc`), start from the PREMISE model's expression (ω0² = k/m; ζ² = b²/(4mk)) and push
+  it through the bridge's dictionary with `substitute`, refusing a mapping that matches no leaf.
+  The CAS then has to reduce the difference from the CONCLUSION model's expression to zero. Two
+  hand-typed equal ASTs would have checked only the typist. A negative control pins that the WRONG
+  dictionary (k ↔ C) does not check.
+- **Stored `evidence` no longer carries `symbolically-checked`.** `ab-spring-lc` stored it by hand
+  from Phase 0. It is removed and is now earned through `artifactPassingWitnessIds` → `deriveEvidence`.
+  So `data/atlas/oscillators.json` loses the tag from the record, and the derived view keeps it.
+  `ab-damped-rlc` now EARNS the tag (W2s) that it never had.
+- **The artifact drops `elapsedMs`**, because a pin that deep-equals wall-clock time can never pass
+  twice. The pin test round-trips the live run through JSON so that a ratio of `Infinity` compares
+  as the `null` the file holds.
+- **The emitter refuses to write when the CAS peer is absent.** An artifact emitted without the
+  peer would record every symbolic witness as `peer-absent` and strip the tag from every record
+  that earned it. The pin test skips its freshness check in the same state unless
+  `UPT_REQUIRE_PEERS=1`.
+- **The allow-list lint strips comments before it scans.** Doc comments name the tags in code
+  spans, and a comment cannot set a tag. Backtick literals in CODE still match, because a
+  template literal sets a tag as well as a quoted string does. Matcher controls pin every quote
+  style, both comment forms, and code after a comment.
+- `ALL_EVIDENCE_TAGS` moved from `coverage.ts` to `types.ts` (re-exported unchanged) so the
+  tag list is not a third file that can spell a derived tag.
+
 ---
 
 ## 4. Families and counts (S4.4–S4.6)

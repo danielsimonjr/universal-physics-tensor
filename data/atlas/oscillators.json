@@ -552,8 +552,7 @@
       ],
       "evidence": [
         "numerically-supported",
-        "proposed",
-        "symbolically-checked"
+        "proposed"
       ],
       "witnesses": [
         {
@@ -579,6 +578,12 @@
           "kind": "numeric",
           "test": "tests/atlas/oscillators-exact.test.ts",
           "tolerance": "separation > 1e-2 at τ = π"
+        },
+        {
+          "id": "W1s",
+          "kind": "symbolic",
+          "test": "tests/atlas/witness-results.test.ts",
+          "tolerance": "CAS: k/m under m ↔ L, k ↔ 1/C minus 1/(LC) simplifies to literal 0"
         }
       ],
       "citations": [
@@ -661,6 +666,12 @@
           "kind": "numeric",
           "test": "tests/atlas/oscillators-exact.test.ts",
           "tolerance": "R derived exactly; |u_mech − u_rlc| < 1e-8 at four τ"
+        },
+        {
+          "id": "W2s",
+          "kind": "symbolic",
+          "test": "tests/atlas/witness-results.test.ts",
+          "tolerance": "CAS: b²/(4mk) under m ↔ L, k ↔ 1/C, b ↔ R minus R²C/(4L) simplifies to literal 0"
         }
       ],
       "citations": [

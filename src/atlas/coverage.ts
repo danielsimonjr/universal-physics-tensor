@@ -19,21 +19,12 @@
  * @internal
  */
 
+import { ALL_EVIDENCE_TAGS } from './types.js';
 import type { EvidenceTag } from './types.js';
 
-/** Every `EvidenceTag`, so a report always names all of them. @internal */
-export const ALL_EVIDENCE_TAGS = [
-  'proposed',
-  'reviewed',
-  'dimension-checked',
-  'convention-checked',
-  'symbolically-checked',
-  'numerically-supported',
-  'formally-proved',
-  'empirically-supported',
-  'contradicted',
-  'unresolved',
-] as const satisfies readonly EvidenceTag[];
+// Moved to `types.ts`: the derived-tag literals may appear under `src/atlas/`
+// only there and in `derive-evidence.ts`. Re-exported so callers are unchanged.
+export { ALL_EVIDENCE_TAGS } from './types.js';
 
 /** Counts by tag over a set of records. @internal */
 export interface EvidenceCoverage {

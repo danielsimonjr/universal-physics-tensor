@@ -42,6 +42,10 @@ const KNOWN_WITNESSES: readonly string[] = [
   'W8',
   'W8b',
   'W9',
+  // Phase 4 S4.3 — CAS checks of the spring ↔ circuit dictionary, run into
+  // data/atlas/witness-results.json and named in tests/atlas/witness-results.test.ts.
+  'W1s',
+  'W2s',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));

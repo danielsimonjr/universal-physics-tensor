@@ -29,6 +29,8 @@ const FAMILY = 'oscillators';
 
 /** The witness test file every witness below runs in. */
 const TEST = 'tests/atlas/oscillators-exact.test.ts';
+/** Where the CAS witnesses W1s and W2s are named; the artifact pin runs them. */
+const WITNESS_RESULTS_TEST = 'tests/atlas/witness-results.test.ts';
 
 /**
  * Literature for the electromechanical analogy, NOT a pointer at our own plan.
@@ -100,7 +102,11 @@ export const BRIDGE_SPRING_LC: AtlasBridge = {
       witness: 'W2b',
     },
   ],
-  evidence: evidence('proposed', 'symbolically-checked', 'numerically-supported'),
+  // `symbolically-checked` is NOT stored here any more (Phase 4 S4.3): it is
+  // DERIVED from `data/atlas/witness-results.json`, where W1s records the CAS
+  // check of this bridge's dictionary. A stored copy would be a second source
+  // of truth that no run could falsify.
+  evidence: evidence('proposed', 'numerically-supported'),
   witnesses: [
     {
       id: 'W1',
@@ -116,6 +122,12 @@ export const BRIDGE_SPRING_LC: AtlasBridge = {
     },
     { id: 'W1b', kind: 'numeric', test: TEST, tolerance: 'round-trip within 1e-12' },
     { id: 'W2b', kind: 'numeric', test: TEST, tolerance: 'separation > 1e-2 at τ = π' },
+    {
+      id: 'W1s',
+      kind: 'symbolic',
+      test: WITNESS_RESULTS_TEST,
+      tolerance: 'CAS: k/m under m ↔ L, k ↔ 1/C minus 1/(LC) simplifies to literal 0',
+    },
   ],
   citations: CITATIONS,
   reviewStatus: 'proposed',
@@ -155,6 +167,12 @@ export const BRIDGE_DAMPED_RLC: AtlasBridge = {
       kind: 'numeric',
       test: TEST,
       tolerance: 'R derived exactly; |u_mech − u_rlc| < 1e-8 at four τ',
+    },
+    {
+      id: 'W2s',
+      kind: 'symbolic',
+      test: WITNESS_RESULTS_TEST,
+      tolerance: 'CAS: b²/(4mk) under m ↔ L, k ↔ 1/C, b ↔ R minus R²C/(4L) simplifies to literal 0',
     },
   ],
   citations: CITATIONS,

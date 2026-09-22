@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 322
+  totalFiles: 324
   totalModules: 11
-  totalExports: 2197
+  totalExports: 2211
 entryPoints:
   - file: src/index.ts
     type: main
@@ -97,12 +97,21 @@ modules:
       internalDependencies:
         - file: ./types.js
           imports:
+            - ALL_EVIDENCE_TAGS
+        - file: ./types.js
+          imports:
             - EvidenceTag
           typeOnly: true
+        - file: ./types.js
+          imports:
+            - ALL_EVIDENCE_TAGS
+          reExport: true
       exports:
         - ALL_EVIDENCE_TAGS
         - summarizeEvidence
         - overlayCoverage
+      reExported:
+        - ALL_EVIDENCE_TAGS
       interfaces:
         - EvidenceCoverage
         - OverlayCoverage
@@ -111,8 +120,6 @@ modules:
       functions:
         - summarizeEvidence
         - overlayCoverage
-      constants:
-        - ALL_EVIDENCE_TAGS
     src/atlas/derivation.ts:
       description: Atlas Phase 3 — `Derivation` (a hyperedge) and multicategory composition.
       externalDependencies: []
@@ -163,6 +170,7 @@ modules:
           imports:
             - Conventions
             - EvidenceTag
+            - FormalFidelity
           typeOnly: true
       exports:
         - NO_PASSING_WITNESSES
@@ -217,6 +225,8 @@ modules:
             - Counterexample
             - AtlasBridge
             - AtlasRejection
+            - FormalFidelity
+            - FormalRef
           reExport: true
         - file: ./types.js
           imports:
@@ -302,6 +312,26 @@ modules:
             - WitnessRunResult
             - WitnessStatus
           reExport: true
+        - file: ./witness-artifact.js
+          imports:
+            - runWitnessRegistry
+            - artifactPassingWitnessIds
+          reExport: true
+        - file: ./witness-artifact.js
+          imports:
+            - WitnessResultRecord
+            - WitnessResultsArtifact
+          reExport: true
+        - file: ./witness-specs.js
+          imports:
+            - WITNESS_REGISTRY
+          reExport: true
+        - file: ./witness-specs.js
+          imports:
+            - RegisteredNumericWitness
+            - RegisteredSymbolicWitness
+            - RegisteredWitness
+          reExport: true
         - file: ./witness-symbolic.js
           imports:
             - runSymbolicWitness
@@ -375,6 +405,9 @@ modules:
         - blockingFindings
         - checkApplicability
         - passingWitnessIds
+        - runWitnessRegistry
+        - artifactPassingWitnessIds
+        - WITNESS_REGISTRY
         - runSymbolicWitness
         - runNumericWitness
         - contextUnion
@@ -393,6 +426,8 @@ modules:
         - Counterexample
         - AtlasBridge
         - AtlasRejection
+        - FormalFidelity
+        - FormalRef
         - AtlasModel
         - ModelId
         - BoundPair
@@ -408,6 +443,11 @@ modules:
         - UnresolvedReason
         - WitnessRunResult
         - WitnessStatus
+        - WitnessResultRecord
+        - WitnessResultsArtifact
+        - RegisteredNumericWitness
+        - RegisteredSymbolicWitness
+        - RegisteredWitness
         - SymbolicSimplifier
         - SymbolicWitnessSpec
         - Convergence
@@ -438,6 +478,8 @@ modules:
         - Counterexample
         - AtlasBridge
         - AtlasRejection
+        - FormalFidelity
+        - FormalRef
         - MissingHorizonError
         - MissingLipschitzError
         - AtlasModel
@@ -474,6 +516,14 @@ modules:
         - UnresolvedReason
         - WitnessRunResult
         - WitnessStatus
+        - runWitnessRegistry
+        - artifactPassingWitnessIds
+        - WitnessResultRecord
+        - WitnessResultsArtifact
+        - WITNESS_REGISTRY
+        - RegisteredNumericWitness
+        - RegisteredSymbolicWitness
+        - RegisteredWitness
         - runSymbolicWitness
         - SymbolicSimplifier
         - SymbolicWitnessSpec
@@ -1033,6 +1083,7 @@ modules:
             - PiGroup
           typeOnly: true
       exports:
+        - ALL_EVIDENCE_TAGS
         - MissingHorizonError
         - MissingDeltaAtError
         - MissingLipschitzError
@@ -1041,6 +1092,7 @@ modules:
         - MissingDeltaAtError
         - MissingLipschitzError
       interfaces:
+        - FormalRef
         - RegimeInequality
         - Regime
         - ApproximationBound
@@ -1049,6 +1101,49 @@ modules:
         - AtlasBridge
         - AtlasRejection
         - Conventions
+      constants:
+        - ALL_EVIDENCE_TAGS
+    src/atlas/witness-artifact.ts:
+      description: "Atlas Phase 4, S4.3 — the witness-results ARTIFACT: its shape, the run that"
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ./witness-numeric.js
+          imports:
+            - Convergence
+          typeOnly: true
+        - file: ./witness-numeric.js
+          imports:
+            - runNumericWitness
+        - file: ./witness-result.js
+          imports:
+            - UnresolvedReason
+            - WitnessRunResult
+            - WitnessStatus
+          typeOnly: true
+        - file: ./witness-symbolic.js
+          imports:
+            - SymbolicSimplifier
+          typeOnly: true
+        - file: ./witness-symbolic.js
+          imports:
+            - runSymbolicWitness
+        - file: ./witness-specs.js
+          imports:
+            - RegisteredWitness
+          typeOnly: true
+        - file: ./witness-specs.js
+          imports:
+            - WITNESS_REGISTRY
+      exports:
+        - runWitnessRegistry
+        - artifactPassingWitnessIds
+      interfaces:
+        - WitnessResultRecord
+        - WitnessResultsArtifact
+      functions:
+        - runWitnessRegistry
+        - artifactPassingWitnessIds
     src/atlas/witness-numeric.ts:
       description: Atlas Phase 4, S4.2 — the numeric witness runner.
       externalDependencies: []
@@ -1077,6 +1172,47 @@ modules:
         - WitnessRunResult
       functions:
         - passingWitnessIds
+    src/atlas/witness-specs.ts:
+      description: Atlas Phase 4, S4.3 — the EXECUTABLE witness registry.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../dimensional/ast-builders.js
+          imports:
+            - sym
+        - file: ../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+            - MASS
+        - file: ../composition/expr-subst.js
+          imports:
+            - substitute
+        - file: ./oscillators/dimensions.js
+          imports:
+            - CAPACITANCE
+            - DAMPING
+            - INDUCTANCE
+            - RESISTANCE
+            - SPRING_CONSTANT
+        - file: ./witness-numeric.js
+          imports:
+            - NumericWitnessSpec
+          typeOnly: true
+        - file: ./witness-symbolic.js
+          imports:
+            - SymbolicWitnessSpec
+          typeOnly: true
+      exports:
+        - WITNESS_REGISTRY
+      interfaces:
+        - RegisteredSymbolicWitness
+        - RegisteredNumericWitness
+      constants:
+        - WITNESS_REGISTRY
     src/atlas/witness-symbolic.ts:
       description: Atlas Phase 4, S4.2 — the symbolic witness runner.
       externalDependencies: []
@@ -14902,8 +15038,10 @@ dependencyGraph:
         - src/atlas/serialize.ts
         - src/atlas/statement.ts
         - src/atlas/types.ts
+        - src/atlas/witness-artifact.ts
         - src/atlas/witness-numeric.ts
         - src/atlas/witness-result.ts
+        - src/atlas/witness-specs.ts
         - src/atlas/witness-symbolic.ts
         - src/atlas/witnesses/quantum-support.ts
     - name: Bridges
@@ -15220,18 +15358,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 322
+  totalTypeScriptFiles: 324
   totalModules: 11
-  totalLinesOfCode: 63853
-  totalExports: 2197
+  totalLinesOfCode: 64197
+  totalExports: 2211
   totalClasses: 57
-  totalInterfaces: 322
-  totalFunctions: 500
+  totalInterfaces: 327
+  totalFunctions: 502
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 539
-  totalReExports: 1100
-  totalTypeOnlyImports: 442
+  totalConstants: 540
+  totalReExports: 1111
+  totalTypeOnlyImports: 449
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0
