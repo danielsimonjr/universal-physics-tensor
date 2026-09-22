@@ -183,18 +183,26 @@ describe('propagateUncertainty — the optional bound is strictly additive', () 
     expect(Math.abs(before.sigma - expected) / expected).toBeLessThan(1e-9);
   });
 
-  it('adds bound.delta in quadrature and echoes the bound', () => {
+  it('reports the statistical sigma and the deterministic delta SEPARATELY, and echoes the bound', () => {
     const b = bound(2, 3, 'relative period error');
     const plain = propagateUncertainty(linear, { x: 2 }, { x: 0.5 });
     const withBound = propagateUncertainty(linear, { x: 2 }, { x: 0.5 }, { bound: b });
     expect(withBound.value).toBe(plain.value);
     expect(withBound.partials).toEqual(plain.partials);
     expect(withBound.bound).toBe(b);
-    expect(withBound.sigma).toBe(Math.sqrt(plain.sigma ** 2 + 9));
-    expect(Math.abs(withBound.sigma - Math.hypot(plain.sigma, 3)) / withBound.sigma).toBeLessThan(
-      1e-12,
-    );
-    // Quadrature, not addition — the two would differ by ~1.5 here.
+
+    // `sigma` is the STATISTICAL spread and nothing else: supplying a bound must not move it.
+    expect(withBound.sigma).toBe(plain.sigma);
+    // The deterministic bias is surfaced beside it, not folded into it.
+    expect(withBound.delta).toBe(3);
+
+    // REGRESSION PINS, both directions. This test previously asserted
+    // `sigma === sqrt(plain.sigma^2 + 9)` under the comment "Quadrature, not addition" — it pinned
+    // the defect as intent. Independence does not license quadrature for a BIAS: delta is a
+    // deterministic sup-norm offset, not a zero-mean random variable, so the root-sum-square
+    // understates the envelope exactly when the model error dominates the noise.
+    expect(withBound.sigma).not.toBeCloseTo(Math.hypot(plain.sigma, 3), 6);
+    // And it is not silently ADDED either — the library refuses to pick a coverage factor.
     expect(withBound.sigma).not.toBeCloseTo(plain.sigma + 3, 6);
     // K is deliberately unused: a bound differing only in K changes nothing.
     const sameDelta = propagateUncertainty(linear, { x: 2 }, { x: 0.5 }, {

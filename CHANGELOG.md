@@ -10,6 +10,26 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`propagateUncertainty` now reports the statistical sigma and the deterministic bound
+  SEPARATELY, and refuses to combine them.** It previously returned
+  `sqrt(variance + bound.delta^2)`, justified by "the usual independence assumption between input
+  noise and model error". INDEPENDENCE DOES NOT LICENSE QUADRATURE FOR A BIAS: `sigma` is the 1-sigma
+  spread of a zero-mean random variable while `bound.delta` is a DETERMINISTIC worst-case sup-norm
+  offset, so the root-sum-square treats a systematic displacement as if it averaged out and
+  UNDERSTATES the envelope — worst exactly when model error dominates the noise, which is when a
+  caller most needs the number to be honest. `sigma` is now the statistical spread alone and the
+  result carries `delta` beside it.
+  Raised INDEPENDENTLY by two reviews that did not see each other (an adversarial physics panel, and
+  Eve E2) — the strongest signal this project has produced.
+  Deliberately NOT collapsed into one number: that needs a coverage factor (`k*sigma + delta`,
+  k about 4.47 for 95% by Chebyshev), and that choice belongs to the caller's risk posture. Baking
+  one in would repeat the original error in a new costume — a defensible-looking number whose
+  provenance is a convention nobody stated.
+  `tests/atlas/path-bound.test.ts` previously PINNED the defect as intent under the comment
+  "Quadrature, not addition"; it is rewritten to assert the new contract and carries regression pins
+  in BOTH directions (not quadrature, and not silently added). Verified by a negative control:
+  restoring the quadrature makes that test FAIL, reverting makes it pass.
+
 - **`ApproximationBound.deltaAt` — a MACHINE FORM OF THE BOUND, and the two delta repairs it made
   sayable.** The type paired `horizon: string` with `horizonHolds(t, params)` but paired
   `delta: number` with only `parameterRange?: string` — prose with no checkable counterpart. An
