@@ -27,8 +27,8 @@ const repoRoot = resolve(here, '..');
 const distImport = (...parts) => import(pathToFileURL(resolve(repoRoot, 'dist', ...parts)).href);
 
 const { loadFrozenItems } = await distImport('atlas', 'benchmark', 'loader.js');
-const { runAtlasCondition } = await distImport('atlas', 'benchmark', 'run-atlas.js');
-const { scoreCondition, pairedRejection } = await distImport('atlas', 'benchmark', 'study.js');
+const { runAtlasCondition, ABLATION_CONFIGS } = await distImport('atlas', 'benchmark', 'run-atlas.js');
+const { scoreCondition, pairedRejection, scoreAblation } = await distImport('atlas', 'benchmark', 'study.js');
 
 const benchmarkDir = resolve(repoRoot, 'tests', 'fixtures', 'atlas', 'benchmark');
 const items = loadFrozenItems(benchmarkDir);
@@ -48,6 +48,11 @@ const metrics = Object.entries(conditions).map(([name, answers]) => scoreConditi
 const comparisons = Object.entries(conditions)
   .filter(([name]) => name !== 'atlas')
   .map(([name, answers]) => pairedRejection('atlas', conditions.atlas, name, answers, labels));
+
+const ablation = scoreAblation(
+  ABLATION_CONFIGS.map(([name, cfg]) => [name, runAtlasCondition(items, cfg)]),
+  labels,
+);
 
 const pct = (x) => (Number.isFinite(x) ? `${(100 * x).toFixed(1)}%` : 'n/a');
 const lines = [
@@ -75,6 +80,21 @@ const lines = [
             `criterion ${c.aBetterExcludingZero ? 'MET' : 'NOT met'}`,
         )
         .join('\n'),
+  '',
+  '## Ablation (S6.2) — cumulative configurations of the atlas condition',
+  '',
+  '| Configuration | invalid rejected | wrong accepts | abstentions | step over previous (Δ, 95% Newcombe) |',
+  '|---|---|---|---|---|',
+  ...ablation.map(
+    (r) =>
+      `| ${r.configuration} | ${r.metrics.invalidRejected}/${r.metrics.nInvalid} | ${r.metrics.wrongAccepts} | ` +
+      `${r.metrics.abstentions} | ${
+        r.stepOverPrevious === undefined
+          ? '—'
+          : `${pct(r.stepOverPrevious.difference.diff)} [${pct(r.stepOverPrevious.difference.lower)}, ` +
+            `${pct(r.stepOverPrevious.difference.upper)}]`
+      } |`,
+  ),
   '',
 ];
 writeFileSync(resolve(repoRoot, 'docs', 'research', 'atlas-study-results.md'), lines.join('\n'));

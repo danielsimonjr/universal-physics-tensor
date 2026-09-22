@@ -155,8 +155,9 @@ The codebase is organized into the following modules:
 | `./types.js` | `BenchmarkItem, FailureKind` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `AtlasVerdict`
+- Interfaces: `AtlasVerdict`, `AtlasRunConfig`
 - Functions: `runAtlasOnItem`, `runAtlasCondition`
+- Constants: `FULL_CONFIG`, `ABLATION_CONFIGS`
 
 ---
 
@@ -179,8 +180,8 @@ The codebase is organized into the following modules:
 | `./stats.js` | `Interval, McNemarResult` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `ConditionAnswer`, `ItemLabel`, `ConditionMetrics`, `PairedRejection`
-- Functions: `scoreCondition`, `pairedRejection`
+- Interfaces: `ConditionAnswer`, `ItemLabel`, `ConditionMetrics`, `PairedRejection`, `AblationRow`
+- Functions: `scoreCondition`, `pairedRejection`, `scoreAblation`
 
 ---
 
@@ -427,15 +428,15 @@ The codebase is organized into the following modules:
 | `./benchmark/types.js` | `Authorship, BenchmarkItem, BenchmarkSplit, FailureKind` | Re-export |
 | `./benchmark/leakage.js` | `checkRenamedVariants, findCrossSplitLeakage, leakageKey` | Re-export |
 | `./benchmark/leakage.js` | `LeakageCollision, VariantProblem` | Re-export |
-| `./benchmark/run-atlas.js` | `runAtlasCondition, runAtlasOnItem` | Re-export |
-| `./benchmark/run-atlas.js` | `AtlasVerdict` | Re-export |
+| `./benchmark/run-atlas.js` | `ABLATION_CONFIGS, FULL_CONFIG, runAtlasCondition, runAtlasOnItem` | Re-export |
+| `./benchmark/run-atlas.js` | `AtlasRunConfig, AtlasVerdict` | Re-export |
 | `./benchmark/baselines.js` | `rankBySymbolOverlap, rankByStructure, rankByTextOverlap, recallAtK` | Re-export |
 | `./benchmark/baselines.js` | `CorpusRecord, Ranking, RetrievalQuery` | Re-export |
 | `./benchmark/backend-shapes.js` | `parseBackendResponse` | Re-export |
 | `./benchmark/stats.js` | `cohensKappa, mcnemar, pairedDifferenceInterval, powerReport, wilsonInterval, Z95` | Re-export |
 | `./benchmark/stats.js` | `Interval, McNemarResult, PairedTable, PowerReport` | Re-export |
-| `./benchmark/study.js` | `pairedRejection, scoreCondition` | Re-export |
-| `./benchmark/study.js` | `ConditionAnswer, ConditionMetrics, ItemLabel, PairedRejection` | Re-export |
+| `./benchmark/study.js` | `pairedRejection, scoreAblation, scoreCondition` | Re-export |
+| `./benchmark/study.js` | `AblationRow, ConditionAnswer, ConditionMetrics, ItemLabel, PairedRejection` | Re-export |
 | `./benchmark/backend-shapes.js` | `BackendShapeError, BenchmarkBackendRequest, BenchmarkBackendResponse` | Re-export |
 | `./witness-artifact.js` | `runWitnessRegistry, artifactPassingWitnessIds` | Re-export |
 | `./witness-artifact.js` | `WitnessResultRecord, WitnessResultsArtifact` | Re-export |
@@ -451,7 +452,7 @@ The codebase is organized into the following modules:
 | `./derivation.js` | `CompositeFormed, CompositeRefused, Derivation, DerivationCompositionResult, DerivationId, DerivationSpec, NoCompositeReason` | Re-export |
 
 **Exports:**
-- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `FormalFidelity`, `FormalRef`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `ATLAS_FAMILIES`, `DIFFUSION_FAMILY`, `BRIDGE_HEAT_DIFFUSION`, `BRIDGE_SCHRODINGER_DIFFUSION`, `BRIDGE_WALK_DIFFUSION`, `DIFFUSION_BRIDGES`, `DIFFUSION_MODELS`, `getDiffusionModel`, `WAVES_FAMILY`, `BRIDGE_KLEIN_GORDON_WAVE`, `BRIDGE_SOUND_SPEED`, `BRIDGE_STRING_WAVE`, `BRIDGE_WAVE_DALEMBERT`, `WAVE_BRIDGES`, `WAVE_MODELS`, `DIFFUSION_CLOSURE_BRIDGES`, `WAVE_CLOSURE_BRIDGES`, `FAILURE_KINDS`, `HELD_OUT_FAMILY`, `HELD_OUT_MARKERS`, `Authorship`, `BenchmarkItem`, `BenchmarkSplit`, `FailureKind`, `checkRenamedVariants`, `findCrossSplitLeakage`, `leakageKey`, `LeakageCollision`, `VariantProblem`, `runAtlasCondition`, `runAtlasOnItem`, `AtlasVerdict`, `rankBySymbolOverlap`, `rankByStructure`, `rankByTextOverlap`, `recallAtK`, `CorpusRecord`, `Ranking`, `RetrievalQuery`, `parseBackendResponse`, `cohensKappa`, `mcnemar`, `pairedDifferenceInterval`, `powerReport`, `wilsonInterval`, `Z95`, `Interval`, `McNemarResult`, `PairedTable`, `PowerReport`, `pairedRejection`, `scoreCondition`, `ConditionAnswer`, `ConditionMetrics`, `ItemLabel`, `PairedRejection`, `BackendShapeError`, `BenchmarkBackendRequest`, `BenchmarkBackendResponse`, `runWitnessRegistry`, `artifactPassingWitnessIds`, `WitnessResultRecord`, `WitnessResultsArtifact`, `WITNESS_REGISTRY`, `RegisteredNumericWitness`, `RegisteredSymbolicWitness`, `RegisteredWitness`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `FormalFidelity`, `FormalRef`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `ATLAS_FAMILIES`, `DIFFUSION_FAMILY`, `BRIDGE_HEAT_DIFFUSION`, `BRIDGE_SCHRODINGER_DIFFUSION`, `BRIDGE_WALK_DIFFUSION`, `DIFFUSION_BRIDGES`, `DIFFUSION_MODELS`, `getDiffusionModel`, `WAVES_FAMILY`, `BRIDGE_KLEIN_GORDON_WAVE`, `BRIDGE_SOUND_SPEED`, `BRIDGE_STRING_WAVE`, `BRIDGE_WAVE_DALEMBERT`, `WAVE_BRIDGES`, `WAVE_MODELS`, `DIFFUSION_CLOSURE_BRIDGES`, `WAVE_CLOSURE_BRIDGES`, `FAILURE_KINDS`, `HELD_OUT_FAMILY`, `HELD_OUT_MARKERS`, `Authorship`, `BenchmarkItem`, `BenchmarkSplit`, `FailureKind`, `checkRenamedVariants`, `findCrossSplitLeakage`, `leakageKey`, `LeakageCollision`, `VariantProblem`, `ABLATION_CONFIGS`, `FULL_CONFIG`, `runAtlasCondition`, `runAtlasOnItem`, `AtlasRunConfig`, `AtlasVerdict`, `rankBySymbolOverlap`, `rankByStructure`, `rankByTextOverlap`, `recallAtK`, `CorpusRecord`, `Ranking`, `RetrievalQuery`, `parseBackendResponse`, `cohensKappa`, `mcnemar`, `pairedDifferenceInterval`, `powerReport`, `wilsonInterval`, `Z95`, `Interval`, `McNemarResult`, `PairedTable`, `PowerReport`, `pairedRejection`, `scoreAblation`, `scoreCondition`, `AblationRow`, `ConditionAnswer`, `ConditionMetrics`, `ItemLabel`, `PairedRejection`, `BackendShapeError`, `BenchmarkBackendRequest`, `BenchmarkBackendResponse`, `runWitnessRegistry`, `artifactPassingWitnessIds`, `WitnessResultRecord`, `WitnessResultsArtifact`, `WITNESS_REGISTRY`, `RegisteredNumericWitness`, `RegisteredSymbolicWitness`, `RegisteredWitness`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
 
 ---
 
@@ -6042,12 +6043,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 344 |
 | Total Modules | 11 |
-| Total Lines of Code | 67880 |
-| Total Exports | 2377 |
-| Total Re-exports | 1170 |
+| Total Lines of Code | 67977 |
+| Total Exports | 2385 |
+| Total Re-exports | 1175 |
 | Total Classes | 58 |
-| Total Interfaces | 352 |
-| Total Functions | 546 |
+| Total Interfaces | 354 |
+| Total Functions | 547 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 479 |

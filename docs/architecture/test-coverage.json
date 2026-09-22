@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 341,
-    "totalTestFiles": 425,
+    "totalTestFiles": 426,
     "testedCount": 339,
     "untestedCount": 2,
     "coveragePercent": "99.4"
@@ -373,15 +373,18 @@
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/benchmark/run-atlas.ts": [
+      "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts"
     ],
     "src/atlas/benchmark/stats.ts": [
       "tests/atlas/benchmark-stats.test.ts"
     ],
     "src/atlas/benchmark/study.ts": [
+      "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-study.test.ts"
     ],
     "src/atlas/benchmark/types.ts": [
+      "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-preregistration.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts"
@@ -3736,6 +3739,7 @@
     ],
     "src/dimensional/ast-builders.ts": [
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-baselines.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
@@ -3755,6 +3759,7 @@
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-baselines.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
@@ -5193,6 +5198,13 @@
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/bridges-coarse.ts"
+    ],
+    "tests/atlas/benchmark-ablation.test.ts": [
+      "src/atlas/benchmark/run-atlas.ts",
+      "src/atlas/benchmark/study.ts",
+      "src/atlas/benchmark/types.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts"
     ],
     "tests/atlas/benchmark-baselines.test.ts": [
       "src/atlas/benchmark/baselines.ts",

@@ -276,6 +276,7 @@ warning-silencing, not debug logging).
 
 - [ ] **Atlas Sprint 6 — study, scoped release, discovery hypothesis (IN FLIGHT).** **S6.1** — study
       orchestration (`bun run atlas:study`); refuses (exit 3) on the empty frozen set.
+      **S6.2** — ablation: four cumulative configurations, paired step statistics.
 
 - [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
       2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,

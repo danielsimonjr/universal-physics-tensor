@@ -10,6 +10,12 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S6.2 — the ablation.** `ABLATION_CONFIGS` defines four cumulative configurations of the atlas
+  runner (types only, + assumptions, + dimensions & conventions, + regimes). Applicability
+  findings are split by instrument. `scoreAblation` pairs each row against the one before it on
+  the same invalid items. The study script emits the ablation table. **Defect avoided:**
+  `items.map(runAtlasOnItem)` would have passed the array index as the new config parameter. It
+  is now an explicit lambda, pinned by a test. 4 tests.
 - **S6.1 — study orchestration, which REFUSES to run on nothing.** `scripts/run-atlas-study.mjs`
   (`bun run atlas:study`) and `src/atlas/benchmark/study.ts` (`scoreCondition`,
   `pairedRejection`). On the committed empty frozen set the script exits 3 and writes no results

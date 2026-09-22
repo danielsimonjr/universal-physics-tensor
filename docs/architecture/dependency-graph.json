@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 344,
     "totalModules": 11,
-    "totalExports": 2377
+    "totalExports": 2385
   },
   "entryPoints": [
     {
@@ -295,15 +295,22 @@
           }
         ],
         "exports": [
+          "FULL_CONFIG",
+          "ABLATION_CONFIGS",
           "runAtlasOnItem",
           "runAtlasCondition"
         ],
         "interfaces": [
-          "AtlasVerdict"
+          "AtlasVerdict",
+          "AtlasRunConfig"
         ],
         "functions": [
           "runAtlasOnItem",
           "runAtlasCondition"
+        ],
+        "constants": [
+          "FULL_CONFIG",
+          "ABLATION_CONFIGS"
         ]
       },
       "src/atlas/benchmark/stats.ts": {
@@ -367,17 +374,20 @@
         ],
         "exports": [
           "scoreCondition",
-          "pairedRejection"
+          "pairedRejection",
+          "scoreAblation"
         ],
         "interfaces": [
           "ConditionAnswer",
           "ItemLabel",
           "ConditionMetrics",
-          "PairedRejection"
+          "PairedRejection",
+          "AblationRow"
         ],
         "functions": [
           "scoreCondition",
-          "pairedRejection"
+          "pairedRejection",
+          "scoreAblation"
         ]
       },
       "src/atlas/benchmark/types.ts": {
@@ -1280,6 +1290,8 @@
           {
             "file": "./benchmark/run-atlas.js",
             "imports": [
+              "ABLATION_CONFIGS",
+              "FULL_CONFIG",
               "runAtlasCondition",
               "runAtlasOnItem"
             ],
@@ -1288,6 +1300,7 @@
           {
             "file": "./benchmark/run-atlas.js",
             "imports": [
+              "AtlasRunConfig",
               "AtlasVerdict"
             ],
             "reExport": true
@@ -1344,6 +1357,7 @@
             "file": "./benchmark/study.js",
             "imports": [
               "pairedRejection",
+              "scoreAblation",
               "scoreCondition"
             ],
             "reExport": true
@@ -1351,6 +1365,7 @@
           {
             "file": "./benchmark/study.js",
             "imports": [
+              "AblationRow",
               "ConditionAnswer",
               "ConditionMetrics",
               "ItemLabel",
@@ -1520,6 +1535,8 @@
           "checkRenamedVariants",
           "findCrossSplitLeakage",
           "leakageKey",
+          "ABLATION_CONFIGS",
+          "FULL_CONFIG",
           "runAtlasCondition",
           "runAtlasOnItem",
           "rankBySymbolOverlap",
@@ -1534,6 +1551,7 @@
           "wilsonInterval",
           "Z95",
           "pairedRejection",
+          "scoreAblation",
           "scoreCondition",
           "runWitnessRegistry",
           "artifactPassingWitnessIds",
@@ -1579,6 +1597,7 @@
           "FailureKind",
           "LeakageCollision",
           "VariantProblem",
+          "AtlasRunConfig",
           "AtlasVerdict",
           "CorpusRecord",
           "Ranking",
@@ -1587,6 +1606,7 @@
           "McNemarResult",
           "PairedTable",
           "PowerReport",
+          "AblationRow",
           "ConditionAnswer",
           "ConditionMetrics",
           "ItemLabel",
@@ -1697,8 +1717,11 @@
           "leakageKey",
           "LeakageCollision",
           "VariantProblem",
+          "ABLATION_CONFIGS",
+          "FULL_CONFIG",
           "runAtlasCondition",
           "runAtlasOnItem",
+          "AtlasRunConfig",
           "AtlasVerdict",
           "rankBySymbolOverlap",
           "rankByStructure",
@@ -1719,7 +1742,9 @@
           "PairedTable",
           "PowerReport",
           "pairedRejection",
+          "scoreAblation",
           "scoreCondition",
+          "AblationRow",
           "ConditionAnswer",
           "ConditionMetrics",
           "ItemLabel",
@@ -23467,15 +23492,15 @@
   "statistics": {
     "totalTypeScriptFiles": 344,
     "totalModules": 11,
-    "totalLinesOfCode": 67880,
-    "totalExports": 2377,
+    "totalLinesOfCode": 67977,
+    "totalExports": 2385,
     "totalClasses": 58,
-    "totalInterfaces": 352,
-    "totalFunctions": 546,
+    "totalInterfaces": 354,
+    "totalFunctions": 547,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 602,
-    "totalReExports": 1170,
+    "totalConstants": 604,
+    "totalReExports": 1175,
     "totalTypeOnlyImports": 479,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,

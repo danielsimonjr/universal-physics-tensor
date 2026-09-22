@@ -12,7 +12,7 @@
  * - **reject** when an instrument DEMONSTRABLY fires: a blocking applicability
  *   finding, a chain OVERCLAIMED as an exact equivalence, a structural analogy
  *   promoted to an equivalence, or a regime inequality checked and violated.
- * - **accept** only when EVERY instrument RAN and CLEARED: side conditions were
+ * - **accept** only when EVERY ENABLED instrument RAN and CLEARED: side conditions were
  *   stated, the applicability checker found nothing, the regime was supplied and
  *   every inequality was checked and held, and any claimed chain agrees with the
  *   table. S4.1 already fixed the principle: an empty finding list means "no rule
@@ -47,6 +47,50 @@ export interface AtlasVerdict {
   /** Every reason, in rule order — including the unrun checks behind an abstention. */
   readonly reasons: readonly string[];
 }
+
+/**
+ * Which instruments a run uses — the S6.2 ablation. The four named
+ * configurations in {@link ABLATION_CONFIGS} are CUMULATIVE.
+ *
+ * @internal
+ */
+export interface AtlasRunConfig {
+  /** The composition table over relation types. */
+  readonly types: boolean;
+  /** Side-condition rules: unguarded / zero divisors, squaring. */
+  readonly assumptions: boolean;
+  /** Dimensional consistency and convention agreement. */
+  readonly dimensionsAndConventions: boolean;
+  /** The regime check at the use site. */
+  readonly regimes: boolean;
+}
+
+/** Every instrument on: the atlas condition as scored. @internal */
+export const FULL_CONFIG: AtlasRunConfig = {
+  types: true,
+  assumptions: true,
+  dimensionsAndConventions: true,
+  regimes: true,
+};
+
+/** The four cumulative ablation configurations, in the plan's order. @internal */
+export const ABLATION_CONFIGS: ReadonlyArray<readonly [string, AtlasRunConfig]> = [
+  ['types only', { types: true, assumptions: false, dimensionsAndConventions: false, regimes: false }],
+  ['+ assumptions', { types: true, assumptions: true, dimensionsAndConventions: false, regimes: false }],
+  ['+ dimensions & conventions', { types: true, assumptions: true, dimensionsAndConventions: true, regimes: false }],
+  ['+ regimes', FULL_CONFIG],
+];
+
+/** The instrument each applicability finding belongs to. */
+const FINDING_INSTRUMENT: Readonly<Record<ApplicabilityFindingKind, 'assumptions' | 'dimensionsAndConventions' | 'models'>> = {
+  'dimensional-inconsistency': 'dimensionsAndConventions',
+  'convention-mismatch': 'dimensionsAndConventions',
+  'convention-undeclared': 'dimensionsAndConventions',
+  'division-unguarded': 'assumptions',
+  'division-by-zero': 'assumptions',
+  'squaring-adds-solutions': 'assumptions',
+  'model-incompatibility': 'models',
+};
 
 /** Which failure kind a BLOCKING applicability finding points to. */
 const FINDING_TO_FAILURE: Readonly<Partial<Record<ApplicabilityFindingKind, FailureKind>>> = {
@@ -85,7 +129,7 @@ const implies = (composed: RelationType, claimed: RelationType): boolean =>
  *
  * @internal
  */
-export function runAtlasOnItem(item: BenchmarkItem): AtlasVerdict {
+export function runAtlasOnItem(item: BenchmarkItem, config: AtlasRunConfig = FULL_CONFIG): AtlasVerdict {
   const reasons: string[] = [];
   let rejectKind: FailureKind | undefined;
   let rejected = false;
@@ -100,8 +144,11 @@ export function runAtlasOnItem(item: BenchmarkItem): AtlasVerdict {
     allRanAndCleared = false;
   };
 
-  // 1. Applicability.
-  if (item.sideConditions === undefined) {
+  // 1. Applicability — split by instrument so the ablation can switch each off.
+  const applicabilityOn = config.assumptions || config.dimensionsAndConventions;
+  if (!applicabilityOn) {
+    // Instrument disabled: neither run nor required.
+  } else if (item.sideConditions === undefined) {
     unrun('no side conditions stated, so the applicability checker has nothing to check against');
   } else {
     const findings = checkApplicability({
@@ -113,6 +160,9 @@ export function runAtlasOnItem(item: BenchmarkItem): AtlasVerdict {
         : { conclusionConventions: item.conventions.conclusion }),
     });
     for (const f of findings) {
+      const instrument = FINDING_INSTRUMENT[f.kind];
+      if (instrument === 'assumptions' && !config.assumptions) continue;
+      if (instrument === 'dimensionsAndConventions' && !config.dimensionsAndConventions) continue;
       if (f.severity === 'blocking') reject(`${f.kind}: ${f.detail}`, FINDING_TO_FAILURE[f.kind]);
       else {
         reasons.push(`QUESTION: ${f.kind}: ${f.detail}`);
@@ -122,7 +172,7 @@ export function runAtlasOnItem(item: BenchmarkItem): AtlasVerdict {
   }
 
   // 2. Composition. Only for items that claim a chain.
-  if (item.composedFrom !== undefined) {
+  if (config.types && item.composedFrom !== undefined) {
     const [first, second] = item.composedFrom;
     const composed = composeRelation(first, second);
     if (item.composedFrom.includes('structural-analogy') && STRONG.has(item.claimedRelation)) {
@@ -149,7 +199,9 @@ export function runAtlasOnItem(item: BenchmarkItem): AtlasVerdict {
   }
 
   // 3. Regime.
-  if (item.regime === undefined) {
+  if (!config.regimes) {
+    // Instrument disabled: neither run nor required.
+  } else if (item.regime === undefined) {
     unrun('no regime supplied, so the use site was never checked against a domain');
   } else {
     const check = regimeHolds(
@@ -186,6 +238,9 @@ export function runAtlasOnItem(item: BenchmarkItem): AtlasVerdict {
 }
 
 /** Run the atlas condition over a set of items, in order. @internal */
-export function runAtlasCondition(items: readonly BenchmarkItem[]): AtlasVerdict[] {
-  return items.map(runAtlasOnItem);
+export function runAtlasCondition(
+  items: readonly BenchmarkItem[],
+  config: AtlasRunConfig = FULL_CONFIG,
+): AtlasVerdict[] {
+  return items.map((item) => runAtlasOnItem(item, config));
 }

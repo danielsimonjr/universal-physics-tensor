@@ -175,3 +175,39 @@ export function pairedRejection(
     aBetterExcludingZero: difference.lower > 0,
   };
 }
+
+/** One row of the ablation: a configuration's metrics and its step over the previous one. @internal */
+export interface AblationRow {
+  readonly configuration: string;
+  readonly metrics: ConditionMetrics;
+  /** Paired rejection of THIS configuration vs the previous one; absent for the first. */
+  readonly stepOverPrevious?: PairedRejection;
+}
+
+/**
+ * Score a sequence of named condition runs as an ablation: each row is scored,
+ * and each row after the first is compared, paired on the same invalid items,
+ * against the row before it — so the table shows what each added layer bought.
+ *
+ * @internal
+ */
+export function scoreAblation(
+  runs: ReadonlyArray<readonly [string, readonly ConditionAnswer[]]>,
+  labels: readonly ItemLabel[],
+): AblationRow[] {
+  const rows: AblationRow[] = [];
+  for (let i = 0; i < runs.length; i++) {
+    const [name, answers] = runs[i]!;
+    const metrics = scoreCondition(name, answers, labels);
+    if (i === 0) rows.push({ configuration: name, metrics });
+    else {
+      const [prevName, prevAnswers] = runs[i - 1]!;
+      rows.push({
+        configuration: name,
+        metrics,
+        stepOverPrevious: pairedRejection(name, answers, prevName, prevAnswers, labels),
+      });
+    }
+  }
+  return rows;
+}

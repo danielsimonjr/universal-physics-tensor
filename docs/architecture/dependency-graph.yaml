@@ -3,7 +3,7 @@ metadata:
   version: 0.45.2
   totalFiles: 344
   totalModules: 11
-  totalExports: 2377
+  totalExports: 2385
 entryPoints:
   - file: src/index.ts
     type: main
@@ -191,13 +191,19 @@ modules:
             - FailureKind
           typeOnly: true
       exports:
+        - FULL_CONFIG
+        - ABLATION_CONFIGS
         - runAtlasOnItem
         - runAtlasCondition
       interfaces:
         - AtlasVerdict
+        - AtlasRunConfig
       functions:
         - runAtlasOnItem
         - runAtlasCondition
+      constants:
+        - FULL_CONFIG
+        - ABLATION_CONFIGS
     src/atlas/benchmark/stats.ts:
       description: Atlas Phase 5, S5.4 — the benchmark's statistics and power report.
       externalDependencies: []
@@ -245,14 +251,17 @@ modules:
       exports:
         - scoreCondition
         - pairedRejection
+        - scoreAblation
       interfaces:
         - ConditionAnswer
         - ItemLabel
         - ConditionMetrics
         - PairedRejection
+        - AblationRow
       functions:
         - scoreCondition
         - pairedRejection
+        - scoreAblation
     src/atlas/benchmark/types.ts:
       description: Atlas Phase 5, S5.1 — the invalid-bridge benchmark's item schema.
       externalDependencies: []
@@ -857,11 +866,14 @@ modules:
           reExport: true
         - file: ./benchmark/run-atlas.js
           imports:
+            - ABLATION_CONFIGS
+            - FULL_CONFIG
             - runAtlasCondition
             - runAtlasOnItem
           reExport: true
         - file: ./benchmark/run-atlas.js
           imports:
+            - AtlasRunConfig
             - AtlasVerdict
           reExport: true
         - file: ./benchmark/baselines.js
@@ -900,10 +912,12 @@ modules:
         - file: ./benchmark/study.js
           imports:
             - pairedRejection
+            - scoreAblation
             - scoreCondition
           reExport: true
         - file: ./benchmark/study.js
           imports:
+            - AblationRow
             - ConditionAnswer
             - ConditionMetrics
             - ItemLabel
@@ -1031,6 +1045,8 @@ modules:
         - checkRenamedVariants
         - findCrossSplitLeakage
         - leakageKey
+        - ABLATION_CONFIGS
+        - FULL_CONFIG
         - runAtlasCondition
         - runAtlasOnItem
         - rankBySymbolOverlap
@@ -1045,6 +1061,7 @@ modules:
         - wilsonInterval
         - Z95
         - pairedRejection
+        - scoreAblation
         - scoreCondition
         - runWitnessRegistry
         - artifactPassingWitnessIds
@@ -1090,6 +1107,7 @@ modules:
         - FailureKind
         - LeakageCollision
         - VariantProblem
+        - AtlasRunConfig
         - AtlasVerdict
         - CorpusRecord
         - Ranking
@@ -1098,6 +1116,7 @@ modules:
         - McNemarResult
         - PairedTable
         - PowerReport
+        - AblationRow
         - ConditionAnswer
         - ConditionMetrics
         - ItemLabel
@@ -1207,8 +1226,11 @@ modules:
         - leakageKey
         - LeakageCollision
         - VariantProblem
+        - ABLATION_CONFIGS
+        - FULL_CONFIG
         - runAtlasCondition
         - runAtlasOnItem
+        - AtlasRunConfig
         - AtlasVerdict
         - rankBySymbolOverlap
         - rankByStructure
@@ -1229,7 +1251,9 @@ modules:
         - PairedTable
         - PowerReport
         - pairedRejection
+        - scoreAblation
         - scoreCondition
+        - AblationRow
         - ConditionAnswer
         - ConditionMetrics
         - ItemLabel
@@ -16380,15 +16404,15 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 344
   totalModules: 11
-  totalLinesOfCode: 67880
-  totalExports: 2377
+  totalLinesOfCode: 67977
+  totalExports: 2385
   totalClasses: 58
-  totalInterfaces: 352
-  totalFunctions: 546
+  totalInterfaces: 354
+  totalFunctions: 547
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 602
-  totalReExports: 1170
+  totalConstants: 604
+  totalReExports: 1175
   totalTypeOnlyImports: 479
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0

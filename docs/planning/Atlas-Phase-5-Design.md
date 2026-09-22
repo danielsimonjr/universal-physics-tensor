@@ -189,3 +189,18 @@ McNemar), and writes `docs/research/atlas-study-results.md` with its reproducer 
 - **Out-of-process conditions are not run.** The worker protocol and shapes exist, but no
   embedding or LLM worker exists in the repository. The results file states that it holds no
   paired comparison and does not score a condition that never ran.
+
+## 10. The ablation (Phase 6, S6.2) — as built
+
+There are four cumulative configurations of the atlas runner (`ABLATION_CONFIGS`): **types only**,
+**+ assumptions**, **+ dimensions & conventions**, and **+ regimes**. An applicability finding is
+assigned to the instrument that produced it, so each layer switches on independently. Accept
+requires every ENABLED instrument to have run and cleared. A types-only run therefore accepts
+whatever the composition table does not flag, which is the baseline an ablation must expose.
+`scoreAblation` scores each row and pairs it against the row before it on the same invalid items.
+The tests pin that four items, each built to be caught by exactly one layer, are rejected
+cumulatively as 1, 2, 3 and 4.
+
+**A defect avoided in the same change:** `runAtlasCondition` used `items.map(runAtlasOnItem)`.
+Once the function takes a config, `map` passes the array INDEX as that config. It is now an
+explicit lambda, and a test pins that the two paths agree.

@@ -111,8 +111,13 @@ export { FAILURE_KINDS, HELD_OUT_FAMILY, HELD_OUT_MARKERS } from './benchmark/ty
 export type { Authorship, BenchmarkItem, BenchmarkSplit, FailureKind } from './benchmark/types.js';
 export { checkRenamedVariants, findCrossSplitLeakage, leakageKey } from './benchmark/leakage.js';
 export type { LeakageCollision, VariantProblem } from './benchmark/leakage.js';
-export { runAtlasCondition, runAtlasOnItem } from './benchmark/run-atlas.js';
-export type { AtlasVerdict } from './benchmark/run-atlas.js';
+export {
+  ABLATION_CONFIGS,
+  FULL_CONFIG,
+  runAtlasCondition,
+  runAtlasOnItem,
+} from './benchmark/run-atlas.js';
+export type { AtlasRunConfig, AtlasVerdict } from './benchmark/run-atlas.js';
 export {
   rankBySymbolOverlap,
   rankByStructure,
@@ -130,8 +135,9 @@ export {
   Z95,
 } from './benchmark/stats.js';
 export type { Interval, McNemarResult, PairedTable, PowerReport } from './benchmark/stats.js';
-export { pairedRejection, scoreCondition } from './benchmark/study.js';
+export { pairedRejection, scoreAblation, scoreCondition } from './benchmark/study.js';
 export type {
+  AblationRow,
   ConditionAnswer,
   ConditionMetrics,
   ItemLabel,
