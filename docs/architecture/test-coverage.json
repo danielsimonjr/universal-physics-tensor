@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 336,
-    "totalTestFiles": 420,
-    "testedCount": 334,
+    "totalSourceFiles": 337,
+    "totalTestFiles": 421,
+    "testedCount": 335,
     "untestedCount": 2,
     "coveragePercent": "99.4"
   },
@@ -15,6 +15,7 @@
     "src/atlas/association.ts",
     "src/atlas/benchmark/leakage.ts",
     "src/atlas/benchmark/loader.ts",
+    "src/atlas/benchmark/run-atlas.ts",
     "src/atlas/benchmark/types.ts",
     "src/atlas/composition-table.ts",
     "src/atlas/conventions.ts",
@@ -360,7 +361,11 @@
     "src/atlas/benchmark/loader.ts": [
       "tests/atlas/benchmark.test.ts"
     ],
+    "src/atlas/benchmark/run-atlas.ts": [
+      "tests/atlas/benchmark-run-atlas.test.ts"
+    ],
     "src/atlas/benchmark/types.ts": [
+      "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/composition-table.ts": [
@@ -3712,6 +3717,7 @@
     ],
     "src/dimensional/ast-builders.ts": [
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
@@ -3729,6 +3735,7 @@
     "src/dimensional/ast-types.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/witness-runners.test.ts",
@@ -5165,6 +5172,12 @@
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/bridges-coarse.ts"
+    ],
+    "tests/atlas/benchmark-run-atlas.test.ts": [
+      "src/atlas/benchmark/run-atlas.ts",
+      "src/atlas/benchmark/types.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts"
     ],
     "tests/atlas/benchmark.test.ts": [
       "src/atlas/benchmark/leakage.ts",

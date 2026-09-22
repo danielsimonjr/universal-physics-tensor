@@ -11,7 +11,7 @@
  */
 
 import type { ExprNode } from '../../dimensional/ast-types.js';
-import type { RelationType } from '../types.js';
+import type { Conventions, RegimeInequality, RelationType } from '../types.js';
 
 /** The eight failure kinds, sampled evenly (ROADMAP Phase 5). @internal */
 export const FAILURE_KINDS = [
@@ -82,4 +82,23 @@ export interface BenchmarkItem {
   readonly authorship: Authorship;
   /** Where the item came from: an erratum, a documented misconception, a textbook. */
   readonly source: string;
+
+  // ── Machine fields (S5.2), all OPTIONAL. The atlas condition can decide only
+  // what an item states; an absent field makes its check UNRUN, and an unrun
+  // check can never support an accept. ────────────────────────────────────────
+
+  /** The claim's stated side conditions, as prose. `[]` states "none". */
+  readonly sideConditions?: readonly string[];
+  /** Conventions declared by the premises and by the conclusion. */
+  readonly conventions?: {
+    readonly premise?: Conventions;
+    readonly conclusion?: Conventions;
+  };
+  /** When the claim is a CHAIN: the two relations composed to reach `claimedRelation`. */
+  readonly composedFrom?: readonly [RelationType, RelationType];
+  /** The regime the claim is used in: its inequalities and the π-group values at the use site. */
+  readonly regime?: {
+    readonly inequalities: readonly RegimeInequality[];
+    readonly values: Readonly<Record<string, number>>;
+  };
 }

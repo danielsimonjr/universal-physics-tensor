@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 339
+  totalFiles: 340
   totalModules: 11
-  totalExports: 2332
+  totalExports: 2337
 entryPoints:
   - file: src/index.ts
     type: main
@@ -120,6 +120,42 @@ modules:
         - validateItems
         - loadFrozenItems
         - loadContestedDrafts
+    src/atlas/benchmark/run-atlas.ts:
+      description: Atlas Phase 5, S5.2 — the ATLAS condition of the invalid-bridge benchmark.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../applicability.js
+          imports:
+            - checkApplicability
+        - file: ../applicability.js
+          imports:
+            - ApplicabilityFindingKind
+          typeOnly: true
+        - file: ../composition-table.js
+          imports:
+            - composeRelation
+            - NO_COMPOSITE_CLAIM
+        - file: ../regime.js
+          imports:
+            - regimeHolds
+        - file: ../types.js
+          imports:
+            - RelationType
+          typeOnly: true
+        - file: ./types.js
+          imports:
+            - BenchmarkItem
+            - FailureKind
+          typeOnly: true
+      exports:
+        - runAtlasOnItem
+        - runAtlasCondition
+      interfaces:
+        - AtlasVerdict
+      functions:
+        - runAtlasOnItem
+        - runAtlasCondition
     src/atlas/benchmark/types.ts:
       description: Atlas Phase 5, S5.1 — the invalid-bridge benchmark's item schema.
       externalDependencies: []
@@ -131,6 +167,8 @@ modules:
           typeOnly: true
         - file: ../types.js
           imports:
+            - Conventions
+            - RegimeInequality
             - RelationType
           typeOnly: true
       exports:
@@ -720,6 +758,15 @@ modules:
             - LeakageCollision
             - VariantProblem
           reExport: true
+        - file: ./benchmark/run-atlas.js
+          imports:
+            - runAtlasCondition
+            - runAtlasOnItem
+          reExport: true
+        - file: ./benchmark/run-atlas.js
+          imports:
+            - AtlasVerdict
+          reExport: true
         - file: ./witness-artifact.js
           imports:
             - runWitnessRegistry
@@ -836,6 +883,8 @@ modules:
         - checkRenamedVariants
         - findCrossSplitLeakage
         - leakageKey
+        - runAtlasCondition
+        - runAtlasOnItem
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WITNESS_REGISTRY
@@ -880,6 +929,7 @@ modules:
         - FailureKind
         - LeakageCollision
         - VariantProblem
+        - AtlasVerdict
         - WitnessResultRecord
         - WitnessResultsArtifact
         - RegisteredNumericWitness
@@ -982,6 +1032,9 @@ modules:
         - leakageKey
         - LeakageCollision
         - VariantProblem
+        - runAtlasCondition
+        - runAtlasOnItem
+        - AtlasVerdict
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WitnessResultRecord
@@ -15762,6 +15815,7 @@ dependencyGraph:
         - src/atlas/association.ts
         - src/atlas/benchmark/leakage.ts
         - src/atlas/benchmark/loader.ts
+        - src/atlas/benchmark/run-atlas.ts
         - src/atlas/benchmark/types.ts
         - src/atlas/composition-table.ts
         - src/atlas/conventions.ts
@@ -16118,18 +16172,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 339
+  totalTypeScriptFiles: 340
   totalModules: 11
-  totalLinesOfCode: 67055
-  totalExports: 2332
+  totalLinesOfCode: 67268
+  totalExports: 2337
   totalClasses: 58
-  totalInterfaces: 338
-  totalFunctions: 532
+  totalInterfaces: 339
+  totalFunctions: 534
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 601
-  totalReExports: 1140
-  totalTypeOnlyImports: 472
+  totalReExports: 1143
+  totalTypeOnlyImports: 475
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

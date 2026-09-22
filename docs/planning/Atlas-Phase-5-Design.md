@@ -107,3 +107,31 @@ zero; recall at depth 10 against embeddings; abstention reported; practical valu
 curation cost. The note is committed with the hash of the frozen item set. **While no
 independent items exist, the note records the EMPTY set's hash and says so.** No condition
 may be scored against an empty set and reported as a result.
+
+## 6. The atlas condition (S5.2) — as built
+
+`src/atlas/benchmark/run-atlas.ts` applies the applicability checker, the composition table and
+the regime check to each item.
+
+- **reject** when an instrument demonstrably fires. The triggers are a blocking applicability
+  finding, a chain OVERCLAIMED as an exact equivalence, a structural analogy promoted to an
+  equivalence, and a regime inequality that was checked and violated.
+- **accept** ONLY when every instrument RAN and CLEARED. Absent side conditions, an absent or
+  empty regime, an unchecked inequality, a `question` finding, or a chain the table declines all
+  force abstention. This is S4.1's principle carried over: "no rule fired" is weaker than "valid".
+- **abstain** otherwise, as a first-class outcome.
+
+To support this, the item schema gains OPTIONAL machine fields: `sideConditions`,
+`conventions`, `composedFrom` and `regime`. An item that omits one leaves that check unrun.
+
+**Composition is strength-aware.** The table's non-declined results are exact-equivalence,
+derivation, restriction and coarse-graining. The only implication asserted is exact-equivalence ⇒
+derivation, so exact ∘ exact claimed as a derivation clears. A chain claimed as an EXACT
+EQUIVALENCE that composes to something weaker is an overclaim. Through a restriction it maps to
+`omitted-premise`, because the restriction's condition was dropped. Otherwise it maps to
+`false-inverse`, because the claim asserts an inverse the one-way step lacks. Any other mismatch
+is a question, never a rejection. A weaker claim that is still true must not be punished.
+
+**Failure-kind naming is a mapping, and it is only as good as the mapping.** Dimensional
+inconsistency is reported as `notation-collision`, its commonest cause. The scorer grades
+"rejected" and "named the right kind" separately (S5.3).

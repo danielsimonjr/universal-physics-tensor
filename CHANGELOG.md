@@ -10,6 +10,15 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S5.2 — the atlas condition runner.** `src/atlas/benchmark/run-atlas.ts` applies the
+  applicability checker, the composition table and the regime check to each item. It emits
+  `accept`, `reject` or `abstain`, with the failure kind the firing rule maps to. **Accept is the
+  hardest outcome to reach:** it requires every instrument to have RUN and CLEARED. A missing
+  field, an empty regime, an unchecked inequality or a `question` finding abstains, because "no
+  rule fired" is weaker than "valid". Composition is strength-aware. Exact ∘ exact claimed as a
+  derivation clears. A chain overclaimed as an exact equivalence rejects: `omitted-premise`
+  through a restriction, otherwise `false-inverse`. The item schema gains the OPTIONAL machine
+  fields those checks read. 14 tests.
 - **S5.1 — the benchmark item schema, loader and leakage checks, plus two corrections to the
   plan.** `src/atlas/benchmark/{types,leakage,loader}.ts`, `docs/planning/Atlas-Phase-5-Design.md`
   (L5.1), and `tests/fixtures/atlas/benchmark/{public,scorer,contested}/`, which are all

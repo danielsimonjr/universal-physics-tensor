@@ -111,6 +111,8 @@ export { FAILURE_KINDS, HELD_OUT_FAMILY, HELD_OUT_MARKERS } from './benchmark/ty
 export type { Authorship, BenchmarkItem, BenchmarkSplit, FailureKind } from './benchmark/types.js';
 export { checkRenamedVariants, findCrossSplitLeakage, leakageKey } from './benchmark/leakage.js';
 export type { LeakageCollision, VariantProblem } from './benchmark/leakage.js';
+export { runAtlasCondition, runAtlasOnItem } from './benchmark/run-atlas.js';
+export type { AtlasVerdict } from './benchmark/run-atlas.js';
 
 export { runWitnessRegistry, artifactPassingWitnessIds } from './witness-artifact.js';
 export type { WitnessResultRecord, WitnessResultsArtifact } from './witness-artifact.js';
