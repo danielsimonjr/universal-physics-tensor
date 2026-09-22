@@ -42,6 +42,12 @@ and that it was retracted.
 
 ### Added
 
+- **Atlas barrel gap closed.** `src/atlas/index.ts` now exports `deriveEvidence`,
+  `deriveEvidenceForVerdict`, `NO_PASSING_WITNESSES`, `ALL_EVIDENCE_TAGS`, `composeRelation`,
+  `COMPOSITION_TABLE`, `NO_COMPOSITE_CLAIM`, `findPath` and `boundPath` (with their types). The S6.7
+  API review found that subpath users could not reach the Phase 1–3 core at all.
+  `tests/atlas/barrel-completeness.test.ts` was run FAILING (8 of 8) before the fix and passes after.
+  docs:deps reports 0 circular dependencies.
 - **S6.7 — the atlas API review. A RECOMMENDATION only; nothing is applied.**
   `docs/planning/Atlas-API-Review.md` sorts symbols into three tiers against three criteria:
   settled semantics, independent evidence, and no repository coupling. It found no name

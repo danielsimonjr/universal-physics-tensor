@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 347,
     "totalModules": 11,
-    "totalExports": 2401
+    "totalExports": 2421
   },
   "entryPoints": [
     {
@@ -1092,6 +1092,68 @@
             "reExport": true
           },
           {
+            "file": "./types.js",
+            "imports": [
+              "ALL_EVIDENCE_TAGS"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./derive-evidence.js",
+            "imports": [
+              "deriveEvidence",
+              "deriveEvidenceForVerdict",
+              "NO_PASSING_WITNESSES"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./derive-evidence.js",
+            "imports": [
+              "AdjudicationVerdict",
+              "CounterexampleLike",
+              "EvidenceInput",
+              "RejectionLike",
+              "WitnessLike"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition-table.js",
+            "imports": [
+              "composeRelation",
+              "COMPOSITION_TABLE",
+              "NO_COMPOSITE_CLAIM"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition-table.js",
+            "imports": [
+              "CompositionResult",
+              "NoCompositeClaim"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./path-bound.js",
+            "imports": [
+              "boundPath",
+              "findPath"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./path-bound.js",
+            "imports": [
+              "NoClaimReason",
+              "PathBoundClaim",
+              "PathBoundResult",
+              "PathNoClaim"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./model.js",
             "imports": [
               "AtlasModel",
@@ -1559,6 +1621,15 @@
         "exports": [
           "MissingHorizonError",
           "MissingLipschitzError",
+          "ALL_EVIDENCE_TAGS",
+          "deriveEvidence",
+          "deriveEvidenceForVerdict",
+          "NO_PASSING_WITNESSES",
+          "composeRelation",
+          "COMPOSITION_TABLE",
+          "NO_COMPOSITE_CLAIM",
+          "boundPath",
+          "findPath",
           "composeBounds",
           "composeBoundPath",
           "IDENTITY_BOUND",
@@ -1646,6 +1717,17 @@
           "AtlasRejection",
           "FormalFidelity",
           "FormalRef",
+          "AdjudicationVerdict",
+          "CounterexampleLike",
+          "EvidenceInput",
+          "RejectionLike",
+          "WitnessLike",
+          "CompositionResult",
+          "NoCompositeClaim",
+          "NoClaimReason",
+          "PathBoundClaim",
+          "PathBoundResult",
+          "PathNoClaim",
           "AtlasModel",
           "ModelId",
           "BoundPair",
@@ -1727,6 +1809,26 @@
           "FormalRef",
           "MissingHorizonError",
           "MissingLipschitzError",
+          "ALL_EVIDENCE_TAGS",
+          "deriveEvidence",
+          "deriveEvidenceForVerdict",
+          "NO_PASSING_WITNESSES",
+          "AdjudicationVerdict",
+          "CounterexampleLike",
+          "EvidenceInput",
+          "RejectionLike",
+          "WitnessLike",
+          "composeRelation",
+          "COMPOSITION_TABLE",
+          "NO_COMPOSITE_CLAIM",
+          "CompositionResult",
+          "NoCompositeClaim",
+          "boundPath",
+          "findPath",
+          "NoClaimReason",
+          "PathBoundClaim",
+          "PathBoundResult",
+          "PathNoClaim",
           "AtlasModel",
           "ModelId",
           "composeBounds",
@@ -23675,15 +23777,15 @@
   "statistics": {
     "totalTypeScriptFiles": 347,
     "totalModules": 11,
-    "totalLinesOfCode": 68495,
-    "totalExports": 2401,
+    "totalLinesOfCode": 68512,
+    "totalExports": 2421,
     "totalClasses": 58,
     "totalInterfaces": 357,
     "totalFunctions": 551,
     "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 606,
-    "totalReExports": 1185,
+    "totalReExports": 1205,
     "totalTypeOnlyImports": 483,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,

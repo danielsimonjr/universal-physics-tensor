@@ -11,78 +11,74 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 344 |
-| Total Test Files | 430 |
-| Source Files with Tests | 342 |
-| Source Files without Tests | 2 |
-| Coverage | 99.4% |
+| Total Test Files | 431 |
+| Source Files with Tests | 344 |
+| Source Files without Tests | 0 |
+| Coverage | 100.0% |
 
 ---
 
 ## Source Files Without Test Coverage
 
-The following 2 source files are not directly imported by any test file:
-
-### atlas/
-
-- `src/atlas/index.ts` → Expected test: `tests/unit/atlas/index.test.ts`
-- `src/atlas/waves/models.ts` → Expected test: `tests/unit/atlas/models.test.ts`
-
+**All source files have test coverage!** 🎉
 ---
 
 ## Source Files With Test Coverage
 
 | Source File | Test Files |
 |-------------|------------|
-| `atlas/applicability.ts` | `applicability.test.ts` |
+| `atlas/applicability.ts` | `applicability.test.ts`, `barrel-completeness.test.ts` |
 | `atlas/association.ts` | `association.test.ts`, `poster-source.test.ts` |
-| `benchmark/backend-shapes.ts` | `benchmark-baselines.test.ts` |
-| `benchmark/baselines.ts` | `benchmark-baselines.test.ts` |
-| `benchmark/leakage.ts` | `benchmark.test.ts` |
+| `benchmark/backend-shapes.ts` | `barrel-completeness.test.ts`, `benchmark-baselines.test.ts` |
+| `benchmark/baselines.ts` | `barrel-completeness.test.ts`, `benchmark-baselines.test.ts` |
+| `benchmark/leakage.ts` | `barrel-completeness.test.ts`, `benchmark.test.ts` |
 | `benchmark/loader.ts` | `benchmark-preregistration.test.ts`, `benchmark.test.ts` |
-| `benchmark/run-atlas.ts` | `benchmark-ablation.test.ts`, `benchmark-run-atlas.test.ts` |
-| `benchmark/stats.ts` | `benchmark-stats.test.ts`, `link-prediction.test.ts` |
-| `benchmark/study.ts` | `benchmark-ablation.test.ts`, `benchmark-study.test.ts` |
-| `benchmark/types.ts` | `benchmark-ablation.test.ts`, `benchmark-preregistration.test.ts`, `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
-| `atlas/composition-table.ts` | `composition-table.test.ts`, `path-bound.test.ts` |
+| `benchmark/run-atlas.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-run-atlas.test.ts` |
+| `benchmark/stats.ts` | `barrel-completeness.test.ts`, `benchmark-stats.test.ts`, `link-prediction.test.ts` |
+| `benchmark/study.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-study.test.ts` |
+| `benchmark/types.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-preregistration.test.ts`, `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
+| `atlas/composition-table.ts` | `barrel-completeness.test.ts`, `composition-table.test.ts`, `path-bound.test.ts` |
 | `atlas/conventions.ts` | `conventions.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/coverage.ts` | `audited-catalog.test.ts`, `coverage.test.ts` |
-| `atlas/derivation.ts` | `poster.test.ts`, `statement-derivation.test.ts`, `poster-source.test.ts` |
-| `atlas/derive-evidence.ts` | `coverage.test.ts`, `derive-evidence.test.ts`, `formal-sanity.test.ts`, `witness-results.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
-| `diffusion/bridges-closure.ts` | `closure.test.ts`, `witness-results.test.ts` |
-| `diffusion/bridges.ts` | `diffusion.test.ts`, `witness-results.test.ts` |
+| `atlas/derivation.ts` | `barrel-completeness.test.ts`, `poster.test.ts`, `statement-derivation.test.ts`, `poster-source.test.ts` |
+| `atlas/derive-evidence.ts` | `barrel-completeness.test.ts`, `coverage.test.ts`, `derive-evidence.test.ts`, `formal-sanity.test.ts`, `witness-results.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `diffusion/bridges-closure.ts` | `barrel-completeness.test.ts`, `closure.test.ts`, `witness-results.test.ts` |
+| `diffusion/bridges.ts` | `barrel-completeness.test.ts`, `diffusion.test.ts`, `witness-results.test.ts` |
 | `diffusion/dimensions.ts` | `diffusion.test.ts` |
-| `diffusion/index.ts` | `diffusion.test.ts` |
-| `diffusion/models.ts` | `diffusion.test.ts` |
+| `diffusion/index.ts` | `barrel-completeness.test.ts`, `diffusion.test.ts` |
+| `diffusion/models.ts` | `barrel-completeness.test.ts`, `diffusion.test.ts` |
 | `diffusion/numerics.ts` | `closure.test.ts`, `diffusion.test.ts` |
-| `atlas/error-algebra.ts` | `error-algebra.test.ts`, `path-bound.test.ts` |
-| `atlas/export.ts` | `export.test.ts` |
-| `atlas/families.ts` | `atlas-json.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
-| `atlas/link-prediction.ts` | `link-prediction.test.ts` |
-| `atlas/model.ts` | `applicability.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `atlas/error-algebra.ts` | `barrel-completeness.test.ts`, `error-algebra.test.ts`, `path-bound.test.ts` |
+| `atlas/export.ts` | `barrel-completeness.test.ts`, `export.test.ts` |
+| `atlas/families.ts` | `atlas-json.test.ts`, `barrel-completeness.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `atlas/index.ts` | `barrel-completeness.test.ts` |
+| `atlas/link-prediction.ts` | `barrel-completeness.test.ts`, `link-prediction.test.ts` |
+| `atlas/model.ts` | `applicability.test.ts`, `barrel-completeness.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `oscillators/bridges-coarse.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-coarse.test.ts` |
 | `oscillators/bridges-exact.ts` | `audited-catalog.test.ts`, `oscillators-exact.test.ts`, `witness-results.test.ts` |
 | `oscillators/bridges-limits.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `formal-sanity.test.ts`, `oscillators-limits.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts` |
-| `oscillators/dimensions.ts` | `models.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `witness-results.test.ts` |
-| `oscillators/index.ts` | `atlas-json.test.ts`, `audited-catalog.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `regime-admission.test.ts`, `serialize.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
-| `oscillators/models.ts` | `model.test.ts`, `models.test.ts`, `oscillators-coarse.test.ts`, `poster.test.ts` |
+| `oscillators/dimensions.ts` | `barrel-completeness.test.ts`, `models.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `witness-results.test.ts` |
+| `oscillators/index.ts` | `atlas-json.test.ts`, `audited-catalog.test.ts`, `barrel-completeness.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `regime-admission.test.ts`, `serialize.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `oscillators/models.ts` | `barrel-completeness.test.ts`, `model.test.ts`, `models.test.ts`, `oscillators-coarse.test.ts`, `poster.test.ts` |
 | `oscillators/rejections.ts` | `oscillators-coarse.test.ts` |
-| `atlas/path-bound.ts` | `path-bound.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `atlas/path-bound.ts` | `barrel-completeness.test.ts`, `path-bound.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `poster/associations.ts` | `poster.test.ts` |
 | `poster/derivations.ts` | `poster.test.ts` |
 | `poster/statements.ts` | `poster.test.ts` |
-| `atlas/regime.ts` | `bound-machine-form.test.ts`, `closure.test.ts`, `diffusion.test.ts`, `gr-spine-regime.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `waves.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
-| `atlas/serialize.ts` | `atlas-json.test.ts`, `model.test.ts`, `serialize.test.ts` |
-| `atlas/statement.ts` | `poster.test.ts`, `statement-derivation.test.ts`, `poster-source.test.ts` |
-| `atlas/types.ts` | `applicability.test.ts`, `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `link-prediction.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `statement-derivation.test.ts`, `witness-results.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
-| `waves/bridges-closure.ts` | `closure.test.ts` |
-| `waves/bridges.ts` | `waves.test.ts` |
-| `waves/index.ts` | `waves.test.ts` |
+| `atlas/regime.ts` | `barrel-completeness.test.ts`, `bound-machine-form.test.ts`, `closure.test.ts`, `diffusion.test.ts`, `gr-spine-regime.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `waves.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `atlas/serialize.ts` | `atlas-json.test.ts`, `barrel-completeness.test.ts`, `model.test.ts`, `serialize.test.ts` |
+| `atlas/statement.ts` | `barrel-completeness.test.ts`, `poster.test.ts`, `statement-derivation.test.ts`, `poster-source.test.ts` |
+| `atlas/types.ts` | `applicability.test.ts`, `audited-catalog.test.ts`, `barrel-completeness.test.ts`, `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `link-prediction.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `statement-derivation.test.ts`, `witness-results.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
+| `waves/bridges-closure.ts` | `barrel-completeness.test.ts`, `closure.test.ts` |
+| `waves/bridges.ts` | `barrel-completeness.test.ts`, `waves.test.ts` |
+| `waves/index.ts` | `barrel-completeness.test.ts`, `waves.test.ts` |
+| `waves/models.ts` | `barrel-completeness.test.ts` |
 | `waves/numerics.ts` | `closure.test.ts`, `waves.test.ts` |
-| `atlas/witness-artifact.ts` | `witness-results.test.ts` |
-| `atlas/witness-numeric.ts` | `witness-runners.test.ts` |
-| `atlas/witness-result.ts` | `witness-runners.test.ts` |
-| `atlas/witness-specs.ts` | `closure.test.ts`, `diffusion.test.ts`, `waves.test.ts`, `witness-results.test.ts` |
-| `atlas/witness-symbolic.ts` | `witness-runners.test.ts` |
+| `atlas/witness-artifact.ts` | `barrel-completeness.test.ts`, `witness-results.test.ts` |
+| `atlas/witness-numeric.ts` | `barrel-completeness.test.ts`, `witness-runners.test.ts` |
+| `atlas/witness-result.ts` | `barrel-completeness.test.ts`, `witness-runners.test.ts` |
+| `atlas/witness-specs.ts` | `barrel-completeness.test.ts`, `closure.test.ts`, `diffusion.test.ts`, `waves.test.ts`, `witness-results.test.ts` |
+| `atlas/witness-symbolic.ts` | `barrel-completeness.test.ts`, `witness-runners.test.ts` |
 | `witnesses/quantum-support.ts` | `diffusion.test.ts`, `quantum-support.test.ts` |
 | `bridges/be11-decoherence-confrontation.ts` | `public-surface.test.ts`, `be11-decoherence-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `bridges/be21-kss-confrontation.ts` | `public-surface.test.ts`, `be21-kss-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
@@ -389,6 +385,7 @@ The following 2 source files are not directly imported by any test file:
 | `atlas/association.test.ts` | 35 files |
 | `atlas/atlas-json.test.ts` | 3 files |
 | `atlas/audited-catalog.test.ts` | 22 files |
+| `atlas/barrel-completeness.test.ts` | 38 files |
 | `atlas/benchmark-ablation.test.ts` | 5 files |
 | `atlas/benchmark-baselines.test.ts` | 4 files |
 | `atlas/benchmark-preregistration.test.ts` | 3 files |

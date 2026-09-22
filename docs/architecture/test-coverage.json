@@ -1,15 +1,12 @@
 {
   "metadata": {
     "totalSourceFiles": 344,
-    "totalTestFiles": 430,
-    "testedCount": 342,
-    "untestedCount": 2,
-    "coveragePercent": "99.4"
+    "totalTestFiles": 431,
+    "testedCount": 344,
+    "untestedCount": 0,
+    "coveragePercent": "100.0"
   },
-  "untestedFiles": [
-    "src/atlas/index.ts",
-    "src/atlas/waves/models.ts"
-  ],
+  "untestedFiles": [],
   "testedFiles": [
     "src/atlas/applicability.ts",
     "src/atlas/association.ts",
@@ -35,6 +32,7 @@
     "src/atlas/error-algebra.ts",
     "src/atlas/export.ts",
     "src/atlas/families.ts",
+    "src/atlas/index.ts",
     "src/atlas/link-prediction.ts",
     "src/atlas/model.ts",
     "src/atlas/oscillators/bridges-coarse.ts",
@@ -55,6 +53,7 @@
     "src/atlas/waves/bridges-closure.ts",
     "src/atlas/waves/bridges.ts",
     "src/atlas/waves/index.ts",
+    "src/atlas/waves/models.ts",
     "src/atlas/waves/numerics.ts",
     "src/atlas/witness-artifact.ts",
     "src/atlas/witness-numeric.ts",
@@ -356,19 +355,23 @@
   ],
   "coverageMap": {
     "src/atlas/applicability.ts": [
-      "tests/atlas/applicability.test.ts"
+      "tests/atlas/applicability.test.ts",
+      "tests/atlas/barrel-completeness.test.ts"
     ],
     "src/atlas/association.ts": [
       "tests/atlas/association.test.ts",
       "tests/composition/poster-source.test.ts"
     ],
     "src/atlas/benchmark/backend-shapes.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-baselines.test.ts"
     ],
     "src/atlas/benchmark/baselines.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-baselines.test.ts"
     ],
     "src/atlas/benchmark/leakage.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/benchmark/loader.ts": [
@@ -376,24 +379,29 @@
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/benchmark/run-atlas.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts"
     ],
     "src/atlas/benchmark/stats.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-stats.test.ts",
       "tests/atlas/link-prediction.test.ts"
     ],
     "src/atlas/benchmark/study.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-study.test.ts"
     ],
     "src/atlas/benchmark/types.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-ablation.test.ts",
       "tests/atlas/benchmark-preregistration.test.ts",
       "tests/atlas/benchmark-run-atlas.test.ts",
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/composition-table.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/composition-table.test.ts",
       "tests/atlas/path-bound.test.ts"
     ],
@@ -407,11 +415,13 @@
       "tests/atlas/coverage.test.ts"
     ],
     "src/atlas/derivation.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/poster.test.ts",
       "tests/atlas/statement-derivation.test.ts",
       "tests/composition/poster-source.test.ts"
     ],
     "src/atlas/derive-evidence.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/coverage.test.ts",
       "tests/atlas/derive-evidence.test.ts",
       "tests/atlas/formal-sanity.test.ts",
@@ -420,10 +430,12 @@
       "tests/cli/recover-conventions.test.ts"
     ],
     "src/atlas/diffusion/bridges-closure.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/closure.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/diffusion/bridges.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
@@ -431,9 +443,11 @@
       "tests/atlas/diffusion.test.ts"
     ],
     "src/atlas/diffusion/index.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/diffusion.test.ts"
     ],
     "src/atlas/diffusion/models.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/diffusion.test.ts"
     ],
     "src/atlas/diffusion/numerics.ts": [
@@ -441,14 +455,17 @@
       "tests/atlas/diffusion.test.ts"
     ],
     "src/atlas/error-algebra.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/error-algebra.test.ts",
       "tests/atlas/path-bound.test.ts"
     ],
     "src/atlas/export.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/export.test.ts"
     ],
     "src/atlas/families.ts": [
       "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/export.test.ts",
@@ -460,12 +477,16 @@
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
     ],
-    "src/atlas/index.ts": [],
+    "src/atlas/index.ts": [
+      "tests/atlas/barrel-completeness.test.ts"
+    ],
     "src/atlas/link-prediction.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/link-prediction.test.ts"
     ],
     "src/atlas/model.ts": [
       "tests/atlas/applicability.test.ts",
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/link-prediction.test.ts",
       "tests/atlas/model.test.ts",
       "tests/cli/graphs.test.ts",
@@ -490,6 +511,7 @@
       "tests/atlas/regime-admission.test.ts"
     ],
     "src/atlas/oscillators/dimensions.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/regime-admission.test.ts",
@@ -499,6 +521,7 @@
     "src/atlas/oscillators/index.ts": [
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/link-prediction.test.ts",
       "tests/atlas/model.test.ts",
       "tests/atlas/regime-admission.test.ts",
@@ -507,6 +530,7 @@
       "tests/cli/recover-conventions.test.ts"
     ],
     "src/atlas/oscillators/models.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/model.test.ts",
       "tests/atlas/models.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
@@ -516,6 +540,7 @@
       "tests/atlas/oscillators-coarse.test.ts"
     ],
     "src/atlas/path-bound.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/path-bound.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
@@ -530,6 +555,7 @@
       "tests/atlas/poster.test.ts"
     ],
     "src/atlas/regime.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/closure.test.ts",
       "tests/atlas/diffusion.test.ts",
@@ -542,10 +568,12 @@
     ],
     "src/atlas/serialize.ts": [
       "tests/atlas/atlas-json.test.ts",
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/model.test.ts",
       "tests/atlas/serialize.test.ts"
     ],
     "src/atlas/statement.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/poster.test.ts",
       "tests/atlas/statement-derivation.test.ts",
       "tests/composition/poster-source.test.ts"
@@ -553,6 +581,7 @@
     "src/atlas/types.ts": [
       "tests/atlas/applicability.test.ts",
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/composition-table.test.ts",
       "tests/atlas/conventions.test.ts",
@@ -575,35 +604,45 @@
       "tests/composition/graph-viz-filters.test.ts"
     ],
     "src/atlas/waves/bridges-closure.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/closure.test.ts"
     ],
     "src/atlas/waves/bridges.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/waves.test.ts"
     ],
     "src/atlas/waves/index.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/waves.test.ts"
     ],
-    "src/atlas/waves/models.ts": [],
+    "src/atlas/waves/models.ts": [
+      "tests/atlas/barrel-completeness.test.ts"
+    ],
     "src/atlas/waves/numerics.ts": [
       "tests/atlas/closure.test.ts",
       "tests/atlas/waves.test.ts"
     ],
     "src/atlas/witness-artifact.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/witness-numeric.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witness-result.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witness-specs.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/closure.test.ts",
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/waves.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/witness-symbolic.ts": [
+      "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witnesses/quantum-support.ts": [
@@ -5286,6 +5325,46 @@
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/bridges-coarse.ts"
+    ],
+    "tests/atlas/barrel-completeness.test.ts": [
+      "src/atlas/index.ts",
+      "src/atlas/types.ts",
+      "src/atlas/derive-evidence.ts",
+      "src/atlas/composition-table.ts",
+      "src/atlas/path-bound.ts",
+      "src/atlas/model.ts",
+      "src/atlas/error-algebra.ts",
+      "src/atlas/regime.ts",
+      "src/atlas/oscillators/dimensions.ts",
+      "src/atlas/oscillators/models.ts",
+      "src/atlas/oscillators/index.ts",
+      "src/atlas/serialize.ts",
+      "src/atlas/applicability.ts",
+      "src/atlas/witness-result.ts",
+      "src/atlas/families.ts",
+      "src/atlas/link-prediction.ts",
+      "src/atlas/export.ts",
+      "src/atlas/diffusion/index.ts",
+      "src/atlas/diffusion/bridges.ts",
+      "src/atlas/diffusion/models.ts",
+      "src/atlas/waves/index.ts",
+      "src/atlas/waves/bridges.ts",
+      "src/atlas/waves/models.ts",
+      "src/atlas/diffusion/bridges-closure.ts",
+      "src/atlas/waves/bridges-closure.ts",
+      "src/atlas/benchmark/types.ts",
+      "src/atlas/benchmark/leakage.ts",
+      "src/atlas/benchmark/run-atlas.ts",
+      "src/atlas/benchmark/baselines.ts",
+      "src/atlas/benchmark/backend-shapes.ts",
+      "src/atlas/benchmark/stats.ts",
+      "src/atlas/benchmark/study.ts",
+      "src/atlas/witness-artifact.ts",
+      "src/atlas/witness-specs.ts",
+      "src/atlas/witness-symbolic.ts",
+      "src/atlas/witness-numeric.ts",
+      "src/atlas/statement.ts",
+      "src/atlas/derivation.ts"
     ],
     "tests/atlas/benchmark-ablation.test.ts": [
       "src/atlas/benchmark/run-atlas.ts",
