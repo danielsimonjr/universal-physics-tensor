@@ -42,25 +42,27 @@ import { equals } from '../../src/dimensional/algebra.js';
 import { validate } from '../../src/dimensional/validator.js';
 
 describe('diffusion family — structure', () => {
-  it('has four models, three bridges, and three distinct relation types', () => {
-    expect(DIFFUSION_FAMILY.models.map((m) => m.id)).toEqual([
+  it('opens with the four S4.4 models and three S4.4 bridges, of three distinct relation types', () => {
+    // The Sprint 4 closure appends to both lists (tests/atlas/closure.test.ts).
+    expect(DIFFUSION_FAMILY.models.slice(0, 4).map((m) => m.id)).toEqual([
       'model-random-walk',
       'model-fick',
       'model-heat',
       'model-schrodinger-free',
     ]);
-    expect(DIFFUSION_FAMILY.bridges.map((b) => b.relation)).toEqual([
+    expect(DIFFUSION_FAMILY.bridges.slice(0, 3).map((b) => b.relation)).toEqual([
       'coarse-graining',
       'exact-equivalence',
       'analytic-continuation',
     ]);
   });
 
-  it('every bridge premise and conclusion is a model of this family', () => {
+  it('every bridge PREMISE is a model of this family (conclusions may cross families)', () => {
+    // ab-telegraph-wave ends at the oscillator family's model-wave-1d; endpoint
+    // resolution across the whole atlas is pinned in families.test.ts.
     const ids = new Set(DIFFUSION_FAMILY.models.map((m) => m.id));
     for (const b of DIFFUSION_FAMILY.bridges) {
       for (const p of b.premises) expect(ids.has(p)).toBe(true);
-      expect(ids.has(b.conclusion)).toBe(true);
     }
   });
 

@@ -13,7 +13,10 @@
  */
 
 import type { DimensionalVariable } from '../../dimensional/buckingham.js';
-import { ACTION, LENGTH, MASS, TIME } from '../../dimensional/types.js';
+import { ACTION, ENERGY, LENGTH, MASS, TIME } from '../../dimensional/types.js';
+import { dim } from '../../dimensional/ast-builders.js';
+import type { Dimension } from '../../dimensional/types.js';
+import { DAMPING } from '../oscillators/dimensions.js';
 import type { AtlasModel } from '../model.js';
 import { deriveRegimeGroups } from '../regime.js';
 import { DENSITY, DIFFUSIVITY, SPECIFIC_HEAT, THERMAL_CONDUCTIVITY } from './dimensions.js';
@@ -50,7 +53,10 @@ function model(spec: ModelSpec): AtlasModel {
   };
 }
 
-/** The four diffusion models, in design-note order. @internal */
+/** Pa·s, `L^-1 M T^-1` — `src/canonical/entries/fluids-waves.ts:45` (`VISCOSITY`). @internal */
+export const VISCOSITY: Dimension = dim(-1, 1, -1);
+
+/** The diffusion models, in design-note order; the last four were added to close Sprint 4. @internal */
 export const DIFFUSION_MODELS: readonly AtlasModel[] = [
   model({
     id: 'model-random-walk',
@@ -96,6 +102,48 @@ export const DIFFUSION_MODELS: readonly AtlasModel[] = [
       { name: 'hbar', dim: ACTION },
       { name: 'm', dim: MASS },
     ],
+    canonicalRefs: [],
+  }),
+  model({
+    id: 'model-langevin',
+    stateSpace: '(x, v)(t), a Brownian particle',
+    dynamics: 'm v̇ = −γ v + ξ(t), ⟨ξ(t)ξ(t′)⟩ = 2γ k_B T δ(t − t′), ẋ = v',
+    observables: ['⟨x²⟩(t)', '⟨v²⟩ = k_B T/m'],
+    parameters: [
+      { name: 'm', dim: MASS },
+      { name: 'gamma', dim: DAMPING },
+      { name: 'kT', dim: ENERGY },
+    ],
+    canonicalRefs: [],
+  }),
+  model({
+    id: 'model-stokes-drag',
+    stateSpace: 'a sphere of radius a moving at speed v through a viscous fluid',
+    dynamics: 'F = −6π η a v (creeping flow, Re ≪ 1)',
+    observables: ['drag force F', 'friction coefficient γ = 6πηa'],
+    parameters: [
+      { name: 'eta', dim: VISCOSITY },
+      { name: 'a', dim: LENGTH },
+    ],
+    canonicalRefs: ['CE-stokes-drag'],
+  }),
+  model({
+    id: 'model-telegraph',
+    stateSpace: 'u(x, t), x ∈ ℝ',
+    dynamics: 'τ u_tt + u_t = D u_xx (Cattaneo: diffusion with a relaxation time)',
+    observables: ['u(x, t)', 'mode decay rates', 'signal speed √(D/τ)'],
+    parameters: [
+      { name: 'tau', dim: TIME },
+      { name: 'D', dim: DIFFUSIVITY },
+    ],
+    canonicalRefs: [],
+  }),
+  model({
+    id: 'model-laplace-1d',
+    stateSpace: 'T(x) on [0, ℓ] with fixed end values',
+    dynamics: 'T_xx = 0, so T is linear between T(0) and T(ℓ)',
+    observables: ['T(x)', 'steady heat flux'],
+    parameters: [{ name: 'ell', dim: LENGTH }],
     canonicalRefs: [],
   }),
 ];

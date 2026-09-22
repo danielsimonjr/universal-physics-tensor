@@ -200,3 +200,81 @@ export function kleinGordonPhaseVelocity(
   const k = k0 * resolution;
   return Math.sqrt(c * c + (omega0 * omega0) / (k * k));
 }
+
+// ── Sprint 4 closure: Klein–Gordon limits, weak damping ────────────────────
+
+/**
+ * The relative error of the non-relativistic kinetic frequency: the
+ * Klein–Gordon mode's `ω − ω₀ = ω₀(√(1 + x²) − 1)` against the free
+ * Schrödinger particle's `ω₀ x²/2` under `ħ/m ↦ c²/ω₀`, with `x = c k/ω₀`.
+ * Equals `|(√(1 + x²) − 1)/(x²/2) − 1|`, increasing in x.
+ *
+ * @internal
+ */
+export function kgNonrelativisticError(x: number): number {
+  if (x === 0) return 0;
+  return Math.abs((Math.sqrt(1 + x * x) - 1) / ((x * x) / 2) - 1);
+}
+
+/**
+ * WS6 — `u(tEnd)` of the SPATIALLY UNIFORM Klein–Gordon field on a periodic
+ * grid, stepped by leapfrog in the full PDE `u_tt = c² u_xx − ω₀² u` from
+ * `u = 1` at rest, with `steps` time steps. The uniform mode's Laplacian
+ * vanishes, so the field should follow the oscillator solution `cos(ω₀ t)`.
+ *
+ * @internal
+ */
+export function kgUniformModeValue(
+  steps: number,
+  c: number,
+  omega0: number,
+  tEnd: number,
+  cells = 16,
+): number {
+  const dt = tEnd / steps;
+  const dx = 1 / cells;
+  let prev = new Float64Array(cells).fill(1);
+  let cur = new Float64Array(cells);
+  let next = new Float64Array(cells);
+  const lap = (a: Float64Array, i: number): number =>
+    (a[(i + 1) % cells]! - 2 * a[i]! + a[(i - 1 + cells) % cells]!) / (dx * dx);
+  for (let i = 0; i < cells; i++) {
+    cur[i] = prev[i]! + 0.5 * dt * dt * (c * c * lap(prev, i) - omega0 * omega0 * prev[i]!);
+  }
+  for (let n = 1; n < steps; n++) {
+    for (let i = 0; i < cells; i++) {
+      next[i] = 2 * cur[i]! - prev[i]! + dt * dt * (c * c * lap(cur, i) - omega0 * omega0 * cur[i]!);
+    }
+    [prev, cur, next] = [cur, next, prev];
+  }
+  return cur[0]!;
+}
+
+/**
+ * Relative phase-velocity error of a stiff string against the flexible string:
+ * `√(1 + β) − 1` with `β = EI k²/F`. Increasing in β, so its value at the
+ * domain edge is the supremum over the domain.
+ *
+ * @internal
+ */
+export function stiffStringPhaseError(F: number, EI: number, k: number): number {
+  return Math.sqrt(1 + (EI * k * k) / F) - 1;
+}
+
+/**
+ * WS7 — the stiff string's phase velocity `√(F/μ + (EI/μ)k²)` at wavenumber
+ * `k = k₀/resolution`: it tends to the flexible-string speed `√(F/μ)` as the
+ * wavelength grows.
+ *
+ * @internal
+ */
+export function stiffStringPhaseVelocity(
+  resolution: number,
+  F: number,
+  mu: number,
+  EI: number,
+  k0: number,
+): number {
+  const k = k0 / resolution;
+  return Math.sqrt(F / mu + (EI / mu) * k * k);
+}

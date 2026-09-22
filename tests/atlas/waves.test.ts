@@ -35,9 +35,10 @@ import {
 import { admitApproximation, regimeHolds } from '../../src/atlas/regime.js';
 
 describe('wave family — structure', () => {
-  it('has six models, four bridges, and the relation types restriction, derivation, approximation', () => {
-    expect(WAVES_FAMILY.models).toHaveLength(6);
-    expect(WAVES_FAMILY.bridges.map((b) => [b.id, b.relation])).toEqual([
+  it('opens with the six S4.5 models and four S4.5 bridges (restriction, derivation ×2, approximation)', () => {
+    // The Sprint 4 closure appends to both lists (tests/atlas/closure.test.ts).
+    expect(WAVES_FAMILY.models.slice(0, 6)).toHaveLength(6);
+    expect(WAVES_FAMILY.bridges.slice(0, 4).map((b) => [b.id, b.relation])).toEqual([
       ['ab-string-wave', 'restriction'],
       ['ab-wave-dalembert', 'derivation'],
       ['ab-sound-speed', 'derivation'],

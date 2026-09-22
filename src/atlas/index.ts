@@ -102,6 +102,8 @@ export {
   WAVE_BRIDGES,
 } from './waves/bridges.js';
 export { WAVE_MODELS } from './waves/models.js';
+export { DIFFUSION_CLOSURE_BRIDGES } from './diffusion/bridges-closure.js';
+export { WAVE_CLOSURE_BRIDGES } from './waves/bridges-closure.js';
 
 export { runWitnessRegistry, artifactPassingWitnessIds } from './witness-artifact.js';
 export type { WitnessResultRecord, WitnessResultsArtifact } from './witness-artifact.js';

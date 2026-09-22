@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 331,
-    "totalTestFiles": 418,
-    "testedCount": 329,
+    "totalSourceFiles": 333,
+    "totalTestFiles": 419,
+    "testedCount": 331,
     "untestedCount": 2,
     "coveragePercent": "99.4"
   },
@@ -18,6 +18,7 @@
     "src/atlas/coverage.ts",
     "src/atlas/derivation.ts",
     "src/atlas/derive-evidence.ts",
+    "src/atlas/diffusion/bridges-closure.ts",
     "src/atlas/diffusion/bridges.ts",
     "src/atlas/diffusion/dimensions.ts",
     "src/atlas/diffusion/index.ts",
@@ -41,6 +42,7 @@
     "src/atlas/serialize.ts",
     "src/atlas/statement.ts",
     "src/atlas/types.ts",
+    "src/atlas/waves/bridges-closure.ts",
     "src/atlas/waves/bridges.ts",
     "src/atlas/waves/index.ts",
     "src/atlas/waves/numerics.ts",
@@ -373,6 +375,10 @@
       "tests/atlas/formal-sanity.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
+    "src/atlas/diffusion/bridges-closure.ts": [
+      "tests/atlas/closure.test.ts",
+      "tests/atlas/witness-results.test.ts"
+    ],
     "src/atlas/diffusion/bridges.ts": [
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/witness-results.test.ts"
@@ -387,6 +393,7 @@
       "tests/atlas/diffusion.test.ts"
     ],
     "src/atlas/diffusion/numerics.ts": [
+      "tests/atlas/closure.test.ts",
       "tests/atlas/diffusion.test.ts"
     ],
     "src/atlas/error-algebra.ts": [
@@ -466,6 +473,7 @@
     ],
     "src/atlas/regime.ts": [
       "tests/atlas/bound-machine-form.test.ts",
+      "tests/atlas/closure.test.ts",
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/atlas/regime-admission.test.ts",
@@ -506,6 +514,9 @@
       "tests/composition/compose-relation.test.ts",
       "tests/composition/graph-viz-filters.test.ts"
     ],
+    "src/atlas/waves/bridges-closure.ts": [
+      "tests/atlas/closure.test.ts"
+    ],
     "src/atlas/waves/bridges.ts": [
       "tests/atlas/waves.test.ts"
     ],
@@ -514,6 +525,7 @@
     ],
     "src/atlas/waves/models.ts": [],
     "src/atlas/waves/numerics.ts": [
+      "tests/atlas/closure.test.ts",
       "tests/atlas/waves.test.ts"
     ],
     "src/atlas/witness-artifact.ts": [
@@ -526,6 +538,7 @@
       "tests/atlas/witness-runners.test.ts"
     ],
     "src/atlas/witness-specs.ts": [
+      "tests/atlas/closure.test.ts",
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/waves.test.ts",
       "tests/atlas/witness-results.test.ts"
@@ -1713,6 +1726,7 @@
       "tests/api/public-surface.test.ts",
       "tests/atlas/association.test.ts",
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/closure.test.ts",
       "tests/atlas/diffusion.test.ts",
       "tests/atlas/model.test.ts",
       "tests/atlas/models.test.ts",
@@ -2849,6 +2863,7 @@
     "src/composition/expr-eval.ts": [
       "tests/api/public-surface.test.ts",
       "tests/atlas/association.test.ts",
+      "tests/atlas/closure.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/canonical/numeric-prefactor.test.ts",
@@ -5142,6 +5157,16 @@
       "src/atlas/regime.ts",
       "src/atlas/types.ts"
     ],
+    "tests/atlas/closure.test.ts": [
+      "src/atlas/diffusion/bridges-closure.ts",
+      "src/atlas/diffusion/numerics.ts",
+      "src/atlas/waves/bridges-closure.ts",
+      "src/atlas/waves/numerics.ts",
+      "src/atlas/witness-specs.ts",
+      "src/atlas/regime.ts",
+      "src/canonical/registry.ts",
+      "src/composition/expr-eval.ts"
+    ],
     "tests/atlas/composition-table.test.ts": [
       "src/atlas/composition-table.ts",
       "src/atlas/types.ts"
@@ -5365,6 +5390,7 @@
       "src/atlas/derive-evidence.ts",
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/diffusion/bridges.ts",
+      "src/atlas/diffusion/bridges-closure.ts",
       "src/atlas/types.ts",
       "src/composition/expr-simplify.ts",
       "src/dimensional/ast-builders.ts",

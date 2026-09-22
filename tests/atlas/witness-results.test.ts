@@ -23,6 +23,7 @@ import type { RegisteredWitness } from '../../src/atlas/witness-specs.js';
 import { deriveEvidence, NO_PASSING_WITNESSES } from '../../src/atlas/derive-evidence.js';
 import { BRIDGE_DAMPED_RLC, BRIDGE_SPRING_LC } from '../../src/atlas/oscillators/bridges-exact.js';
 import { BRIDGE_HEAT_DIFFUSION } from '../../src/atlas/diffusion/bridges.js';
+import { BRIDGE_STOKES_EINSTEIN } from '../../src/atlas/diffusion/bridges-closure.js';
 import type { FormalFidelity } from '../../src/atlas/types.js';
 import { isSimplifierAvailable } from '../../src/composition/expr-simplify.js';
 import { sym } from '../../src/dimensional/ast-builders.js';
@@ -102,6 +103,14 @@ describe('WD2s — the heat ↔ Fick dictionary on the Fourier decay rate, check
     const ids = artifactPassingWitnessIds(committed, 'ab-heat-diffusion');
     expect(ids.has('WD2s')).toBe(true);
     expect(deriveEvidence(BRIDGE_HEAT_DIFFUSION, ids).has('symbolically-checked')).toBe(true);
+  });
+});
+
+describe('WD5s — the Stokes–Einstein substitution, checked by the CAS', () => {
+  it('WD5s is recorded as checked, and earns ab-stokes-einstein symbolically-checked', () => {
+    const ids = artifactPassingWitnessIds(committed, 'ab-stokes-einstein');
+    expect(ids.has('WD5s')).toBe(true);
+    expect(deriveEvidence(BRIDGE_STOKES_EINSTEIN, ids).has('symbolically-checked')).toBe(true);
   });
 });
 

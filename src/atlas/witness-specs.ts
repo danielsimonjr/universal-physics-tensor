@@ -24,7 +24,7 @@
 
 import type { ExprNode } from '../dimensional/ast-types.js';
 import { sym } from '../dimensional/ast-builders.js';
-import { DIMENSIONLESS, LENGTH, MASS } from '../dimensional/types.js';
+import { DIMENSIONLESS, ENERGY, LENGTH, MASS } from '../dimensional/types.js';
 import { substitute } from '../composition/expr-subst.js';
 import {
   CAPACITANCE,
@@ -34,16 +34,29 @@ import {
   SPRING_CONSTANT,
 } from './oscillators/dimensions.js';
 import {
+  heatSteadyDeviation,
+  langevinMsdRatio,
+  telegraphSlowRateRatio,
+  telegraphWaveFrequencyRatio,
   diffusionKernel,
   gaussianSpread,
   heatFtcsCentre,
   randomWalkCentralDensity,
   wickHeatResidual,
 } from './diffusion/numerics.js';
-import type { HeatFixture, WickFixture } from './diffusion/numerics.js';
+import type {
+  HeatFixture,
+  LangevinFixture,
+  SteadyStateFixture,
+  WickFixture,
+} from './diffusion/numerics.js';
 import { DENSITY, DIFFUSIVITY, SPECIFIC_HEAT, THERMAL_CONDUCTIVITY } from './diffusion/dimensions.js';
+import { VISCOSITY } from './diffusion/models.js';
 import { wickRotatedFreeKernel } from './witnesses/quantum-support.js';
 import {
+  kgNonrelativisticError,
+  kgUniformModeValue,
+  stiffStringPhaseVelocity,
   acousticLeapfrogQuarter,
   dalembertResidual,
   kleinGordonPhaseVelocity,
@@ -154,6 +167,42 @@ export const WS3_FIXTURE: AcousticFixture = { p0: 1, rho0: 1.2, gamma: 1.4, tEnd
 
 /** WS4 fixture: ω₀ = c = 1, base wavenumber k₀ = 10 (the domain edge ω₀/(ck) = 0.1). @internal */
 export const WS4_FIXTURE = { omega0: 1, c: 1, k0: 10 } as const;
+
+// ── Sprint 4 closure ───────────────────────────────────────────────────────
+
+/** WD4 fixture: m, γ, k_BT all ≠ 1; τ_p = m/γ = 4. @internal */
+export const WD4_FIXTURE: LangevinFixture = { m: 2, gamma: 0.5, kT: 1.5 };
+
+/** WD6 base: τ₀ = 0.1 with D = q = 1, so ε = τ at the resolution's τ = τ₀/resolution. @internal */
+export const WD6_FIXTURE = { tau0: 0.1, D: 1, q: 1 } as const;
+
+/** WD7 base: ε = 25 · resolution with D = q = 1. @internal */
+export const WD7_FIXTURE = { eps0: 25, D: 1, q: 1 } as const;
+
+/** WD8 fixture: a unit rod held at 2 and 5, base time 0.1 (Fourier number 0.1 per unit). @internal */
+export const WD8_FIXTURE: SteadyStateFixture = {
+  alpha: 1,
+  ell: 1,
+  tLeft: 2,
+  tRight: 5,
+  t0: 0.1,
+  cells: 40,
+};
+
+/** WS5 base: x₀ = ck/ω₀ = 0.1, halved per resolution step. @internal */
+export const WS5_FIXTURE = { x0: 0.1 } as const;
+
+/** WS6 fixture: c = 1, ω₀ = 2, t = 3; resolution = time steps. @internal */
+export const WS6_FIXTURE = { c: 1, omega0: 2, tEnd: 3 } as const;
+
+/** WS7 fixture: F = 100, μ = 0.01 (so √(F/μ) = 100), EI = 0.01, k₀ = 10 (β = 0.01 at res 1). @internal */
+export const WS7_FIXTURE = { F: 100, mu: 0.01, EI: 0.01, k0: 10 } as const;
+
+const kT = sym('kT', ENERGY);
+const gammaSym = sym('gamma', DAMPING);
+const eta = sym('eta', VISCOSITY);
+const a = sym('a', LENGTH);
+const pi = sym('pi', DIMENSIONLESS);
 
 /**
  * Every witness the results artifact covers, in a fixed order (the artifact is
@@ -301,6 +350,112 @@ export const WITNESS_REGISTRY: readonly RegisteredWitness[] = [
       coarseResolution: 1,
       fineResolution: 2,
       tolerance: 2e-3,
+    },
+  },
+  // ── Sprint 4 closure ─────────────────────────────────────────────────────
+  {
+    // Coarse-graining: Langevin second moments at t = resolution · τ_p, over 2Dt.
+    recordId: 'ab-langevin-diffusion',
+    kind: 'numeric',
+    spec: {
+      id: 'WD4',
+      evaluate: (resolution) => langevinMsdRatio(resolution, WD4_FIXTURE),
+      target: 1,
+      coarseResolution: 10,
+      fineResolution: 100,
+      tolerance: 0.02,
+    },
+  },
+  {
+    // Hyperedge: γ = 6πηa pushed into Einstein's D = k_BT/γ.
+    recordId: 'ab-stokes-einstein',
+    kind: 'symbolic',
+    spec: {
+      id: 'WD5s',
+      lhs: applyDictionary(op('/', kT, gammaSym), { gamma: op('*', n(6), pi, eta, a) }),
+      rhs: op('/', kT, op('*', n(6), pi, eta, a)),
+    },
+  },
+  {
+    // Singular limit τ → 0: the telegraph slow rate over Dq² tends to 1.
+    recordId: 'ab-telegraph-diffusion',
+    kind: 'numeric',
+    spec: {
+      id: 'WD6',
+      evaluate: (resolution) =>
+        telegraphSlowRateRatio(WD6_FIXTURE.tau0 / resolution, WD6_FIXTURE.D, WD6_FIXTURE.q),
+      target: 1,
+      coarseResolution: 2,
+      fineResolution: 4,
+      tolerance: 0.03,
+    },
+  },
+  {
+    // ε → ∞: the telegraph oscillation frequency over c q tends to 1.
+    recordId: 'ab-telegraph-wave',
+    kind: 'numeric',
+    spec: {
+      id: 'WD7',
+      evaluate: (resolution) =>
+        telegraphWaveFrequencyRatio(WD7_FIXTURE.eps0 * resolution, WD7_FIXTURE.D, WD7_FIXTURE.q),
+      target: 1,
+      coarseResolution: 1,
+      fineResolution: 2,
+      tolerance: 3e-3,
+    },
+  },
+  {
+    // Steady state: the heat solution's deviation from the Laplace profile → 0.
+    recordId: 'ab-heat-laplace',
+    kind: 'numeric',
+    spec: {
+      id: 'WD8',
+      evaluate: (resolution) => heatSteadyDeviation(resolution, WD8_FIXTURE),
+      target: 0,
+      coarseResolution: 2,
+      fineResolution: 4,
+      tolerance: 0.025,
+    },
+  },
+  {
+    // Non-relativistic limit: kinetic-frequency error → 0 as x = ck/ω₀ halves.
+    recordId: 'ab-kg-schrodinger',
+    kind: 'numeric',
+    spec: {
+      id: 'WS5',
+      evaluate: (resolution) => kgNonrelativisticError(WS5_FIXTURE.x0 / resolution),
+      target: 0,
+      coarseResolution: 1,
+      fineResolution: 2,
+      tolerance: 1e-3,
+    },
+  },
+  {
+    // Uniform-mode restriction: the full KG PDE, uniform data, vs cos(ω₀t).
+    recordId: 'ab-kg-oscillator',
+    kind: 'numeric',
+    spec: {
+      id: 'WS6',
+      evaluate: (steps) =>
+        kgUniformModeValue(steps, WS6_FIXTURE.c, WS6_FIXTURE.omega0, WS6_FIXTURE.tEnd),
+      target: Math.cos(WS6_FIXTURE.omega0 * WS6_FIXTURE.tEnd),
+      coarseResolution: 50,
+      fineResolution: 100,
+      tolerance: 3e-4,
+    },
+  },
+  {
+    // Flexible-string limit: stiff-string phase velocity → √(F/μ) as k shrinks.
+    recordId: 'ab-stiff-string',
+    kind: 'numeric',
+    spec: {
+      id: 'WS7',
+      evaluate: (resolution) =>
+        stiffStringPhaseVelocity(resolution, WS7_FIXTURE.F, WS7_FIXTURE.mu, WS7_FIXTURE.EI, WS7_FIXTURE.k0),
+      target: Math.sqrt(WS7_FIXTURE.F / WS7_FIXTURE.mu),
+      coarseResolution: 1,
+      fineResolution: 2,
+      tolerance: 0.15,
     },
   },
 ];

@@ -105,6 +105,97 @@
         "fine": 0.00124921972503933,
         "ratio": 3.992541914059133
       }
+    },
+    {
+      "recordId": "ab-langevin-diffusion",
+      "witnessId": "WD4",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.010000000000503495 is within tolerance 0.02, and refinement reduced the error by a factor of 9.999546000199059.",
+      "convergence": {
+        "coarse": 0.0999954600070253,
+        "fine": 0.010000000000503495,
+        "ratio": 9.999546000199059
+      }
+    },
+    {
+      "recordId": "ab-stokes-einstein",
+      "witnessId": "WD5s",
+      "kind": "symbolic",
+      "status": "checked",
+      "detail": "lhs − rhs simplified to literal 0."
+    },
+    {
+      "recordId": "ab-telegraph-diffusion",
+      "witnessId": "WD6",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.02633403898972464 is within tolerance 0.03, and refinement reduced the error by a factor of 2.116199874337019.",
+      "convergence": {
+        "coarse": 0.055728090000841446,
+        "fine": 0.02633403898972464,
+        "ratio": 2.116199874337019
+      }
+    },
+    {
+      "recordId": "ab-telegraph-wave",
+      "witnessId": "WD7",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.0025031328369998773 is within tolerance 0.003, and refinement reduced the error by a factor of 2.0025157351967895.",
+      "convergence": {
+        "coarse": 0.005012562893380035,
+        "fine": 0.0025031328369998773,
+        "ratio": 2.0025157351967895
+      }
+    },
+    {
+      "recordId": "ab-heat-laplace",
+      "witnessId": "WD8",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.019276725259156358 is within tolerance 0.025, and refinement reduced the error by a factor of 7.20250172850875.",
+      "convergence": {
+        "coarse": 0.13884064699906196,
+        "fine": 0.019276725259156358,
+        "ratio": 7.20250172850875
+      }
+    },
+    {
+      "recordId": "ab-kg-schrodinger",
+      "witnessId": "WS5",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.0006242199685362326 is within tolerance 0.001, and refinement reduced the error by a factor of 3.985097734126391.",
+      "convergence": {
+        "coarse": 0.0024875775822101875,
+        "fine": 0.0006242199685362326,
+        "ratio": 3.985097734126391
+      }
+    },
+    {
+      "recordId": "ab-kg-oscillator",
+      "witnessId": "WS6",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.00025118663177325917 is within tolerance 0.0003, and refinement reduced the error by a factor of 3.9862174965661166.",
+      "convergence": {
+        "coarse": 0.0010012845464780762,
+        "fine": 0.00025118663177325917,
+        "ratio": 3.9862174965661166
+      }
+    },
+    {
+      "recordId": "ab-stiff-string",
+      "witnessId": "WS7",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.12492197250392678 is within tolerance 0.15, and refinement reduced the error by a factor of 3.992541914059367.",
+      "convergence": {
+        "coarse": 0.49875621120889946,
+        "fine": 0.12492197250392678,
+        "ratio": 3.992541914059367
+      }
     }
   ]
 }

@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.45.2",
-    "totalFiles": 334,
+    "totalFiles": 336,
     "totalModules": 11,
-    "totalExports": 2275
+    "totalExports": 2310
   },
   "entryPoints": [
     {
@@ -278,6 +278,101 @@
           "NO_PASSING_WITNESSES"
         ]
       },
+      "src/atlas/diffusion/bridges-closure.ts": {
+        "description": "Atlas Phase 4 — the five diffusion-family bridges added to close Sprint 4's",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "ENERGY",
+              "LENGTH",
+              "MASS",
+              "TIME",
+              "VELOCITY"
+            ]
+          },
+          {
+            "file": "../oscillators/bridges-limits.js",
+            "imports": [
+              "makeApproximation"
+            ]
+          },
+          {
+            "file": "../oscillators/dimensions.js",
+            "imports": [
+              "DAMPING"
+            ]
+          },
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasBridge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../waves/models.js",
+            "imports": [
+              "WAVENUMBER"
+            ]
+          },
+          {
+            "file": "./dimensions.js",
+            "imports": [
+              "DENSITY",
+              "DIFFUSIVITY",
+              "SPECIFIC_HEAT",
+              "THERMAL_CONDUCTIVITY"
+            ]
+          },
+          {
+            "file": "./models.js",
+            "imports": [
+              "DIFFUSION_FAMILY_NAME",
+              "VISCOSITY"
+            ]
+          },
+          {
+            "file": "./numerics.js",
+            "imports": [
+              "telegraphSlowRateRatio",
+              "telegraphWaveFrequencyRatio"
+            ]
+          }
+        ],
+        "exports": [
+          "LANGEVIN_MAX_TAU_RATIO",
+          "TELEGRAPH_FICK_MAX_EPS",
+          "TELEGRAPH_WAVE_MIN_EPS",
+          "STEADY_MIN_FOURIER",
+          "BRIDGE_LANGEVIN_DIFFUSION",
+          "BRIDGE_STOKES_EINSTEIN",
+          "BRIDGE_TELEGRAPH_DIFFUSION",
+          "BRIDGE_TELEGRAPH_WAVE",
+          "BRIDGE_HEAT_LAPLACE",
+          "DIFFUSION_CLOSURE_BRIDGES"
+        ],
+        "constants": [
+          "LANGEVIN_MAX_TAU_RATIO",
+          "TELEGRAPH_FICK_MAX_EPS",
+          "TELEGRAPH_WAVE_MIN_EPS",
+          "STEADY_MIN_FOURIER",
+          "BRIDGE_LANGEVIN_DIFFUSION",
+          "BRIDGE_STOKES_EINSTEIN",
+          "BRIDGE_TELEGRAPH_DIFFUSION",
+          "BRIDGE_TELEGRAPH_WAVE",
+          "BRIDGE_HEAT_LAPLACE",
+          "DIFFUSION_CLOSURE_BRIDGES"
+        ]
+      },
       "src/atlas/diffusion/bridges.ts": {
         "description": "Atlas Phase 4, S4.4 — the three bridges of the diffusion family.",
         "externalDependencies": [],
@@ -387,6 +482,12 @@
             ]
           },
           {
+            "file": "./bridges-closure.js",
+            "imports": [
+              "DIFFUSION_CLOSURE_BRIDGES"
+            ]
+          },
+          {
             "file": "./models.js",
             "imports": [
               "DIFFUSION_FAMILY_NAME",
@@ -417,9 +518,29 @@
             "file": "../../dimensional/types.js",
             "imports": [
               "ACTION",
+              "ENERGY",
               "LENGTH",
               "MASS",
               "TIME"
+            ]
+          },
+          {
+            "file": "../../dimensional/ast-builders.js",
+            "imports": [
+              "dim"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../oscillators/dimensions.js",
+            "imports": [
+              "DAMPING"
             ]
           },
           {
@@ -447,6 +568,7 @@
         ],
         "exports": [
           "DIFFUSION_FAMILY_NAME",
+          "VISCOSITY",
           "DIFFUSION_MODELS",
           "getDiffusionModel"
         ],
@@ -455,6 +577,7 @@
         ],
         "constants": [
           "DIFFUSION_FAMILY_NAME",
+          "VISCOSITY",
           "DIFFUSION_MODELS"
         ]
       },
@@ -470,11 +593,17 @@
           "gaussianSpread",
           "heatFtcsCentre",
           "wickHeatResidual",
-          "wickKernelSquaredNorm"
+          "wickKernelSquaredNorm",
+          "langevinMsdRatio",
+          "telegraphSlowRateRatio",
+          "telegraphWaveFrequencyRatio",
+          "heatSteadyDeviation"
         ],
         "interfaces": [
           "HeatFixture",
-          "WickFixture"
+          "WickFixture",
+          "LangevinFixture",
+          "SteadyStateFixture"
         ],
         "functions": [
           "diffusionKernel",
@@ -483,7 +612,11 @@
           "gaussianSpread",
           "heatFtcsCentre",
           "wickHeatResidual",
-          "wickKernelSquaredNorm"
+          "wickKernelSquaredNorm",
+          "langevinMsdRatio",
+          "telegraphSlowRateRatio",
+          "telegraphWaveFrequencyRatio",
+          "heatSteadyDeviation"
         ]
       },
       "src/atlas/error-algebra.ts": {
@@ -766,6 +899,20 @@
             "reExport": true
           },
           {
+            "file": "./diffusion/bridges-closure.js",
+            "imports": [
+              "DIFFUSION_CLOSURE_BRIDGES"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./waves/bridges-closure.js",
+            "imports": [
+              "WAVE_CLOSURE_BRIDGES"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./witness-artifact.js",
             "imports": [
               "runWitnessRegistry",
@@ -910,6 +1057,8 @@
           "BRIDGE_WAVE_DALEMBERT",
           "WAVE_BRIDGES",
           "WAVE_MODELS",
+          "DIFFUSION_CLOSURE_BRIDGES",
+          "WAVE_CLOSURE_BRIDGES",
           "runWitnessRegistry",
           "artifactPassingWitnessIds",
           "WITNESS_REGISTRY",
@@ -1037,6 +1186,8 @@
           "BRIDGE_WAVE_DALEMBERT",
           "WAVE_BRIDGES",
           "WAVE_MODELS",
+          "DIFFUSION_CLOSURE_BRIDGES",
+          "WAVE_CLOSURE_BRIDGES",
           "runWitnessRegistry",
           "artifactPassingWitnessIds",
           "WitnessResultRecord",
@@ -1896,6 +2047,87 @@
           "ALL_EVIDENCE_TAGS"
         ]
       },
+      "src/atlas/waves/bridges-closure.ts": {
+        "description": "Atlas Phase 4 — the three wave-family bridges added to close Sprint 4's",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "ACTION",
+              "FORCE",
+              "FREQUENCY",
+              "MASS",
+              "VELOCITY"
+            ]
+          },
+          {
+            "file": "../oscillators/bridges-limits.js",
+            "imports": [
+              "makeApproximation"
+            ]
+          },
+          {
+            "file": "../oscillators/dimensions.js",
+            "imports": [
+              "SPRING_CONSTANT"
+            ]
+          },
+          {
+            "file": "../regime.js",
+            "imports": [
+              "deriveRegimeGroups"
+            ]
+          },
+          {
+            "file": "../types.js",
+            "imports": [
+              "AtlasBridge"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./models.js",
+            "imports": [
+              "FLEXURAL_RIGIDITY",
+              "LINEAR_DENSITY",
+              "WAVENUMBER",
+              "WAVES_FAMILY_NAME"
+            ]
+          },
+          {
+            "file": "./numerics.js",
+            "imports": [
+              "kgNonrelativisticError",
+              "stiffStringPhaseError"
+            ]
+          }
+        ],
+        "exports": [
+          "KG_NR_MAX_X",
+          "STIFF_MAX_BETA",
+          "BRIDGE_KG_SCHRODINGER",
+          "BRIDGE_KG_OSCILLATOR",
+          "BRIDGE_STIFF_STRING",
+          "WAVE_CLOSURE_BRIDGES"
+        ],
+        "constants": [
+          "KG_NR_MAX_X",
+          "STIFF_MAX_BETA",
+          "BRIDGE_KG_SCHRODINGER",
+          "BRIDGE_KG_OSCILLATOR",
+          "BRIDGE_STIFF_STRING",
+          "WAVE_CLOSURE_BRIDGES"
+        ]
+      },
       "src/atlas/waves/bridges.ts": {
         "description": "Atlas Phase 4, S4.5 — the four bridges of the wave family.",
         "externalDependencies": [],
@@ -1988,6 +2220,12 @@
             ]
           },
           {
+            "file": "./bridges-closure.js",
+            "imports": [
+              "WAVE_CLOSURE_BRIDGES"
+            ]
+          },
+          {
             "file": "./models.js",
             "imports": [
               "WAVE_MODELS",
@@ -2059,6 +2297,7 @@
           "WAVES_FAMILY_NAME",
           "LINEAR_DENSITY",
           "PRESSURE",
+          "FLEXURAL_RIGIDITY",
           "WAVENUMBER",
           "WAVE_MODELS"
         ],
@@ -2066,6 +2305,7 @@
           "WAVES_FAMILY_NAME",
           "LINEAR_DENSITY",
           "PRESSURE",
+          "FLEXURAL_RIGIDITY",
           "WAVENUMBER",
           "WAVE_MODELS"
         ]
@@ -2083,7 +2323,11 @@
           "acousticLeapfrogQuarter",
           "soundSpeeds",
           "kleinGordonPhaseError",
-          "kleinGordonPhaseVelocity"
+          "kleinGordonPhaseVelocity",
+          "kgNonrelativisticError",
+          "kgUniformModeValue",
+          "stiffStringPhaseError",
+          "stiffStringPhaseVelocity"
         ],
         "interfaces": [
           "StringFixture",
@@ -2098,7 +2342,11 @@
           "acousticLeapfrogQuarter",
           "soundSpeeds",
           "kleinGordonPhaseError",
-          "kleinGordonPhaseVelocity"
+          "kleinGordonPhaseVelocity",
+          "kgNonrelativisticError",
+          "kgUniformModeValue",
+          "stiffStringPhaseError",
+          "stiffStringPhaseVelocity"
         ]
       },
       "src/atlas/witness-artifact.ts": {
@@ -2230,6 +2478,7 @@
             "file": "../dimensional/types.js",
             "imports": [
               "DIMENSIONLESS",
+              "ENERGY",
               "LENGTH",
               "MASS"
             ]
@@ -2253,6 +2502,10 @@
           {
             "file": "./diffusion/numerics.js",
             "imports": [
+              "heatSteadyDeviation",
+              "langevinMsdRatio",
+              "telegraphSlowRateRatio",
+              "telegraphWaveFrequencyRatio",
               "diffusionKernel",
               "gaussianSpread",
               "heatFtcsCentre",
@@ -2264,6 +2517,8 @@
             "file": "./diffusion/numerics.js",
             "imports": [
               "HeatFixture",
+              "LangevinFixture",
+              "SteadyStateFixture",
               "WickFixture"
             ],
             "typeOnly": true
@@ -2278,6 +2533,12 @@
             ]
           },
           {
+            "file": "./diffusion/models.js",
+            "imports": [
+              "VISCOSITY"
+            ]
+          },
+          {
             "file": "./witnesses/quantum-support.js",
             "imports": [
               "wickRotatedFreeKernel"
@@ -2286,6 +2547,9 @@
           {
             "file": "./waves/numerics.js",
             "imports": [
+              "kgNonrelativisticError",
+              "kgUniformModeValue",
+              "stiffStringPhaseVelocity",
               "acousticLeapfrogQuarter",
               "dalembertResidual",
               "kleinGordonPhaseVelocity",
@@ -2324,6 +2588,13 @@
           "WS2_FIXTURE",
           "WS3_FIXTURE",
           "WS4_FIXTURE",
+          "WD4_FIXTURE",
+          "WD6_FIXTURE",
+          "WD7_FIXTURE",
+          "WD8_FIXTURE",
+          "WS5_FIXTURE",
+          "WS6_FIXTURE",
+          "WS7_FIXTURE",
           "WITNESS_REGISTRY"
         ],
         "interfaces": [
@@ -2338,6 +2609,13 @@
           "WS2_FIXTURE",
           "WS3_FIXTURE",
           "WS4_FIXTURE",
+          "WD4_FIXTURE",
+          "WD6_FIXTURE",
+          "WD7_FIXTURE",
+          "WD8_FIXTURE",
+          "WS5_FIXTURE",
+          "WS6_FIXTURE",
+          "WS7_FIXTURE",
           "WITNESS_REGISTRY"
         ]
       },
@@ -22256,6 +22534,7 @@
           "src/atlas/coverage.ts",
           "src/atlas/derivation.ts",
           "src/atlas/derive-evidence.ts",
+          "src/atlas/diffusion/bridges-closure.ts",
           "src/atlas/diffusion/bridges.ts",
           "src/atlas/diffusion/dimensions.ts",
           "src/atlas/diffusion/index.ts",
@@ -22280,6 +22559,7 @@
           "src/atlas/serialize.ts",
           "src/atlas/statement.ts",
           "src/atlas/types.ts",
+          "src/atlas/waves/bridges-closure.ts",
           "src/atlas/waves/bridges.ts",
           "src/atlas/waves/index.ts",
           "src/atlas/waves/models.ts",
@@ -22638,21 +22918,21 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 334,
+    "totalTypeScriptFiles": 336,
     "totalModules": 11,
-    "totalLinesOfCode": 65712,
-    "totalExports": 2275,
+    "totalLinesOfCode": 66727,
+    "totalExports": 2310,
     "totalClasses": 57,
-    "totalInterfaces": 332,
-    "totalFunctions": 518,
+    "totalInterfaces": 334,
+    "totalFunctions": 526,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 573,
-    "totalReExports": 1126,
-    "totalTypeOnlyImports": 462,
+    "totalConstants": 598,
+    "totalReExports": 1128,
+    "totalTypeOnlyImports": 466,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,
-    "unusedExportsCount": 5
+    "unusedExportsCount": 10
   }
 }

@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 41 files
+- **atlas**: 43 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 30 files
@@ -151,6 +151,26 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/atlas/diffusion/bridges-closure.ts` - Atlas Phase 4 — the five diffusion-family bridges added to close Sprint 4's
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/types.js` | `ENERGY, LENGTH, MASS, TIME, VELOCITY` | Import |
+| `../oscillators/bridges-limits.js` | `makeApproximation` | Import |
+| `../oscillators/dimensions.js` | `DAMPING` | Import |
+| `../regime.js` | `deriveRegimeGroups` | Import |
+| `../types.js` | `AtlasBridge` | Import (type-only) |
+| `../waves/models.js` | `WAVENUMBER` | Import |
+| `./dimensions.js` | `DENSITY, DIFFUSIVITY, SPECIFIC_HEAT, THERMAL_CONDUCTIVITY` | Import |
+| `./models.js` | `DIFFUSION_FAMILY_NAME, VISCOSITY` | Import |
+| `./numerics.js` | `telegraphSlowRateRatio, telegraphWaveFrequencyRatio` | Import |
+
+**Exports:**
+- Constants: `LANGEVIN_MAX_TAU_RATIO`, `TELEGRAPH_FICK_MAX_EPS`, `TELEGRAPH_WAVE_MIN_EPS`, `STEADY_MIN_FOURIER`, `BRIDGE_LANGEVIN_DIFFUSION`, `BRIDGE_STOKES_EINSTEIN`, `BRIDGE_TELEGRAPH_DIFFUSION`, `BRIDGE_TELEGRAPH_WAVE`, `BRIDGE_HEAT_LAPLACE`, `DIFFUSION_CLOSURE_BRIDGES`
+
+---
+
 ### `src/atlas/diffusion/bridges.ts` - Atlas Phase 4, S4.4 — the three bridges of the diffusion family.
 
 **Internal Dependencies:**
@@ -187,6 +207,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../oscillators/index.js` | `AtlasFamily` | Import (type-only) |
 | `./bridges.js` | `DIFFUSION_BRIDGES` | Import |
+| `./bridges-closure.js` | `DIFFUSION_CLOSURE_BRIDGES` | Import |
 | `./models.js` | `DIFFUSION_FAMILY_NAME, DIFFUSION_MODELS` | Import |
 
 **Exports:**
@@ -200,22 +221,25 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `../../dimensional/buckingham.js` | `DimensionalVariable` | Import (type-only) |
-| `../../dimensional/types.js` | `ACTION, LENGTH, MASS, TIME` | Import |
+| `../../dimensional/types.js` | `ACTION, ENERGY, LENGTH, MASS, TIME` | Import |
+| `../../dimensional/ast-builders.js` | `dim` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../oscillators/dimensions.js` | `DAMPING` | Import |
 | `../model.js` | `AtlasModel` | Import (type-only) |
 | `../regime.js` | `deriveRegimeGroups` | Import |
 | `./dimensions.js` | `DENSITY, DIFFUSIVITY, SPECIFIC_HEAT, THERMAL_CONDUCTIVITY` | Import |
 
 **Exports:**
 - Functions: `getDiffusionModel`
-- Constants: `DIFFUSION_FAMILY_NAME`, `DIFFUSION_MODELS`
+- Constants: `DIFFUSION_FAMILY_NAME`, `VISCOSITY`, `DIFFUSION_MODELS`
 
 ---
 
 ### `src/atlas/diffusion/numerics.ts` - Atlas Phase 4, S4.4 — the numerics behind the diffusion family's witnesses.
 
 **Exports:**
-- Interfaces: `HeatFixture`, `WickFixture`
-- Functions: `diffusionKernel`, `randomWalkCentralDensity`, `randomWalkDensity`, `gaussianSpread`, `heatFtcsCentre`, `wickHeatResidual`, `wickKernelSquaredNorm`
+- Interfaces: `HeatFixture`, `WickFixture`, `LangevinFixture`, `SteadyStateFixture`
+- Functions: `diffusionKernel`, `randomWalkCentralDensity`, `randomWalkDensity`, `gaussianSpread`, `heatFtcsCentre`, `wickHeatResidual`, `wickKernelSquaredNorm`, `langevinMsdRatio`, `telegraphSlowRateRatio`, `telegraphWaveFrequencyRatio`, `heatSteadyDeviation`
 
 ---
 
@@ -277,6 +301,8 @@ The codebase is organized into the following modules:
 | `./waves/index.js` | `WAVES_FAMILY` | Re-export |
 | `./waves/bridges.js` | `BRIDGE_KLEIN_GORDON_WAVE, BRIDGE_SOUND_SPEED, BRIDGE_STRING_WAVE, BRIDGE_WAVE_DALEMBERT, WAVE_BRIDGES` | Re-export |
 | `./waves/models.js` | `WAVE_MODELS` | Re-export |
+| `./diffusion/bridges-closure.js` | `DIFFUSION_CLOSURE_BRIDGES` | Re-export |
+| `./waves/bridges-closure.js` | `WAVE_CLOSURE_BRIDGES` | Re-export |
 | `./witness-artifact.js` | `runWitnessRegistry, artifactPassingWitnessIds` | Re-export |
 | `./witness-artifact.js` | `WitnessResultRecord, WitnessResultsArtifact` | Re-export |
 | `./witness-specs.js` | `WITNESS_REGISTRY` | Re-export |
@@ -291,7 +317,7 @@ The codebase is organized into the following modules:
 | `./derivation.js` | `CompositeFormed, CompositeRefused, Derivation, DerivationCompositionResult, DerivationId, DerivationSpec, NoCompositeReason` | Re-export |
 
 **Exports:**
-- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `FormalFidelity`, `FormalRef`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `ATLAS_FAMILIES`, `DIFFUSION_FAMILY`, `BRIDGE_HEAT_DIFFUSION`, `BRIDGE_SCHRODINGER_DIFFUSION`, `BRIDGE_WALK_DIFFUSION`, `DIFFUSION_BRIDGES`, `DIFFUSION_MODELS`, `getDiffusionModel`, `WAVES_FAMILY`, `BRIDGE_KLEIN_GORDON_WAVE`, `BRIDGE_SOUND_SPEED`, `BRIDGE_STRING_WAVE`, `BRIDGE_WAVE_DALEMBERT`, `WAVE_BRIDGES`, `WAVE_MODELS`, `runWitnessRegistry`, `artifactPassingWitnessIds`, `WitnessResultRecord`, `WitnessResultsArtifact`, `WITNESS_REGISTRY`, `RegisteredNumericWitness`, `RegisteredSymbolicWitness`, `RegisteredWitness`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
+- Re-exports: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `FormalFidelity`, `FormalRef`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `ModelId`, `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `deriveRegimeGroups`, `regimeHolds`, `RegimeCheck`, `CAPACITANCE`, `CUBIC_STIFFNESS`, `DAMPING`, `INDUCTANCE`, `RESISTANCE`, `SPRING_CONSTANT`, `ATLAS_MODELS`, `getAtlasModel`, `OSCILLATOR_FAMILY`, `AtlasFamily`, `toAtlasJson`, `ATLAS_RECORD_SCHEMA_VERSION`, `AtlasRecordJson`, `JsonValue`, `blockingFindings`, `checkApplicability`, `ApplicabilityFinding`, `ApplicabilityFindingKind`, `ApplicabilityInput`, `ApplicabilitySeverity`, `passingWitnessIds`, `UnresolvedReason`, `WitnessRunResult`, `WitnessStatus`, `ATLAS_FAMILIES`, `DIFFUSION_FAMILY`, `BRIDGE_HEAT_DIFFUSION`, `BRIDGE_SCHRODINGER_DIFFUSION`, `BRIDGE_WALK_DIFFUSION`, `DIFFUSION_BRIDGES`, `DIFFUSION_MODELS`, `getDiffusionModel`, `WAVES_FAMILY`, `BRIDGE_KLEIN_GORDON_WAVE`, `BRIDGE_SOUND_SPEED`, `BRIDGE_STRING_WAVE`, `BRIDGE_WAVE_DALEMBERT`, `WAVE_BRIDGES`, `WAVE_MODELS`, `DIFFUSION_CLOSURE_BRIDGES`, `WAVE_CLOSURE_BRIDGES`, `runWitnessRegistry`, `artifactPassingWitnessIds`, `WitnessResultRecord`, `WitnessResultsArtifact`, `WITNESS_REGISTRY`, `RegisteredNumericWitness`, `RegisteredSymbolicWitness`, `RegisteredWitness`, `runSymbolicWitness`, `SymbolicSimplifier`, `SymbolicWitnessSpec`, `runNumericWitness`, `Convergence`, `NumericWitnessRunResult`, `NumericWitnessSpec`, `contextUnion`, `statementContextUnion`, `Context`, `ContextUnionFormed`, `ContextUnionRefused`, `ContextUnionResult`, `NoUnionReason`, `Statement`, `StatementId`, `composeDerivations`, `composeDerivationsOrThrow`, `DerivationCompositionError`, `makeDerivation`, `CompositeFormed`, `CompositeRefused`, `Derivation`, `DerivationCompositionResult`, `DerivationId`, `DerivationSpec`, `NoCompositeReason`
 
 ---
 
@@ -549,6 +575,25 @@ The codebase is organized into the following modules:
 
 ---
 
+### `src/atlas/waves/bridges-closure.ts` - Atlas Phase 4 — the three wave-family bridges added to close Sprint 4's
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../../dimensional/types.js` | `ACTION, FORCE, FREQUENCY, MASS, VELOCITY` | Import |
+| `../oscillators/bridges-limits.js` | `makeApproximation` | Import |
+| `../oscillators/dimensions.js` | `SPRING_CONSTANT` | Import |
+| `../regime.js` | `deriveRegimeGroups` | Import |
+| `../types.js` | `AtlasBridge` | Import (type-only) |
+| `./models.js` | `FLEXURAL_RIGIDITY, LINEAR_DENSITY, WAVENUMBER, WAVES_FAMILY_NAME` | Import |
+| `./numerics.js` | `kgNonrelativisticError, stiffStringPhaseError` | Import |
+
+**Exports:**
+- Constants: `KG_NR_MAX_X`, `STIFF_MAX_BETA`, `BRIDGE_KG_SCHRODINGER`, `BRIDGE_KG_OSCILLATOR`, `BRIDGE_STIFF_STRING`, `WAVE_CLOSURE_BRIDGES`
+
+---
+
 ### `src/atlas/waves/bridges.ts` - Atlas Phase 4, S4.5 — the four bridges of the wave family.
 
 **Internal Dependencies:**
@@ -574,6 +619,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../oscillators/index.js` | `AtlasFamily` | Import (type-only) |
 | `./bridges.js` | `WAVE_BRIDGES` | Import |
+| `./bridges-closure.js` | `WAVE_CLOSURE_BRIDGES` | Import |
 | `./models.js` | `WAVE_MODELS, WAVES_FAMILY_NAME` | Import |
 
 **Exports:**
@@ -595,7 +641,7 @@ The codebase is organized into the following modules:
 | `../regime.js` | `deriveRegimeGroups` | Import |
 
 **Exports:**
-- Constants: `WAVES_FAMILY_NAME`, `LINEAR_DENSITY`, `PRESSURE`, `WAVENUMBER`, `WAVE_MODELS`
+- Constants: `WAVES_FAMILY_NAME`, `LINEAR_DENSITY`, `PRESSURE`, `FLEXURAL_RIGIDITY`, `WAVENUMBER`, `WAVE_MODELS`
 
 ---
 
@@ -603,7 +649,7 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Interfaces: `StringFixture`, `DalembertFixture`, `AcousticFixture`
-- Functions: `stringLeapfrogMidpoint`, `dalembert`, `dalembertResidual`, `adiabaticSlope`, `acousticLeapfrogQuarter`, `soundSpeeds`, `kleinGordonPhaseError`, `kleinGordonPhaseVelocity`
+- Functions: `stringLeapfrogMidpoint`, `dalembert`, `dalembertResidual`, `adiabaticSlope`, `acousticLeapfrogQuarter`, `soundSpeeds`, `kleinGordonPhaseError`, `kleinGordonPhaseVelocity`, `kgNonrelativisticError`, `kgUniformModeValue`, `stiffStringPhaseError`, `stiffStringPhaseVelocity`
 
 ---
 
@@ -654,21 +700,22 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
 | `../dimensional/ast-builders.js` | `sym` | Import |
-| `../dimensional/types.js` | `DIMENSIONLESS, LENGTH, MASS` | Import |
+| `../dimensional/types.js` | `DIMENSIONLESS, ENERGY, LENGTH, MASS` | Import |
 | `../composition/expr-subst.js` | `substitute` | Import |
 | `./oscillators/dimensions.js` | `CAPACITANCE, DAMPING, INDUCTANCE, RESISTANCE, SPRING_CONSTANT` | Import |
-| `./diffusion/numerics.js` | `diffusionKernel, gaussianSpread, heatFtcsCentre, randomWalkCentralDensity, wickHeatResidual` | Import |
-| `./diffusion/numerics.js` | `HeatFixture, WickFixture` | Import (type-only) |
+| `./diffusion/numerics.js` | `heatSteadyDeviation, langevinMsdRatio, telegraphSlowRateRatio, telegraphWaveFrequencyRatio, diffusionKernel, gaussianSpread, heatFtcsCentre, randomWalkCentralDensity, wickHeatResidual` | Import |
+| `./diffusion/numerics.js` | `HeatFixture, LangevinFixture, SteadyStateFixture, WickFixture` | Import (type-only) |
 | `./diffusion/dimensions.js` | `DENSITY, DIFFUSIVITY, SPECIFIC_HEAT, THERMAL_CONDUCTIVITY` | Import |
+| `./diffusion/models.js` | `VISCOSITY` | Import |
 | `./witnesses/quantum-support.js` | `wickRotatedFreeKernel` | Import |
-| `./waves/numerics.js` | `acousticLeapfrogQuarter, dalembertResidual, kleinGordonPhaseVelocity, stringLeapfrogMidpoint` | Import |
+| `./waves/numerics.js` | `kgNonrelativisticError, kgUniformModeValue, stiffStringPhaseVelocity, acousticLeapfrogQuarter, dalembertResidual, kleinGordonPhaseVelocity, stringLeapfrogMidpoint` | Import |
 | `./waves/numerics.js` | `AcousticFixture, DalembertFixture, StringFixture` | Import (type-only) |
 | `./witness-numeric.js` | `NumericWitnessSpec` | Import (type-only) |
 | `./witness-symbolic.js` | `SymbolicWitnessSpec` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `RegisteredSymbolicWitness`, `RegisteredNumericWitness`
-- Constants: `WD1_FIXTURE`, `WD2_FIXTURE`, `WD3_FIXTURE`, `WS1_FIXTURE`, `WS2_FIXTURE`, `WS3_FIXTURE`, `WS4_FIXTURE`, `WITNESS_REGISTRY`
+- Constants: `WD1_FIXTURE`, `WD2_FIXTURE`, `WD3_FIXTURE`, `WS1_FIXTURE`, `WS2_FIXTURE`, `WS3_FIXTURE`, `WS4_FIXTURE`, `WD4_FIXTURE`, `WD6_FIXTURE`, `WD7_FIXTURE`, `WD8_FIXTURE`, `WS5_FIXTURE`, `WS6_FIXTURE`, `WS7_FIXTURE`, `WITNESS_REGISTRY`
 
 ---
 
@@ -5700,19 +5747,20 @@ The codebase is organized into the following modules:
 | `coverage` | 1 files | 0 files |
 | `derivation` | 3 files | 3 files |
 | `derive-evidence` | 1 files | 1 files |
+| `bridges-closure` | 9 files | 2 files |
 | `bridges` | 5 files | 2 files |
-| `dimensions` | 2 files | 5 files |
-| `index` | 3 files | 2 files |
-| `models` | 5 files | 3 files |
-| `numerics` | 0 files | 1 files |
+| `dimensions` | 2 files | 6 files |
+| `index` | 4 files | 2 files |
+| `models` | 7 files | 5 files |
+| `numerics` | 0 files | 2 files |
 | `error-algebra` | 1 files | 2 files |
 | `families` | 3 files | 1 files |
-| `index` | 23 files | 0 files |
+| `index` | 25 files | 0 files |
 | `model` | 2 files | 10 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
-| `bridges-limits` | 5 files | 2 files |
-| `dimensions` | 2 files | 5 files |
+| `bridges-limits` | 5 files | 4 files |
+| `dimensions` | 2 files | 8 files |
 | `index` | 7 files | 7 files |
 | `models` | 5 files | 3 files |
 | `rejections` | 1 files | 1 files |
@@ -5720,9 +5768,8 @@ The codebase is organized into the following modules:
 | `associations` | 2 files | 1 files |
 | `derivations` | 5 files | 0 files |
 | `statements` | 2 files | 1 files |
-| `regime` | 3 files | 11 files |
+| `regime` | 3 files | 13 files |
 | `serialize` | 4 files | 1 files |
-| `statement` | 4 files | 6 files |
 
 ---
 
@@ -5741,7 +5788,7 @@ graph TD
         N2[composition-table]
         N3[conventions]
         N4[coverage]
-        N5[...36 more]
+        N5[...38 more]
     end
 
     subgraph Bridges
@@ -5859,17 +5906,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 334 |
+| Total TypeScript Files | 336 |
 | Total Modules | 11 |
-| Total Lines of Code | 65712 |
-| Total Exports | 2275 |
-| Total Re-exports | 1126 |
+| Total Lines of Code | 66727 |
+| Total Exports | 2310 |
+| Total Re-exports | 1128 |
 | Total Classes | 57 |
-| Total Interfaces | 332 |
-| Total Functions | 518 |
+| Total Interfaces | 334 |
+| Total Functions | 526 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 462 |
+| Type-only Imports | 466 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

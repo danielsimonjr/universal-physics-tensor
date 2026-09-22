@@ -10,6 +10,20 @@ from v0.1.0 onward.
 
 ### Added
 
+- **Sprint 4 closure: 20 bridges, the exit criterion MET with nothing cut.** Eight witnessed
+  bridges were added: `ab-langevin-diffusion` (Einstein D = k_BT/γ, from the Langevin moment
+  equations), `ab-stokes-einstein` (a hyperedge; CAS plus agreement with CE-stokes-einstein up
+  to its deliberately omitted 6π), `ab-telegraph-diffusion` (a SINGULAR limit whose machine
+  horizon has a lower edge at the initial layer), `ab-telegraph-wave`, `ab-heat-laplace`
+  (steady state), `ab-kg-schrodinger` (non-relativistic limit, crossing into the diffusion
+  family), `ab-kg-oscillator` (uniform-mode restriction) and `ab-stiff-string` (the flexible
+  limit). There are five new models. All 18 registered witnesses CHECK, and their convergence
+  ratios match their orders (≈2 first-order, ≈4 second-order, ≈10 per decade).
+  `tests/atlas/closure.test.ts` pins every edge `delta` as exact and every error function as
+  monotone on its domain. The Phase 0 pilot is untouched (`oscillators.json` byte-identical).
+  **Exit tally:** 20 bridges and 6 types MET; `formally-proved` only derived MET; curation cost
+  recorded; **"≥ 5 reviewed `formalRef`" OPEN at 1**, escalated because closing it needs an
+  out-of-tree proof repository.
 - **S4.6 — formal references: ONE, not five, and the honesty rule held.** `ab-pendulum-linear`
   now carries a `formalRef` to Physlib's
   `ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff` (the linearized pendulum is

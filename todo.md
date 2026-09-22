@@ -290,9 +290,13 @@ warning-silencing, not debug logging).
       **S4.6** — one `formalRef` (`ab-pendulum-linear` → Physlib `linearizedEquationOfMotion_iff`,
       axioms measured); every other bridge searched and reported without one.
       **S4.5** — `src/atlas/waves/` (6 models, 4 bridges incl. the Euler + EOS → sound hyperedge).
-      - [ ] **Sprint 4 exit criterion "≥ 20 bridges" is OPEN at 12 — NOT cut** (measured cost makes 20
+      - [x] **Sprint 4 exit criterion "≥ 20 bridges" is OPEN at 12 — NOT cut** (measured cost makes 20
         reachable; the plan's briefs name only 12). Add eight witnessed bridges before Sprint 4 is
         declared complete. "≥ 5 relation types" is met (6).
+      - [ ] **Sprint 4 exit criterion "≥ 5 bridges with a reviewed `formalRef`" is OPEN at 1.** Physlib
+        holds no further real counterpart (S4.6 table in the Phase 4 design note). Closing it needs
+        proofs authored OUT OF TREE, meaning a new repository, which is outward-facing: escalated to
+        Mothership.
       **Standing trap for anyone picking this up:** the plan says the canonical-equation count
       "lives only in `CHANGELOG.md`, `ROADMAP.md` and the architecture docs". **It is in 22
       files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,

@@ -278,6 +278,61 @@
         "inequalities": [],
         "groupDefinitions": {}
       }
+    },
+    {
+      "id": "model-stiff-string",
+      "family": "waves",
+      "stateSpace": "y(x, t), transverse displacement of a string with bending stiffness",
+      "dynamics": "μ y_tt = F y_xx − EI y_xxxx (dispersive: ω² = (F/μ)k² + (EI/μ)k⁴)",
+      "observables": [
+        "y",
+        "partial frequencies (inharmonicity)"
+      ],
+      "parameters": [
+        {
+          "name": "F",
+          "dim": {
+            "L": 1,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "mu",
+          "dim": {
+            "L": -1,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "EI",
+          "dim": {
+            "L": 3,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
     }
   ],
   "bridges": [
@@ -548,6 +603,230 @@
       ],
       "citations": [
         "Whitham, Linear and Nonlinear Waves - §11.1, dispersive waves and the Klein-Gordon equation"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-kg-schrodinger",
+      "relation": "approximation",
+      "premises": [
+        "model-klein-gordon"
+      ],
+      "conclusion": "model-schrodinger-free",
+      "transformation": "u = Re(ψ e^{−iω₀t}) with ψ slowly varying; ħ/m ↦ c²/ω₀: ω − ω₀ = ω₀(√(1 + x²) − 1) → ω₀x²/2, x = ck/ω₀",
+      "preserves": [
+        "the kinetic frequency ħk²/(2m) to O(x²)",
+        "linearity"
+      ],
+      "doesNotPreserve": [
+        "the rest-frequency phase e^{−iω₀t}",
+        "the negative-frequency branch",
+        "relativistic dispersion at x ≳ 1"
+      ],
+      "sideConditions": [
+        "non-relativistic modes: x = ck/ω₀ ≤ 0.1",
+        "the bound is a FREQUENCY error, not uniform in time"
+      ],
+      "bound": {
+        "K": 1,
+        "delta": 0.0024875775822101875,
+        "norm": "relative error of the kinetic frequency ω − ω₀",
+        "domain": "x = ck/ω₀ ≤ 0.1",
+        "horizon": "t ≪ π/(δ ω₀ x²): the kinetic-phase drift reaches π/2; machine form t < π/(δ ω₀ x²)",
+        "parameterRange": "x = ck/ω₀ ≤ 0.1",
+        "limitCharacter": "regular"
+      },
+      "regime": {
+        "family": "waves",
+        "inequalities": [
+          {
+            "group": "c · omega0^-1 · k",
+            "op": "<=",
+            "bound": 0.1,
+            "alias": "ck/ω₀ ≤ 0.1"
+          }
+        ],
+        "groupDefinitions": {
+          "c · omega0^-1 · k": {
+            "exponents": {
+              "c": 1,
+              "hbar": 0,
+              "k": 1,
+              "m": 0,
+              "omega0": -1
+            },
+            "formula": "c · omega0^-1 · k"
+          },
+          "c^2 · omega0^-1 · hbar^-1 · m": {
+            "exponents": {
+              "c": 2,
+              "hbar": -1,
+              "k": 0,
+              "m": 1,
+              "omega0": -1
+            },
+            "formula": "c^2 · omega0^-1 · hbar^-1 · m"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "At x = ck/ω₀ = 1 the non-relativistic kinetic frequency is 17% too high: the limit is a long-wavelength statement.",
+          "witness": "WS5b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WS5",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "kinetic-frequency error below 1e-3 at x = 0.05; falls ≈4× per halving of x"
+        },
+        {
+          "id": "WS5b",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "relative error 3 − 2√2 = 0.1716 at x = 1"
+        }
+      ],
+      "citations": [
+        "Greiner, Relativistic Quantum Mechanics: Wave Equations - Ch. 1, the Klein-Gordon equation and its non-relativistic limit"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-kg-oscillator",
+      "relation": "restriction",
+      "premises": [
+        "model-klein-gordon"
+      ],
+      "conclusion": "model-spring",
+      "transformation": "u(x, t) = u(t): u_tt = −ω₀² u; u ↦ x, ω₀² ↦ k/m",
+      "preserves": [
+        "the k = 0 mode exactly",
+        "the frequency ω₀"
+      ],
+      "doesNotPreserve": [
+        "every mode with k ≠ 0",
+        "spatial structure"
+      ],
+      "sideConditions": [
+        "spatially uniform initial data",
+        "periodic or infinite domain (no boundary forcing)"
+      ],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {
+          "omega0^2 · m · k^-1": {
+            "exponents": {
+              "k": -1,
+              "m": 1,
+              "omega0": 2
+            },
+            "formula": "omega0^2 · m · k^-1"
+          }
+        }
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WS6",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "uniform leapfrog field within 3e-4 of cos(ω₀t) at 100 steps (ω₀ = 2, t = 3); ≈4× per halving"
+        }
+      ],
+      "citations": [
+        "Whitham, Linear and Nonlinear Waves - §11.1, dispersive waves and the Klein-Gordon equation"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-stiff-string",
+      "relation": "approximation",
+      "premises": [
+        "model-stiff-string"
+      ],
+      "conclusion": "model-string",
+      "transformation": "drop EI y_xxxx: ω² = (F/μ)k² + (EI/μ)k⁴ → (F/μ)k²",
+      "preserves": [
+        "the wave speed √(F/μ) for long wavelengths",
+        "harmonic partials to O(β)"
+      ],
+      "doesNotPreserve": [
+        "inharmonicity: high partials of a stiff string are sharp",
+        "the fourth-order boundary conditions"
+      ],
+      "sideConditions": [
+        "β = EIk²/F ≤ 0.01",
+        "the bound is a PHASE-VELOCITY error, not uniform in time"
+      ],
+      "bound": {
+        "K": 1,
+        "delta": 0.00498756211208895,
+        "norm": "relative phase-velocity error of a Fourier mode",
+        "domain": "β = EIk²/F ≤ 0.01",
+        "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 √(F/μ) k δ)",
+        "parameterRange": "β = EIk²/F ≤ 0.01",
+        "limitCharacter": "regular"
+      },
+      "regime": {
+        "family": "waves",
+        "inequalities": [
+          {
+            "group": "F · EI^-1 · k^-2",
+            "op": ">=",
+            "bound": 100,
+            "alias": "β = EIk²/F ≤ 0.01"
+          }
+        ],
+        "groupDefinitions": {
+          "F · EI^-1 · k^-2": {
+            "exponents": {
+              "EI": -1,
+              "F": 1,
+              "k": -2,
+              "mu": 0
+            },
+            "formula": "F · EI^-1 · k^-2"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "The partials of a stiff string are sharp: at β = 1 the phase velocity is √2 times the flexible-string value, the inharmonicity piano tuners stretch octaves to accommodate.",
+          "witness": "WS7b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WS7",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "phase velocity within 0.15 of √(F/μ) = 100 at k = 5 (EI/F = 1e-4); ≈4× per halving of k"
+        },
+        {
+          "id": "WS7b",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "relative phase error √2 − 1 at β = 1"
+        }
+      ],
+      "citations": [
+        "Fletcher, J. Acoust. Soc. Am. 36 (1964) 203 - Normal vibration frequencies of a stiff piano string"
       ],
       "reviewStatus": "proposed"
     }

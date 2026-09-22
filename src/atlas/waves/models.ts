@@ -30,6 +30,9 @@ export const LINEAR_DENSITY: Dimension = dim(-1, 1);
 /** Pa, `L^-1 M T^-2` — `src/canonical/entries/fluids-waves.ts` (`PRESSURE`). @internal */
 export const PRESSURE: Dimension = dim(-1, 1, -2);
 
+/** Flexural rigidity E·I, N·m², `L^3 M T^-2`. @internal */
+export const FLEXURAL_RIGIDITY: Dimension = dim(3, 1, -2);
+
 /** rad/m, `L^-1`. @internal */
 export const WAVENUMBER: Dimension = dim(-1);
 
@@ -126,6 +129,18 @@ export const WAVE_MODELS: readonly AtlasModel[] = [
     parameters: [
       { name: 'c', dim: VELOCITY },
       { name: 'omega0', dim: FREQUENCY },
+    ],
+    canonicalRefs: [],
+  }),
+  model({
+    id: 'model-stiff-string',
+    stateSpace: 'y(x, t), transverse displacement of a string with bending stiffness',
+    dynamics: 'μ y_tt = F y_xx − EI y_xxxx (dispersive: ω² = (F/μ)k² + (EI/μ)k⁴)',
+    observables: ['y', 'partial frequencies (inharmonicity)'],
+    parameters: [
+      { name: 'F', dim: FORCE },
+      { name: 'mu', dim: LINEAR_DENSITY },
+      { name: 'EI', dim: FLEXURAL_RIGIDITY },
     ],
     canonicalRefs: [],
   }),

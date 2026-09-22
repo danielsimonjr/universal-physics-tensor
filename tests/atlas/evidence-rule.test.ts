@@ -61,6 +61,20 @@ const KNOWN_WITNESSES: readonly string[] = [
   'WS3b',
   'WS4',
   'WS4b',
+  // Sprint 4 closure (tests/atlas/closure.test.ts; WD5s in witness-results.test.ts).
+  'WD4',
+  'WD4b',
+  'WD5',
+  'WD5s',
+  'WD6',
+  'WD6b',
+  'WD7',
+  'WD8',
+  'WS5',
+  'WS5b',
+  'WS6',
+  'WS7',
+  'WS7b',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));

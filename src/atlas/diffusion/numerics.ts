@@ -199,3 +199,123 @@ export function wickKernelSquaredNorm(
   }
   return sum * dx;
 }
+
+// ── Sprint 4 closure: Langevin, telegraph, steady state ────────────────────
+
+/** Parameters of the Langevin (Ornstein–Uhlenbeck) fixture. @internal */
+export interface LangevinFixture {
+  /** Particle mass m. */
+  readonly m: number;
+  /** Friction coefficient γ (force per velocity). */
+  readonly gamma: number;
+  /** Thermal energy k_B T. */
+  readonly kT: number;
+}
+
+/**
+ * WD4 — `⟨x²⟩(t) / (2Dt)` for the Langevin model `m v̇ = −γv + ξ`,
+ * `⟨ξ(t)ξ(t′)⟩ = 2γ k_B T δ(t − t′)`, started from x = 0 with a thermalized
+ * velocity, at `t = resolution · τ_p` where `τ_p = m/γ`.
+ *
+ * The second moments are integrated from the LANGEVIN model's own moment
+ * equations, `d⟨x²⟩/dt = 2⟨xv⟩`, `d⟨xv⟩/dt = ⟨v²⟩ − (γ/m)⟨xv⟩`, with
+ * `⟨v²⟩ = k_B T/m` held at equipartition, by RK4 on a fine fixed grid. The
+ * diffusion coefficient `D = k_B T/γ` (Einstein) enters only the DENOMINATOR:
+ * the ratio tends to 1 in the diffusive regime `t ≫ τ_p`.
+ *
+ * @internal
+ */
+export function langevinMsdRatio(resolution: number, f: LangevinFixture): number {
+  const tauP = f.m / f.gamma;
+  const tEnd = resolution * tauP;
+  const v2 = f.kT / f.m;
+  const steps = Math.max(2000, Math.ceil(200 * resolution));
+  const h = tEnd / steps;
+  let x2 = 0;
+  let xv = 0;
+  const rhs = (xvNow: number): [number, number] => [2 * xvNow, v2 - xvNow / tauP];
+  for (let n = 0; n < steps; n++) {
+    const [a1, b1] = rhs(xv);
+    const [a2, b2] = rhs(xv + 0.5 * h * b1);
+    const [a3, b3] = rhs(xv + 0.5 * h * b2);
+    const [a4, b4] = rhs(xv + h * b3);
+    x2 += (h / 6) * (a1 + 2 * a2 + 2 * a3 + a4);
+    xv += (h / 6) * (b1 + 2 * b2 + 2 * b3 + b4);
+  }
+  const D = f.kT / f.gamma;
+  return x2 / (2 * D * tEnd);
+}
+
+/**
+ * The slow decay rate of a Fourier mode of the TELEGRAPH equation
+ * `τ u_tt + u_t = D u_xx`, divided by the diffusion rate `D q²`:
+ * `(1 − √(1 − 4ε)) / (2ε)` with `ε = τ D q²`. Tends to 1 as τ → 0; complex
+ * (oscillatory) for `ε > 1/4`, where it returns NaN.
+ *
+ * @internal
+ */
+export function telegraphSlowRateRatio(tau: number, D: number, q: number): number {
+  const eps = tau * D * q * q;
+  if (eps === 0) return 1;
+  const disc = 1 - 4 * eps;
+  if (disc < 0) return Number.NaN;
+  return (1 - Math.sqrt(disc)) / (2 * eps);
+}
+
+/**
+ * The oscillation frequency of a telegraph mode in its underdamped range,
+ * divided by the undamped wave frequency `c q` with `c² = D/τ`:
+ * `√(1 − 1/(4ε))`, `ε = τ D q²`. Tends to 1 as ε grows.
+ *
+ * @internal
+ */
+export function telegraphWaveFrequencyRatio(tau: number, D: number, q: number): number {
+  const eps = tau * D * q * q;
+  if (eps <= 0.25) return Number.NaN;
+  return Math.sqrt(1 - 1 / (4 * eps));
+}
+
+/** Parameters of the WD8 steady-state fixture. @internal */
+export interface SteadyStateFixture {
+  /** Thermal diffusivity α (= κ/(ρ c_p)). */
+  readonly alpha: number;
+  /** Rod length ℓ. */
+  readonly ell: number;
+  /** End temperatures. */
+  readonly tLeft: number;
+  readonly tRight: number;
+  /** Base time; the resolution multiplies it. */
+  readonly t0: number;
+  readonly cells: number;
+}
+
+/**
+ * WD8 — the largest deviation from the LINEAR steady profile (the Laplace
+ * equation's solution) of an FTCS heat solution with fixed end temperatures,
+ * started from a profile with a sin(πx/ℓ) bump, at `t = resolution · t0`.
+ * Tends to zero as t → ∞: the steady state is the heat equation's attractor.
+ *
+ * @internal
+ */
+export function heatSteadyDeviation(resolution: number, f: SteadyStateFixture): number {
+  const nx = f.cells;
+  const dx = f.ell / nx;
+  const dtMax = (0.25 * dx * dx) / f.alpha;
+  const tEnd = resolution * f.t0;
+  const steps = Math.ceil(tEnd / dtMax);
+  const dt = tEnd / steps;
+  const r = (f.alpha * dt) / (dx * dx);
+  const linear = (i: number): number => f.tLeft + ((f.tRight - f.tLeft) * i) / nx;
+  let u = new Float64Array(nx + 1);
+  let next = new Float64Array(nx + 1);
+  for (let i = 0; i <= nx; i++) u[i] = linear(i) + Math.sin((Math.PI * i) / nx);
+  next[0] = f.tLeft;
+  next[nx] = f.tRight;
+  for (let n = 0; n < steps; n++) {
+    for (let i = 1; i < nx; i++) next[i] = u[i]! + r * (u[i + 1]! - 2 * u[i]! + u[i - 1]!);
+    [u, next] = [next, u];
+  }
+  let worst = 0;
+  for (let i = 0; i <= nx; i++) worst = Math.max(worst, Math.abs(u[i]! - linear(i)));
+  return worst;
+}

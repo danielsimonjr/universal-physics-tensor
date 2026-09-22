@@ -8,7 +8,7 @@
 ## Summary
 
 - **Potentially unused files**: 0
-- **Potentially unused exports**: 5
+- **Potentially unused exports**: 10
 
 ## Potentially Unused Files
 
@@ -18,6 +18,11 @@ These files are not imported by any other file in the codebase:
 ## Potentially Unused Exports
 
 These exports are not imported by any other file in the codebase:
+
+### `src/atlas/diffusion/bridges-closure.ts`
+
+- `LANGEVIN_MAX_TAU_RATIO` (constant)
+- `STEADY_MIN_FOURIER` (constant)
 
 ### `src/atlas/oscillators/bridges-limits.ts`
 
@@ -35,4 +40,10 @@ These exports are not imported by any other file in the codebase:
 ### `src/atlas/waves/numerics.ts`
 
 - `dalembert` (function)
+
+### `src/atlas/witness-specs.ts`
+
+- `WD6_FIXTURE` (constant)
+- `WD7_FIXTURE` (constant)
+- `WS5_FIXTURE` (constant)
 

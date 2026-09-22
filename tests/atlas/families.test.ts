@@ -52,11 +52,10 @@ describe('ROADMAP Phase 4 exit counts', () => {
     expect(types.size).toBeGreaterThanOrEqual(5);
   });
 
-  it('the bridge count matches the figure the design note records (the ≥ 20 criterion is OPEN, not cut)', () => {
-    // Atlas-Phase-4-Design.md §4 records the count and why it is short of 20:
-    // the plan's family briefs enumerate only 12 bridges, and the measured
-    // curation cost does NOT justify a cut. Pinned so the note cannot drift
-    // from the atlas; raise both together.
-    expect(bridges).toHaveLength(12);
+  it('"≥ 20 bridges" — MET at 20 by the Sprint 4 closure, never cut', () => {
+    // Atlas-Phase-4-Design.md §4 records the 12 the plan's briefs named and the
+    // eight added to close the criterion. Pinned so the note cannot drift from
+    // the atlas; raise both together.
+    expect(bridges).toHaveLength(20);
   });
 });

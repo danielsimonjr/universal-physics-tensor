@@ -202,6 +202,181 @@
         "inequalities": [],
         "groupDefinitions": {}
       }
+    },
+    {
+      "id": "model-langevin",
+      "family": "diffusion",
+      "stateSpace": "(x, v)(t), a Brownian particle",
+      "dynamics": "m v̇ = −γ v + ξ(t), ⟨ξ(t)ξ(t′)⟩ = 2γ k_B T δ(t − t′), ẋ = v",
+      "observables": [
+        "⟨x²⟩(t)",
+        "⟨v²⟩ = k_B T/m"
+      ],
+      "parameters": [
+        {
+          "name": "m",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "gamma",
+          "dim": {
+            "L": 0,
+            "M": 1,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "kT",
+          "dim": {
+            "L": 2,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-stokes-drag",
+      "family": "diffusion",
+      "stateSpace": "a sphere of radius a moving at speed v through a viscous fluid",
+      "dynamics": "F = −6π η a v (creeping flow, Re ≪ 1)",
+      "observables": [
+        "drag force F",
+        "friction coefficient γ = 6πηa"
+      ],
+      "parameters": [
+        {
+          "name": "eta",
+          "dim": {
+            "L": -1,
+            "M": 1,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "a",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [
+        "CE-stokes-drag"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-telegraph",
+      "family": "diffusion",
+      "stateSpace": "u(x, t), x ∈ ℝ",
+      "dynamics": "τ u_tt + u_t = D u_xx (Cattaneo: diffusion with a relaxation time)",
+      "observables": [
+        "u(x, t)",
+        "mode decay rates",
+        "signal speed √(D/τ)"
+      ],
+      "parameters": [
+        {
+          "name": "tau",
+          "dim": {
+            "L": 0,
+            "M": 0,
+            "T": 1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "D",
+          "dim": {
+            "L": 2,
+            "M": 0,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-laplace-1d",
+      "family": "diffusion",
+      "stateSpace": "T(x) on [0, ℓ] with fixed end values",
+      "dynamics": "T_xx = 0, so T is linear between T(0) and T(ℓ)",
+      "observables": [
+        "T(x)",
+        "steady heat flux"
+      ],
+      "parameters": [
+        {
+          "name": "ell",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
     }
   ],
   "bridges": [
@@ -433,6 +608,382 @@
       "citations": [
         "Feynman & Hibbs, Quantum Mechanics and Path Integrals - the free-particle kernel and its imaginary-time form",
         "Nelson, J. Math. Phys. 5 (1964) 332 - Feynman integrals and the Schrödinger equation (the analytic continuation to the heat kernel)"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-langevin-diffusion",
+      "relation": "coarse-graining",
+      "premises": [
+        "model-langevin"
+      ],
+      "conclusion": "model-fick",
+      "transformation": "average over times t ≫ τ_p = m/γ: ⟨x²⟩ → 2Dt with D = k_B T/γ (Einstein)",
+      "preserves": [
+        "the long-time mean-square displacement",
+        "the equilibrium velocity variance k_B T/m"
+      ],
+      "doesNotPreserve": [
+        "the velocity as a state variable",
+        "the ballistic regime t ≲ τ_p, where ⟨x²⟩ ≈ (k_B T/m) t²",
+        "the momentum relaxation time τ_p as an independent scale"
+      ],
+      "sideConditions": [
+        "overdamped observation times: τ_p/t ≪ 1",
+        "white thermal noise, fluctuation–dissipation 2γk_BT"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [
+          {
+            "group": "m · gamma^-1 · t^-1",
+            "op": "<=",
+            "bound": 0.01,
+            "alias": "τ_p/t ≪ 1 (machine form ≤ 0.01)"
+          }
+        ],
+        "groupDefinitions": {
+          "gamma · kT^-1 · D": {
+            "exponents": {
+              "D": 1,
+              "gamma": 1,
+              "kT": -1,
+              "m": 0,
+              "t": 0
+            },
+            "formula": "gamma · kT^-1 · D"
+          },
+          "m · gamma^-1 · t^-1": {
+            "exponents": {
+              "D": 0,
+              "gamma": -1,
+              "kT": 0,
+              "m": 1,
+              "t": -1
+            },
+            "formula": "m · gamma^-1 · t^-1"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "At t = 0.1 τ_p the Langevin mean-square displacement is 0.048 of 2Dt: the particle is still ballistic, ⟨x²⟩ ≈ (k_BT/m)t², and the diffusion model does not describe it.",
+          "witness": "WD4b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WD4",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "⟨x²⟩/(2Dt) within 0.02 of 1 at t = 100 τ_p, from the Langevin moment equations by RK4"
+        },
+        {
+          "id": "WD4b",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "⟨x²⟩/(2Dt) = 0.0484 at t = 0.1 τ_p"
+        }
+      ],
+      "citations": [
+        "Uhlenbeck & Ornstein, Phys. Rev. 36 (1930) 823 - On the theory of the Brownian motion",
+        "Einstein, Ann. Phys. 17 (1905) 549 - the relation D = k_B T/γ"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-stokes-einstein",
+      "relation": "derivation",
+      "premises": [
+        "model-langevin",
+        "model-stokes-drag"
+      ],
+      "conclusion": "model-fick",
+      "transformation": "substitute γ = 6πηa into D = k_B T/γ: D = k_B T/(6πηa)",
+      "preserves": [
+        "the long-time diffusion coefficient of a sphere"
+      ],
+      "doesNotPreserve": [
+        "the particle mass (it drops out)",
+        "the shape beyond the radius a"
+      ],
+      "sideConditions": [
+        "creeping flow around the sphere, Re ≪ 1",
+        "no-slip boundary",
+        "overdamped times t ≫ m/γ"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [],
+        "groupDefinitions": {
+          "gamma · eta^-1 · a^-1": {
+            "exponents": {
+              "D": 0,
+              "a": -1,
+              "eta": -1,
+              "gamma": 1,
+              "kT": 0
+            },
+            "formula": "gamma · eta^-1 · a^-1"
+          },
+          "kT · gamma^-1 · D^-1": {
+            "exponents": {
+              "D": -1,
+              "a": 0,
+              "eta": 0,
+              "gamma": -1,
+              "kT": 1
+            },
+            "formula": "kT · gamma^-1 · D^-1"
+          }
+        }
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WD5",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "agrees with CE-stokes-einstein to 1e-12 relative; a 1 µm sphere in water at 20 °C gives D = 4.29e-13 m²/s"
+        },
+        {
+          "id": "WD5s",
+          "kind": "symbolic",
+          "test": "tests/atlas/witness-results.test.ts",
+          "tolerance": "CAS: k_BT/γ under γ ↦ 6πηa minus k_BT/(6πηa) simplifies to literal 0"
+        }
+      ],
+      "citations": [
+        "Einstein, Ann. Phys. 17 (1905) 549 - Brownian motion of a sphere, D = k_B T/(6πηa)",
+        "Stokes, Trans. Camb. Phil. Soc. 9 (1851) 8 - the drag on a sphere in creeping flow"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-telegraph-diffusion",
+      "relation": "approximation",
+      "premises": [
+        "model-telegraph"
+      ],
+      "conclusion": "model-fick",
+      "transformation": "drop τ u_tt: the slow mode decays at Dq²(1 + ε + 2ε² + …) → Dq², ε = τDq²",
+      "preserves": [
+        "the slow decay rate of each Fourier mode to O(ε)",
+        "the total amount ∫u dx"
+      ],
+      "doesNotPreserve": [
+        "the finite signal speed √(D/τ)",
+        "the second initial condition u_t(x, 0)",
+        "oscillatory modes, which exist for ε > 1/4"
+      ],
+      "sideConditions": [
+        "ε = τDq² ≤ 0.05",
+        "after the initial layer: t ≫ τ"
+      ],
+      "bound": {
+        "K": 1,
+        "delta": 0.055728090000841446,
+        "norm": "relative error of the slow-mode decay rate of a Fourier mode",
+        "domain": "ε = τDq² ≤ 0.05",
+        "horizon": "τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; machine form 5τ < t < 0.1/(δ D q²)",
+        "parameterRange": "ε = τDq² ≤ 0.05",
+        "limitCharacter": "singular"
+      },
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [
+          {
+            "group": "tau · D · q^2",
+            "op": "<=",
+            "bound": 0.05,
+            "alias": "ε = τDq² ≤ 0.05"
+          }
+        ],
+        "groupDefinitions": {
+          "tau · D · q^2": {
+            "exponents": {
+              "D": 1,
+              "q": 2,
+              "tau": 1
+            },
+            "formula": "tau · D · q^2"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "At ε = τDq² = 1 the telegraph mode is OSCILLATORY (complex rate, NaN on the slow branch): no diffusion mode oscillates.",
+          "witness": "WD6b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WD6",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "slow rate / Dq² within 0.03 of 1 at τ = 0.025 (D = q = 1); error halves with τ"
+        },
+        {
+          "id": "WD6b",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "no real slow rate at ε = 1"
+        }
+      ],
+      "citations": [
+        "Cattaneo, Atti Sem. Mat. Fis. Univ. Modena 3 (1948) 83 - heat conduction with a relaxation time",
+        "Goldstein, Q. J. Mech. Appl. Math. 4 (1951) 129 - On diffusion by discontinuous movements, and on the telegraph equation"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-telegraph-wave",
+      "relation": "approximation",
+      "premises": [
+        "model-telegraph"
+      ],
+      "conclusion": "model-wave-1d",
+      "transformation": "drop u_t: τ u_tt = D u_xx, a wave with c² = D/τ",
+      "preserves": [
+        "the signal speed √(D/τ)",
+        "the oscillation frequency to O(1/ε)"
+      ],
+      "doesNotPreserve": [
+        "damping: telegraph modes decay as e^{−t/(2τ)}",
+        "relaxation to diffusion at long times"
+      ],
+      "sideConditions": [
+        "ε = τDq² ≥ 25",
+        "short times t ≪ τ (the bound is not uniform in time)"
+      ],
+      "bound": {
+        "K": 1,
+        "delta": 0.005012562893380035,
+        "norm": "relative error of the oscillation frequency of a Fourier mode",
+        "domain": "ε = τDq² ≥ 25",
+        "horizon": "t ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)",
+        "parameterRange": "ε = τDq² ≥ 25",
+        "limitCharacter": "regular"
+      },
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [
+          {
+            "group": "tau · D · q^2",
+            "op": ">=",
+            "bound": 25,
+            "alias": "ε = τDq² ≥ 25"
+          }
+        ],
+        "groupDefinitions": {
+          "tau · D · q^2": {
+            "exponents": {
+              "D": 1,
+              "c": 0,
+              "q": 2,
+              "tau": 1
+            },
+            "formula": "tau · D · q^2"
+          },
+          "tau · D^-1 · c^2": {
+            "exponents": {
+              "D": -1,
+              "c": 2,
+              "q": 0,
+              "tau": 1
+            },
+            "formula": "tau · D^-1 · c^2"
+          }
+        }
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WD7",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "frequency ratio within 3e-3 of 1 at ε = 50; error halves as ε doubles"
+        }
+      ],
+      "citations": [
+        "Goldstein, Q. J. Mech. Appl. Math. 4 (1951) 129 - On diffusion by discontinuous movements, and on the telegraph equation"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-heat-laplace",
+      "relation": "restriction",
+      "premises": [
+        "model-heat"
+      ],
+      "conclusion": "model-laplace-1d",
+      "transformation": "∂T/∂t = 0: κ T_xx = 0, T linear between the end temperatures",
+      "preserves": [
+        "the end temperatures",
+        "the steady heat flux κ(T_b − T_a)/ℓ"
+      ],
+      "doesNotPreserve": [
+        "the transient",
+        "ρ and c_p, which drop out of the steady state"
+      ],
+      "sideConditions": [
+        "fixed end temperatures",
+        "Fourier number αt/ℓ² ≥ 1 (transients decayed)"
+      ],
+      "regime": {
+        "family": "diffusion",
+        "inequalities": [
+          {
+            "group": "kappa · rho^-1 · cp^-1 · ell^-2 · t",
+            "op": ">=",
+            "bound": 1,
+            "alias": "Fo = αt/ℓ² ≥ 1"
+          }
+        ],
+        "groupDefinitions": {
+          "kappa · rho^-1 · cp^-1 · ell^-2 · t": {
+            "exponents": {
+              "cp": -1,
+              "ell": -2,
+              "kappa": 1,
+              "rho": -1,
+              "t": 1
+            },
+            "formula": "kappa · rho^-1 · cp^-1 · ell^-2 · t"
+          }
+        }
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WD8",
+          "kind": "numeric",
+          "test": "tests/atlas/closure.test.ts",
+          "tolerance": "max deviation from the linear profile below 0.025 at αt/ℓ² = 0.4; shrinks with time"
+        }
+      ],
+      "citations": [
+        "Carslaw & Jaeger, Conduction of Heat in Solids - steady linear flow in a slab"
       ],
       "reviewStatus": "proposed"
     }

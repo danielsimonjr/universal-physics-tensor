@@ -289,3 +289,43 @@ and the reference still names only the linearization statement.
 `tests/atlas/formal-sanity.test.ts` instantiates each quoted Lean statement on a known pendulum
 and pins the reference's content. `formally-proved` is derived for this one record and stored on
 none.
+
+**Sprint 4 closure: 20 bridges, criterion MET, with nothing cut.** Eight witnessed bridges were
+added (`diffusion/bridges-closure.ts`, `waves/bridges-closure.ts`, and new models `model-langevin`,
+`model-stokes-drag`, `model-telegraph`, `model-laplace-1d` and `model-stiff-string`):
+
+| Bridge | Relation | Witness (measured) |
+|---|---|---|
+| `ab-langevin-diffusion` | coarse-graining (Einstein D = k_BT/γ) | WD4: RK4 of the Langevin moment equations; ⟨x²⟩/(2Dt) − 1 goes 0.1000 → 0.0100 for t 10 → 100 τ_p. It matches the closed Ornstein–Uhlenbeck form to 1e-10 |
+| `ab-stokes-einstein` | derivation, **hyperedge** (Langevin + Stokes drag) | WD5s (CAS); WD5: CE-stokes-einstein up to exactly its omitted 6π; D = 4.29e-13 m²/s for a 1 µm sphere in water |
+| `ab-telegraph-diffusion` | approximation, **singular** τ → 0 | WD6: 0.0557 → 0.0263 per halving of τ; the machine horizon has a LOWER edge (the initial layer) |
+| `ab-telegraph-wave` | approximation (ε ≥ 25, t < 2τ ln(10/9)) | WD7: 5.01e-3 → 2.50e-3 |
+| `ab-heat-laplace` | restriction (steady state, Fo ≥ 1) | WD8: deviation from the linear profile 0.139 → 0.0193 for Fo 0.2 → 0.4 |
+| `ab-kg-schrodinger` | approximation (non-relativistic, ck/ω₀ ≤ 0.1), crosses to diffusion | WS5: 2.49e-3 → 6.24e-4 |
+| `ab-kg-oscillator` | restriction (uniform mode), crosses to oscillators | WS6: the full PDE with uniform data vs cos(ω₀t); 1.00e-3 → 2.51e-4 |
+| `ab-stiff-string` | approximation (EIk²/F ≤ 0.01) | WS7: 0.499 → 0.125 |
+
+Every `delta` is the exact error at its domain edge. `tests/atlas/closure.test.ts` pins that
+each error function is monotone on its domain, so the edge value IS the supremum. The Phase 0
+pilot keeps its five bridges: RLC → LC was considered and moved out to avoid re-scoping a
+delivered pilot, and the stiff-string limit replaced it.
+
+**ROADMAP Phase 4 exit criteria — the tally:**
+
+| Criterion | State |
+|---|---|
+| ≥ 20 bridges across ≥ 5 relation types, each with a witness | **MET**: 20 bridges and 6 types (pinned in `families.test.ts`) |
+| ≥ 5 with a reviewed `formalRef` | **OPEN at 1.** Physlib has no further real counterpart (see the S4.6 table). Closing it needs formal proofs we would author OUT OF TREE, which means a new repository. That is outward-facing, so the decision was escalated to Mothership |
+| zero `formally-proved` without a `formalRef` | **MET by construction**: derived only, file allow-list lint |
+| curation cost per bridge by type, compared with Phase 0 | **Recorded below** |
+
+**Curation cost, measured as wall-clock per batch (NOT per bridge; the same instrumentation gap
+Phase 0 reported):** S4.4 took 18 min for 3 bridges (coarse-graining, exact-equivalence,
+analytic-continuation). S4.5 took about 20 min for 4 (restriction, derivation ×2,
+approximation). The closure took 16 min for 8 (14:42–14:58: coarse-graining, derivation,
+approximation ×4, restriction ×2). Those batches average about 2–6 minutes per bridge, including witness design,
+measurement at three or more resolutions, a negative control and tests. **As in Phase 0,
+relation type did not visibly drive cost. Measurement discipline did:** each batch's slowest
+step was measuring a witness before writing its tolerance. The one tolerance written first
+(the S4.6 sanity lemma) failed. Per-bridge cost by type still requires per-bridge timing, and
+that remains open for Phase 5.
