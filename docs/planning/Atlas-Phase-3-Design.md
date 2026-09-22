@@ -4,8 +4,10 @@ Authoritative over `Atlas-Roadmap-Implementation-Plan.md` where the two disagree
 frozen record written before Sprints 0–2 ran; this note is written after them and carries what they
 taught.
 
-**Status:** DRAFT. Sections marked ⏳ await Scout SC3's measured facts and must not be filled from
-the plan's assertions — see §0.
+**Status:** DRAFT. §4, §6 and §7 are now filled from SC3b's measurements. **§5 is BLOCKED on a
+source document that is not in this repo** — see §5. Q2 (L1 registration) and Q3 (the canonical
+count) are still unanswered: SC3a wedged after Q1 and was stopped. Nothing here is filled from the
+plan's assertions — see §0.
 
 ---
 
@@ -93,15 +95,47 @@ Derivation's edges compose pairwise to `no-composite-claim`, the hyperedge does 
 Promotes Sprint 0's `AtlasModel`, adding `boundaryData`, `initialData` and `symmetryGroup?`.
 `CanonicalEquation` gains `model?: string`.
 
-⏳ The nine Sprint 0 models and their exact current field set come from SC3 Q6. The migration must
-leave every existing `AtlasModel` consumer byte-identical where it supplies no new field — the
-additive-overlay discipline that Sprints 1 and 2 both held to.
+**MEASURED (SC3b).** `AtlasModel` is `src/atlas/types.ts:137-155` — nine readonly fields: `id`,
+`family`, `stateSpace`, `dynamics`, `observables`, `parameters`, `dimensionlessInputs`,
+`canonicalRefs`, `regime`. The nine models are `ATLAS_MODELS` at `src/atlas/oscillators/models.ts:48`,
+in the order pinned by `tests/atlas/models.test.ts:82-95`: spring · lc · damped-spring · rlc ·
+pendulum · chain · wave-1d · cubic-spring · first-order. `family` and `regime` come from the local
+`model()` helper (`models.ts:36-46`), so each literal writes only the other seven.
+
+**DECISION — `boundaryData` and `initialData` are OPTIONAL, against the plan's wording.** The plan
+marks only `symmetryGroup` optional. SC3b flagged that as self-contradictory and it is: no
+boundary or initial data is recorded anywhere for these nine ODE models, so a required field forces
+either nine fabricated values or nine empty ones asserting "none". `models.ts:5-10` already refuses
+exactly that fabrication for `inequalities`, and the same reasoning transfers unchanged — **an
+absent field says "not recorded"; a present empty one says "there are none", and only one of those
+is true.** Optional also preserves the additive-overlay discipline Sprints 1 and 2 both held to:
+nine literals stay byte-identical.
+
+**The one real migration risk is the serializer, not the type.** `src/atlas/serialize.ts:111-123`
+enumerates fields EXPLICITLY, so a new optional field is invisible to JSON until added there — good
+— but a naive spread would change every serialized model and break
+`tests/atlas/atlas-json.test.ts`'s deep-equal against the committed artifact. Append conditionally,
+matching the existing optional-field idiom at `serialize.ts:107`.
+
+`AtlasModel` has zero hits in `tests/api/public-surface.test.ts`, so widening it is not pinned by
+the public-surface guard — but it IS on the `src/cli-api.ts:146` surface.
 
 ## 5. The poster index
 
-⏳ SC3 Q1 establishes which of the sixteen entries already exist as `CE-*` in
-`src/canonical/entries/` and which are new L1 entries. ⏳ SC3 Q2 establishes the L1 registration
-mechanism.
+**⛔ BLOCKED — the sixteen entries are not enumerated anywhere in this repo.** SC3a measured it and
+correctly refused to reconstruct them: Blueprint v2 and its Appendix A are EXTERNAL source
+documents, cited but never vendored. `ROADMAP.md:12-24` lists the three source documents "written
+2026-09-20" as inputs; `find . -iname "*blueprint*"` returns nothing outside `node_modules`. Every
+"Appendix A" hit in the tree is a REFERENCE to it except `docs/specification/Part-I.md:575`, which
+is UPT's own unrelated Notation Glossary.
+
+So no file maps entry number → name, and **this section cannot be filled by measurement — it needs
+the source document.** Reconstructing sixteen poster entries from the edge relations quoted below
+would be fabrication of exactly the kind §0 exists to prevent, and it would be undetectable:
+plausible entries that no one can check against anything. The remainder of Sprint 3 (§1–§4, §6)
+does not depend on this and proceeds.
+
+⏳ SC3 Q2 (the L1 registration mechanism) is still unanswered — SC3a wedged before reaching it.
 
 `7 ↔ 16` is an ASSOCIATION for the historical link only — NOT a derivation edge. Otherwise the link
 between the full Maxwell set and spacetime structure is the hyperedge
@@ -110,7 +144,24 @@ between the full Maxwell set and spacetime structure is the hyperedge
 
 ## 6. `upt map --source=poster`
 
-⏳ SC3 Q5 establishes `buildVizModel`'s cluster/junction model. Note that Sprint 2 added
+**MEASURED (SC3b), and the answer is better than the section assumed.** Junctions enter
+`buildVizModel` from exactly two places (`graph-viz.ts:557-560`): `edges.map(edgeToJunction)` and
+`opts.extraJunctions`. Filtering happens AFTER that merge, over both, at `565-580` via `judge`
+(`241-255`). **So a `poster` source fed in as `extraJunctions` cannot quietly bypass the filters** —
+it is filtered, clustered and legended like every other junction, and one carrying neither
+`relation` nor `beId` lands in the legend's `droppedMissingMetadata` bucket by construction.
+Clusters are union-find over junctions sharing a canonical quantity (`componentsOf`, `327-370`);
+`anchored` keys on `'law'|'established'` only (`362`), so poster junctions never anchor a cluster —
+correct by default, recorded because it is a decision rather than an accident.
+
+**The trap SC3b found: adding `'poster'` to `VizStatus` forces three edits and only two of them
+fail loudly.** `STATUS_STYLE` is `Record<VizStatus, …>` (`176-185`) so a missing entry is a COMPILE
+error; `VizStatus` is on the public surface (`tests/api/public-surface.test.ts:335`) so widening it
+is a public-API change; but `STATUSES_IN_ORDER` (`402-409`) is a plain array, so a missing entry
+**silently omits the Mermaid classDef**. That is the vacuous-pass shape again — add the entry and
+break it deliberately to confirm the omission is visible before trusting it.
+
+Note that Sprint 2 added
 `VizOptions.relation?` and `.evidence?` with a legend that reports two DISTINCT drop reasons —
 "did not match" and "no overlay metadata" — because a silent drop makes an incomplete graph look
 complete. A `poster` source must state how it interacts with those filters rather than quietly
@@ -141,6 +192,18 @@ returns an empty or partial graph must say why in the same way.
 - Anything that changes what `upt confront` prints — `tests/cli/golden/confront.txt` stays byte-identical.
 
 ## 9. Adam A3 — questions to put, once ⏳ sections are filled
+
+**Questions 1–3 are UNASKABLE until Appendix A is in the repo** (see §5): each asks whether this
+note matches a document neither Adam nor I can read. Do not put them and accept an answer — a
+reviewer asked to check against a source it cannot see will produce a plausible verdict that
+verifies nothing, which is the vacuous-pass shape this sprint has now found in four places. Ask 4,
+5 and 6 now; hold 1–3.
+
+6. **NEW.** Whether making `boundaryData` and `initialData` optional (§4) is right, or whether it
+   defers a modelling decision that ought to be forced now. The argument for optional is that no
+   such data exists for the nine ODE models and a required field would manufacture it; the argument
+   against is that an optional field lets Sprint 4 build on models that silently have no boundary
+   conditions. Put BOTH sides — this is the decision most likely to be wrong here.
 
 1. Every poster edge type against Appendix A, line by line.
 2. That `7 ↔ 16` is an association for the historical link only, and that the hyperedge
