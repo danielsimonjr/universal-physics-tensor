@@ -25,10 +25,13 @@ describe('upt path', () => {
     expect(code).toBe(0);
     const text = cap.lines.join('');
     expect(text).toMatch(/composite relation: approximation/);
-    // The bound is the RECORD's own (delta = 0.5²/16 at the regime edge), not a
-    // number recomputed from --at. The S2.3 brief predicted (1, 0.0025) — that
-    // is θ0²/16 at θ0 = 0.2, which no code path produces.
-    expect(text).toMatch(/composed bound: K = 1 · delta = 0\.015625/);
+    // The bound is the RECORD's own (the EXACT relative period error at the
+    // regime edge θ0 = 0.5), not a number recomputed from --at. The S2.3 brief
+    // predicted (1, 0.0025) — that is θ0²/16 at θ0 = 0.2, which no code path
+    // produces. The pinned 0.015625 here was 0.5²/16, the SERIES at the edge,
+    // which the record no longer declares: it understates the exact error by
+    // 1.456% and so was a bound violated at its own boundary.
+    expect(text).toMatch(/composed bound: K = 1 · delta = 0\.0158525/);
     expect(text).toMatch(/norm: relative period error/);
     expect(text).toMatch(/horizons at t=10: all hold/);
   });
@@ -83,7 +86,8 @@ describe('upt path', () => {
     expect(parsed.options.from).toBe('model-pendulum');
     expect(parsed.result.kind).toBe('bound');
     expect(parsed.result.relation).toBe('approximation');
-    expect(parsed.result.bound).toEqual({ K: 1, delta: 0.015625 });
+    expect(parsed.result.bound.K).toBe(1);
+    expect(parsed.result.bound.delta).toBeCloseTo(0.0158525311014, 10);
     expect(parsed.result.allHorizonsHold).toBe(true);
   });
 

@@ -59,8 +59,21 @@ export interface UncertaintyOptions {
 export interface UncertaintyResult {
   /** Central value f(x) (domain-checked). */
   readonly value: number;
-  /** Propagated 1σ standard deviation. */
+  /**
+   * Propagated 1σ STATISTICAL standard deviation, from the input sigmas alone.
+   *
+   * This never includes `bound.delta`. A deterministic bias and a random spread are different
+   * things and this field is only the second; see {@link UncertaintyResult.delta}.
+   */
   readonly sigma: number;
+  /**
+   * The DETERMINISTIC model-error bound, present only when `opts.bound` was supplied — the echo of
+   * `bound.delta`, surfaced beside `sigma` rather than folded into it.
+   *
+   * A caller needing a single envelope combines them and owns the coverage factor it chose:
+   * `k * sigma + delta`. This function will not choose `k`.
+   */
+  readonly delta?: number;
   /** Per-input partial derivatives ∂f/∂xᵢ (central difference). */
   readonly partials: Readonly<Record<string, number>>;
   /** Echo of `opts.bound`, present only when one was supplied. */
@@ -126,9 +139,29 @@ export function propagateUncertainty(
       `propagateUncertainty: bound.delta must be finite and ≥ 0, got ${bound.delta}`,
     );
   }
+  // THE TWO ARE REPORTED SEPARATELY AND ARE DELIBERATELY NOT COMBINED.
+  //
+  // This previously returned `sqrt(variance + delta^2)`, justified by "the usual independence
+  // assumption between input noise and model error". INDEPENDENCE DOES NOT LICENSE QUADRATURE FOR
+  // A BIAS. `sigma` is a 1-sigma spread of a zero-mean random variable; `bound.delta` is a
+  // DETERMINISTIC worst-case sup-norm offset. Adding them in quadrature treats a systematic
+  // displacement as if it averaged out, which UNDERSTATES the envelope — and understates it
+  // precisely when the model error is largest relative to the noise, which is when a caller most
+  // needs the number to be honest.
+  //
+  // Raised independently by two reviews that did not see each other (an adversarial physics panel,
+  // and Eve E2), which is the strongest signal this project has produced.
+  //
+  // WHY SEPARATE RATHER THAN ADDED. Collapsing to one number requires choosing a coverage factor —
+  // `k*sigma + delta`, with k about 4.47 for 95% by Chebyshev, or k=1 for a 1-sigma semi-interval.
+  // That choice belongs to the caller's risk posture, not to this library, and baking one in would
+  // repeat the original error in a new costume: a defensible-looking number whose provenance is a
+  // convention nobody stated. A caller who needs one value composes it from the two fields and owns
+  // the k it picked.
   return {
     value,
-    sigma: Math.sqrt(variance + bound.delta * bound.delta),
+    sigma: Math.sqrt(variance),
+    delta: bound.delta,
     partials,
     bound,
   };

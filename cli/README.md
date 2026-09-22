@@ -66,7 +66,7 @@ node bin/upt.mjs help        # also: --help, -h
 
 ## Command reference
 
-19 commands, grouped by what they do. Several accept aliases (shown in
+23 commands, grouped by what they do. Several accept aliases (shown in
 parentheses). Every data-bearing command (all but `help` and `version`)
 also accepts `--json` for a machine-readable envelope instead of text — see
 [JSON output](#json-output).
@@ -83,7 +83,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | `explain <quantity> [inputs…]` | How the graph determines a quantity: identifiability verdict, recovered value, derivation chains, dimensional sufficiency. Given a bridge id (`be-NN`) — a graph *edge*, not a quantity *node* — it redirects to the right tool (`upt confront`/`upt map`), tailored by grounding tier. |
 | `priority` (`prioritize`, `triage`) | Triage the speculative bridges by structural **decidability** against established physics (Tiers 1–3). *Not* a credibility ranking. |
 | `audit` | Try to derive every bridge by dimensions: which re-derive as a recognized monomial (prefactor recovered), which are decoys, which are dimensionally open. |
-| `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node, **dimensionally validates it** (✓ consistent / ⚠ mismatch vs the target's catalog dimension), reports where it lands (cluster / shared quantities), and gives a **dimension-based** "did you mean?" (inferring an unknown symbol's dimension) — falling back to name-similarity. A dimensionally non-homogeneous RHS exits non-zero. |
+| `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node, **dimensionally validates it** (✓ consistent / ⚠ mismatch vs the target's catalog dimension), reports where it lands (cluster / shared quantities), and gives a **dimension-based** "did you mean?" (inferring an unknown symbol's dimension) — falling back to name-similarity. A dimensionally non-homogeneous RHS exits non-zero. `--relation=TYPE` and `--evidence=TAG` filter the map by the Atlas overlay — see the note below, because filtering changes what a MISSING overlay means. |
 | `candidates` (`propose`) | Propose cross-cluster links (same-dimension quantities in different clusters) for **physicist review**. A coincidence-heavy surface, not discovered bridges. |
 | `predict` (`predictions`) | Project the catalog onto the (scale × force) regime plane and rank empty cells as undiscovered-connection hypotheses (triadic closure). |
 | `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory / axis-clash (a stated `scale`/`force` regime mismatch — "identification falsified", not "no connection possible"). Each PROMISING candidate also carries a `[consequence: entailed\|novel-consequence\|inconclusive]` trailer (`src/composition/consequence.ts`) — a machine pre-classifier, not adjudication: `entailed` re-derives a known canonical equation, `novel-consequence` is a valid algebraic consequence with no canonical match, `inconclusive` means none was derivable. Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
@@ -208,7 +208,7 @@ An unrecognised value exits with an error and status `1`.
 
 ## JSON output
 
-Every data-bearing command (all 15 — every command in the tables above except
+Every data-bearing command (all 21 — every command in the tables above except
 `help` and `version`) accepts a global `--json` flag: instead of the text
 report, it prints one JSON envelope to stdout and exits `0`.
 
@@ -289,6 +289,10 @@ node bin/upt.mjs map --source=both --format=svg --out=both.svg
 # ...or DOT → SVG via a system Graphviz instead of the peer:
 node bin/upt.mjs map --source=both --format=dot | dot -Tsvg > both.svg
 # Overlay the unadjudicated proposed relations (gray dashed):
+node bin/upt.mjs map --source=both --relation=derivation
+# only the edges whose DERIVED evidence contains a tag (nothing is stored)
+node bin/upt.mjs map --source=both --evidence=proposed --format=dot
+
 node bin/upt.mjs map --source=both --proposed --format=mermaid
 # Inject YOUR OWN equation: dimensional check + where it lands in the graph:
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
@@ -361,11 +365,13 @@ candidates.
 | Flag | Commands | Effect |
 |---|---|---|
 | `--source=catalog\|canonical\|both` | `discover`, `candidates`, `map`, `explain`, `priority`, `audit`, `predict`, `connectors` | Choose the graph (default `catalog`; `map` and `connectors` default to `both` instead — see [The `--source` flag](#the---source-flag)). |
-| `--json` | All 15 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
+| `--json` | All 21 data-bearing commands | Emit a machine-readable JSON envelope instead of text; see [JSON output](#json-output). Not combinable with `map --format=mermaid\|dot\|svg` (exit 2). |
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
 | `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |
 | `--equation "TARGET = EXPR"` | `map` | Inject your own equation as a violet `user` node; reports where it lands + a "did you mean?" hint. Multi-word quantities use underscores (`photon_energy` → `photon-energy`). |
+| `--relation=TYPE` | `map` | Keep only edges whose recorded Atlas relation is `derivation`, `exact-equivalence`, `restriction`, `approximation`, `coarse-graining`, `analytic-continuation`, `structural-analogy` or `deformation-quantization`. An unknown value exits 1. |
+| `--evidence=TAG` | `map` | Keep only edges whose evidence set contains the tag. Evidence is **derived at read time** from the catalog row the edge names — it is never stored on a row or an edge, so no filter can be satisfied by an unchecked assertion. Tags: `proposed`, `reviewed`, `dimension-checked`, `convention-checked`, `symbolically-checked`, `numerically-supported`, `formally-proved`, `empirically-supported`, `contradicted`, `unresolved`. An unknown value exits 1. |
 | `--max-orders=N` | `discover`, `map` (with `--proposed`) | Tune the magnitude-clash threshold (default `3`); `map --proposed` shares `discover`'s parsing, so it reshapes the proposed overlay too. |
 | `--anchor=k=v[,k2=v2]` | `discover`, `map` (with `--proposed`) | Override the numeric anchor (default `mass=M_sun`) for the consistency/closure check. |
 | `--show-adjudicated` | `discover` | Re-list PROMISING candidates that carry a recorded `decoy`/`entailed` verdict and would otherwise fold out of the printed list, each with its verdict + grounds. |
@@ -377,6 +383,28 @@ candidates.
 | `--rigor=<tier>` | `confront` | Filter to one rigor tier (`stringent`/`moderate`/`loose`); a bad tier → exit 1. |
 | `--frontier` | `confront` | Rank the σ-tests by margin to exclusion (smallest first — most at-risk under new data). |
 | `--at group=value` | `regime`, `path` | State a point in regime coordinates. Repeatable, and bare `group=value` arguments are accepted too, so `--at theta0=0.2 T0=1 t=10` works as written. A malformed or non-finite value → exit 1. |
+
+
+### `upt map` filtering changes what a MISSING overlay means
+
+Unfiltered, an edge that records no Atlas `relation` is **kept**: the map answers a
+connectivity question, and an unaudited edge still connects two quantities.
+
+Set `--relation=` or `--evidence=` and that same edge is **dropped**, because nothing
+shows it satisfies the filter. The legend therefore reports two counts, never one:
+
+```
+filter: relation=derivation — 6 of 66 kept; 1 dropped (did not match); 59 dropped (no overlay metadata)
+```
+
+`did not match` is an answer. `no overlay metadata` is the absence of one. A single
+combined figure would let a graph nobody has audited render as a complete result. Both
+counts print even when they are zero — an omitted line and a zero are indistinguishable
+to a reader.
+
+An edge with no numeric `beId` (a diagonal law edge, every `--source=canonical` edge)
+cannot have its evidence derived at all, so `--evidence=` counts it as lacking metadata
+rather than as not matching.
 
 ## Exit codes
 

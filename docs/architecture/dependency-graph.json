@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 311,
     "totalModules": 11,
-    "totalExports": 2097
+    "totalExports": 2108
   },
   "entryPoints": [
     {
@@ -528,10 +528,14 @@
           "CONTRACT_PENDULUM_LINEAR",
           "CONTRACT_DAMPED_MASSLESS",
           "LIMIT_CONTRACTS",
-          "makeApproximation"
+          "makeApproximation",
+          "pendulumPeriodErrorAt",
+          "dampedOffsetBoundAt"
         ],
         "functions": [
-          "makeApproximation"
+          "makeApproximation",
+          "pendulumPeriodErrorAt",
+          "dampedOffsetBoundAt"
         ],
         "constants": [
           "AB_PENDULUM_LINEAR",
@@ -812,6 +816,7 @@
           {
             "file": "./types.js",
             "imports": [
+              "MissingDeltaAtError",
               "MissingHorizonError"
             ]
           },
@@ -908,10 +913,12 @@
         ],
         "exports": [
           "MissingHorizonError",
+          "MissingDeltaAtError",
           "MissingLipschitzError"
         ],
         "classes": [
           "MissingHorizonError",
+          "MissingDeltaAtError",
           "MissingLipschitzError"
         ],
         "interfaces": [
@@ -7625,6 +7632,14 @@
             "typeOnly": true
           },
           {
+            "file": "../../atlas/types.js",
+            "imports": [
+              "EvidenceTag",
+              "RelationType"
+            ],
+            "typeOnly": true
+          },
+          {
             "file": "../../composition/user-equation.js",
             "imports": [
               "EquationAnalysis"
@@ -8264,6 +8279,15 @@
             "reExport": true
           },
           {
+            "file": "./composition/graph-viz.js",
+            "imports": [
+              "filterEdges",
+              "deriveEdgeEvidence",
+              "formatFilterLegend"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./composition/probe/index.js",
             "imports": [
               "DEFAULT_SEARCH_BUDGET",
@@ -8451,6 +8475,9 @@
           "bridgesWithoutCanonicalPartner",
           "scanLinkages",
           "deriveProposedBridges",
+          "filterEdges",
+          "deriveEdgeEvidence",
+          "formatFilterLegend",
           "DEFAULT_SEARCH_BUDGET",
           "scanFrontier",
           "findFrontierGap",
@@ -8555,6 +8582,9 @@
           "bridgesWithoutCanonicalPartner",
           "scanLinkages",
           "deriveProposedBridges",
+          "filterEdges",
+          "deriveEdgeEvidence",
+          "formatFilterLegend",
           "DEFAULT_SEARCH_BUDGET",
           "scanFrontier",
           "findFrontierGap",
@@ -10700,20 +10730,54 @@
             "imports": [
               "QUANTITY_IDENTIFICATIONS"
             ]
+          },
+          {
+            "file": "../atlas/types.js",
+            "imports": [
+              "EvidenceTag",
+              "RelationType"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../atlas/derive-evidence.js",
+            "imports": [
+              "deriveEvidenceForVerdict",
+              "NO_PASSING_WITNESSES"
+            ]
+          },
+          {
+            "file": "../bridges/membership.js",
+            "imports": [
+              "adjudicateBridgeEntry"
+            ]
+          },
+          {
+            "file": "../bridges/index.js",
+            "imports": [
+              "BRIDGE_EQUATIONS"
+            ]
           }
         ],
         "exports": [
           "edgeToJunction",
+          "deriveEdgeEvidence",
+          "filterEdges",
+          "formatFilterLegend",
           "buildVizModel"
         ],
         "interfaces": [
           "VizJunction",
+          "VizFilterStats",
           "VizCluster",
           "VizOptions",
           "VizModel"
         ],
         "functions": [
           "edgeToJunction",
+          "deriveEdgeEvidence",
+          "filterEdges",
+          "formatFilterLegend",
           "buildVizModel"
         ]
       },
@@ -11051,7 +11115,8 @@
               "VizJunction",
               "VizCluster",
               "VizOptions",
-              "VizModel"
+              "VizModel",
+              "VizFilterStats"
             ],
             "reExport": true
           },
@@ -11228,6 +11293,7 @@
           "VizCluster",
           "VizOptions",
           "VizModel",
+          "VizFilterStats",
           "DimensionAdjacency",
           "UserEquation",
           "EquationLanding",
@@ -11335,6 +11401,7 @@
           "VizCluster",
           "VizOptions",
           "VizModel",
+          "VizFilterStats",
           "buildVizModel",
           "edgeToJunction",
           "renderDotToSvg",
@@ -17115,7 +17182,8 @@
               "VizJunction",
               "VizCluster",
               "VizOptions",
-              "VizModel"
+              "VizModel",
+              "VizFilterStats"
             ],
             "reExport": true
           },
@@ -18176,6 +18244,7 @@
           "VizCluster",
           "VizOptions",
           "VizModel",
+          "VizFilterStats",
           "UserEquation",
           "EquationLanding",
           "EquationAnalysis",
@@ -18593,6 +18662,7 @@
           "VizCluster",
           "VizOptions",
           "VizModel",
+          "VizFilterStats",
           "renderDotToSvg",
           "SvgRendererUnavailableError",
           "parseUserEquation",
@@ -20961,16 +21031,16 @@
   "statistics": {
     "totalTypeScriptFiles": 311,
     "totalModules": 11,
-    "totalLinesOfCode": 60109,
-    "totalExports": 2097,
-    "totalClasses": 54,
-    "totalInterfaces": 300,
-    "totalFunctions": 477,
+    "totalLinesOfCode": 60593,
+    "totalExports": 2108,
+    "totalClasses": 55,
+    "totalInterfaces": 301,
+    "totalFunctions": 482,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 522,
-    "totalReExports": 1043,
-    "totalTypeOnlyImports": 411,
+    "totalReExports": 1048,
+    "totalTypeOnlyImports": 413,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 0,
