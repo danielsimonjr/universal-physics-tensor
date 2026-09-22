@@ -93,7 +93,9 @@ aside by judgement, because it borders `model-stokes-drag` and `model-euler-line
 no keyword matches.
 
 `tests/atlas/benchmark.test.ts` pins the absence by scanning every model id, dynamics string and
-bridge id across `ATLAS_FAMILIES`. A **positive control** runs the same scan with the ORIGINAL
+bridge id across `ATLAS_FAMILIES`. A **positive control** (limitation disclosed 2026-09-22: its marker was chosen after the answer was
+known, so it proves the matcher fires, not that the original marker list would have caught the
+leakage; pre-registration Amendment 1) runs the same scan with the ORIGINAL
 family's markers and confirms it finds `model-first-order`, so the scan is shown to fire on
 exactly the defect it caught here. **Fluid statics must never be added to `src/atlas/` while the
 benchmark is live.**

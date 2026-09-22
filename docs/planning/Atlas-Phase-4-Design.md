@@ -214,8 +214,11 @@ Four models: random walk, Fick, heat, free Schrödinger. Three bridges with thre
 | `ab-heat-diffusion` | exact-equivalence | WD2: FTCS heat solution in κ, ρ, c_p vs Fick with D = κ/(ρc_p); 4.48e-4 → 1.12e-4 for 80 → 160 cells (ratio 4.00). WD2s: CAS |
 | `ab-schrodinger-diffusion` | analytic-continuation | W5 (reused), WD3: residual of ∂τφ = (ħ/2m)∂²φ, 3.27e-3 → 2.03e-4 for h 0.1 → 0.025 (ratio 16.1). WD3b: ∫φ² decays |
 
-- **Every tolerance was set AFTER measurement** at three or more resolutions, and each numeric
-  witness has a NEGATIVE CONTROL. The wrong heat dictionary D = κρ/c_p misses by 0.32 (650× the
+- **Every tolerance was set AFTER measurement** at three or more resolutions. **Intent: each numeric
+  witness has a NEGATIVE CONTROL. Status: UNMET** (corrected 2026-09-22 — this line first stated it as
+  done). Controls exist for WD2 and WD3 in this family; WD1 has none. Across the 14 registered numeric
+  witnesses, 5 have one; the 9 without are WD1, WS2, WS4, WD6, WD7, WD8, WS5, WS6, WS7. Of the 4 CAS
+  witnesses only W1s has one (W2s, WD2s, WD5s do not). Open in `todo.md`. The wrong heat dictionary D = κρ/c_p misses by 0.32 (650× the
   tolerance). The wrong Wick coefficient ħ/m leaves a residual above 0.1 however small h gets.
 - **A leak removed before it landed:** the first FTCS solver took its Dirichlet edge values from
   the Fick solution with D = κ/(ρc_p). That fed the claim under test into the side meant to be
@@ -278,6 +281,11 @@ Classical.choice, Quot.sound]` for every statement below. A positive control, a 
 | `ab-chain-wave` | `TightBindingChain` is a QUANTUM tight-binding model, not a mass–spring chain | NO |
 | diffusion ×3, `ab-string-wave`, `ab-sound-speed`, `ab-klein-gordon-wave` | No heat, diffusion, acoustics, string or Klein–Gordon module. `FluidDynamics/Euler` defines the Euler equations but not their linearization. The `Wick*` files are Wick's THEOREM (QFT), not Wick rotation | NO |
 
+**Scope of the table above (corrected 2026-09-22).** It covers the 12 bridges that existed at
+S4.6. The 8 Sprint 4 closure bridges were not searched then; they have since been searched by keyword
+against the same tree, with no counterpart. The one near-miss, `NavierStokes.lean`, was read: it proves
+only conservative ↔ convective equivalence, nothing about drag on a sphere.
+
 **What the one reference certifies, and what it does not.** It certifies the bridge's
 TRANSFORMATION: the linearized pendulum IS the harmonic oscillator with mass mℓ² and spring
 constant mgℓ, hence ω0² = g/ℓ, plus a cubic bound on the equation-of-motion residual. It does
@@ -324,7 +332,8 @@ Phase 0 reported):** S4.4 took 18 min for 3 bridges (coarse-graining, exact-equi
 analytic-continuation). S4.5 took about 20 min for 4 (restriction, derivation ×2,
 approximation). The closure took 16 min for 8 (14:42–14:58: coarse-graining, derivation,
 approximation ×4, restriction ×2). Those batches average about 2–6 minutes per bridge, including witness design,
-measurement at three or more resolutions, a negative control and tests. **As in Phase 0,
+measurement at three or more resolutions and tests (a negative control only where one exists —
+12 of the 18 registered witnesses lack one; see §4 and `todo.md`). **As in Phase 0,
 relation type did not visibly drive cost. Measurement discipline did:** each batch's slowest
 step was measuring a witness before writing its tolerance. The one tolerance written first
 (the S4.6 sanity lemma) failed. Per-bridge cost by type still requires per-bridge timing, and

@@ -93,4 +93,13 @@ study reports the interval it can afford and does not make the claim it cannot s
 
 ## 8. Amendments
 
-None.
+**Amendment 1 (2026-09-22) — disclosed limitation of the held-out-family control (§3).** The positive
+control that shows the absence scan can fire uses the marker `first-order`, and that marker was chosen
+AFTER it was known that `model-first-order` exists in the atlas. It therefore proves only that the
+matcher fires; it does NOT prove that the original held-out family's marker list would have detected
+the leakage. The absence of fluid statics from `src/atlas/` is unaffected (measured directly), and no
+threshold, rater, family or item changes. The frozen-set hash in §1 is unchanged.
+
+**On ordering.** This note was registered while the frozen item set was EMPTY, before any condition
+ran. That is the intended order — method fixed before data — not a gap. The study has NOT been
+conducted: no result exists yet.

@@ -283,6 +283,12 @@ warning-silencing, not debug logging).
       **S6.6** — `docs/planning/Atlas-Governance.md` (maintainers, contested entries, small PRs, licensing).
       **S6.7** — `docs/planning/Atlas-API-Review.md`: recommendation only; decision with Mothership (ADR-level).
       - [ ] Mothership decision on the atlas public API (Tier 1 promote y/n; namespace vs named; close the barrel gap).
+      - [ ] **Negative controls missing for 12 of 18 registered witnesses** — numeric (9 of 14): WD1, WS2,
+        WS4, WD6, WD7, WD8, WS5, WS6, WS7; CAS (3 of 4): W2s, WD2s, WD5s. The S4.4 claim that every numeric
+        witness had one was FALSE and is retracted (CHANGELOG "Corrections" 2026-09-22). Authorized by
+        Mothership 16:43; each must be able to FAIL.
+      - [x] Search the 8 Sprint 4 closure bridges against Physlib (were unsearched at S4.6): keyword search
+        + NavierStokes.lean read, no counterpart.
       - [ ] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
 
 - [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`

@@ -8,6 +8,38 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Corrections (2026-09-22) — claims made earlier in this log that the evidence did not support
+
+Found by auditing the session's own status record against the repository. The original sentences
+are left in place, struck through or annotated, so a reader can see both that each claim was made
+and that it was retracted.
+
+- **RETRACTED: "every numeric witness has a negative control"** (S4.4 entry below, and repeated in
+  `Atlas-Phase-4-Design.md` §4). It was FALSE. Counted from `WITNESS_REGISTRY`: of the **14 registered numeric witnesses, 5 have a
+  negative control** (WD2, WD3, WD4, WS1, WS3). **The 9 without one are WD1, WS2, WS4, WD6, WD7, WD8,
+  WS5, WS6, WS7.** Of the **4 CAS witnesses, 1 has one** (W1s); W2s, WD2s and WD5s do not. In all,
+  12 of the 18 registered witnesses lack a negative control. (A first draft of this correction said
+  "6 of 17": it counted WD5, which is not a registered witness, and mixed the CAS witness W1s into
+  the numeric count. The figures here are counted from the registry.) The missing controls are not
+  written in this change; they are filed in `todo.md` and follow in their own commit.
+- **SCOPE CORRECTED: "no other bridge has a real checked counterpart"** (S4.6). True of the 12 bridges
+  that existed at S4.6. The 8 Sprint 4 closure bridges were never searched then. Searched since by
+  keyword against the same Physlib tree (1,327 paths at 5ad56e2): no counterpart. The one near-miss,
+  `FluidDynamics/CauchyFlow/NavierStokes.lean`, was READ: it defines the equations and proves only
+  that the conservative and convective forms are equivalent. Nothing on creeping flow, a sphere or
+  drag, so it is not a counterpart for `ab-stokes-einstein`.
+- **WEAKER THAN STATED: the S4.3 "two `test:atlas` runs leave the tree byte-identical" check.** It
+  compared `git status --porcelain` while files were UNSTAGED, which cannot see a test rewriting an
+  already-modified file. The ORIGINAL check did not establish what it claimed. Re-verified on a clean
+  tree: empty status before, two runs, empty status after. The closure-time check (files staged) was
+  valid.
+- **PRECISION: the S6.4 QUDT probe checked NAMES, not the stored IRIs.** It fetched `https://…/<Name>`;
+  the table stores `http://…`. Re-probed with the stored strings: all 19 answer 302 → 200 (a
+  fabricated name ends 404), so the stored IRIs now resolve by direct check.
+- **LIMITATION DISCLOSED: the S5.1 held-out-scan positive control.** Its marker (`first-order`) was
+  chosen AFTER it was known that `model-first-order` exists. It proves the matcher fires; it does not
+  prove the original marker list would have caught the leakage. Disclosed in the pre-registration §3.
+
 ### Added
 
 - **S6.7 — the atlas API review. A RECOMMENDATION only; nothing is applied.**
@@ -139,7 +171,8 @@ from v0.1.0 onward.
   `fidelity: 'sanity-lemmas'` earned in `tests/atlas/formal-sanity.test.ts`. The axioms
   `[propext, Classical.choice, Quot.sound]` were MEASURED with `#print axioms` on a local Lean
   build. A positive control (a deliberate `sorry` prints `sorryAx`) shows the probe can report a
-  hole. No other bridge has a real checked counterpart. `planeWave_waveEquation` proves only the
+  hole. No other bridge has a real checked counterpart **[scope corrected 2026-09-22: of the 12
+  bridges that existed at S4.6 — see "Corrections"]**. `planeWave_waveEquation` proves only the
   converse of the d'Alembert bridge. The design note records the search and the per-bridge
   verdicts. The serializer now emits `formalRef`, and `data/atlas/oscillators.json` shows it.
 - **S4.5 — the wave family.** `src/atlas/waves/` defines six models and four bridges:
@@ -161,8 +194,9 @@ from v0.1.0 onward.
   Numeric witnesses WD1, WD2 and WD3 run at two resolutions into
   `data/atlas/witness-results.json` with their convergence ratios (9.99, 4.00, 16.1). WD2s is a
   CAS check of the decay-rate dictionary. WD1b and WD3b witness what each bridge discards: the
-  walk's light cone, and unitarity. Every tolerance was set after measurement, and every numeric
-  witness has a negative control. The Fourier number is derived. Péclet is stated as NOT
+  walk's light cone, and unitarity. Every tolerance was set after measurement. ~~and every numeric
+  witness has a negative control~~ **[RETRACTED 2026-09-22: false — 5 of the 14 registered numeric
+  witnesses have one; see the "Corrections" entry at the top of Unreleased.]** The Fourier number is derived. Péclet is stated as NOT
   APPLICABLE, because no model has advection, and no group is invented for it.
   **Whole-atlas gates now iterate `ATLAS_FAMILIES`**: the evidence rule, admission, and
   `bun run atlas:json`, which now writes one artifact per family (`data/atlas/diffusion.json`
