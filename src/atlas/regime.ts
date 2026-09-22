@@ -66,7 +66,7 @@ export function deriveRegimeGroups(
  *
  * So `ok` carries three answers and the two failure sets are kept apart.
  *
- * @internal
+ * @public
  */
 export interface RegimeCheck {
   /**
@@ -110,7 +110,7 @@ function satisfies(value: number, ineq: RegimeInequality): boolean {
  * A violation outranks an absence: once one inequality is CHECKED and fails,
  * the regime does not hold, whatever the unmeasured coordinates would say.
  *
- * @internal
+ * @public
  */
 export function regimeHolds(
   regime: Regime,

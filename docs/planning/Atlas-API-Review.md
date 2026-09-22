@@ -1,6 +1,6 @@
 # Atlas API review (S6.7): what moves from `@internal` to `@public`
 
-**Status: RECOMMENDATION ONLY. Nothing here is applied.** Moving a symbol onto the public API is an
+**Status: DECIDED 2026-09-22 by Mothership (the repo is private and unreleased with no external dependents, so this is not an owner-level call) and APPLIED as recorded in §6.** Originally a recommendation. Moving a symbol onto the public API is an
 ADR-level decision, and it belongs to Mothership. `package.json` stays `0.x` whatever is decided.
 
 ## 0. Measured facts
@@ -38,11 +38,11 @@ consistently.
 
 | Symbols | Why they pass |
 |---|---|
-| Types: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasRejection`, `AtlasModel`, `AtlasFamily` | The vocabulary. Unchanged since Phases 0–3 |
+| Types: `RelationType`, `EvidenceTag`, `LimitCharacter`, `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `Counterexample`, `AtlasRejection`, `AtlasModel` | The vocabulary. Unchanged since Phases 0–3 |
 | `MissingHorizonError`, `MissingLipschitzError` | Thrown by promoted functions, so callers must be able to catch them by type |
 | `regimeHolds`, `RegimeCheck` | The tri-state contract from Phase 2, unchanged since then |
 | `composeBounds`, `composeBoundPath`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath` | The Phase 2 error algebra, unchanged |
-| `composeRelation`, `COMPOSITION_TABLE`, `NO_COMPOSITE_CLAIM`, `CompositionResult` | Phase 3 table lookup, unchanged. The values need adding to the barrel first (§0) |
+| `composeRelation`, `COMPOSITION_TABLE`, `NO_COMPOSITE_CLAIM`, `CompositionResult`, `NoCompositeClaim` | Phase 3 table lookup, unchanged. `NoCompositeClaim` is included because `CompositionResult` names it |
 
 ### Tier 2 — DEFER one release (promising, but new today)
 
@@ -111,3 +111,24 @@ answered the text rather than a guess.
 | Contradiction: QUDT was deferred for repository coupling while `deriveEvidence` was promoted with the same coupling | HIGH | **ACCEPTED.** `deriveEvidence` moved to Tier 2 |
 | The namespace freezes the root name `atlas`, and the invariant test cannot validate the shape yet | MEDIUM | **PARTLY ACCEPTED.** The tooling gap was already stated as a precondition (§3). The name freeze is real but small. Both shapes remain options, and the choice is part of the decision |
 | A v0 schema version should not be public in a 0.x library while the format moves | LOW | **ACCEPTED** by the Tier 2 move above |
+
+## 6. As applied (2026-09-22)
+
+- **Shape: ADDITIVE.** One new line in `src/index.ts`, `export * as atlas from './atlas/public.js'`.
+  None of the existing named root exports changed. None of them was an atlas symbol, so the
+  "restructure" alternative did not arise.
+- **`src/atlas/public.ts` is the ONLY list of the public set.** It re-exports **24** names. That
+  count is derived by `tests/api/atlas-public-closure.test.ts` from the file and appears in no
+  other source. (A message during implementation said "23" while listing 24. The recount from
+  the set itself settled it: the number was simply wrong, and nothing was double-counted.)
+- **Tier 1 correction found while implementing: the tier was not CLOSED under type references.**
+  `AtlasFamily` contains `AtlasBridge[]`, and `AtlasBridge` is Tier 2, so promoting it would have
+  exposed a private type through a public one. It moved to Tier 2. `NoCompositeClaim` moved up,
+  because `CompositionResult` names it. The closure test checks the whole class. TypeScript 7
+  has no JS compiler API, so it scans source text, with controls: it FINDS AtlasFamily →
+  AtlasBridge, it IGNORES names that appear only in comments, and it reads a function's
+  signature, not its body. It also failed live when `AtlasFamily` was added to the facade, and
+  that change was reverted.
+- The declarations are tagged `@public`. The forward and reverse invariants (28e1f81) cover the
+  facade. The runtime snapshot failed on the new `atlas` key before it was updated, and the
+  update adds exactly that one key.

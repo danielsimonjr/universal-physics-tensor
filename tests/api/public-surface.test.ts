@@ -173,6 +173,9 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'candidateId', 'ADJUDICATIONS', 'adjudicationFor', 'annotateAdjudications',
   // Discovery funnel — entry point + consequence-propagation annotator
   'rankDiscoveries', 'annotateConsequences', 'classifyProposal',
+  // Atlas public namespace (Atlas API review, Tier 1) — ONE key; its members are
+  // pinned in atlas-public-closure.test.ts, derived from src/atlas/public.ts.
+  'atlas',
 ].sort();
 
 describe('Public API stability — v0.4.0 surface', () => {

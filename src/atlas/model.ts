@@ -32,7 +32,7 @@ import type { Regime } from './types.js';
  * The first nine fields are Phase 0's `AtlasModel` verbatim. The last three
  * are the Phase 3 additions and are omitted, never emptied, when unrecorded.
  *
- * @internal
+ * @public
  */
 export interface AtlasModel {
   /** `'model-spring'`, `'model-lc'`, … */

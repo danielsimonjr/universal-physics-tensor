@@ -33,13 +33,13 @@
 
 import type { RelationType } from './types.js';
 
-/** What `composeRelation` returns when the chain asserts nothing. @internal */
+/** What `composeRelation` returns when the chain asserts nothing. @public */
 export type NoCompositeClaim = 'no-composite-claim';
 
-/** The result of composing two relations. @internal */
+/** The result of composing two relations. @public */
 export type CompositionResult = RelationType | NoCompositeClaim;
 
-/** @internal */
+/** @public */
 export const NO_COMPOSITE_CLAIM: NoCompositeClaim = 'no-composite-claim';
 
 /**
@@ -47,7 +47,7 @@ export const NO_COMPOSITE_CLAIM: NoCompositeClaim = 'no-composite-claim';
  * exhaustiveness structural: a ninth `RelationType` member fails to compile
  * here rather than silently acquiring a row of `'no-composite-claim'`.
  *
- * @internal
+ * @public
  */
 export const COMPOSITION_TABLE: Readonly<
   Record<RelationType, Readonly<Record<RelationType, CompositionResult>>>
@@ -138,7 +138,7 @@ export const COMPOSITION_TABLE: Readonly<
  * The relation a chain of two bridges asserts, or `'no-composite-claim'` when
  * this sprint declines to assert one. A table lookup — no rules, no inference.
  *
- * @internal
+ * @public
  */
 export function composeRelation(
   first: RelationType,

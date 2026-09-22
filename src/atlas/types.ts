@@ -20,7 +20,7 @@
 
 import type { DimensionalVariable, PiGroup } from '../dimensional/buckingham.js';
 
-/** The relation a bridge asserts between its premises and its conclusion. @internal */
+/** The relation a bridge asserts between its premises and its conclusion. @public */
 export type RelationType =
   | 'derivation'
   | 'exact-equivalence'
@@ -31,7 +31,7 @@ export type RelationType =
   | 'structural-analogy'
   | 'deformation-quantization';
 
-/** What kind of support a record carries. Carried only if its witness passes. @internal */
+/** What kind of support a record carries. Carried only if its witness passes. @public */
 export type EvidenceTag =
   | 'proposed'
   | 'reviewed'
@@ -107,7 +107,7 @@ export interface FormalRef {
   readonly fidelity: FormalFidelity;
 }
 
-/** Whether the limit a bridge takes is regular or singular. @internal */
+/** Whether the limit a bridge takes is regular or singular. @public */
 export type LimitCharacter = 'regular' | 'singular' | 'unknown';
 
 /**
@@ -120,7 +120,7 @@ export type LimitCharacter = 'regular' | 'singular' | 'unknown';
  * write the inequality on the group (`m k / b² > 1/4`) and record the display
  * alias in `alias`.
  *
- * @internal
+ * @public
  */
 export interface RegimeInequality {
   /** `PiGroup.formula`, or the dimensionless input's name. */
@@ -131,7 +131,7 @@ export interface RegimeInequality {
   readonly alias?: string;
 }
 
-/** Where in parameter space a model or bridge is claimed to apply. @internal */
+/** Where in parameter space a model or bridge is claimed to apply. @public */
 export interface Regime {
   /** `'oscillators'`. */
   readonly family: string;
@@ -140,7 +140,7 @@ export interface Regime {
   readonly groupDefinitions: Readonly<Record<string, PiGroup>>;
 }
 
-/** A Lipschitz-plus-offset error bound with a mandatory horizon. @internal */
+/** A Lipschitz-plus-offset error bound with a mandatory horizon. @public */
 export interface ApproximationBound {
   /** Lipschitz constant of the map, in the stated norm. */
   readonly K: number;
@@ -185,7 +185,7 @@ export interface ApproximationBound {
   readonly limitCharacter: LimitCharacter;
 }
 
-/** A named check that supports a record, and the test file that runs it. @internal */
+/** A named check that supports a record, and the test file that runs it. @public */
 export interface Witness {
   /** `'W7b'`. */
   readonly id: string;
@@ -204,7 +204,7 @@ export interface Witness {
  * `./model.js`.
  */
 
-/** A case a bridge does NOT cover, and the witness that shows it. @internal */
+/** A case a bridge does NOT cover, and the witness that shows it. @public */
 export interface Counterexample {
   readonly description: string;
   /** `'W2b'`. */
@@ -243,7 +243,7 @@ export interface AtlasBridge {
   readonly formalRef?: FormalRef;
 }
 
-/** A claimed bridge the atlas records as REJECTED, with the reason. @internal */
+/** A claimed bridge the atlas records as REJECTED, with the reason. @public */
 export interface AtlasRejection {
   /** `'ax-cubic-spring-lc'`. */
   readonly id: string;
@@ -320,7 +320,7 @@ export interface Conventions {
   readonly capacitorChargeSign?: '+' | '-';
 }
 
-/** Thrown when an `ApproximationBound` is built without its machine horizon. @internal */
+/** Thrown when an `ApproximationBound` is built without its machine horizon. @public */
 export class MissingHorizonError extends Error {}
 
 /**
@@ -335,5 +335,5 @@ export class MissingHorizonError extends Error {}
  */
 export class MissingDeltaAtError extends Error {}
 
-/** Thrown when a bound path has no Lipschitz constant anywhere but at its end. @internal */
+/** Thrown when a bound path has no Lipschitz constant anywhere but at its end. @public */
 export class MissingLipschitzError extends Error {}

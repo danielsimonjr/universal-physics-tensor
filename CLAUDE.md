@@ -7,7 +7,7 @@ before starting non-trivial work.
 
 ## Stack
 
-- **TypeScript 6.x**, Node ≥18 (shipped runtime), ESM (`"type": "module"` —
+- **TypeScript 7.x** (`^7.0.2` in `package.json` and `bun.lock`, verified 2026-09-22 — this line said 6.x; the native compiler ships NO JavaScript compiler API, so tests cannot `import ts from 'typescript'`), Node ≥18 (shipped runtime), ESM (`"type": "module"` —
   relative imports must include `.js` extension).
 - **Bun** is the local/CI package manager and script driver (`bun install`,
   `bun run …`); **Node remains what the published library runs on.** Do not

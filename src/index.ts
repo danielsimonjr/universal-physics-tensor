@@ -937,3 +937,7 @@ export type { ConfrontationEntry, RigorTier } from './bridges/confrontations.js'
 // prediction depends on most strongly (central-difference log-sensitivity).
 export { decidingMeasurement } from './bridges/sensitivity.js';
 export type { Elasticity } from './bridges/sensitivity.js';
+
+// The PUBLIC atlas surface as a namespace (Atlas API review, Tier 1). The full
+// @internal surface stays on the universal-physics-tensor/atlas subpath.
+export * as atlas from './atlas/public.js';

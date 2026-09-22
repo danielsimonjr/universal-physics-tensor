@@ -36,7 +36,7 @@ This document provides a comprehensive dependency graph of all files, components
 
 The codebase is organized into the following modules:
 
-- **atlas**: 53 files
+- **atlas**: 54 files
 - **bridges**: 89 files
 - **canonical**: 17 files
 - **cli**: 31 files
@@ -682,6 +682,31 @@ The codebase is organized into the following modules:
 - Interfaces: `PosterEntry`
 - Functions: `buildPosterRegistry`, `posterEntry`, `posterId`
 - Constants: `POSTER_MODEL_UNRECORDED`, `UNIDENTIFIED`, `POSTER_5_IDENTIFICATION_NOTE`, `POSTER_ENTRIES`, `HIDDEN_NODES`, `SUPPORTING_STATEMENTS`, `POSTER_ALL_STATEMENTS`, `POSTER_REGISTRY`
+
+---
+
+### `src/atlas/public.ts` - The PUBLIC atlas surface — reached as the `atlas` namespace of the package
+
+**External Dependencies:**
+| Package | Import |
+|---------|--------|
+| `universal-physics-tensor` | `atlas` |
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `./types.js` | `ApproximationBound, AtlasRejection, Counterexample, EvidenceTag, LimitCharacter, Regime, RegimeInequality, RelationType, Witness` | Re-export |
+| `./types.js` | `MissingHorizonError, MissingLipschitzError` | Re-export |
+| `./model.js` | `AtlasModel` | Re-export |
+| `./regime.js` | `regimeHolds` | Re-export |
+| `./regime.js` | `RegimeCheck` | Re-export |
+| `./error-algebra.js` | `composeBoundPath, composeBounds, IDENTITY_BOUND` | Re-export |
+| `./error-algebra.js` | `BoundPair, ComposedPath` | Re-export |
+| `./composition-table.js` | `composeRelation, COMPOSITION_TABLE, NO_COMPOSITE_CLAIM` | Re-export |
+| `./composition-table.js` | `CompositionResult, NoCompositeClaim` | Re-export |
+
+**Exports:**
+- Re-exports: `ApproximationBound`, `AtlasRejection`, `Counterexample`, `EvidenceTag`, `LimitCharacter`, `Regime`, `RegimeInequality`, `RelationType`, `Witness`, `MissingHorizonError`, `MissingLipschitzError`, `AtlasModel`, `regimeHolds`, `RegimeCheck`, `composeBoundPath`, `composeBounds`, `IDENTITY_BOUND`, `BoundPair`, `ComposedPath`, `composeRelation`, `COMPOSITION_TABLE`, `NO_COMPOSITE_CLAIM`, `CompositionResult`, `NoCompositeClaim`
 
 ---
 
@@ -5943,7 +5968,7 @@ The codebase is organized into the following modules:
 | `stats` | 0 files | 2 files |
 | `study` | 2 files | 1 files |
 | `types` | 2 files | 5 files |
-| `composition-table` | 1 files | 5 files |
+| `composition-table` | 1 files | 6 files |
 | `conventions` | 1 files | 4 files |
 | `coverage` | 1 files | 0 files |
 | `derivation` | 3 files | 3 files |
@@ -5954,12 +5979,12 @@ The codebase is organized into the following modules:
 | `index` | 4 files | 2 files |
 | `models` | 7 files | 5 files |
 | `numerics` | 0 files | 2 files |
-| `error-algebra` | 1 files | 2 files |
+| `error-algebra` | 1 files | 3 files |
 | `export` | 2 files | 1 files |
 | `families` | 3 files | 3 files |
 | `index` | 37 files | 0 files |
 | `link-prediction` | 2 files | 1 files |
-| `model` | 2 files | 11 files |
+| `model` | 2 files | 12 files |
 | `bridges-coarse` | 5 files | 1 files |
 | `bridges-exact` | 3 files | 3 files |
 | `bridges-limits` | 5 files | 4 files |
@@ -5981,7 +6006,7 @@ graph TD
         N2[backend-shapes]
         N3[baselines]
         N4[leakage]
-        N5[...48 more]
+        N5[...49 more]
     end
 
     subgraph Bridges
@@ -6099,11 +6124,11 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 347 |
+| Total TypeScript Files | 348 |
 | Total Modules | 11 |
-| Total Lines of Code | 68512 |
-| Total Exports | 2421 |
-| Total Re-exports | 1205 |
+| Total Lines of Code | 68553 |
+| Total Exports | 2445 |
+| Total Re-exports | 1229 |
 | Total Classes | 58 |
 | Total Interfaces | 357 |
 | Total Functions | 551 |

@@ -42,6 +42,23 @@ and that it was retracted.
 
 ### Added
 
+- **The public `atlas` namespace (Atlas API review, Tier 1).** `src/index.ts` gains exactly one
+  line, `export * as atlas from './atlas/public.js'`, which is ADDITIVE: no existing export
+  changed. `src/atlas/public.ts` is the single list of the public set, 24 names:
+  - the vocabulary types;
+  - `MissingHorizonError` and `MissingLipschitzError`;
+  - `regimeHolds`;
+  - the (K, δ) error algebra;
+  - `composeRelation`, `COMPOSITION_TABLE` and `NO_COMPOSITE_CLAIM`.
+
+  Each is tagged `@public` at its declaration. **Correction found while implementing:** the tier
+  was not closed under type references. `AtlasFamily` carries the non-public `AtlasBridge[]`, so
+  it moved to Tier 2, and `NoCompositeClaim` joined because `CompositionResult` names it.
+  `tests/api/atlas-public-closure.test.ts` derives the count from the facade and checks closure
+  for the whole class. Its controls prove it finds the AtlasFamily → AtlasBridge leak and ignores
+  comment-only mentions, and it failed live when the leak was re-introduced (reverted). The
+  runtime snapshot failed on the new key before it was updated. **`CLAUDE.md` corrected:** the
+  repo is on TypeScript 7 (`^7.0.2`), not 6.x, and TS 7 ships no JavaScript compiler API.
 - **The public-surface invariant learns namespace facades, proven to FAIL first.** The invariant
   parsed `export { … } from` and `export * from` but NOT `export * as NS from`. A namespace facade
   would have passed it while checking nothing. The parsers now live in

@@ -18,25 +18,25 @@
 
 import { MissingLipschitzError } from './types.js';
 
-/** The `K`/`delta` pair an `ApproximationBound` composes through. @internal */
+/** The `K`/`delta` pair an `ApproximationBound` composes through. @public */
 export interface BoundPair {
   readonly K: number;
   readonly delta: number;
 }
 
-/** The two-sided identity of {@link composeBounds}: an exact, error-free map. @internal */
+/** The two-sided identity of {@link composeBounds}: an exact, error-free map. @public */
 export const IDENTITY_BOUND: BoundPair = { K: 1, delta: 0 };
 
 /**
  * Compose two bounds, `outer` after `inner`.
  *
- * @internal
+ * @public
  */
 export function composeBounds(outer: BoundPair, inner: BoundPair): BoundPair {
   return { K: outer.K * inner.K, delta: outer.K * inner.delta + outer.delta };
 }
 
-/** Result of {@link composeBoundPath}. @internal */
+/** Result of {@link composeBoundPath}. @public */
 export interface ComposedPath {
   readonly bound: BoundPair;
   /**
@@ -55,7 +55,7 @@ export interface ComposedPath {
  * composite would be unbounded, and {@link MissingLipschitzError} is thrown
  * rather than a number invented for it.
  *
- * @internal
+ * @public
  */
 export function composeBoundPath(bounds: readonly (BoundPair | null)[]): ComposedPath {
   let acc: BoundPair = IDENTITY_BOUND;
