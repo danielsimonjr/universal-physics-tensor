@@ -43,6 +43,13 @@ import {
 import type { HeatFixture, WickFixture } from './diffusion/numerics.js';
 import { DENSITY, DIFFUSIVITY, SPECIFIC_HEAT, THERMAL_CONDUCTIVITY } from './diffusion/dimensions.js';
 import { wickRotatedFreeKernel } from './witnesses/quantum-support.js';
+import {
+  acousticLeapfrogQuarter,
+  dalembertResidual,
+  kleinGordonPhaseVelocity,
+  stringLeapfrogMidpoint,
+} from './waves/numerics.js';
+import type { AcousticFixture, DalembertFixture, StringFixture } from './waves/numerics.js';
 import type { NumericWitnessSpec } from './witness-numeric.js';
 import type { SymbolicWitnessSpec } from './witness-symbolic.js';
 
@@ -134,6 +141,20 @@ const cp = sym('cp', SPECIFIC_HEAT);
 const D = sym('D', DIFFUSIVITY);
 const q = sym('q', { ...LENGTH, L: -1 });
 
+// ── Wave family (S4.5) ─────────────────────────────────────────────────────
+
+/** WS1 fixture: F and μ both ≠ 1 while c = √(F/μ) = 2. @internal */
+export const WS1_FIXTURE: StringFixture = { tension: 2, mu: 0.5, tEnd: 0.3 };
+
+/** WS2 fixture: an off-centre point where both profiles contribute. @internal */
+export const WS2_FIXTURE: DalembertFixture = { c: 1.5, x: 0.4, t: 0.3, h0: 0.1 };
+
+/** WS3 fixture: γ = 1.4 with nondimensional p₀ = 1, ρ₀ = 1.2. @internal */
+export const WS3_FIXTURE: AcousticFixture = { p0: 1, rho0: 1.2, gamma: 1.4, tEnd: 0.37 };
+
+/** WS4 fixture: ω₀ = c = 1, base wavenumber k₀ = 10 (the domain edge ω₀/(ck) = 0.1). @internal */
+export const WS4_FIXTURE = { omega0: 1, c: 1, k0: 10 } as const;
+
 /**
  * Every witness the results artifact covers, in a fixed order (the artifact is
  * emitted in this order, so reordering is a reviewable diff, not churn).
@@ -221,6 +242,65 @@ export const WITNESS_REGISTRY: readonly RegisteredWitness[] = [
       coarseResolution: 1,
       fineResolution: 4,
       tolerance: 1e-3,
+    },
+  },
+  {
+    // Restriction: the string, solved in F and μ, reproduces the 1-D wave
+    // solution with c = √(F/μ).
+    recordId: 'ab-string-wave',
+    kind: 'numeric',
+    spec: {
+      id: 'WS1',
+      evaluate: (cells) => stringLeapfrogMidpoint(cells, WS1_FIXTURE),
+      target:
+        Math.sin(Math.PI * 0.5) *
+        Math.cos(Math.PI * Math.sqrt(WS1_FIXTURE.tension / WS1_FIXTURE.mu) * WS1_FIXTURE.tEnd),
+      coarseResolution: 40,
+      fineResolution: 80,
+      tolerance: 2e-4,
+    },
+  },
+  {
+    // Derivation: d'Alembert's form satisfies the wave equation; residual → 0.
+    recordId: 'ab-wave-dalembert',
+    kind: 'numeric',
+    spec: {
+      id: 'WS2',
+      evaluate: (resolution) => dalembertResidual(resolution, WS2_FIXTURE),
+      target: 0,
+      coarseResolution: 4,
+      fineResolution: 8,
+      tolerance: 2e-3,
+    },
+  },
+  {
+    // Hyperedge: linearized Euler closed by the adiabatic EOS reproduces the
+    // sound model with c_s² = γp₀/ρ₀.
+    recordId: 'ab-sound-speed',
+    kind: 'numeric',
+    spec: {
+      id: 'WS3',
+      evaluate: (cells) => acousticLeapfrogQuarter(cells, WS3_FIXTURE),
+      target: Math.cos(
+        2 * Math.PI * Math.sqrt((WS3_FIXTURE.gamma * WS3_FIXTURE.p0) / WS3_FIXTURE.rho0) * WS3_FIXTURE.tEnd,
+      ),
+      coarseResolution: 64,
+      fineResolution: 128,
+      tolerance: 2e-4,
+    },
+  },
+  {
+    // Approximation: the Klein–Gordon phase velocity tends to c as k grows.
+    recordId: 'ab-klein-gordon-wave',
+    kind: 'numeric',
+    spec: {
+      id: 'WS4',
+      evaluate: (resolution) =>
+        kleinGordonPhaseVelocity(resolution, WS4_FIXTURE.omega0, WS4_FIXTURE.c, WS4_FIXTURE.k0),
+      target: WS4_FIXTURE.c,
+      coarseResolution: 1,
+      fineResolution: 2,
+      tolerance: 2e-3,
     },
   },
 ];

@@ -57,6 +57,54 @@
         "fine": 0.0002027397470084069,
         "ratio": 16.110434012273277
       }
+    },
+    {
+      "recordId": "ab-string-wave",
+      "witnessId": "WS1",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.00008639609523941605 is within tolerance 0.0002, and refinement reduced the error by a factor of 4.0004661013971035.",
+      "convergence": {
+        "coarse": 0.00034562465029835954,
+        "fine": 0.00008639609523941605,
+        "ratio": 4.0004661013971035
+      }
+    },
+    {
+      "recordId": "ab-wave-dalembert",
+      "witnessId": "WS2",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.001124951971576138 is within tolerance 0.002, and refinement reduced the error by a factor of 3.996983248445116.",
+      "convergence": {
+        "coarse": 0.00449641418569513,
+        "fine": 0.001124951971576138,
+        "ratio": 3.996983248445116
+      }
+    },
+    {
+      "recordId": "ab-sound-speed",
+      "witnessId": "WS3",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.0001119938952660604 is within tolerance 0.0002, and refinement reduced the error by a factor of 4.027071742000727.",
+      "convergence": {
+        "coarse": 0.0004510074509025408,
+        "fine": 0.0001119938952660604,
+        "ratio": 4.027071742000727
+      }
+    },
+    {
+      "recordId": "ab-klein-gordon-wave",
+      "witnessId": "WS4",
+      "kind": "numeric",
+      "status": "checked",
+      "detail": "Fine error 0.00124921972503933 is within tolerance 0.002, and refinement reduced the error by a factor of 3.992541914059133.",
+      "convergence": {
+        "coarse": 0.00498756211208895,
+        "fine": 0.00124921972503933,
+        "ratio": 3.992541914059133
+      }
     }
   ]
 }

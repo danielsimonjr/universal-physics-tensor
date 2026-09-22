@@ -54,6 +54,13 @@ const KNOWN_WITNESSES: readonly string[] = [
   'WD2s',
   'WD3',
   'WD3b',
+  // Phase 4 S4.5 — the wave family (tests/atlas/waves.test.ts).
+  'WS1',
+  'WS2',
+  'WS3',
+  'WS3b',
+  'WS4',
+  'WS4b',
 ];
 
 const here = dirname(fileURLToPath(import.meta.url));

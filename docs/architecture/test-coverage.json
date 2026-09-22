@@ -1,13 +1,14 @@
 {
   "metadata": {
-    "totalSourceFiles": 327,
-    "totalTestFiles": 415,
-    "testedCount": 326,
-    "untestedCount": 1,
-    "coveragePercent": "99.7"
+    "totalSourceFiles": 331,
+    "totalTestFiles": 417,
+    "testedCount": 329,
+    "untestedCount": 2,
+    "coveragePercent": "99.4"
   },
   "untestedFiles": [
-    "src/atlas/index.ts"
+    "src/atlas/index.ts",
+    "src/atlas/waves/models.ts"
   ],
   "testedFiles": [
     "src/atlas/applicability.ts",
@@ -40,6 +41,9 @@
     "src/atlas/serialize.ts",
     "src/atlas/statement.ts",
     "src/atlas/types.ts",
+    "src/atlas/waves/bridges.ts",
+    "src/atlas/waves/index.ts",
+    "src/atlas/waves/numerics.ts",
     "src/atlas/witness-artifact.ts",
     "src/atlas/witness-numeric.ts",
     "src/atlas/witness-result.ts",
@@ -391,6 +395,7 @@
     "src/atlas/families.ts": [
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/evidence-rule.test.ts",
+      "tests/atlas/families.test.ts",
       "tests/atlas/regime-admission.test.ts"
     ],
     "src/atlas/index.ts": [],
@@ -462,6 +467,7 @@
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
+      "tests/atlas/waves.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
     ],
@@ -497,6 +503,16 @@
       "tests/composition/compose-relation.test.ts",
       "tests/composition/graph-viz-filters.test.ts"
     ],
+    "src/atlas/waves/bridges.ts": [
+      "tests/atlas/waves.test.ts"
+    ],
+    "src/atlas/waves/index.ts": [
+      "tests/atlas/waves.test.ts"
+    ],
+    "src/atlas/waves/models.ts": [],
+    "src/atlas/waves/numerics.ts": [
+      "tests/atlas/waves.test.ts"
+    ],
     "src/atlas/witness-artifact.ts": [
       "tests/atlas/witness-results.test.ts"
     ],
@@ -508,6 +524,7 @@
     ],
     "src/atlas/witness-specs.ts": [
       "tests/atlas/diffusion.test.ts",
+      "tests/atlas/waves.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/witness-symbolic.ts": [
@@ -5194,6 +5211,9 @@
       "src/atlas/families.ts"
     ],
     "tests/atlas/exports-subpath.test.ts": [],
+    "tests/atlas/families.test.ts": [
+      "src/atlas/families.ts"
+    ],
     "tests/atlas/gr-spine-regime.test.ts": [
       "src/cli/main.ts",
       "src/cli/commands/index.ts",
@@ -5323,6 +5343,13 @@
       "src/atlas/statement.ts",
       "src/atlas/derivation.ts",
       "src/atlas/types.ts"
+    ],
+    "tests/atlas/waves.test.ts": [
+      "src/atlas/waves/index.ts",
+      "src/atlas/waves/bridges.ts",
+      "src/atlas/waves/numerics.ts",
+      "src/atlas/witness-specs.ts",
+      "src/atlas/regime.ts"
     ],
     "tests/atlas/witness-results.test.ts": [
       "src/atlas/witness-artifact.ts",

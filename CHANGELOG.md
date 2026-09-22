@@ -10,6 +10,18 @@ from v0.1.0 onward.
 
 ### Added
 
+- **S4.5 — the wave family.** `src/atlas/waves/` defines six models and four bridges:
+  `ab-string-wave` (restriction, c² = F/μ), `ab-wave-dalembert` (derivation), `ab-sound-speed`
+  (derivation, a two-premise HYPEREDGE from linearized Euler plus the adiabatic EOS), and
+  `ab-klein-gordon-wave` (approximation, the dispersion-free limit, with an exact-edge `delta` and
+  a π/2-drift machine horizon). Witnesses WS1 to WS4 converge at second order (ratio ≈ 4). WS3
+  steps the Euler pair and reaches the pressure ONLY through the EOS slope, so both premises
+  are exercised. WS3b records Newton's isothermal 290.10 m/s against Laplace's 343.25 m/s for air.
+  `model-wave-1d` is reused, not redefined. `tests/atlas/families.test.ts` pins unique ids,
+  cross-family endpoint resolution, and ≥ 5 relation types (six are present).
+  **The ≥ 20-bridge exit criterion is OPEN at 12 and is NOT recorded as a cut:** the measured
+  cost (about 6 minutes per bridge) makes 20 reachable. The shortfall is that the plan's briefs
+  name only 12 bridges.
 - **S4.4 — the diffusion family.** `src/atlas/diffusion/` defines four models (random walk, Fick,
   heat, free Schrödinger) and three bridges of three relation types: `ab-walk-diffusion`
   (coarse-graining, closure D = Δx²/(2Δt)), `ab-heat-diffusion` (exact equivalence,

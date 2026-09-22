@@ -11,7 +11,12 @@
 
 import { DIFFUSION_FAMILY } from './diffusion/index.js';
 import { OSCILLATOR_FAMILY } from './oscillators/index.js';
+import { WAVES_FAMILY } from './waves/index.js';
 import type { AtlasFamily } from './oscillators/index.js';
 
 /** All atlas families. @internal */
-export const ATLAS_FAMILIES: readonly AtlasFamily[] = [OSCILLATOR_FAMILY, DIFFUSION_FAMILY];
+export const ATLAS_FAMILIES: readonly AtlasFamily[] = [
+  OSCILLATOR_FAMILY,
+  DIFFUSION_FAMILY,
+  WAVES_FAMILY,
+];

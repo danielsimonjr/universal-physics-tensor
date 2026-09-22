@@ -1,0 +1,556 @@
+{
+  "$schema": "../schemas/atlas-record.v0.json",
+  "schemaVersion": "0",
+  "packageVersion": "0.45.2",
+  "family": "waves",
+  "models": [
+    {
+      "id": "model-string",
+      "family": "waves",
+      "stateSpace": "y(x, t), transverse displacement of a string on [0, ℓ]",
+      "dynamics": "μ y_tt = F y_xx (small slopes, |y_x| ≪ 1)",
+      "observables": [
+        "y",
+        "y_t",
+        "normal-mode frequencies"
+      ],
+      "parameters": [
+        {
+          "name": "F",
+          "dim": {
+            "L": 1,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "mu",
+          "dim": {
+            "L": -1,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [
+        "CE-string-wave-speed"
+      ],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-dalembert",
+      "family": "waves",
+      "stateSpace": "u(x, t) = f(x − ct) + g(x + ct), f and g twice differentiable",
+      "dynamics": "two profiles translating rigidly at ±c",
+      "observables": [
+        "u",
+        "the two travelling profiles"
+      ],
+      "parameters": [
+        {
+          "name": "c",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-euler-linear",
+      "family": "waves",
+      "stateSpace": "(ρ′, v)(x, t), small perturbations of a fluid at rest",
+      "dynamics": "∂ρ′/∂t = −ρ₀ ∂v/∂x,  ρ₀ ∂v/∂t = −∂p′/∂x",
+      "observables": [
+        "ρ′",
+        "v",
+        "p′"
+      ],
+      "parameters": [
+        {
+          "name": "rho0",
+          "dim": {
+            "L": -3,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "p0",
+          "dim": {
+            "L": -1,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    },
+    {
+      "id": "model-adiabatic-eos",
+      "family": "waves",
+      "stateSpace": "p(ρ), a barotropic closure",
+      "dynamics": "p = p₀ (ρ/ρ₀)^γ",
+      "observables": [
+        "p",
+        "dp/dρ"
+      ],
+      "parameters": [
+        {
+          "name": "rho0",
+          "dim": {
+            "L": -3,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "p0",
+          "dim": {
+            "L": -1,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [
+        "gamma"
+      ],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {
+          "gamma": {
+            "exponents": {
+              "gamma": 1,
+              "p0": 0,
+              "rho0": 0
+            },
+            "formula": "gamma"
+          }
+        }
+      }
+    },
+    {
+      "id": "model-sound",
+      "family": "waves",
+      "stateSpace": "p′(x, t), the acoustic pressure",
+      "dynamics": "p′_tt = c_s² p′_xx with c_s² = γ p₀/ρ₀",
+      "observables": [
+        "p′",
+        "sound speed c_s"
+      ],
+      "parameters": [
+        {
+          "name": "rho0",
+          "dim": {
+            "L": -3,
+            "M": 1,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "p0",
+          "dim": {
+            "L": -1,
+            "M": 1,
+            "T": -2,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [
+        "gamma"
+      ],
+      "canonicalRefs": [
+        "CE-sound-speed"
+      ],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {
+          "gamma": {
+            "exponents": {
+              "gamma": 1,
+              "p0": 0,
+              "rho0": 0
+            },
+            "formula": "gamma"
+          }
+        }
+      }
+    },
+    {
+      "id": "model-klein-gordon",
+      "family": "waves",
+      "stateSpace": "u(x, t), a field on ℝ × ℝ",
+      "dynamics": "u_tt = c² u_xx − ω₀² u (dispersive: ω² = c²k² + ω₀²)",
+      "observables": [
+        "u",
+        "dispersion ω(k)",
+        "phase velocity"
+      ],
+      "parameters": [
+        {
+          "name": "c",
+          "dim": {
+            "L": 1,
+            "M": 0,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        },
+        {
+          "name": "omega0",
+          "dim": {
+            "L": 0,
+            "M": 0,
+            "T": -1,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+          }
+        }
+      ],
+      "dimensionlessInputs": [],
+      "canonicalRefs": [],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {}
+      }
+    }
+  ],
+  "bridges": [
+    {
+      "id": "ab-string-wave",
+      "relation": "restriction",
+      "premises": [
+        "model-string"
+      ],
+      "conclusion": "model-wave-1d",
+      "transformation": "y ↦ u, with c² = F/μ",
+      "preserves": [
+        "the solution operator for small slopes",
+        "normal-mode frequencies nπc/ℓ"
+      ],
+      "doesNotPreserve": [
+        "the separate values of F and μ — only F/μ survives",
+        "the transverse geometry: the wave equation does not know u is a displacement"
+      ],
+      "sideConditions": [
+        "small slopes |y_x| ≪ 1",
+        "uniform tension and density",
+        "perfectly flexible"
+      ],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {
+          "F · mu^-1 · c^-2": {
+            "exponents": {
+              "F": 1,
+              "c": -2,
+              "mu": -1
+            },
+            "formula": "F · mu^-1 · c^-2"
+          }
+        }
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WS1",
+          "kind": "numeric",
+          "test": "tests/atlas/waves.test.ts",
+          "tolerance": "leapfrog string solution at the midpoint within 2e-4 of sin(πx)cos(πct), c = √(F/μ), at 80 cells"
+        }
+      ],
+      "citations": [
+        "Morse & Ingard, Theoretical Acoustics - the flexible string and its wave equation with c² = T/ρ"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-wave-dalembert",
+      "relation": "derivation",
+      "premises": [
+        "model-wave-1d"
+      ],
+      "conclusion": "model-dalembert",
+      "transformation": "characteristics ξ = x − ct, η = x + ct turn u_tt = c²u_xx into u_ξη = 0",
+      "preserves": [
+        "every C² solution on the whole line",
+        "the speed c"
+      ],
+      "doesNotPreserve": [
+        "boundary conditions: on a bounded domain f and g are fixed only up to reflections"
+      ],
+      "sideConditions": [
+        "infinite line, or boundaries handled by the method of images",
+        "u ∈ C²"
+      ],
+      "regime": {
+        "family": "waves",
+        "inequalities": [],
+        "groupDefinitions": {}
+      },
+      "counterexamples": [],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WS2",
+          "kind": "numeric",
+          "test": "tests/atlas/waves.test.ts",
+          "tolerance": "finite-difference residual |u_tt − c²u_xx| below 2e-3 at h = 0.0125"
+        }
+      ],
+      "citations": [
+        "d'Alembert, Recherches sur la courbe que forme une corde tendue mise en vibration (1747)",
+        "Strauss, Partial Differential Equations: An Introduction - §2.1, the wave equation on the line"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-sound-speed",
+      "relation": "derivation",
+      "premises": [
+        "model-euler-linear",
+        "model-adiabatic-eos"
+      ],
+      "conclusion": "model-sound",
+      "transformation": "close the Euler pair with p′ = (dp/dρ)|ρ₀ ρ′ = (γp₀/ρ₀) ρ′, then eliminate v: p′_tt = (γp₀/ρ₀) p′_xx",
+      "preserves": [
+        "linearity",
+        "the sound speed c_s² = γp₀/ρ₀"
+      ],
+      "doesNotPreserve": [
+        "nonlinear steepening and shocks at finite amplitude",
+        "viscous and thermal attenuation"
+      ],
+      "sideConditions": [
+        "small perturbations: |p′| ≪ p₀",
+        "adiabatic compression (no heat exchange within a wavelength)",
+        "fluid at rest, no ambient flow"
+      ],
+      "regime": {
+        "family": "waves",
+        "inequalities": [
+          {
+            "group": "p0 · p1^-1",
+            "op": ">=",
+            "bound": 100,
+            "alias": "|p′| ≪ p₀ (machine form p₀/p₁ ≥ 100)"
+          }
+        ],
+        "groupDefinitions": {
+          "gamma": {
+            "exponents": {
+              "c": 0,
+              "gamma": 1,
+              "p0": 0,
+              "p1": 0,
+              "rho0": 0
+            },
+            "formula": "gamma"
+          },
+          "p0 · p1^-1": {
+            "exponents": {
+              "c": 0,
+              "gamma": 0,
+              "p0": 1,
+              "p1": -1,
+              "rho0": 0
+            },
+            "formula": "p0 · p1^-1"
+          },
+          "rho0 · p0^-1 · c^2": {
+            "exponents": {
+              "c": 2,
+              "gamma": 0,
+              "p0": -1,
+              "p1": 0,
+              "rho0": 1
+            },
+            "formula": "rho0 · p0^-1 · c^2"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "The adiabatic premise is necessary. Closing the same Euler pair ISOTHERMALLY (Newton) gives √(p₀/ρ₀) = 290.1 m/s for air at 20 °C, 15% below the measured ≈343 m/s; the adiabatic closure gives 343.2 m/s.",
+          "witness": "WS3b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WS3",
+          "kind": "numeric",
+          "test": "tests/atlas/waves.test.ts",
+          "tolerance": "staggered Euler + adiabatic-closure solution within 2e-4 of the sound model’s sin(2πx)cos(2πc_s t) at 128 cells"
+        },
+        {
+          "id": "WS3b",
+          "kind": "numeric",
+          "test": "tests/atlas/waves.test.ts",
+          "tolerance": "air, 101325 Pa, 1.204 kg/m³, γ = 1.4: adiabatic 343.25 m/s, isothermal 290.10 m/s"
+        }
+      ],
+      "citations": [
+        "Laplace, Ann. Chim. Phys. 3 (1816) 238 - the adiabatic correction to Newton’s speed of sound",
+        "Landau & Lifshitz, Fluid Mechanics §64 - sound waves from the linearized equations of motion"
+      ],
+      "reviewStatus": "proposed"
+    },
+    {
+      "id": "ab-klein-gordon-wave",
+      "relation": "approximation",
+      "premises": [
+        "model-klein-gordon"
+      ],
+      "conclusion": "model-wave-1d",
+      "transformation": "drop the mass term ω₀²u; ω(k) = √(c²k² + ω₀²) → ck",
+      "preserves": [
+        "the wave speed c for short wavelengths",
+        "linearity"
+      ],
+      "doesNotPreserve": [
+        "dispersion: wave packets spread under Klein–Gordon and not under the wave equation",
+        "the gap: Klein–Gordon has no mode below ω₀"
+      ],
+      "sideConditions": [
+        "short wavelengths: ω₀/(ck) ≤ 0.1",
+        "the bound is a PHASE-VELOCITY error, not uniform in time"
+      ],
+      "bound": {
+        "K": 1,
+        "delta": 0.00498756211208895,
+        "norm": "relative phase-velocity error of a Fourier mode",
+        "domain": "ω₀/(c k) ≤ 0.1",
+        "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 c k δ(ω₀, c, k))",
+        "parameterRange": "ω₀/(c k) ≤ 0.1",
+        "limitCharacter": "regular"
+      },
+      "regime": {
+        "family": "waves",
+        "inequalities": [
+          {
+            "group": "c · omega0^-1 · k",
+            "op": ">=",
+            "bound": 10,
+            "alias": "ω₀/(c k) ≤ 0.1"
+          }
+        ],
+        "groupDefinitions": {
+          "c · omega0^-1 · k": {
+            "exponents": {
+              "c": 1,
+              "k": 1,
+              "omega0": -1
+            },
+            "formula": "c · omega0^-1 · k"
+          }
+        }
+      },
+      "counterexamples": [
+        {
+          "description": "At ω₀/(c k) = 1 the phase velocity is √2 c: a 41% error. The dispersion-free limit is a short-wavelength statement and fails for the long waves the domain excludes.",
+          "witness": "WS4b"
+        }
+      ],
+      "evidence": [
+        "numerically-supported",
+        "proposed"
+      ],
+      "witnesses": [
+        {
+          "id": "WS4",
+          "kind": "numeric",
+          "test": "tests/atlas/waves.test.ts",
+          "tolerance": "phase velocity within 2e-3 of c at k = 20 (ω₀ = c = 1); error falls ≈4× per doubling of k"
+        },
+        {
+          "id": "WS4b",
+          "kind": "numeric",
+          "test": "tests/atlas/waves.test.ts",
+          "tolerance": "relative phase error √2 − 1 at ω₀/(ck) = 1"
+        }
+      ],
+      "citations": [
+        "Whitham, Linear and Nonlinear Waves - §11.1, dispersive waves and the Klein-Gordon equation"
+      ],
+      "reviewStatus": "proposed"
+    }
+  ],
+  "rejections": []
+}

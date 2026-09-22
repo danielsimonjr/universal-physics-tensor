@@ -231,3 +231,31 @@ Four models: random walk, Fick, heat, free Schrödinger. Three bridges with thre
 - **Whole-atlas gates now iterate `ATLAS_FAMILIES`** (`src/atlas/families.ts`): the evidence rule,
   admission, and the per-family JSON artifacts (`bun run atlas:json` now writes one file per
   family). A gate that named the oscillator family would have passed forever over the new one.
+
+**As built (S4.5) — the wave family** (`src/atlas/waves/`, `data/atlas/waves.json`). The family has
+six models (string, d'Alembert, linearized Euler, adiabatic EOS, sound, Klein–Gordon) and four
+bridges. `model-wave-1d` is NOT redefined: two wave bridges end at the oscillator family's record,
+and `tests/atlas/families.test.ts` pins that model ids are unique and that every endpoint resolves
+across the atlas.
+
+| Bridge | Relation | Witnesses (measured) |
+|---|---|---|
+| `ab-string-wave` | restriction | WS1: leapfrog in F, μ vs sin(πx)cos(πct); 3.46e-4 → 8.64e-5, 40 → 80 cells |
+| `ab-wave-dalembert` | derivation | WS2: residual of u_tt − c²u_xx; 4.50e-3 → 1.12e-3 |
+| `ab-sound-speed` | derivation, **hyperedge** (Euler + adiabatic EOS) | WS3: staggered Euler closed ONLY through the EOS slope, vs the sound model; 4.51e-4 → 1.12e-4. WS3b: Newton 290.10 vs Laplace 343.25 m/s for air |
+| `ab-klein-gordon-wave` | approximation | WS4: phase velocity → c; 4.99e-3 → 1.25e-3 per doubling of k. WS4b: 41% at ω₀/(ck) = 1 |
+
+The Klein–Gordon bound states `delta` as the EXACT phase error at the domain edge, not a series
+term. The pendulum record's lesson carries over: a truncated series can sit below the error it
+claims to bound. The machine horizon is the π/2-drift time.
+
+**The "≥ 20 bridges" criterion is OPEN at 12, and it is NOT cut.** The scope rule allows a cut only
+when "measured curation cost makes 20 unreachable". The measured cost says the opposite:
+S4.4 took 18 minutes of wall-clock for three bridges with witnesses and tests (13:33–13:51), and
+S4.5 took about 20 minutes for four. The shortfall comes from SPECIFICATION: the plan's family
+briefs enumerate 5 + 3 + 4 = 12 bridges, and nothing names the other eight. Calling that a cost
+cut would be the silent conversion of an exit criterion into a description of what was finished,
+which the scope rule exists to prevent. **Sprint 4 is not declared complete until eight more
+bridges land.** "≥ 5 relation types" is MET: six (exact-equivalence, approximation,
+coarse-graining, analytic-continuation, restriction, derivation), pinned in
+`tests/atlas/families.test.ts`.

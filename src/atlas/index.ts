@@ -93,6 +93,15 @@ export {
   DIFFUSION_BRIDGES,
 } from './diffusion/bridges.js';
 export { DIFFUSION_MODELS, getDiffusionModel } from './diffusion/models.js';
+export { WAVES_FAMILY } from './waves/index.js';
+export {
+  BRIDGE_KLEIN_GORDON_WAVE,
+  BRIDGE_SOUND_SPEED,
+  BRIDGE_STRING_WAVE,
+  BRIDGE_WAVE_DALEMBERT,
+  WAVE_BRIDGES,
+} from './waves/bridges.js';
+export { WAVE_MODELS } from './waves/models.js';
 
 export { runWitnessRegistry, artifactPassingWitnessIds } from './witness-artifact.js';
 export type { WitnessResultRecord, WitnessResultsArtifact } from './witness-artifact.js';

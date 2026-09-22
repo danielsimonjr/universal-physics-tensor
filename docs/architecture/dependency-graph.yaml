@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 330
+  totalFiles: 334
   totalModules: 11
-  totalExports: 2243
+  totalExports: 2275
 entryPoints:
   - file: src/index.ts
     type: main
@@ -361,6 +361,9 @@ modules:
         - file: ./oscillators/index.js
           imports:
             - OSCILLATOR_FAMILY
+        - file: ./waves/index.js
+          imports:
+            - WAVES_FAMILY
         - file: ./oscillators/index.js
           imports:
             - AtlasFamily
@@ -493,6 +496,22 @@ modules:
             - DIFFUSION_MODELS
             - getDiffusionModel
           reExport: true
+        - file: ./waves/index.js
+          imports:
+            - WAVES_FAMILY
+          reExport: true
+        - file: ./waves/bridges.js
+          imports:
+            - BRIDGE_KLEIN_GORDON_WAVE
+            - BRIDGE_SOUND_SPEED
+            - BRIDGE_STRING_WAVE
+            - BRIDGE_WAVE_DALEMBERT
+            - WAVE_BRIDGES
+          reExport: true
+        - file: ./waves/models.js
+          imports:
+            - WAVE_MODELS
+          reExport: true
         - file: ./witness-artifact.js
           imports:
             - runWitnessRegistry
@@ -594,6 +613,13 @@ modules:
         - DIFFUSION_BRIDGES
         - DIFFUSION_MODELS
         - getDiffusionModel
+        - WAVES_FAMILY
+        - BRIDGE_KLEIN_GORDON_WAVE
+        - BRIDGE_SOUND_SPEED
+        - BRIDGE_STRING_WAVE
+        - BRIDGE_WAVE_DALEMBERT
+        - WAVE_BRIDGES
+        - WAVE_MODELS
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WITNESS_REGISTRY
@@ -713,6 +739,13 @@ modules:
         - DIFFUSION_BRIDGES
         - DIFFUSION_MODELS
         - getDiffusionModel
+        - WAVES_FAMILY
+        - BRIDGE_KLEIN_GORDON_WAVE
+        - BRIDGE_SOUND_SPEED
+        - BRIDGE_STRING_WAVE
+        - BRIDGE_WAVE_DALEMBERT
+        - WAVE_BRIDGES
+        - WAVE_MODELS
         - runWitnessRegistry
         - artifactPassingWitnessIds
         - WitnessResultRecord
@@ -1300,6 +1333,144 @@ modules:
         - Conventions
       constants:
         - ALL_EVIDENCE_TAGS
+    src/atlas/waves/bridges.ts:
+      description: Atlas Phase 4, S4.5 — the four bridges of the wave family.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/types.js
+          imports:
+            - FORCE
+            - FREQUENCY
+            - VELOCITY
+        - file: ../diffusion/dimensions.js
+          imports:
+            - DENSITY
+        - file: ../oscillators/bridges-limits.js
+          imports:
+            - makeApproximation
+        - file: ../regime.js
+          imports:
+            - deriveRegimeGroups
+        - file: ../types.js
+          imports:
+            - AtlasBridge
+          typeOnly: true
+        - file: ./models.js
+          imports:
+            - LINEAR_DENSITY
+            - PRESSURE
+            - WAVENUMBER
+            - WAVES_FAMILY_NAME
+        - file: ./numerics.js
+          imports:
+            - kleinGordonPhaseError
+      exports:
+        - SOUND_MAX_PERTURBATION
+        - KG_MAX_DISPERSION_RATIO
+        - BRIDGE_STRING_WAVE
+        - BRIDGE_WAVE_DALEMBERT
+        - BRIDGE_SOUND_SPEED
+        - BRIDGE_KLEIN_GORDON_WAVE
+        - WAVE_BRIDGES
+      constants:
+        - SOUND_MAX_PERTURBATION
+        - KG_MAX_DISPERSION_RATIO
+        - BRIDGE_STRING_WAVE
+        - BRIDGE_WAVE_DALEMBERT
+        - BRIDGE_SOUND_SPEED
+        - BRIDGE_KLEIN_GORDON_WAVE
+        - WAVE_BRIDGES
+    src/atlas/waves/index.ts:
+      description: Wave-family assembly (Atlas Phase 4, S4.5).
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../oscillators/index.js
+          imports:
+            - AtlasFamily
+          typeOnly: true
+        - file: ./bridges.js
+          imports:
+            - WAVE_BRIDGES
+        - file: ./models.js
+          imports:
+            - WAVE_MODELS
+            - WAVES_FAMILY_NAME
+      exports:
+        - WAVES_FAMILY
+      constants:
+        - WAVES_FAMILY
+    src/atlas/waves/models.ts:
+      description: Atlas Phase 4, S4.5 — the models of the wave family.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../../dimensional/ast-builders.js
+          imports:
+            - dim
+        - file: ../../dimensional/buckingham.js
+          imports:
+            - DimensionalVariable
+          typeOnly: true
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../../dimensional/types.js
+          imports:
+            - FORCE
+            - FREQUENCY
+            - VELOCITY
+        - file: ../diffusion/dimensions.js
+          imports:
+            - DENSITY
+        - file: ../model.js
+          imports:
+            - AtlasModel
+          typeOnly: true
+        - file: ../regime.js
+          imports:
+            - deriveRegimeGroups
+      exports:
+        - WAVES_FAMILY_NAME
+        - LINEAR_DENSITY
+        - PRESSURE
+        - WAVENUMBER
+        - WAVE_MODELS
+      constants:
+        - WAVES_FAMILY_NAME
+        - LINEAR_DENSITY
+        - PRESSURE
+        - WAVENUMBER
+        - WAVE_MODELS
+    src/atlas/waves/numerics.ts:
+      description: Atlas Phase 4, S4.5 — the numerics behind the wave family's witnesses.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - stringLeapfrogMidpoint
+        - dalembert
+        - dalembertResidual
+        - adiabaticSlope
+        - acousticLeapfrogQuarter
+        - soundSpeeds
+        - kleinGordonPhaseError
+        - kleinGordonPhaseVelocity
+      interfaces:
+        - StringFixture
+        - DalembertFixture
+        - AcousticFixture
+      functions:
+        - stringLeapfrogMidpoint
+        - dalembert
+        - dalembertResidual
+        - adiabaticSlope
+        - acousticLeapfrogQuarter
+        - soundSpeeds
+        - kleinGordonPhaseError
+        - kleinGordonPhaseVelocity
     src/atlas/witness-artifact.ts:
       description: "Atlas Phase 4, S4.3 — the witness-results ARTIFACT: its shape, the run that"
       externalDependencies: []
@@ -1417,6 +1588,18 @@ modules:
         - file: ./witnesses/quantum-support.js
           imports:
             - wickRotatedFreeKernel
+        - file: ./waves/numerics.js
+          imports:
+            - acousticLeapfrogQuarter
+            - dalembertResidual
+            - kleinGordonPhaseVelocity
+            - stringLeapfrogMidpoint
+        - file: ./waves/numerics.js
+          imports:
+            - AcousticFixture
+            - DalembertFixture
+            - StringFixture
+          typeOnly: true
         - file: ./witness-numeric.js
           imports:
             - NumericWitnessSpec
@@ -1429,6 +1612,10 @@ modules:
         - WD1_FIXTURE
         - WD2_FIXTURE
         - WD3_FIXTURE
+        - WS1_FIXTURE
+        - WS2_FIXTURE
+        - WS3_FIXTURE
+        - WS4_FIXTURE
         - WITNESS_REGISTRY
       interfaces:
         - RegisteredSymbolicWitness
@@ -1437,6 +1624,10 @@ modules:
         - WD1_FIXTURE
         - WD2_FIXTURE
         - WD3_FIXTURE
+        - WS1_FIXTURE
+        - WS2_FIXTURE
+        - WS3_FIXTURE
+        - WS4_FIXTURE
         - WITNESS_REGISTRY
     src/atlas/witness-symbolic.ts:
       description: Atlas Phase 4, S4.2 — the symbolic witness runner.
@@ -15269,6 +15460,10 @@ dependencyGraph:
         - src/atlas/serialize.ts
         - src/atlas/statement.ts
         - src/atlas/types.ts
+        - src/atlas/waves/bridges.ts
+        - src/atlas/waves/index.ts
+        - src/atlas/waves/models.ts
+        - src/atlas/waves/numerics.ts
         - src/atlas/witness-artifact.ts
         - src/atlas/witness-numeric.ts
         - src/atlas/witness-result.ts
@@ -15589,19 +15784,19 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 330
+  totalTypeScriptFiles: 334
   totalModules: 11
-  totalLinesOfCode: 64938
-  totalExports: 2243
+  totalLinesOfCode: 65682
+  totalExports: 2275
   totalClasses: 57
-  totalInterfaces: 329
-  totalFunctions: 510
+  totalInterfaces: 332
+  totalFunctions: 518
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 556
-  totalReExports: 1119
-  totalTypeOnlyImports: 456
+  totalConstants: 573
+  totalReExports: 1126
+  totalTypeOnlyImports: 462
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0
-  unusedExportsCount: 4
+  unusedExportsCount: 5
