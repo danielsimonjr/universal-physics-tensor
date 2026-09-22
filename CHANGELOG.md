@@ -10,6 +10,19 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`ROADMAP.md`'s phase-status table now reflects measured reality.** All seven rows read
+  "not started" while Phases 0–2 had shipped and Phase 3 was under way. A stale status table is
+  worse than no status table: it answers "what is left?" confidently and wrongly, and it is the
+  one document a reader consults before deciding whether to proceed or ask.
+  **The mitigation was already written three lines above the table.** The risk register's last row
+  names this exact failure — *"this document drifts like the old `CLAUDE.md` release section
+  did"* — and prescribes the remedy: a one-line status pointer when a phase ships, never a
+  narrative. It was written and then never applied. Added a standing note that the table is
+  updated at the END of every sprint, citing the risk register as the reason, so the cadence is
+  stated rather than inferred.
+  **Nothing pins this table** — no test reads it — so it stays intent rather than enforcement.
+  Recorded here rather than implied to be safe.
+
 - **Sprint 3 Wave 1 — the `Model` record, `Statement`, `Derivation` and multicategory composition.**
   `src/atlas/model.ts` promotes `AtlasModel`; `src/atlas/statement.ts` and `src/atlas/derivation.ts`
   are new; `CanonicalEquation` gains `model?`. All `@internal`, off `src/index.ts`, reachable only

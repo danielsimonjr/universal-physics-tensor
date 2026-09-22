@@ -138,7 +138,7 @@ following are binding (from `CLAUDE.md` and the discovery plan's second audit):
 | New `ScientificRelationRecord` envelope (discovery plan §3) and new atlas records | **One** additive overlay, not two. The discovery plan's `RelationKind` / `AuditState` / `EvidenceProfile` sketch and the atlas `Bridge` / `Evidence` record are the same object and must be reconciled in the Phase 1 design note. | Two overlays pointing at the same `BridgeEdge` is the "parallel UPT inside UPT" the second audit forbade. |
 | Replace status with evidence tags | Derive evidence tags from the existing surfaces (validator, confrontations, rejections) beside `BridgeEquationStatus` / `EdgeConfidence`; never store them on a row, never adapt one type into the other | Eve forbade the `confidenceToStatus` adapter (`src/core/cell.ts`); existing epistemic types are not replaced (audit corrections #11 and #16). |
 | Nested CLI (`atlas regime`, `atlas path`) | Flat verbs (`upt regime`, `upt path`, …), `FlagSpec`-parsed, `--json` envelope | The CLI is a flat registry; frozen verbs (`discover`, `candidates`, `ground`, `connectors`, `predict`, `confront`) are never hijacked. |
-| No forced migration | Existing 41 graph edges, 55 catalog rows (`BridgeEquationEntry`), and 103 canonical entries all receive the optional overlay fields in Phase 1 and start as `relation: undefined` / `auditState: 'not-yet-audited'` until audited (evidence tags are derived, never stored); 17 catalog rows have no graph edge, so the row is the per-bridge home | No fabricated metadata (audit correction #16, §3.1). Coverage is reported as schema / audited / verified. |
+| No forced migration | Existing 41 graph edges, 55 catalog rows (`BridgeEquationEntry`), and 107 canonical entries all receive the optional overlay fields in Phase 1 and start as `relation: undefined` / `auditState: 'not-yet-audited'` until audited (evidence tags are derived, never stored); 17 catalog rows have no graph edge, so the row is the per-bridge home | No fabricated metadata (audit correction #16, §3.1). Coverage is reported as schema / audited / verified. |
 | Product A is "the discovery hypothesis" | Product A stays frozen. Link prediction over the typed graph is a Phase 6 study, and its held-out-recovery claim is the only one made | Audit corrections #1 and #17. |
 
 ---
@@ -465,7 +465,7 @@ in every output.
 - **Replacing `BridgeEquationStatus`, `EdgeConfidence`, `EpistemicStatus`, `VettedCandidate`,
   or `AdjudicationVerdict`.** Overlay only.
 - **A staffing or delivery date.** Set after Phase 0 and Phase 1 measure curation cost.
-- **A 50–100-family corpus.** The proposal's Phase 1 target. UPT's corpus is the 103-entry
+- **A 50–100-family corpus.** The proposal's Phase 1 target. UPT's corpus is the 107-entry
   L-layer plus the families each phase adds (oscillators, diffusion, waves); breadth is set
   by measured curation cost, not by a target. Recorded here so the drop is not silent.
 - **Not carried, by choice:** OpenMath / Content MathML syntax trees (UPT's `ExprNode` is the
@@ -491,13 +491,21 @@ in every output.
 
 | Phase | Status | Pointer |
 |---|---|---|
-| 0 — Oscillator pilot | not started | [`docs/planning/Atlas-Roadmap-Implementation-Plan.md`](docs/planning/Atlas-Roadmap-Implementation-Plan.md) (Sprint 0, brief-level) |
-| 1 — Relation contracts overlay | not started | — |
-| 2 — Regimes and error-carrying paths | not started | — |
-| 3 — Hyperedges, models, poster index | not started | — |
+| 0 — Oscillator pilot | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 0 — nine models, five bridges, one rejection. Its box is held open deliberately: per-bridge curation cost is still unmeasured, and that measurement is what Phase 4 and Phase 5 scope is cut against |
+| 1 — Relation contracts overlay | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 1 — additive overlay; relation and evidence fields land as `undefined` / `not-yet-audited` rather than fabricated |
+| 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
+| 3 — Hyperedges, models, poster index | in progress | [`Atlas-Phase-3-Design.md`](docs/planning/Atlas-Phase-3-Design.md) — `Model`, `Statement`, `Derivation` and multicategory composition landed; poster index, L1 entries and `upt map --source=poster` outstanding |
 | 4 — Verification workflow, checked bridges | not started | — |
 | 5 — Invalid-bridge benchmark | not started | — |
 | 6 — Study and scoped release | not started | — |
+
+> **This table is updated at the END of every sprint, and the risk register above is why.** Its own
+> last row names the failure — *"this document drifts like the old `CLAUDE.md` release section
+> did"* — and prescribes the fix: a one-line status pointer when a phase ships, never a narrative.
+> The mitigation was written and then not applied, so all seven rows read "not started" while
+> Phases 0–2 had shipped and Phase 3 was under way. A stale status table is worse than no status
+> table: it answers the question "what is left?" confidently and wrongly, and it is the one
+> document a reader consults before deciding whether to proceed or ask.
 
 Subagent-driven execution plan for all seven phases:
 [`docs/planning/Atlas-Roadmap-Implementation-Plan.md`](docs/planning/Atlas-Roadmap-Implementation-Plan.md).
