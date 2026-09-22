@@ -13,7 +13,7 @@
 import { buckinghamPi } from '../dimensional/buckingham.js';
 import type { DimensionalVariable, PiGroup } from '../dimensional/buckingham.js';
 import { DIMENSIONLESS } from '../dimensional/types.js';
-import { MissingHorizonError } from './types.js';
+import { MissingDeltaAtError, MissingHorizonError } from './types.js';
 import type { AtlasBridge, Regime, RegimeInequality } from './types.js';
 
 /**
@@ -367,8 +367,18 @@ function gridPoints(
  * `coarse-graining` cannot smuggle in an unhorizoned one.
  *
  * @returns the bridge, unchanged, so this can wrap a record at its definition.
+ * The same argument applies to `deltaAt`, the machine form of `delta`, and is
+ * why it is checked here beside the horizon. `delta` alone is a single number
+ * for a whole domain: an implementer whose bound depends on a parameter can
+ * only freeze it at one point, and a frozen point reads exactly like a
+ * supremum. Requiring the machine form makes the dependence SAYABLE, so the
+ * scalar can be held to its stated meaning. It is required only of an
+ * `approximation`, matching `bound` itself; a `coarse-graining` may still
+ * carry a constant bound with no `deltaAt`.
+ *
  * @throws MissingHorizonError if an `approximation` has no bound, or if a
  *   present bound has an empty `horizon` or no `horizonHolds`.
+ * @throws MissingDeltaAtError if an `approximation` bound has no `deltaAt`.
  * @internal
  */
 export function admitApproximation<T extends AtlasBridge>(bridge: T): T {
@@ -389,6 +399,12 @@ export function admitApproximation<T extends AtlasBridge>(bridge: T): T {
   if (typeof bound.horizonHolds !== 'function') {
     throw new MissingHorizonError(
       `${bridge.id}: an approximation bound requires a machine horizonHolds beside its prose horizon`,
+    );
+  }
+  if (bridge.relation === 'approximation' && typeof bound.deltaAt !== 'function') {
+    throw new MissingDeltaAtError(
+      `${bridge.id}: an approximation bound requires a machine deltaAt beside its scalar delta, ` +
+        'which must be the supremum over the whole declared domain',
     );
   }
   return bridge;

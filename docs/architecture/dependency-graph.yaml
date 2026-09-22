@@ -3,7 +3,7 @@ metadata:
   version: 0.45.2
   totalFiles: 311
   totalModules: 11
-  totalExports: 2105
+  totalExports: 2108
 entryPoints:
   - file: src/index.ts
     type: main
@@ -384,8 +384,12 @@ modules:
         - CONTRACT_DAMPED_MASSLESS
         - LIMIT_CONTRACTS
         - makeApproximation
+        - pendulumPeriodErrorAt
+        - dampedOffsetBoundAt
       functions:
         - makeApproximation
+        - pendulumPeriodErrorAt
+        - dampedOffsetBoundAt
       constants:
         - AB_PENDULUM_LINEAR
         - AB_DAMPED_MASSLESS
@@ -566,6 +570,7 @@ modules:
             - DIMENSIONLESS
         - file: ./types.js
           imports:
+            - MissingDeltaAtError
             - MissingHorizonError
         - file: ./types.js
           imports:
@@ -633,9 +638,11 @@ modules:
           typeOnly: true
       exports:
         - MissingHorizonError
+        - MissingDeltaAtError
         - MissingLipschitzError
       classes:
         - MissingHorizonError
+        - MissingDeltaAtError
         - MissingLipschitzError
       interfaces:
         - RegimeInequality
@@ -14654,11 +14661,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 311
   totalModules: 11
-  totalLinesOfCode: 60411
-  totalExports: 2105
-  totalClasses: 54
+  totalLinesOfCode: 60543
+  totalExports: 2108
+  totalClasses: 55
   totalInterfaces: 301
-  totalFunctions: 480
+  totalFunctions: 482
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 522

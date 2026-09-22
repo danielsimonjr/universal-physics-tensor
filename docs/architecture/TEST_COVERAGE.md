@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 308 |
-| Total Test Files | 403 |
+| Total Test Files | 404 |
 | Source Files with Tests | 307 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -38,17 +38,17 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/coverage.ts` | `audited-catalog.test.ts`, `coverage.test.ts` |
 | `atlas/derive-evidence.ts` | `coverage.test.ts`, `derive-evidence.test.ts` |
 | `atlas/error-algebra.ts` | `error-algebra.test.ts`, `path-bound.test.ts` |
-| `oscillators/bridges-coarse.ts` | `audited-catalog.test.ts`, `oscillators-coarse.test.ts` |
+| `oscillators/bridges-coarse.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-coarse.test.ts` |
 | `oscillators/bridges-exact.ts` | `audited-catalog.test.ts`, `oscillators-exact.test.ts` |
-| `oscillators/bridges-limits.ts` | `audited-catalog.test.ts`, `oscillators-limits.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts` |
+| `oscillators/bridges-limits.ts` | `audited-catalog.test.ts`, `bound-machine-form.test.ts`, `oscillators-limits.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts` |
 | `oscillators/dimensions.ts` | `models.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `regime.test.ts` |
 | `oscillators/index.ts` | `atlas-json.test.ts`, `audited-catalog.test.ts`, `evidence-rule.test.ts`, `regime-admission.test.ts`, `serialize.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `oscillators/models.ts` | `models.test.ts`, `oscillators-coarse.test.ts` |
 | `oscillators/rejections.ts` | `oscillators-coarse.test.ts` |
 | `atlas/path-bound.ts` | `path-bound.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
-| `atlas/regime.ts` | `gr-spine-regime.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
+| `atlas/regime.ts` | `bound-machine-form.test.ts`, `gr-spine-regime.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
 | `atlas/serialize.ts` | `atlas-json.test.ts`, `serialize.test.ts` |
-| `atlas/types.ts` | `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
+| `atlas/types.ts` | `bound-machine-form.test.ts`, `composition-table.test.ts`, `conventions.test.ts`, `coverage.test.ts`, `error-algebra.test.ts`, `evidence-rule.test.ts`, `gr-spine-regime.test.ts`, `oscillators-limits.test.ts`, `overlay-types.test.ts`, `path-bound.test.ts`, `regime-admission.test.ts`, `regime.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `compose-relation.test.ts`, `graph-viz-filters.test.ts` |
 | `witnesses/quantum-support.ts` | `quantum-support.test.ts` |
 | `bridges/be11-decoherence-confrontation.ts` | `public-surface.test.ts`, `be11-decoherence-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `bridges/be21-kss-confrontation.ts` | `public-surface.test.ts`, `be21-kss-confrontation.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
@@ -352,6 +352,7 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/association.test.ts` | 34 files |
 | `atlas/atlas-json.test.ts` | 2 files |
 | `atlas/audited-catalog.test.ts` | 21 files |
+| `atlas/bound-machine-form.test.ts` | 4 files |
 | `atlas/composition-table.test.ts` | 2 files |
 | `atlas/conventions.test.ts` | 2 files |
 | `atlas/coverage.test.ts` | 19 files |

@@ -52,6 +52,57 @@ export function makeApproximation(bound: ApproximationBound): ApproximationBound
   return bound;
 }
 
+/** Arithmetic–geometric mean, the standard evaluation route for `K`. @internal */
+function agm(a0: number, b0: number): number {
+  let a = a0;
+  let b = b0;
+  for (let i = 0; i < 60 && a !== b; i++) {
+    [a, b] = [(a + b) / 2, Math.sqrt(a * b)];
+  }
+  return a;
+}
+
+/**
+ * The EXACT relative period error of the pendulum at amplitude `theta0`:
+ * `(2/π) K(sin(θ0/2)) − 1 = 1/AGM(1, cos(θ0/2)) − 1`.
+ *
+ * This is the machine form of `ab-pendulum-linear`'s `delta`. It is SHARP —
+ * the bound equals the error it bounds — and it is strictly increasing in
+ * `|θ0|`, so its value at the edge of a declared amplitude range is the
+ * supremum over that range. That last property is what lets the record state
+ * one scalar for the whole domain honestly.
+ *
+ * The series `θ0²/16` is the LEADING TERM of this quantity, not an upper bound
+ * on it: at the domain edge `θ0 = 0.5` the series gives `0.0156250` while the
+ * exact error is `0.0158525311`, so the series UNDERSTATES by 1.456%. A record
+ * that declares the series value is violated at its own boundary.
+ *
+ * @returns `Infinity` outside `|θ0| < π`, where no finite period error exists.
+ * @internal
+ */
+export function pendulumPeriodErrorAt(params: Readonly<Record<string, number>>): number {
+  const { theta0 } = params;
+  if (!Number.isFinite(theta0) || Math.abs(theta0) >= Math.PI) return Infinity;
+  return 1 / agm(1, Math.cos(theta0 / 2)) - 1;
+}
+
+/**
+ * The position-offset bound of `ab-damped-massless` at a point:
+ * `2 (1 + |v0|) m / b`, the formula this record's docstring has always
+ * carried.
+ *
+ * @returns `Infinity` unless `m`, `b` and `v0` are all finite and `b ≠ 0` — a
+ *   missing `v0` would otherwise silently return the smaller `v0 = 0` bound.
+ * @internal
+ */
+export function dampedOffsetBoundAt(params: Readonly<Record<string, number>>): number {
+  const { m, b, v0 } = params;
+  if (!Number.isFinite(m) || !Number.isFinite(b) || !Number.isFinite(v0) || b === 0) {
+    return Infinity;
+  }
+  return (2 * (1 + Math.abs(v0)) * m) / b;
+}
+
 /** Pendulum regime: `θ0 ≤ 0.5 rad`, stated on the dimensionless input. @internal */
 const PENDULUM_REGIME: Regime = {
   family: FAMILY,
@@ -92,9 +143,17 @@ const DAMPED_REGIME: Regime = {
 /**
  * `ab-pendulum-linear` — small-angle pendulum → harmonic spring.
  *
- * `delta = θ0²/16` is the leading term of the exact relative period error
+ * `θ0²/16` is the leading term of the exact relative period error
  * `(2/π) K(sin(θ0/2)) − 1`. At `θ0 = 0.2` the residual is `5.744e-6`, which
  * the next series term `11 θ0⁴/3072 = 5.729e-6` accounts for to `1.5e-8`.
+ *
+ * `delta` is the EXACT error at the edge of the declared range, not that
+ * series term. The record previously declared `0.5²/16 = 0.0156250`, which is
+ * the series evaluated at `θ0 = 0.5` — and the exact error there is
+ * `0.0158525311`, so the declared bound was VIOLATED AT ITS OWN BOUNDARY by
+ * 1.456%. A truncated series is an approximation of the error, not a bound on
+ * it, and the sign of its omitted tail decides which. Here the tail is
+ * positive, so the series sits below what it was asked to cover.
  *
  * @internal
  */
@@ -109,7 +168,11 @@ export const AB_PENDULUM_LINEAR: AtlasBridge = {
   sideConditions: ['θ0 ≤ 0.5 rad', 'the bound is a PERIOD error and is not uniform in time'],
   bound: makeApproximation({
     K: 1,
-    delta: 0.5 ** 2 / 16,
+    // Sup over `θ0 ≤ 0.5`: the error is strictly increasing in |θ0|, so the
+    // edge value IS the supremum. 0.0158525311014... (AGM), independently
+    // reproduced by quadrature of the complete elliptic integral.
+    delta: pendulumPeriodErrorAt({ theta0: 0.5 }),
+    deltaAt: pendulumPeriodErrorAt,
     norm: 'relative period error',
     domain: 'θ0 ≤ 0.5 rad',
     horizon: 't ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time',
@@ -169,8 +232,9 @@ export const AB_PENDULUM_LINEAR: AtlasBridge = {
 /**
  * `ab-damped-massless` — the SINGULAR `m → 0` limit of the damped spring.
  *
- * `delta = 2(1 + |v0|) m/b` bounds the position offset outside the boundary
- * layer. The lost initial condition is visible in the VELOCITY: inside the
+ * `deltaAt = 2(1 + |v0|) m/b` bounds the position offset outside the boundary
+ * layer, and `delta` is its supremum over the declared range rather than its
+ * value at one fixture. The lost initial condition is visible in the VELOCITY: inside the
  * layer the reduced model's `x'` is wrong by O(1/m·…), and it is only after
  * `t ≈ 5 m/b` that the fast mode has decayed.
  *
@@ -194,16 +258,25 @@ export const AB_DAMPED_MASSLESS: AtlasBridge = {
   ],
   bound: makeApproximation({
     K: 1,
-    delta: 2 * (1 + 5) * 1e-3,
+    // Sup over the DECLARED range, not the fixture. `2(1+|v0|)m/b` increases
+    // in both m and |v0|, and the declared range is `m k/b² < 1/4` with
+    // `|v0| ≤ 5`; at the witness normalisation `b = k = 1` that is `m < 1/4`,
+    // so the supremum is `2·(1+5)·(1/4) = 3`, approached at the open edge and
+    // not attained. The record previously declared `2·(1+5)·1e-3 = 0.012`,
+    // the same formula frozen at the ONE fixture mass `m = 1e-3` — true error
+    // there is 5.96e-3, but at m = 0.24 it is 5.19e-1, forty times the
+    // declared bound.
+    delta: dampedOffsetBoundAt({ m: 0.25, b: 1, v0: 5 }),
+    deltaAt: dampedOffsetBoundAt,
     norm: 'sup |x − x_reduced| for t ≥ 5 m/b',
-    domain: 't ≥ 5 m/b, overdamped',
+    domain: 't ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1',
     horizon: 't ≥ 5 m/b (outside the boundary layer)',
     horizonHolds: (t, params) => {
       const { m, b } = params;
       if (!Number.isFinite(m) || !Number.isFinite(b) || b === 0) return false;
       return t >= (5 * m) / b;
     },
-    parameterRange: 'm k / b² < 1/4, |v0| ≤ 5',
+    parameterRange: 'm k / b² < 1/4, |v0| ≤ 5; with b = k = 1 this is m < 1/4',
     limitCharacter: 'singular',
   }),
   regime: DAMPED_REGIME,

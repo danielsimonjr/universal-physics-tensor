@@ -221,7 +221,13 @@ describe('boundPath — the arithmetic, where a claim is actually licensed', () 
     if (result.kind !== 'bound') throw new Error('unreachable');
     expect(result.relation).toBe('approximation');
     expect(result.norm).toBe('relative period error');
-    expect(result.bound).toEqual({ K: 1, delta: 0.5 ** 2 / 16 });
+    // The bridge's delta is now the EXACT relative period error at the edge of
+    // its declared range, θ0 = 0.5, not the series term 0.5²/16 = 0.015625 —
+    // which is 1.456% below the error it was supposed to bound. A single-edge
+    // path composes to the edge's own bound, so this pin follows the record.
+    expect(result.bound.K).toBe(1);
+    expect(result.bound.delta).toBeCloseTo(0.0158525311014, 10);
+    expect(result.bound.delta).toBeGreaterThan(0.5 ** 2 / 16);
     // NOT 0.0025: see the file header, correction 2.
     expect(result.bound.delta).not.toBeCloseTo(0.0025, 10);
     expect(result.terminal).toBe(false);

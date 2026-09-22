@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 311,
     "totalModules": 11,
-    "totalExports": 2105
+    "totalExports": 2108
   },
   "entryPoints": [
     {
@@ -528,10 +528,14 @@
           "CONTRACT_PENDULUM_LINEAR",
           "CONTRACT_DAMPED_MASSLESS",
           "LIMIT_CONTRACTS",
-          "makeApproximation"
+          "makeApproximation",
+          "pendulumPeriodErrorAt",
+          "dampedOffsetBoundAt"
         ],
         "functions": [
-          "makeApproximation"
+          "makeApproximation",
+          "pendulumPeriodErrorAt",
+          "dampedOffsetBoundAt"
         ],
         "constants": [
           "AB_PENDULUM_LINEAR",
@@ -812,6 +816,7 @@
           {
             "file": "./types.js",
             "imports": [
+              "MissingDeltaAtError",
               "MissingHorizonError"
             ]
           },
@@ -908,10 +913,12 @@
         ],
         "exports": [
           "MissingHorizonError",
+          "MissingDeltaAtError",
           "MissingLipschitzError"
         ],
         "classes": [
           "MissingHorizonError",
+          "MissingDeltaAtError",
           "MissingLipschitzError"
         ],
         "interfaces": [
@@ -21024,11 +21031,11 @@
   "statistics": {
     "totalTypeScriptFiles": 311,
     "totalModules": 11,
-    "totalLinesOfCode": 60411,
-    "totalExports": 2105,
-    "totalClasses": 54,
+    "totalLinesOfCode": 60543,
+    "totalExports": 2108,
+    "totalClasses": 55,
     "totalInterfaces": 301,
-    "totalFunctions": 480,
+    "totalFunctions": 482,
     "totalTypeGuards": 3,
     "totalEnums": 0,
     "totalConstants": 522,

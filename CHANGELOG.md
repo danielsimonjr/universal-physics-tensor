@@ -10,6 +10,26 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`ApproximationBound.deltaAt` — a MACHINE FORM OF THE BOUND, and the two delta repairs it made
+  sayable.** The type paired `horizon: string` with `horizonHolds(t, params)` but paired
+  `delta: number` with only `parameterRange?: string` — prose with no checkable counterpart. An
+  implementer holding a correct parameter-dependent bound therefore had NO WAY TO EXPRESS IT and had
+  to freeze it at one point, which is exactly what `ab-damped-massless` did. `admitApproximation`
+  now requires `deltaAt` on an approximation, mirroring the `horizonHolds` requirement, so the type
+  change and the repairs land together rather than leaving a field with no consumer.
+  - `ab-pendulum-linear`: delta was `0.5**2/16 = 0.0156250`, the series evaluated AT THE DOMAIN
+    EDGE — and since every series term is positive the true error there necessarily exceeds it.
+    Now `pendulumPeriodErrorAt({theta0: 0.5}) = 0.015852531101436806`, VIOLATED BY THE OLD VALUE by
+    1.456%. Computed two independent ways that agree to ten significant figures: AGM
+    (`1/AGM(1, cos(theta0/2)) - 1`) and numerical quadrature of the elliptic integral.
+  - `ab-damped-massless`: delta was `2*(1+5)*1e-3 = 0.012`, the docstring formula frozen at the ONE
+    fixture mass m=1e-3, while the regime admitted m < 1/4. True sup at m=0.24 is 5.19e-1, forty
+    times the declared bound. The FORMULA was right all along; only the code froze it. Now the sup
+    over the declared range, `3`, and the DOMAIN is narrowed to the witness normalisation b = k = 1
+    — because `2(1+|v0|)m/b` with `m < 0.25b^2/k` grows with b, so no scalar bounds it for all b.
+  - Each repaired bound is witnessed AT THE DOMAIN EDGE, with a NEGATIVE CONTROL asserting the old
+    frozen value FAILS that same edge assertion. A test never observed failing is a comment.
+
 - **`upt map --relation=` and `--evidence=`** (Atlas Sprint 2, S2.4). An edge lacking the overlay is
   KEPT when no filter is set and DROPPED when one is, and the legend reports the two drop reasons
   SEPARATELY - "N dropped (did not match); M dropped (no overlay metadata)" - because a silent drop

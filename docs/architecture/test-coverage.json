@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 308,
-    "totalTestFiles": 403,
+    "totalTestFiles": 404,
     "testedCount": 307,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -346,6 +346,7 @@
     "src/atlas/index.ts": [],
     "src/atlas/oscillators/bridges-coarse.ts": [
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/oscillators-coarse.test.ts"
     ],
     "src/atlas/oscillators/bridges-exact.ts": [
@@ -354,6 +355,7 @@
     ],
     "src/atlas/oscillators/bridges-limits.ts": [
       "tests/atlas/audited-catalog.test.ts",
+      "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/oscillators-limits.test.ts",
       "tests/atlas/path-bound.test.ts",
       "tests/atlas/regime-admission.test.ts"
@@ -386,6 +388,7 @@
       "tests/cli/recover-conventions.test.ts"
     ],
     "src/atlas/regime.ts": [
+      "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
@@ -397,6 +400,7 @@
       "tests/atlas/serialize.test.ts"
     ],
     "src/atlas/types.ts": [
+      "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/composition-table.test.ts",
       "tests/atlas/conventions.test.ts",
       "tests/atlas/coverage.test.ts",
@@ -4931,6 +4935,12 @@
       "src/atlas/oscillators/bridges-exact.ts",
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/bridges-coarse.ts"
+    ],
+    "tests/atlas/bound-machine-form.test.ts": [
+      "src/atlas/oscillators/bridges-limits.ts",
+      "src/atlas/oscillators/bridges-coarse.ts",
+      "src/atlas/regime.ts",
+      "src/atlas/types.ts"
     ],
     "tests/atlas/composition-table.test.ts": [
       "src/atlas/composition-table.ts",

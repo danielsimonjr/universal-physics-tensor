@@ -196,7 +196,7 @@ The codebase is organized into the following modules:
 | `../../dimensional/types.js` | `ACCELERATION, LENGTH, MASS` | Import |
 
 **Exports:**
-- Functions: `makeApproximation`
+- Functions: `makeApproximation`, `pendulumPeriodErrorAt`, `dampedOffsetBoundAt`
 - Constants: `AB_PENDULUM_LINEAR`, `AB_DAMPED_MASSLESS`, `LIMIT_BRIDGES`, `CONTRACT_PENDULUM_LINEAR`, `CONTRACT_DAMPED_MASSLESS`, `LIMIT_CONTRACTS`
 
 ---
@@ -289,7 +289,7 @@ The codebase is organized into the following modules:
 | `../dimensional/buckingham.js` | `buckinghamPi` | Import |
 | `../dimensional/buckingham.js` | `DimensionalVariable, PiGroup` | Import (type-only) |
 | `../dimensional/types.js` | `DIMENSIONLESS` | Import |
-| `./types.js` | `MissingHorizonError` | Import |
+| `./types.js` | `MissingDeltaAtError, MissingHorizonError` | Import |
 | `./types.js` | `AtlasBridge, Regime, RegimeInequality` | Import (type-only) |
 
 **Exports:**
@@ -322,7 +322,7 @@ The codebase is organized into the following modules:
 | `../dimensional/buckingham.js` | `DimensionalVariable, PiGroup` | Import (type-only) |
 
 **Exports:**
-- Classes: `MissingHorizonError`, `MissingLipschitzError`
+- Classes: `MissingHorizonError`, `MissingDeltaAtError`, `MissingLipschitzError`
 - Interfaces: `RegimeInequality`, `Regime`, `ApproximationBound`, `Witness`, `AtlasModel`, `Counterexample`, `AtlasBridge`, `AtlasRejection`, `Conventions`
 
 ---
@@ -5477,12 +5477,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 311 |
 | Total Modules | 11 |
-| Total Lines of Code | 60411 |
-| Total Exports | 2105 |
+| Total Lines of Code | 60543 |
+| Total Exports | 2108 |
 | Total Re-exports | 1048 |
-| Total Classes | 54 |
+| Total Classes | 55 |
 | Total Interfaces | 301 |
-| Total Functions | 480 |
+| Total Functions | 482 |
 | Total Type Guards | 3 |
 | Total Enums | 0 |
 | Type-only Imports | 413 |
