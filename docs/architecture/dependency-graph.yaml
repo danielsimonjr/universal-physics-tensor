@@ -3,7 +3,7 @@ metadata:
   version: 0.45.2
   totalFiles: 311
   totalModules: 11
-  totalExports: 2097
+  totalExports: 2105
 entryPoints:
   - file: src/index.ts
     type: main
@@ -4951,6 +4951,11 @@ modules:
             - VizJunction
             - VizModel
           typeOnly: true
+        - file: ../../atlas/types.js
+          imports:
+            - EvidenceTag
+            - RelationType
+          typeOnly: true
         - file: ../../composition/user-equation.js
           imports:
             - EquationAnalysis
@@ -5347,6 +5352,12 @@ modules:
           imports:
             - deriveProposedBridges
           reExport: true
+        - file: ./composition/graph-viz.js
+          imports:
+            - filterEdges
+            - deriveEdgeEvidence
+            - formatFilterLegend
+          reExport: true
         - file: ./composition/probe/index.js
           imports:
             - DEFAULT_SEARCH_BUDGET
@@ -5486,6 +5497,9 @@ modules:
         - bridgesWithoutCanonicalPartner
         - scanLinkages
         - deriveProposedBridges
+        - filterEdges
+        - deriveEdgeEvidence
+        - formatFilterLegend
         - DEFAULT_SEARCH_BUDGET
         - scanFrontier
         - findFrontierGap
@@ -5589,6 +5603,9 @@ modules:
         - bridgesWithoutCanonicalPartner
         - scanLinkages
         - deriveProposedBridges
+        - filterEdges
+        - deriveEdgeEvidence
+        - formatFilterLegend
         - DEFAULT_SEARCH_BUDGET
         - scanFrontier
         - findFrontierGap
@@ -7030,16 +7047,38 @@ modules:
         - file: ./compose.js
           imports:
             - QUANTITY_IDENTIFICATIONS
+        - file: ../atlas/types.js
+          imports:
+            - EvidenceTag
+            - RelationType
+          typeOnly: true
+        - file: ../atlas/derive-evidence.js
+          imports:
+            - deriveEvidenceForVerdict
+            - NO_PASSING_WITNESSES
+        - file: ../bridges/membership.js
+          imports:
+            - adjudicateBridgeEntry
+        - file: ../bridges/index.js
+          imports:
+            - BRIDGE_EQUATIONS
       exports:
         - edgeToJunction
+        - deriveEdgeEvidence
+        - filterEdges
+        - formatFilterLegend
         - buildVizModel
       interfaces:
         - VizJunction
+        - VizFilterStats
         - VizCluster
         - VizOptions
         - VizModel
       functions:
         - edgeToJunction
+        - deriveEdgeEvidence
+        - filterEdges
+        - formatFilterLegend
         - buildVizModel
     src/composition/grounding.ts:
       description: PI-instrument Phase 1 — the epistemic-grounding ledger. A pure, derived view
@@ -7272,6 +7311,7 @@ modules:
             - VizCluster
             - VizOptions
             - VizModel
+            - VizFilterStats
           reExport: true
         - file: ./graph-viz.js
           imports:
@@ -7424,6 +7464,7 @@ modules:
         - VizCluster
         - VizOptions
         - VizModel
+        - VizFilterStats
         - DimensionAdjacency
         - UserEquation
         - EquationLanding
@@ -7530,6 +7571,7 @@ modules:
         - VizCluster
         - VizOptions
         - VizModel
+        - VizFilterStats
         - buildVizModel
         - edgeToJunction
         - renderDotToSvg
@@ -11660,6 +11702,7 @@ modules:
             - VizCluster
             - VizOptions
             - VizModel
+            - VizFilterStats
           reExport: true
         - file: ./composition/index.js
           imports:
@@ -12495,6 +12538,7 @@ modules:
         - VizCluster
         - VizOptions
         - VizModel
+        - VizFilterStats
         - UserEquation
         - EquationLanding
         - EquationAnalysis
@@ -12911,6 +12955,7 @@ modules:
         - VizCluster
         - VizOptions
         - VizModel
+        - VizFilterStats
         - renderDotToSvg
         - SvgRendererUnavailableError
         - parseUserEquation
@@ -14609,16 +14654,16 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 311
   totalModules: 11
-  totalLinesOfCode: 60092
-  totalExports: 2097
+  totalLinesOfCode: 60411
+  totalExports: 2105
   totalClasses: 54
-  totalInterfaces: 300
-  totalFunctions: 477
+  totalInterfaces: 301
+  totalFunctions: 480
   totalTypeGuards: 3
   totalEnums: 0
   totalConstants: 522
-  totalReExports: 1043
-  totalTypeOnlyImports: 411
+  totalReExports: 1048
+  totalTypeOnlyImports: 413
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 0

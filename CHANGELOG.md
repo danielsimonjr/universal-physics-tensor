@@ -10,6 +10,20 @@ from v0.1.0 onward.
 
 ### Added
 
+- **`upt map --relation=` and `--evidence=`** (Atlas Sprint 2, S2.4). An edge lacking the overlay is
+  KEPT when no filter is set and DROPPED when one is, and the legend reports the two drop reasons
+  SEPARATELY - "N dropped (did not match); M dropped (no overlay metadata)" - because a silent drop
+  would make an incomplete graph look complete. `evidence` is evaluated through
+  `deriveEvidenceTags(beId)`, never read from a row, since evidence is derived at read time by
+  design. `VizFilterStats` is exported from the barrel because it is reachable from `VizModel`, the
+  public return type of `buildVizModel`; an unexported type there would make the public API
+  unnameable.
+  **`--relation=approximation` currently keeps ZERO edges, and that is the honest pin, not a bug.**
+  The S1.5 audit covers ten rows whose relation types are `derivation`, `coarse-graining` and
+  `exact-equivalence` - not one is an `approximation` - so the implementation brief's expectation of
+  a non-zero count did not match what Sprint 1 landed. A zero-result test proves nothing by itself,
+  so the `derivation` case is its positive control.
+
 - **A behavioural guard in `create-dependency-graph` against a js-yaml that quotes differently.**
   `tools/create-dependency-graph/` declares its OWN `js-yaml` and `tools/**/node_modules` is
   gitignored, so a stray install there SHADOWS the copy the root lockfile pins - node resolves from

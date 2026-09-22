@@ -596,6 +596,7 @@ export type {
   VizCluster,
   VizOptions,
   VizModel,
+  VizFilterStats,
 } from './composition/index.js';
 // SVG rendering via the optional @viz-js/viz peer (separate module so the
 // graph-viz model stays pure/synchronous/dependency-free).

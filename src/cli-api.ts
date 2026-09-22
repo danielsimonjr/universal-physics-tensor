@@ -79,6 +79,9 @@ export {
 } from './canonical/registry.js';
 export { scanLinkages } from './canonical/linkage.js';
 export { deriveProposedBridges } from './composition/proposed-bridges.js';
+// `upt map --relation= --evidence=` overlay filtering (S2.4). Internal: the
+// published surface is pinned by tests/api/public-surface.test.ts.
+export { filterEdges, deriveEdgeEvidence, formatFilterLegend } from './composition/graph-viz.js';
 
 // Experimental Product B (expression / residual search). Not the identification
 // funnel (`rankDiscoveries`). CLI `upt probe` only.
