@@ -328,13 +328,15 @@ warning-silencing, not debug logging).
         - [x] ARCHITECTURE.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
         - [x] ARCHITECTURE.md to 0 STE findings, stateless.
         - [x] Stale source comments found by the ARCHITECTURE audit: `src/dimensional/validator.ts:10-11` says special-function arguments are not yet checked (line ~653 checks them); `src/dimensional/metric.ts:35-39` says `'computed'` auto-differentiates the metric (lowering treats it as constant).
-        - [ ] COMPONENTS.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
+        - [x] COMPONENTS.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
         - [ ] COMPONENTS.md to 0 STE findings, stateless.
         - [x] DEPENDENCY_GRAPH.md findings fixed at the SOURCE module doc comments, then regenerated.
         - [x] The 5 living docs (PHYSICS_MAP, benchmarks, bridge-gradient-tutorial, intelligent-index-tutorial, archive/README): full-claim audit, fact fix and STE pass each.
       - [x] Rename the `@internal` atlas `AdjudicationVerdict` (a bridge-membership verdict) so it no longer shares a name with the public composition `AdjudicationVerdict` (`duplicate-symbols.md`).
       - [x] `repo_map` files `tests/tools/plan-doc-audit.test.ts` in the `tools` zone because the path contains `tools/`; report to the `skills` repo owner.
       - [ ] Found by EVO custody (Starship): the Physlib `formalRef` review for `ab-pendulum-linear` rests on two probe files that no repo holds — `AxiomProbe.lean` (`#print axioms` over six theorems) and `HoleProbe.lean` (the deliberate-`sorry` positive control). Each was untracked in `%TEMP%\physlib-src` at `physlib@5ad56e24`; a copy is in `~/Dropbox/_fleet/reviews/physlib-probes-20260922/`. Commit both probes, with the re-run recipe, into this repo so the review can be repeated.
+      - [ ] Found by the COMPONENTS.md review: `src/numerical/lowering.ts:395-396` holds an orphaned doc comment ("Lower a validated ExprNode to an EngineTensor. @internal") that documents `DeferredEvaluatorEntry` instead of `lowerNode`. It describes `lowerNode` (line 447), which has no doc comment and so no `@internal` tag; move the comment back onto `lowerNode`.
+      - [ ] Found by the COMPONENTS.md review: `src/composition/bridge-prediction.ts:190` writes two raw NUL bytes inside template literals as a pair-key separator, so grep prints 'Binary file … matches' instead of the matching lines, and ripgrep skips the file. Write the separator as an escape (`\u0000`).
       - [ ] Found by the living-docs review: the header comment of `bench/be37-eikonal.bench.ts` (lines 10–14) still describes the BE-37 stub that `src/` replaced with a GL4 integration.
       - [ ] Found by the COMPONENTS.md audit, source comments that contradict the code: `ast-types.ts:139` (`RicciTensorNode` "first two slots are contracted", but `ricci()` computes R^λ_{μλν}); `einstein-equation.ts:136` example uses kind `'stress-energy-tensor'` (real kind `'stress-energy'`); `curvature-composite.ts:31` says Bianchi is "rank-5 lower" (its registry says `'rank-3-lower'`); `klein-gordon.ts:102` imports a subpath `package.json` does not export; `BridgeEquationEntry.id` documented as "11-50".
 

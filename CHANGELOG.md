@@ -8,6 +8,42 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `COMPONENTS.md`: false claims corrected, release history moved out
+
+A read-only Opus audit reported about 230 claims checked, 38 false and 9 that it could not check
+(the audit report was a session artifact and is not kept in the repository). An Opus writer re-checked
+each claim against the source, and the built package under Node, before editing. A separate Opus
+review (in-session, not human) re-measured the result and FAILED four new sentences; all four are
+fixed, along with 13 minor points.
+
+- **Stale counts:** 19 data-confronted bridges (was 9), 22 CLI commands in 31 files (was 15 in 27),
+  71 `composition/` files (was 47), 55 catalog bridges with IDs 11–65 (was 44, 11–54), 47 bridges
+  without a canonical partner (was 36), 13 non-monomial entries (was 10), 0 type-only cycles (was 2).
+- **Wrong behaviour:** the per-bridge `evaluate*()` functions are synchronous and return a number;
+  only BE-37's eikonal path calls `evaluateNumerical`. `lowerCurvature` is a `switch` and never reads
+  `CURVATURE_KIND_REGISTRY`. `ricci` contracts R^λ_{μλν}. The BE-36 and BE-23 uncertainty
+  confrontations compute σ inline; no module in `src/` calls `propagateUncertainty`. The default
+  engine is `MathTSEngine` when both MathTS peers are installed. The KSS nullary edge is `be21Edge`.
+- **Wrong locations and signatures:** `ExprNode` (25 arms) and every tensor, curvature and equation
+  node type are declared in `ast-types.ts`; the kinds are `stress-energy` and `einstein-equation`.
+  `NumericalInputs`, `evaluateMetricInverse`, `integrateGeodesic`, `integrateGeodesicGL4`,
+  `evaluateBE37CovariantEikonalNumerical`, `inferDimensionForBridge`, `christoffelFnFlat` and the
+  `MetricTensorNode` fields now match the source.
+- **Physics wording:** perihelion and light deflection are two of the three classic GR tests, and
+  Shapiro delay is the fourth. Mercury tests (2 + 2γ − β)/3, not β alone. The "~10⁻⁵ precision"
+  figure is removed: Mercury's σ/observed is about 1%.
+- **Omissions:** `atlas/` is in the module diagram; `B_WIEN_SI` is in the constant list.
+- **Stateless:** version labels, dates, task IDs and "now / since / as of" narratives are removed;
+  pointers to dated records keep their file names. A "Maintained by" line carrying a personal name is
+  removed under the no-personal-name rule for product docs.
+- **Retracted in review:** the first draft said `src/atlas/path-bound.ts` uses
+  `propagateUncertainty` (it names it only in a comment), that every metric closure returns a
+  `Float64Array` (`MetricClosure` and the `killing.ts` closures return `number[][]`), that every
+  `be-*.ts` module exports an LHS tree and an inputs interface (31 and 3 of 43 do), and that
+  `DEFERRED_EVALUATOR_REGISTRY` is tagged `@internal` (it has no tag).
+- **Filed, not fixed here:** an orphaned `@internal` doc comment in `lowering.ts`, and raw NUL bytes in
+  `bridge-prediction.ts` that make grep skip the file.
+
 ### Changed (2026-09-23) — the five living docs in Simplified Technical English
 
 `PHYSICS_MAP.md`, `benchmarks.md`, `bridge-gradient-tutorial.md`, `intelligent-index-tutorial.md`
