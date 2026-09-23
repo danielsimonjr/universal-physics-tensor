@@ -306,7 +306,7 @@ warning-silencing, not debug logging).
       - [ ] The architecture-docs gate runs in the pre-push hook only. CI cannot read `repo_map.py` (private `skills` repo) without a credential; the credential decision is with Mothership / the owner.
       - [ ] `docs/architecture/` still carries release versions, "Currently" counts and 691 Simplified-Technical-English findings (`ste_check.py`) that the skill forbids; the ungated prose needs a full one-writer pass.
         - [x] Mark the 45 dated historical records with `<!-- ste:historical-record -->` (separate commit; never a canonical doc).
-        - [ ] FILE_INVENTORY.md to 0 STE findings, stateless.
+        - [x] FILE_INVENTORY.md to 0 STE findings, stateless.
         - [ ] duplicate-symbols.md to 0 STE findings, stateless.
         - [ ] DATAFLOW.md to 0 STE findings, stateless.
         - [ ] API.md to 0 STE findings, stateless.

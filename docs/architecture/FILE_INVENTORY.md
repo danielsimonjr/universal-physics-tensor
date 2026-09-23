@@ -13,7 +13,7 @@ them, not because a directory name was guessed. This matters: an earlier version
 filesystem and counted a gitignored scratch file under `.remember/tmp/` as source, and reported
 it as dead code.
 
-This is the **whole-repository** scope. The `src`-only figures quoted elsewhere in these
+The scope of this document is the **whole repository**. The `src`-only figures in the other
 documents come from this repository's own generator (`npm run docs:deps`) and are smaller by
 construction. Both are correct; each states its scope.
 
@@ -29,9 +29,8 @@ construction. Both are correct; each states its scope.
 | `config` | 1 | A `*.config.*` file |
 | **Total** | **843** | |
 
-**Tests outnumber source files.** 463 test files against 350 source files is the shape of a
-repository whose claims are physical, where a wrong number is a wrong prediction rather than a
-cosmetic defect.
+**Tests outnumber source files: 463 against 350.** The ratio fits a repository whose claims are
+physical: a wrong number is a wrong prediction, not a cosmetic defect.
 
 ## By disposition
 
@@ -60,10 +59,13 @@ which is not the same as a file nothing runs.
 | `src/numerical/mathts-tensor.ambient.d.ts` | Same. | **Live.** |
 | `test-example.js` | The `npm run smoke` entry, invoked by script name. | **Live.** |
 
-**Zero of the five are dead code.** That is the useful result, and it took two tool fixes to
-reach it. Before them the same repository reported **50** orphans: 28 were the entire `src/cli/`
-subtree, lost because the launcher's entry could not be resolved, and 15 more were benchmarks
-filed under `src` because only `benchmarks/` was matched and this repository uses `bench/`.
+**Zero of the five are dead code.** Two reading errors would make the count much worse, and the
+tool avoids both:
+
+- If the launcher's entry cannot be resolved, the whole `src/cli/` subtree looks orphaned. The
+  tool recovers `src/cli/main.ts` as a root from `bin/upt.mjs` (see the `bin/upt.mjs` row above).
+- If only `benchmarks/` is matched, every benchmark under `bench/` falls into `src` and looks
+  orphaned. The tool also matches `bench/`, so those files get the `bench` disposition.
 
 ## Verification
 
@@ -80,5 +82,5 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 **Claims the gate cannot hold.** The per-zone and per-disposition tables come from
 `file-inventory.json`'s `byArea` and `byDisposition` blocks, which the gate does not read. The
-verdict column is a reading of each file and of how it is invoked, not a metric — `tsc` include
-semantics and an npm script name are outside any dependency graph.
+verdict column comes from a reading of each file and of how it is invoked, not from a metric.
+`tsc` include semantics and an npm script name are outside any dependency graph.

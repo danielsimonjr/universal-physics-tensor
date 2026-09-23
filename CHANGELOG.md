@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `FILE_INVENTORY.md` in Simplified Technical English, stateless
+
+- 4 STE findings fixed; `ste_check` reports 0 for the file. Tables, headings and the Verification
+  block are byte-identical, and every technical token is preserved except those listed below.
+- **Moved out of the doc, as history:** before two `repo_map` fixes, this repository reported 50
+  orphans: 28 were the whole `src/cli/` subtree, lost because the launcher's entry could not be
+  resolved, and 15 were benchmarks filed under `src` because only `benchmarks/` was matched. The
+  doc now states the two failure modes and how the tool avoids each. It gives no count, because
+  both counts were past measurements; `src/cli/` has 31 files today and `bench/` has 16.
+- A Fable panel review (in-session, not human) FAILED the first draft, which had recast 28 and 15
+  as present-tense counts and dropped a causal link, and PASSED the revision.
+
 ### Changed (2026-09-23) — 40 dated architecture records are marked historical for the STE check
 
 - Each of the 40 dated, point-in-time records under `docs/architecture/` now carries
