@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 348,
     "totalModules": 11,
-    "totalExports": 2447
+    "totalExports": 2450
   },
   "entryPoints": [
     {
@@ -19577,6 +19577,7 @@
             "file": "./numerical/killing.js",
             "imports": [
               "verifyKillingEquation",
+              "checkKillingEquation",
               "evaluateConservedCharge"
             ],
             "reExport": true
@@ -19585,6 +19586,7 @@
             "file": "./numerical/killing.js",
             "imports": [
               "KillingEquationOptions",
+              "KillingEquationCheck",
               "ChristoffelAccess"
             ],
             "reExport": true
@@ -20787,6 +20789,7 @@
           "einstein",
           "bianchiResidual",
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge",
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
@@ -21034,6 +21037,7 @@
           "EinsteinTensorNode",
           "BianchiResidualNode",
           "KillingEquationOptions",
+          "KillingEquationCheck",
           "ChristoffelAccess",
           "TracableTensorNode",
           "TensorTraceNode",
@@ -21344,8 +21348,10 @@
           "bianchiResidual",
           "BianchiResidualNode",
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge",
           "KillingEquationOptions",
+          "KillingEquationCheck",
           "ChristoffelAccess",
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
@@ -22811,6 +22817,12 @@
             ]
           },
           {
+            "file": "./input-validation.js",
+            "imports": [
+              "validateFiniteInputs"
+            ]
+          },
+          {
             "file": "../tests/fixtures/schwarzschild.js",
             "imports": []
           },
@@ -22823,13 +22835,16 @@
         ],
         "exports": [
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge"
         ],
         "interfaces": [
-          "KillingEquationOptions"
+          "KillingEquationOptions",
+          "KillingEquationCheck"
         ],
         "functions": [
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge"
         ]
       },
@@ -23939,15 +23954,15 @@
   "statistics": {
     "totalTypeScriptFiles": 348,
     "totalModules": 11,
-    "totalLinesOfCode": 68764,
-    "totalExports": 2447,
+    "totalLinesOfCode": 68827,
+    "totalExports": 2450,
     "totalClasses": 58,
-    "totalInterfaces": 358,
-    "totalFunctions": 552,
+    "totalInterfaces": 359,
+    "totalFunctions": 553,
     "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 606,
-    "totalReExports": 1230,
+    "totalReExports": 1232,
     "totalTypeOnlyImports": 483,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,

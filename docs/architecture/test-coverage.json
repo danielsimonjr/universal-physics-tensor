@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 437,
+    "totalTestFiles": 438,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -5069,6 +5069,7 @@
       "tests/cli/recover-conventions.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
       "tests/numerical/conserved-charge-mercury.test.ts",
+      "tests/numerical/killing-check.test.ts",
       "tests/numerical/killing-schwarzschild.test.ts",
       "tests/tensor.test.ts"
     ],
@@ -9937,6 +9938,9 @@
       "src/dimensional/validator.ts",
       "src/dimensional/ast-types.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/numerical/killing-check.test.ts": [
+      "src/numerical/killing.ts"
     ],
     "tests/numerical/killing-schwarzschild.test.ts": [
       "src/numerical/killing.ts",

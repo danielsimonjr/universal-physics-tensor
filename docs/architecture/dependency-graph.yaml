@@ -3,7 +3,7 @@ metadata:
   version: 0.45.2
   totalFiles: 348
   totalModules: 11
-  totalExports: 2447
+  totalExports: 2450
 entryPoints:
   - file: src/index.ts
     type: main
@@ -13407,11 +13407,13 @@ modules:
         - file: ./numerical/killing.js
           imports:
             - verifyKillingEquation
+            - checkKillingEquation
             - evaluateConservedCharge
           reExport: true
         - file: ./numerical/killing.js
           imports:
             - KillingEquationOptions
+            - KillingEquationCheck
             - ChristoffelAccess
           reExport: true
         - file: ./numerical/geodesic-integrator.js
@@ -14248,6 +14250,7 @@ modules:
         - einstein
         - bianchiResidual
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
         - integrateGeodesic
         - type GeodesicIntegratorInputs
@@ -14495,6 +14498,7 @@ modules:
         - EinsteinTensorNode
         - BianchiResidualNode
         - KillingEquationOptions
+        - KillingEquationCheck
         - ChristoffelAccess
         - TracableTensorNode
         - TensorTraceNode
@@ -14804,8 +14808,10 @@ modules:
         - bianchiResidual
         - BianchiResidualNode
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
         - KillingEquationOptions
+        - KillingEquationCheck
         - ChristoffelAccess
         - integrateGeodesic
         - type GeodesicIntegratorInputs
@@ -15889,6 +15895,9 @@ modules:
         - file: ./pderiv.js
           imports:
             - pderivNumericalFn
+        - file: ./input-validation.js
+          imports:
+            - validateFiniteInputs
         - file: ../tests/fixtures/schwarzschild.js
           imports: []
         - file: ../tests/fixtures/schwarzschild.js
@@ -15896,11 +15905,14 @@ modules:
             - schwarzschildKillingT
       exports:
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
       interfaces:
         - KillingEquationOptions
+        - KillingEquationCheck
       functions:
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
     src/numerical/klein-gordon.ts:
       description: Klein-Gordon dispersion-relation numerical evaluator (G-7 debt closure).
@@ -16729,15 +16741,15 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 348
   totalModules: 11
-  totalLinesOfCode: 68764
-  totalExports: 2447
+  totalLinesOfCode: 68827
+  totalExports: 2450
   totalClasses: 58
-  totalInterfaces: 358
-  totalFunctions: 552
+  totalInterfaces: 359
+  totalFunctions: 553
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 606
-  totalReExports: 1230
+  totalReExports: 1232
   totalTypeOnlyImports: 483
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0

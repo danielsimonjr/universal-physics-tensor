@@ -313,7 +313,7 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
 
 The catalog is a static array — no async, no computation. `dimensional_signature` is typed `string | null`, and every catalog entry carries a string, including the bridges that have no AST encoding in `src/bridges/equations/`. For every encoded entry the string is `format()` of the inferred dimension, pinned by `tests/bridges/dimensional-signature-catalog.test.ts`.
 
-Two derived views sit beside the array. `adjudicateCatalog()` applies the bridge-membership criterion, with the `rejected.ts` negative catalog as overlay, and returns a `CatalogAdjudicationReport`: bridge ids grouped by verdict into `bridges`, `notABridges` and `unadjudicated`. The per-entry `BridgeVerdict` comes from `adjudicateBridgeEntry()`. `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
+Two derived views sit beside the array. `adjudicateCatalog()` applies the bridge-membership criterion, with the `rejected.ts` negative catalog as overlay. The function returns a `CatalogAdjudicationReport`: bridge ids grouped by verdict into `bridges`, `notABridges` and `unadjudicated`. The per-entry `BridgeVerdict` comes from `adjudicateBridgeEntry()`. `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
 
 ---
 
@@ -482,7 +482,7 @@ Caller supplies metric closures + stress-energy closure + point
    For Schwarzschild vacuum (T=0, Λ=0) it is the FD floor.
 ```
 
-The `verifyKillingEquation` flow is analogous. It takes caller-supplied exact Christoffels through `christoffelAt` and returns the maximum of |∇_μ ξ_ν + ∇_ν ξ_μ| at a point. By default (`constantKilling: true`) it uses metric compatibility and no finite differences. With `constantKilling: false` it uses finite differences: for ∂ξ only when `dMetricFn` is supplied, and for the whole lowered field otherwise. It does not compare the residual against a tolerance: `KillingEquationOptions.tolerance` is not read, so the caller makes that comparison.
+The `verifyKillingEquation` flow is analogous. It takes caller-supplied exact Christoffels through `christoffelAt` and returns the maximum of |∇_μ ξ_ν + ∇_ν ξ_μ| at a point. By default (`constantKilling: true`) it uses metric compatibility and no finite differences. With `constantKilling: false` it uses finite differences: for ∂ξ only when `dMetricFn` is supplied, and for the whole lowered field otherwise. `verifyKillingEquation` does not compare the residual against a tolerance. `checkKillingEquation` makes that comparison. The check applies `KillingEquationOptions.tolerance` (default 1e-10) to the relative residual, residual / max(max|g_μν|, 1), and returns `withinTolerance`.
 
 ---
 

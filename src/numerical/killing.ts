@@ -7,7 +7,10 @@
  *     1. constantKilling=true (default for constant ξ^β): uses metric
  *        compatibility ∂_μ g_{αβ} = Γ^λ_{μα} g_{λβ} + Γ^λ_{μβ} g_{αλ} to
  *        derive ∇_μ ξ_α = Γ^λ_{μβ} g_{αλ} ξ^β without any FD. Achieves
- *        machine-precision (~1e-15 or exact 0) for Schwarzschild.
+ *        machine precision RELATIVE to the metric scale for Schwarzschild.
+ *        The residual itself is absolute, in the metric's units: with SI
+ *        Schwarzschild (g_tt ≈ −c² ≈ −9e16) the exact time-translation field
+ *        leaves 2.44e-4 at r = 3 r_s and 3.05e-5 at 10 r_s (≈ 3e-21 relative).
  *     2. constantKilling=false with dMetricFn supplied: uses exact analytic
  *        ∂_μ g_{αβ} + FD for ∂_μ ξ^β. Handles spatially-varying Killing fields.
  *     3. Fallback FD path: differentiates ξ_α(y) = g_{αβ}(y) ξ^β(y) via 4th-
@@ -23,14 +26,17 @@
  */
 
 import { pderivNumericalFn } from './pderiv.js';
+import { validateFiniteInputs } from './input-validation.js';
 
 /** Options for {@link verifyKillingEquation}.
  *
  *  @public */
 export interface KillingEquationOptions {
   /**
-   * Maximum tolerated residual ||∇_μ ξ_ν + ∇_ν ξ_μ||_∞.
-   * Default 1e-10.
+   * Maximum tolerated RELATIVE residual, read only by {@link checkKillingEquation}:
+   * ||∇_μ ξ_ν + ∇_ν ξ_μ||_∞ / max(max_{μν} |g_{μν}(x)|, 1) ≤ tolerance. Default 1e-10.
+   * Must be finite and > 0. {@link verifyKillingEquation} ignores it and returns the
+   * raw (absolute) residual.
    */
   readonly tolerance?: number;
   /**
@@ -86,8 +92,9 @@ type ChristoffelAtFn = (x: Vec4) => ChristoffelAccess;
  *
  * For constant Killing fields (constantKilling=true, the default):
  *   Uses metric compatibility to derive ∇_μ ξ_α = Γ^λ_{μβ} g_{αλ} ξ^β
- *   algebraically — no FD at all. Achieves machine-precision residuals
- *   for Schwarzschild Killing fields in SI units.
+ *   algebraically — no FD at all. The residual is ABSOLUTE (metric units);
+ *   for SI Schwarzschild it is at machine precision relative to |g_tt| ≈ c².
+ *   `opts.tolerance` is not read here; use {@link checkKillingEquation} for a verdict.
  *
  * @param killingFn     - Factory returning ξ^μ(x) (upper index).
  * @param metricFn      - Covariant metric g_{μν}(x).
@@ -266,6 +273,60 @@ export function verifyKillingEquation(
     }
   }
   return maxResid;
+}
+
+/**
+ * Result of {@link checkKillingEquation}.
+ *
+ * @public
+ */
+export interface KillingEquationCheck {
+  /** Raw max residual ||∇_μ ξ_ν + ∇_ν ξ_μ||_∞ in the metric's units — identical to
+   *  {@link verifyKillingEquation}'s return value. */
+  readonly residual: number;
+  /** `residual / max(max_{μν} |g_{μν}(x)|, 1)`: dimensionless, the quantity the tolerance
+   *  is applied to (the normalization `evaluateEinsteinEquationResidual` uses). */
+  readonly relativeResidual: number;
+  /** `relativeResidual <= tolerance` (default 1e-10). */
+  readonly withinTolerance: boolean;
+}
+
+/**
+ * Check the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0 at `x` against a tolerance.
+ *
+ * Runs {@link verifyKillingEquation} with the same arguments and normalizes its absolute
+ * residual by the metric scale at `x`: `relativeResidual = residual / max(max|g_μν(x)|, 1)`.
+ * The floor of 1 keeps geometrized (order-1) metrics absolute. The verdict is
+ * `relativeResidual <= opts.tolerance` (default 1e-10). A relative test matters for SI
+ * metrics: an exact Killing field of SI Schwarzschild leaves an absolute residual up to
+ * 2.44e-4 (g_tt ≈ −9e16), about 3e-21 relative.
+ *
+ * @param killingFn     - Factory returning ξ^μ(x) (upper index).
+ * @param metricFn      - Covariant metric g_{μν}(x).
+ * @param christoffelAt - Christoffel accessor factory (layout-agnostic).
+ * @param x             - Evaluation point [t, r, θ, φ].
+ * @param opts          - {@link KillingEquationOptions}; `tolerance` must be finite and > 0.
+ * @returns `{ residual, relativeResidual, withinTolerance }`.
+ * @throws RangeError when `opts.tolerance` is not a finite positive number.
+ *
+ * @public
+ */
+export function checkKillingEquation(
+  killingFn: KillingFn,
+  metricFn: MetricFn,
+  christoffelAt: ChristoffelAtFn,
+  x: Vec4,
+  opts: KillingEquationOptions = {},
+): KillingEquationCheck {
+  if (opts.tolerance !== undefined) {
+    validateFiniteInputs(opts, [{ name: 'tolerance', min: 0, excludeMin: true }], 'checkKillingEquation');
+  }
+  const tolerance = opts.tolerance ?? 1e-10;
+  const residual = verifyKillingEquation(killingFn, metricFn, christoffelAt, x, opts);
+  let scale = 1;
+  for (const row of metricFn(x)) for (const v of row) scale = Math.max(scale, Math.abs(v));
+  const relativeResidual = residual / scale;
+  return { residual, relativeResidual, withinTolerance: relativeResidual <= tolerance };
 }
 
 /**

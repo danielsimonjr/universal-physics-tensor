@@ -75,7 +75,7 @@ UPT follows a layered architecture. The 348 source files fall into eleven module
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total** (`src/` scope): 348 TypeScript files | 2446 exports (1229 re-exports) | 55 bridge catalog entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative) | 41 composition-graph edges (+ 107 canonical-only `law` edges via `CANONICAL_GRAPH`) | 19 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65)
+**Total** (`src/` scope): 348 TypeScript files | 2450 exports (1232 re-exports) | 55 bridge catalog entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative) | 41 composition-graph edges (+ 107 canonical-only `law` edges via `CANONICAL_GRAPH`) | 19 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65)
 
 (Authoritative numbers from `docs/architecture/DEPENDENCY_GRAPH.md` Summary Statistics, regenerated 2026-07-05 via `npm run docs:deps`; catalog/canonical/confrontation counts cross-checked against `node bin/upt.mjs coverage --json` and `node bin/upt.mjs canonical --json`.)
 
@@ -588,7 +588,7 @@ v0.6.0. The Einstein field-equation predicate AST node (G_μν + Λ g_μν = (8�
 
 ### `verifyKillingEquation` / `evaluateConservedCharge` (`src/numerical/killing.ts`)
 
-v0.6.0 Killing-vector machinery. `verifyKillingEquation` numerically checks the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0 at a point (hybrid impl — exact Christoffels + analytic metric derivatives). `evaluateConservedCharge` evaluates Q = ξ^μ p_μ along a geodesic. Options type `KillingEquationOptions`; the layout-agnostic Christoffel accessor type is `ChristoffelAccess`. Both functions re-exported from `src/index.ts`.
+v0.6.0 Killing-vector machinery. `verifyKillingEquation` numerically checks the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0 at a point (hybrid impl — exact Christoffels + analytic metric derivatives). `checkKillingEquation` wraps it and applies `KillingEquationOptions.tolerance` to the relative residual, residual / max(max|g_μν|, 1). `evaluateConservedCharge` evaluates Q = ξ^μ p_μ along a geodesic. Options type `KillingEquationOptions`; the layout-agnostic Christoffel accessor type is `ChristoffelAccess`. Both functions re-exported from `src/index.ts`.
 
 ### `evaluateEinsteinEquationResidual(input)` (`src/numerical/einstein-equation.ts`)
 
@@ -791,14 +791,14 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 845 | dependency-graph.json |
-| totalExports | 3004 | dependency-graph.json |
+| totalSourceFiles | 846 | dependency-graph.json |
+| totalExports | 3008 | dependency-graph.json |
 | totalTypeOnlyImports | 875 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`npm run docs:deps`): 348 files, 2446 exports, 1229 of them re-exports. 845 and 348 do not
+(`npm run docs:deps`): 348 files, 2450 exports, 1232 of them re-exports. 846 and 348 do not
 contradict each other; they answer different questions. Every figure states its scope.
 
 **Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19

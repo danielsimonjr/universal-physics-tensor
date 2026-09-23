@@ -484,7 +484,14 @@ This layer holds Killing-vector machinery, the Einstein field-equation node + nu
 
 ### `verifyKillingEquation(...)` — function
 
-Numerically checks the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0 at a point, using a hybrid implementation (exact Christoffels + analytic metric derivatives). Options are `KillingEquationOptions`; the layout-agnostic Christoffel accessor type is `ChristoffelAccess`. Defined in `src/numerical/killing.ts`.
+Numerically checks the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0 at a point, using a hybrid implementation (exact Christoffels + analytic metric derivatives). The function returns the raw max residual in the metric's units and does not read `KillingEquationOptions.tolerance`. Options are `KillingEquationOptions`; the layout-agnostic Christoffel accessor type is `ChristoffelAccess`. Defined in `src/numerical/killing.ts`.
+
+**Kind**: function
+**Stability**: `@public`
+
+### `checkKillingEquation(...)` — function
+
+Applies `KillingEquationOptions.tolerance` (default 1e-10) to the relative residual. It runs `verifyKillingEquation` and returns `{ residual, relativeResidual, withinTolerance }`, where `relativeResidual = residual / max(max|g_μν(x)|, 1)`. Throws `RangeError` when `tolerance` is not a finite positive number. The result type is `KillingEquationCheck`. Defined in `src/numerical/killing.ts`.
 
 **Kind**: function
 **Stability**: `@public`
@@ -984,7 +991,8 @@ The following are type-only symbols erased at runtime. They appear in `src/index
 | `RicciTensorNode` | `dimensional/validator` | AST node for R_μν (via `ricci`) |
 | `EinsteinTensorNode` | `dimensional/validator` | AST node for G_μν (via `einstein`) |
 | `BianchiResidualNode` | `dimensional/validator` | AST node for the Bianchi residual |
-| `KillingEquationOptions` | `numerical/killing` | Options for `verifyKillingEquation` |
+| `KillingEquationOptions` | `numerical/killing` | Options for `verifyKillingEquation` and `checkKillingEquation` |
+| `KillingEquationCheck` | `numerical/killing` | Return type of `checkKillingEquation` |
 | `ChristoffelAccess` | `numerical/killing` | Layout-agnostic Christoffel accessor |
 | `EinsteinEquationResidualInput` | `numerical/einstein-equation` | Input bundle for `evaluateEinsteinEquationResidual` |
 | `MetricClosure` | `numerical/einstein-equation` | Metric-closure callback type |
@@ -1012,7 +1020,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalExports | 3004 | dependency-graph.json |
+| totalExports | 3008 | dependency-graph.json |
 | unusedExportsCount | 49 | dependency-graph.json |
 
 **`unusedExportsCount` is not a deletion list.** It counts exports with no importer *inside

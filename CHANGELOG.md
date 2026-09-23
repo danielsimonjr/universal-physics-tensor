@@ -8,6 +8,39 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-23) — `checkKillingEquation`, a verdict on the relative Killing residual
+
+- `checkKillingEquation(killingFn, metricFn, christoffelAt, x, opts?)` returns
+  `{ residual, relativeResidual, withinTolerance }`: `residual` is exactly
+  `verifyKillingEquation`'s output, `relativeResidual = residual / max(max|g_μν(x)|, 1)` (the
+  normalization `evaluateEinsteinEquationResidual` uses), and `withinTolerance` is
+  `relativeResidual <= opts.tolerance` (default 1e-10). A non-finite or non-positive tolerance throws
+  `RangeError`. New public surface (function + `KillingEquationCheck`), so a MINOR bump when released.
+- **Why relative.** The residual is absolute, in the metric's units. With SI Schwarzschild
+  (g_tt ≈ −9e16) the exact time-translation Killing field leaves 2.44e-4 at 3 r_s and 3.05e-5 at
+  10 r_s (about 3e-21 relative), so an absolute 1e-10 default would call exact Killing fields
+  failing. All numbers were measured under vitest on Node; Bun's JavaScriptCore trig gave a
+  different value at one point, which the test file records.
+- Tests (`tests/numerical/killing-check.test.ts`, written first): exact ∂_t and ∂_φ pass at 3, 5, 10,
+  100 and 1000 r_s; `residual` equals `verifyKillingEquation`'s; pinned `verifyKillingEquation`
+  outputs are unchanged; a non-Killing field (ξ = ∂_r) fails the default and passes a looser
+  tolerance; a tighter tolerance fails a case the default passes; invalid tolerances throw. Mutating
+  the verdict back to the absolute residual turns 6 tests red.
+- Decision (ii) of four, by Mothership under the user's delegation; no independent human review.
+
+### Fixed (2026-09-23) — `KillingEquationOptions.tolerance` was documented but ignored
+
+- It said "Maximum tolerated residual ... Default 1e-10", but `verifyKillingEquation` never read it
+  and returned the raw residual. The option now documents that only `checkKillingEquation` reads it,
+  on the relative residual; `verifyKillingEquation` is byte-for-byte unchanged. The module doc's
+  "machine precision (~1e-15 or exact 0)" now says RELATIVE, with the measured absolute SI values.
+  `tests/numerical/killing-schwarzschild.test.ts` no longer passes `tolerance` to
+  `verifyKillingEquation`, which implied the option had an effect.
+- API.md, DATAFLOW.md and COMPONENTS.md describe the new function. The four gated
+  `totalExports` tables move 3004 → 3008, and the ungated `docs:deps` prose figures are re-measured
+  (2450 exports, 1232 re-exports; they had drifted across earlier commits).
+  The new test file moves the gated whole-repository `totalSourceFiles` 845 → 846 (tests 465 → 466).
+
 ### Changed (2026-09-23) — `OVERVIEW.md` in Simplified Technical English, stateless
 
 - 14 STE findings fixed, prose only; `ste_check` reports 0. Two inline lists became bullet lists

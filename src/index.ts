@@ -271,10 +271,12 @@ export type { BianchiResidualNode } from './dimensional/validator.js';
 // type that insulates consumers from the Phase 2 BR-2 flat-layout migration.
 export {
   verifyKillingEquation,
+  checkKillingEquation,
   evaluateConservedCharge,
 } from './numerical/killing.js';
 export type {
   KillingEquationOptions,
+  KillingEquationCheck,
   ChristoffelAccess,
 } from './numerical/killing.js';
 

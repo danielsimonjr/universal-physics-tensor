@@ -314,8 +314,8 @@ warning-silencing, not debug logging).
         - [x] API.md: the `@public-new` tier aligned to the source — every such symbol is `@public` (Mothership decision (a), own commit).
         - [x] API.md stale facts corrected against measurement (fact-fix commit, before the STE commit).
         - [x] Stale source JSDoc found during the API.md fact fix: `inferDimensionForBridge` says bridge ids "11..50"; the catalog runs to 65.
-        - [ ] CODE QUESTION for Mothership: `KillingEquationOptions.tolerance` is documented as "Maximum tolerated residual ... Default 1e-10" but `verifyKillingEquation` never reads it (it returns the raw residual). Remove the option, or make the function use it?
-        - [ ] Add `checkKillingEquation` → `{ residual, withinTolerance }` honouring `KillingEquationOptions.tolerance` (default 1e-10); `verifyKillingEquation` unchanged; fix the tolerance docs (Mothership decision (c)).
+        - [x] CODE QUESTION for Mothership: `KillingEquationOptions.tolerance` is documented as "Maximum tolerated residual ... Default 1e-10" but `verifyKillingEquation` never reads it (it returns the raw residual). Remove the option, or make the function use it?
+        - [x] Add `checkKillingEquation` → `{ residual, withinTolerance }` honouring `KillingEquationOptions.tolerance` (default 1e-10); `verifyKillingEquation` unchanged; fix the tolerance docs (Mothership decision (c)).
         - [x] Stale source JSDoc found during the DATAFLOW audit: `lowerCurvature` (`src/numerical/lowering.ts`) says `CURVATURE_KIND_REGISTRY[node.kind]` supplies the per-kind spec; the code never reads the registry.
         - [x] DATAFLOW.md follow-up fact fix: the 17 FALSE claims from the full-claim audit, each re-verified against source (likely bugs filed as code questions).
         - [x] API.md to 0 STE findings, stateless.
