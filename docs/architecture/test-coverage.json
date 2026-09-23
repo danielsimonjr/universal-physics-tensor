@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 436,
+    "totalTestFiles": 437,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -10320,6 +10320,7 @@
       "src/core/regime-rule-install.ts",
       "src/core/regimes-builtins.ts"
     ],
+    "tests/tools/api-surface.test.ts": [],
     "tests/tools/plan-doc-audit.test.ts": []
   }
 }

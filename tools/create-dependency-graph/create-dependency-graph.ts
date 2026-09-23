@@ -18,7 +18,14 @@
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dump as dumpYaml } from 'js-yaml';
-import { basename, dirname, join, relative } from 'path';
+import { basename, dirname, join, relative, resolve as resolvePathAbs } from 'path';
+import {
+  buildApiSurfaceReport,
+  createTsResolver,
+  DEFAULT_STABILITY_TAGS,
+  extractExportDetails,
+  resolveSurface,
+} from './api-surface.js';
 
 // Types
 interface Dependency {
@@ -120,6 +127,11 @@ interface PackageJson {
 interface CLIOptions {
   root: string;
   includeTests: boolean;
+  /** Opt-in: write the per-export API-surface report to this file (see api-surface.ts). */
+  apiSurface: string | null;
+  /** Entry file for the API surface, relative to the root. */
+  apiEntry: string;
+  stabilityTags: readonly string[];
 }
 
 // Constants - support CLI argument or current working directory for portability
@@ -128,6 +140,9 @@ function parseCliOptions(): CLIOptions {
   const options: CLIOptions = {
     root: process.cwd(),
     includeTests: false,
+    apiSurface: null,
+    apiEntry: 'src/index.ts',
+    stabilityTags: DEFAULT_STABILITY_TAGS,
   };
 
   for (const arg of args) {
@@ -135,6 +150,12 @@ function parseCliOptions(): CLIOptions {
       options.root = arg.slice(7);
     } else if (arg === '--include-tests' || arg === '-t') {
       options.includeTests = true;
+    } else if (arg.startsWith('--api-surface=')) {
+      options.apiSurface = arg.slice('--api-surface='.length);
+    } else if (arg.startsWith('--api-entry=')) {
+      options.apiEntry = arg.slice('--api-entry='.length);
+    } else if (arg.startsWith('--stability-tags=')) {
+      options.stabilityTags = arg.slice('--stability-tags='.length).split(',').map((t) => t.trim()).filter(Boolean);
     } else if (arg === '--help' || arg === '-h') {
       console.log(`
 Dependency Graph Generator
@@ -146,6 +167,15 @@ Options:
   --root=<path>      Project root directory (default: current directory)
   --include-tests    Include test files in dependency analysis
   -t                 Short form of --include-tests
+  --api-surface=<file>
+                     Also write a per-export API-surface report (JSON) to <file>:
+                     signature, async, stability tag, JSDoc summary, and the
+                     entry file's re-export-resolved public surface. Opt-in;
+                     the standard outputs are unchanged by it.
+  --api-entry=<path> Entry file for --api-surface (default: src/index.ts)
+  --stability-tags=a,b,c
+                     Tags counted as stability markers (default:
+                     public,internal,experimental,beta,alpha)
   --help, -h         Show this help
 
 Examples:
@@ -1939,6 +1969,21 @@ async function main(): Promise<void> {
 
     writeFileSync(join(OUTPUT_DIR, 'test-coverage.json'), JSON.stringify(testCoverageJson, null, 2));
     console.log('Written: docs/architecture/test-coverage.json');
+  }
+
+  if (cliOptions.apiSurface !== null) {
+    const load = (p: string): string | null => {
+      const abs = join(ROOT_DIR, p);
+      return existsSync(abs) && statSync(abs).isFile() ? readFileSync(abs, 'utf-8') : null;
+    };
+    const resolver = createTsResolver((p) => load(p) !== null);
+    const opts = { stabilityTags: cliOptions.stabilityTags };
+    const surface = resolveSurface(cliOptions.apiEntry.split('\\').join('/'), load, resolver, opts);
+    const files = parsedFiles.map((f) => ({ path: f.path, exports: extractExportDetails(load(f.path) ?? '', opts) }));
+    const report = buildApiSurfaceReport(surface, files, cliOptions.stabilityTags);
+    const outPath = resolvePathAbs(cliOptions.apiSurface);
+    writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n');
+    console.log(`Written: ${outPath} (${surface.symbols.length} surface symbols, ${surface.unresolved.length} unresolved)`);
   }
 
   console.log('\nDependency graph generation complete!');

@@ -8,6 +8,34 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-23) — `tools/create-dependency-graph`: opt-in API-surface report
+
+- **Why.** Checking `docs/architecture/` against the code meant hand-written greps for each
+  signature, `async` flag and stability tag, and two of those loops timed out. The generated data
+  had exports and imports per file but no signatures, tags or re-export-resolved surface.
+- **What.** A new, repository-neutral module `tools/create-dependency-graph/api-surface.ts`
+  (source-text scan; loader and resolver injected; no repo paths) and three opt-in flags:
+  `--api-surface=<file>`, `--api-entry=<path>` (default `src/index.ts`), `--stability-tags=a,b`.
+  Flags and the `schemaVersion: 1` output schema are in the tool README, for adoption by the shared
+  `repo-tools depgraph`.
+- **Additive, proven.** The standard outputs (`DEPENDENCY_GRAPH.md`, `dependency-graph.json` /
+  `.yaml`, `dependency-summary.compact.json`, `TEST_COVERAGE.md`, `test-coverage.json`) are
+  byte-identical to the unmodified tool's, both without the flag and with it (`cmp`, runs gated on
+  exit 0, rewrite confirmed by mtime).
+- **Verified against `dist`.** On this repository the report's runtime surface is exactly
+  `Object.keys(root)` (289 = 289, none missing either way), all 116 `ALL_TYPE_EXPORTS` appear as
+  type-only, and 0 specifiers are unresolved. That cross-check caught a defect before commit:
+  comments inside `export { … }` became part of a name and dropped 12 root exports (the same class
+  as the tool's earlier C-9 bug); names are now read from comment-masked text, with a test.
+- **Tests:** `tests/tools/api-surface.test.ts`, 20 tests, written first. Mutation-checked: a star
+  export carrying `default`, dropping the top-level (brace-depth) check, and prefix-matching tags
+  each turn a test red (the depth mutant survived the first draft; a case was added for it).
+- **Gated counts re-measured.** The two new files move the whole-repository `repo_map` counts:
+  `totalSourceFiles` 843 → 845 and `totalExports` 2990 → 3003, in the Verification tables of six
+  docs and the prose that restates them. `FILE_INVENTORY.md` drops its note that `repo_map` files
+  `tests/tools/plan-doc-audit.test.ts` in the `tools` zone: the upstream classifier fix now files
+  it as a test (tests 463 → 465 = that file + the new test; tools stays 13).
+
 ### Fixed (2026-09-23) — `API.md` stale facts corrected against the source
 
 A fact-fix commit, kept separate from the Simplified Technical English pass. Every correction was

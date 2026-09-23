@@ -315,6 +315,7 @@ warning-silencing, not debug logging).
         - [x] API.md stale facts corrected against measurement (fact-fix commit, before the STE commit).
         - [ ] Stale source JSDoc found during the API.md fact fix: `inferDimensionForBridge` says bridge ids "11..50"; the catalog runs to 65.
         - [ ] API.md to 0 STE findings, stateless.
+        - [x] `tools/create-dependency-graph`: an opt-in per-export API-surface report (signature, async, stability tag, root reachability) in its own module, with tests; existing outputs byte-identical without the flag.
         - [ ] OVERVIEW.md to 0 STE findings, stateless.
         - [ ] ARCHITECTURE.md to 0 STE findings, stateless.
         - [ ] COMPONENTS.md to 0 STE findings, stateless.
