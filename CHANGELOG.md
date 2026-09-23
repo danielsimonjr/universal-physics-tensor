@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `PHYSICS_MAP.md` and `benchmarks.md` corrected against the source
+
+An Opus review (in-session, not human) re-ran every changed figure against the live CLI and the
+source and FAILED one passage, which is fixed.
+
+- **`PHYSICS_MAP.md`: the inline canonical map and every count were stale.** The Mermaid block is
+  regenerated from `upt map --source=canonical --format=mermaid` and matches it byte for byte. The
+  canonical layer is 107 laws: an 83-law core, two two-law clusters and 20 isolated laws (the text
+  said 82 and 17 over 103). `--source=both` is 148 edges over 40 components (was 144 over 37). A
+  bare `upt map` prints text; the graphic needs `--format`. The `--equation` example outputs are
+  replaced with live output. SVG output is now named. The v0.34–0.36 history notes are removed.
+- **`maps/*.dot` and `maps/*.svg` regenerated.** The catalog label reads 55-bridge (was 44). A second
+  regeneration gave identical bytes.
+- **`benchmarks.md`: five figures and descriptions were wrong.** τ_end is ≈ 4.83 ms (the text said
+  46.8). The RK4 comparison is 52.6 ms per 1000-step call, ≈ 0.053 ms/step (it said 52.6 ms/step).
+  The pre-BR-2 path called `christoffelFn` 4 times per step, 40 000 allocations at 10k steps (it
+  said 16 and 160 000). The BE-37 section now says its timings describe the old stub, which `src/`
+  replaced with a GL4 integration. The header no longer claims one machine and one date. The
+  removed Vitest `benchmarkTimeout` option is noted.
+- **Retracted in review:** the first draft said the measured post-BR-2 path reused one scratch
+  buffer. The run was at `6e34310` (2026-05-19); the scratch buffer arrived in `c2fc0fc`
+  (2026-06-22), which is not an ancestor (`git merge-base --is-ancestor` exit 1). The text now
+  attributes the speedup to flat allocation, not to reuse.
+- **Left for later (filed, not fixed here):** the header comment in `bench/be37-eikonal.bench.ts`
+  still describes the stub.
+
 ### Fixed (2026-09-23) — the two tutorials and the archive README corrected against the source
 
 A read-only audit (Opus) of the living docs; an Opus review (in-session, not human) ran every new

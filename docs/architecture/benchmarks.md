@@ -2,7 +2,7 @@
 
 <!-- repo-map:no-verification -->
 
-> **No `## Verification` block, deliberately.** This document is a record of timings measured on one machine on 2026-05-23. A wall-clock measurement is not a property of the source tree and no static analysis can confirm it; re-measure with `npm run bench`.
+> **No `## Verification` block, deliberately.** This document is a record of timings. Each section states its own run date and environment; the runs span several dates and at least two machines. A wall-clock measurement is not a property of the source tree and no static analysis can confirm it; re-measure with `npm run bench`.
 > The drift gate treats a missing Verification section as a failure, so the opt-out is
 > stated here explicitly rather than left to be inferred from its absence.
 
@@ -92,10 +92,12 @@ Physical scenario: solar grazing ray — M_sun = 1.989e30 kg, R_near = 1.0e9 m, 
    RK4 Shapiro-delay evaluator (4096 fixed steps, no arguments, scenario hardcoded internally).
    This is the primary AST→lowering→engine roundtrip baseline.
 
-2. `evaluateBE37CovariantEikonalNumerical` (`src/numerical/be37-covariant-eikonal.ts`) — the
-   v0.4.0 structural preview. Returns `eikonalResidual=0` by construction (null-ray identity),
-   `shapiroDelaySec=0` (stub). No RK4 inside. Benched as a stub baseline: when v0.5.0 wires
-   `integrateGeodesic` through this path, this bench will show a step-change in cost.
+2. `evaluateBE37CovariantEikonalNumerical` (`src/numerical/be37-covariant-eikonal.ts`) —
+   benched in this run while it was a structural preview that returned `eikonalResidual=0` by
+   construction (null-ray identity) and `shapiroDelaySec=0` (a stub with no integration). The
+   function in `src/` integrates the null geodesic with `integrateGeodesicGL4`, and the bench's
+   describe block is named "BE-37 covariant eikonal — v0.5.0 GL4 null-geodesic Shapiro"; the timings in this section
+   describe the stub.
 
 ### Results (hz tables available — sync-like throughput for both async benches)
 
@@ -111,8 +113,8 @@ Physical scenario: solar grazing ray — M_sun = 1.989e30 kg, R_near = 1.0e9 m, 
 - The structural-preview evaluator runs at ~762 000 hz (1.3 µs/call mean), measuring only async
   wrapper + three guard checks. The ~940× speedup vs. the RK4 path is consistent with the absence
   of any numerical integration.
-- F11 benchmarkTimeout raised to 30 000 ms (per-bench). Default 10s is insufficient for 10k-step
-  RK4 paths planned in v0.5.0.
+- F11 benchmarkTimeout was raised to 30 000 ms (per-bench) for this run. Vitest 4 removed the
+  option; `bench/be37-eikonal.bench.ts` and `bench/geodesic.bench.ts` record that.
 - MathTSEngine: not applicable — BE-37 uses a direct RK4 loop, not the TensorEngine path.
 
 ### BENCH Summary (from vitest output)
@@ -140,7 +142,7 @@ Bench discipline: inputs pre-built outside bench callback (F4); sync bench (hz t
 **Scenario parameters (F17 — consistent with Task 14 conformance test):**
 - M_kg = 1.989e30 (solar mass), r_s = 2·G·M/c² ≈ 2953 m
 - r₀ = 100·r_s ≈ 295 300 m (initial radial coordinate)
-- τ_end = (r₀/2)·√(r₀/r_s)·(η+sin η)/c ≈ 46.8 ms (proper time to η=0.5)
+- τ_end = (r₀/2)·√(r₀/r_s)·(η+sin η)/c ≈ 4.83 ms (proper time to η=0.5)
 - domainMinRadius = 3·r_s (domain guard active)
 - v0 = [1/√(1−r_s/r₀), 0, 0, 0] ≈ [1.00503, 0, 0, 0]
 
@@ -268,8 +270,8 @@ a false pass. If the true fraction is ~64%, the BR-2 migration will easily achie
 >=5% end-to-end — the dual gate is conservative.
 
 **Additional finding:** GL4 per-step cost is approximately 10.7 ms at Mercury
-perihelion (compared to approximately 52.6 ms/step for RK4 in the v0.4.5 geodesic
-bench at 1000 steps). The GL4 Picard solver (~35 iterations x 2 stages x
+perihelion (compared to approximately 52.6 ms per 1000-step RK4 call, ≈ 0.053 ms/step, in the
+v0.4.5 geodesic bench). The GL4 Picard solver (~35 iterations x 2 stages x
 gInverseFn + dgInverseFn per stage) drives the cost; eliminating the
 nested-array allocation in `christoffelFn` is the correct optimization target.
 
@@ -290,8 +292,8 @@ that both the GL4 and RK4 integrators consume `christoffelFn`. This is **incorre
 - `src/numerical/gl4-integrator.ts` has **zero** `christoffel` references. GL4 operates
   on the Hamiltonian `(x, p)` state via `gInverseFn` (inverse metric) and `dgInverseFn`
   (its derivatives). It does not call `christoffelFn` at any step.
-- `src/numerical/geodesic-integrator.ts` (`integrateGeodesic`, RK4) contains **14**
-  `christoffel` references and is the sole consumer of `christoffelFn`.
+- `src/numerical/geodesic-integrator.ts` (`integrateGeodesic`, RK4) references `christoffel`
+  and is the sole consumer of `christoffelFn`.
 
 Therefore the GL4 bench at Task 2.0 measured the wrong integrator. BR-2's performance
 impact is isolated entirely to the RK4 path. This section provides the correct
@@ -328,11 +330,13 @@ Mean end-to-end RK4 speedup across all three step counts: approximately **+507%*
 ### Interpretation
 
 The improvement is structurally consistent with the migration's intent. The pre-BR-2 RK4
-path called `christoffelFn` 4 times per RK4 stage × 4 stages = 16 times per step, and each
-call allocated a fresh `number[4][4][4]` (64-element nested array). At 10k steps that is
-160 000 nested-array allocations per `integrateGeodesic` call, each triggering GC pressure.
-The flat `Float64Array(64)` returned by the post-BR-2 `christoffelFn` is stack-resident and
-GC-free. The ~5× wall-time reduction maps directly onto this elimination.
+path called `christoffelFn` once per RK4 stage — 4 times per step — and each call allocated
+a fresh `number[4][4][4]` (64-element nested array). At 10k steps that is 40 000
+nested-array allocations per `integrateGeodesic` call, each triggering GC pressure. The
+post-BR-2 path that this run measured still allocated one flat `Float64Array(64)` per call,
+where each pre-BR-2 call built a nested `number[4][4][4]` of 21 array objects. The ~5×
+wall-time reduction maps onto this reduction in allocations. A later change (`c2fc0fc`)
+reuses one scratch buffer and removes the per-call allocation; these timings predate it.
 
 The post-BR-2 1k-step result (61.31 hz, 16.3 ms mean) also improves substantially over the
 original v0.4.5 baseline (19.0 hz, 52.6 ms mean at 1k steps), reflecting both BR-2 and the
