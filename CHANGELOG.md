@@ -8,6 +8,36 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `DATAFLOW.md`: 18 more false claims corrected after a full-claim audit
+
+The first `DATAFLOW.md` fact fix checked only the lines it changed, and a claim it left alone (Flow 9's
+"failure bucket") turned out false. A read-only audit agent then checked about 150 claims against the
+source: 17 FALSE, 2 unverifiable. The session re-read every cited line before editing; all 17 held.
+With the Flow 9 item, 18 claims are corrected, and one unverifiable number is replaced by the module's
+own statement:
+
+- **Behaviour the doc had wrong:** a dimension mismatch in `+`/`-` is recorded as a Violation, not
+  thrown; the default engine is `MathTSEngine` when both MathTS peers are installed; `*`, `/`, `^` are
+  computed in JS, not by the engine; forward-mode AD runs once per input element; `lowerCurvature`
+  never reads `CURVATURE_KIND_REGISTRY`, and only Ricci and Einstein recurse; Λ is required; the
+  residual normalizes each component by `max(|g_μν|, 1)`; `verifyKillingEquation` takes exact
+  Christoffels, uses no finite differences by default, and never reads its `tolerance` option;
+  junction and dimension refusals in `enumerateCompositions` are skipped; nothing in `src/` calls
+  `propagateUncertainty`; `boundPath` has four gates (uniformity is the second);
+  `DuplicateCoordinateWarning` is not in `NumericalResult.warnings` (validation throws by default;
+  the process warning is opt-in through `UPT_ALLOW_COORD_SHADOW=1`).
+- **Names and scope:** the node kind is `'einstein-equation'`; every catalog entry has a
+  `dimensional_signature` string; `adjudicateCatalog` returns ids grouped by verdict; confrontations
+  include speculative bridges; the discovery verdict precedence is magnitude-clash > contradictory >
+  axis-clash, and `promising` also requires a non-subsuming identification.
+- **Review:** an Opus review (in-session, not human) FAILED three of the corrections as first
+  written: Einstein lowers an inner Ricci node (not the Riemann directly); `dMetricFn` still
+  finite-differences ∂ξ; the process warning is opt-in. All three are fixed, and a dropped but
+  true clause (signature = `format()` output for encoded entries, pinned by a test) is restored.
+- **Filed, not blessed:** the unread `KillingEquationOptions.tolerance` looks like a defect; it is a
+  code question for Mothership in `todo.md`, and the doc states current behaviour. The stale
+  `lowerCurvature` JSDoc is filed with the other source-JSDoc rows.
+
 ### Added (2026-09-23) — `tools/create-dependency-graph`: opt-in API-surface report
 
 - **Why.** Checking `docs/architecture/` against the code meant hand-written greps for each

@@ -80,9 +80,9 @@ Caller builds an ExprNode tree
 │    For each node:                                           │
 │    ├── 'symbol'              → return node.dim              │
 │    ├── 'op' *,/              → multiply / divide dims       │
-│    ├── 'op' +,-              → add / subtract (throws       │
-│    │                           DimensionMismatchError if    │
-│    │                           dims disagree, or raises     │
+│    ├── 'op' +,-              → add / subtract (a dimension  │
+│    │                           mismatch appends an error-   │
+│    │                           severity Violation; throws   │
 │    │                           FreeIndexMismatchError if    │
 │    │                           free-index maps differ)      │
 │    ├── 'op' ^                → power(baseDim, n)            │
@@ -102,8 +102,8 @@ Caller builds an ExprNode tree
 │    │    bianchi-...'                                          │
 │    ├── 'weyl-tensor'         → validateWeylTensor()         │
 │    ├── 'kretschmann-scalar'  → validateKretschmannScalar()  │
-│    └── 'einstein-field-      → validateEinsteinFieldEquation│
-│         equation'              ()                            │
+│    └── 'einstein-equation'   → validateEinsteinFieldEquation│
+│                                ()                            │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -154,7 +154,8 @@ Caller provides ExprNode tree + NumericalInputs
 ┌─────────────────────────────────────────────────────────────┐
 │ 2. RESOLVE ENGINE                                            │
 │    engine = options?.engine ?? await getActiveEngine()      │
-│    // Default: Float64ReferenceEngine                       │
+│    // Default: MathTSEngine when both MathTS peers are      │
+│    // installed, otherwise Float64ReferenceEngine           │
 │    // Override: pass engine in EvaluateOptions              │
 └─────────────────────────────────────────────────────────────┘
           │
@@ -163,7 +164,9 @@ Caller provides ExprNode tree + NumericalInputs
 │ 3. LOWERING PASS (lowering.ts lowerNode())                  │
 │    Recursively translates ExprNode → EngineTensor:          │
 │    ├── 'symbol'         → engine.fromNested(inputs[name])  │
-│    ├── 'op' *,/,+,-,^  → engine arithmetic methods         │
+│    ├── 'op' +,-        → engine.add / engine.sub            │
+│    ├── 'op' *,/,^      → rank-0 only: computed in JS, then  │
+│    │                    lifted back with engine.fromNested  │
 │    ├── 'tensor-product' → engine.einsum(EinsumSpec, ...)   │
 │    │   [contraction plan built by computeContraction()]     │
 │    ├── 'integral'       → numerical quadrature (if present) │
@@ -220,11 +223,13 @@ Caller wraps computation in a closure
 ┌─────────────────────────────────────────────────────────────┐
 │ 2a. FORWARD-MODE (forwardGrad)                               │
 │    Float64ReferenceEngine path:                             │
-│    ├── Lift x to EngineDualTensor (primal=x.data,           │
-│    │   tangent=ones)                                        │
-│    ├── Run fn(dualX) — all arithmetic propagates            │
-│    │   both primal and tangent per dual-number rules        │
-│    └── Extract { value: primal, jacobian: tangent }         │
+│    ├── One zero-tangent probe run of fn: output shape       │
+│    │   and value                                            │
+│    ├── For each input element k: an EngineDualTensor        │
+│    │   with unit tangent e_k; run fn — arithmetic           │
+│    │   propagates primal and tangent per dual-number rules  │
+│    └── Scatter each output tangent into Jacobian column     │
+│        k; return { value, jacobian }                        │
 │                                                             │
 │    MathTSEngine path: delegate to mathts-autograd forward   │
 │    mode; same result shape.                                 │
@@ -306,9 +311,9 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
    Caller uses metadata (no dimensional or numerical layer touched)
 ```
 
-The catalog is a static array — no async, no computation. `dimensional_signature` is `null` for entries not yet encoded as ASTs; `string` (output of `format()`) for the entries with dimensional analysis in `src/bridges/equations/`.
+The catalog is a static array — no async, no computation. `dimensional_signature` is typed `string | null`, and every catalog entry carries a string, including the bridges that have no AST encoding in `src/bridges/equations/`. For every encoded entry the string is `format()` of the inferred dimension, pinned by `tests/bridges/dimensional-signature-catalog.test.ts`.
 
-Two derived views sit beside the array. `adjudicateCatalog()` applies the bridge-membership criterion, with the `rejected.ts` negative catalog as overlay, and returns a per-entry `BridgeVerdict` report. `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
+Two derived views sit beside the array. `adjudicateCatalog()` applies the bridge-membership criterion, with the `rejected.ts` negative catalog as overlay, and returns a `CatalogAdjudicationReport`: bridge ids grouped by verdict into `bridges`, `notABridges` and `unadjudicated`. The per-entry `BridgeVerdict` comes from `adjudicateBridgeEntry()`. `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
 
 ---
 
@@ -404,12 +409,18 @@ Caller builds a curvature node (ricci(R), einstein(R,g,gI), …)
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 2. LOWERING — lowerCurvature() dispatcher (lowering.ts)      │
-│    A single dispatcher handles all six curvature kinds:     │
-│    ├── Look up node.kind in CURVATURE_KIND_REGISTRY         │
-│    │   (src/dimensional/curvature-composite.ts)             │
-│    ├── Recursively lower the inner RiemannTensorNode        │
-│    │   (lowerCurvature calls itself for nested kinds)       │
-│    ├── Materialize the inner Riemann via engine.toNested    │
+│    A single dispatcher switches on node.kind for all six    │
+│    curvature kinds:                                         │
+│    ├── 'riemann-tensor', 'weyl-tensor', 'kretschmann-       │
+│    │   scalar', 'bianchi-residual': build Riemann from the  │
+│    │   metric closures in inputs.fields (christoffelAt,     │
+│    │   dGammaAt, buildRiemann / riemannLowerAt helpers)     │
+│    ├── 'ricci-tensor': lowerCurvature calls itself on the   │
+│    │   inner RiemannTensorNode and materializes it via      │
+│    │   engine.toNested                                      │
+│    ├── 'einstein-tensor': lowerCurvature calls itself on an │
+│    │   inner 'ricci-tensor' node and materializes the       │
+│    │   Ricci; g and g⁻¹ come from inputs.tensors            │
 │    ├── Contract on the JS side (Ricci trace, Einstein       │
 │    │   combination, Bianchi cyclic sum, Weyl trace removal, │
 │    │   Kretschmann full contraction)                         │
@@ -444,7 +455,7 @@ Caller supplies metric closures + stress-energy closure + point
 │ 1. INPUT BUNDLE (EinsteinEquationResidualInput)              │
 │    ├── metric closure(s) — MetricClosure: x ↦ g_μν(x)       │
 │    ├── stress-energy closure — x ↦ T_μν(x)                  │
-│    ├── cosmological constant Λ (default 0)                  │
+│    ├── cosmological constant Λ (required; 0 for vacuum)     │
 │    └── evaluation point — Vec4                              │
 └─────────────────────────────────────────────────────────────┘
           │
@@ -454,15 +465,16 @@ Caller supplies metric closures + stress-energy closure + point
 │    Finite-difference the metric closure to get ∂g, ∂²g →    │
 │    Christoffels → Riemann → Ricci → Einstein tensor G_μν.   │
 │    4th-order stencil; the FD truncation error sets the      │
-│    residual floor (~1e-10 relative).                         │
+│    residual floor (typically < 1e-8 relative for            │
+│    Schwarzschild vacuum, per the module doc).               │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 3. RESIDUAL                                                  │
 │    r_μν = G_μν + Λ g_μν − κ T_μν,   κ = 8πG/c⁴             │
-│    residual = max|r_μν| / max|g_μν|   (scale-normalized,    │
-│    dimensionless relative residual)                          │
+│    residual = max over (μ,ν) of |r_μν| / max(|g_μν|, 1)     │
+│    (per-component scale-normalized, dimensionless)          │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -470,7 +482,7 @@ Caller supplies metric closures + stress-energy closure + point
    For Schwarzschild vacuum (T=0, Λ=0) it is the FD floor.
 ```
 
-The `verifyKillingEquation` flow is analogous. It finite-differences the metric to assemble exact Christoffels. It then evaluates ∇_μ ξ_ν + ∇_ν ξ_μ at a point and reports the residual against a tolerance.
+The `verifyKillingEquation` flow is analogous. It takes caller-supplied exact Christoffels through `christoffelAt` and returns the maximum of |∇_μ ξ_ν + ∇_ν ξ_μ| at a point. By default (`constantKilling: true`) it uses metric compatibility and no finite differences. With `constantKilling: false` it uses finite differences: for ∂ξ only when `dMetricFn` is supplied, and for the whole lowered field otherwise. It does not compare the residual against a tolerance: `KillingEquationOptions.tolerance` is not read, so the caller makes that comparison.
 
 ---
 
@@ -549,7 +561,7 @@ Caller supplies an edge pool (e.g., CATALOG_FULL_EDGES + named edges)
 │    │   │   (completeness check)                              │
 │    │   └── else → NOVEL candidate (review surface)          │
 │    ├── CompositionJunctionError / CompositionDimensionError │
-│    │   → failure bucket with attribution                    │
+│    │   → skipped: a silent non-pair, not reported           │
 │    └── CompositionAliasError → requiresDisposition[]        │
 │        (held at the gate, not silently composed)            │
 └─────────────────────────────────────────────────────────────┘
@@ -566,9 +578,11 @@ Uncertainty path (uncertainty.ts):
 │    │   input point (first-order)                             │
 │    └── σ_out² = Σᵢ (∂f/∂xᵢ · σᵢ)²                          │
 │    Works on composed edges for free (they are BridgeEdges). │
-│    Consumers: confrontBE36WithUncertainty (Δt = 1.74±0.05 s │
-│    → σ ≈ 1.9e-17 on the BE-36 bound), confrontBE23With-     │
-│    Uncertainty.                                              │
+│    No module in src/ calls it. confrontBE36With-            │
+│    Uncertainty (Δt = 1.74±0.05 s → σ ≈ 1.9e-17 on the       │
+│    BE-36 bound) and confrontBE23WithUncertainty compute     │
+│    σ analytically instead: each is linear in its one        │
+│    uncertain input.                                         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -576,7 +590,7 @@ Uncertainty path (uncertainty.ts):
 
 ## Flow 10: Confrontation (`upt confront`)
 
-**Purpose**: Compare a bridge's prediction — or, for a bound-type bridge, its encoded bound — against an INDEPENDENT, cited real-world observation. Confrontation is orthogonal to the discovery funnel (Flow 11): it operates only on established, catalog bridges, never on discovery candidates.
+**Purpose**: Compare a bridge's prediction — or, for a bound-type bridge, its encoded bound — against an INDEPENDENT, cited real-world observation. Confrontation is orthogonal to the discovery funnel (Flow 11): it operates only on catalog bridges (established and speculative), never on discovery candidates.
 
 **Entry point**: CLI `upt confront [--bridge=be-XX] [--sensitivity] [--json]` (`src/cli/commands/confront.ts`) → `listConfrontations()` / `runConfrontation(bridgeId)` (`src/bridges/confrontations.ts`).
 
@@ -665,7 +679,7 @@ Caller runs `upt discover`
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 2. VET — rankDiscoveries() (composition/discovery.ts)         │
-│    For each candidate a≡b, in gate order:                    │
+│    For each candidate a≡b, the funnel computes:             │
 │    ├── magnitude gate — orders of magnitude apart (from       │
 │    │   REPRESENTATIVE_VALUES or anchor-derived); > N orders   │
 │    │   (default maxOrdersOfMagnitude=3) → 'magnitude-clash'   │
@@ -676,9 +690,11 @@ Caller runs `upt discover`
 │    │   (forwardClosure), numericallyConsistent (retrodict     │
 │    │   over the anchor-reachable subgraph); a contradiction   │
 │    │   → 'contradictory'                                      │
-│    └── verdict: 'promising' (consistent AND merges components │
-│        AND unlocks ≥1 quantity) | 'inert' | 'contradictory' | │
-│        'magnitude-clash' | 'axis-clash'                       │
+│    └── verdict, in precedence order: 'magnitude-clash',     │
+│        then 'contradictory' (not numerically consistent),   │
+│        then 'axis-clash', then 'promising' (merges          │
+│        components AND unlocks ≥1 quantity AND is not a      │
+│        subsuming identification), else 'inert'              │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -799,20 +815,25 @@ upt path model-pendulum model-lc --at theta0=0.2 T0=1 t=10
         │   to its first premise.
         │   Returns a ROUTE, not a warrant.
         ▼
-  boundPath(bridges)                    three gates, in this order
+  boundPath(bridges)                    four gates, in this order
         │
         ├── 1. RELATION. composeRelation folded along the path. The moment
         │      the running composite is 'no-composite-claim' the path has NO
         │      bound, and the function returns BEFORE any arithmetic — so no
         │      number is ever computed for a path that cannot carry one.
         │
-        ├── 2. LIPSCHITZ. composeBoundPath folds the per-edge (K, delta)
+        ├── 2. UNIFORMITY. Any bound whose uniformity is null or empty is
+        │      not yet analysed: the path returns 'uniformity-unanalysed'
+        │      and no Lipschitz arithmetic runs. An edge with no bound does
+        │      not fail this gate.
+        │
+        ├── 3. LIPSCHITZ. composeBoundPath folds the per-edge (K, delta)
         │      pairs, outer-after-inner: (K2*K1, K2*d1 + d2). A null — an
         │      edge neither bounded nor exact — is tolerated ONLY as the last
         │      entry, where it terminates the claim; anywhere else it throws
         │      MissingLipschitzError rather than inventing a constant.
         │
-        └── 3. NORM. Every stated norm on the path must be the SAME, and no
+        └── 4. NORM. Every stated norm on the path must be the SAME, and no
                unnormed exact map may carry a normed claim. IDENTITY_BOUND is
                the identity ONLY IN THE NORM A BRIDGE STATES, and an
                exact-equivalence bridge carries no bound, hence states no
@@ -848,7 +869,7 @@ UPT uses three distinct error-signalling mechanisms:
 |-----------|----------|---------|
 | `throw` | Programmer errors, invalid ASTs, invariant violations | `NumericalBackendError`, `DimensionMismatchError`, `EngineCapabilityError`, the composition errors (`CompositionJunctionError`, `CompositionDimensionError`, `CompositionAliasError`, `DomainViolationError`), `NumericalBackendError` from bad inputs to `integrateGeodesic` |
 | `Violation` entries in `ValidationResult` | Expected dimensional mismatches the caller should inspect | Non-homogeneous equation, mismatched free-index signatures |
-| `warnings` in `NumericalResult` | Non-fatal numerical observations | `DuplicateCoordinateWarning`, inverse-metric inconsistency |
+| `warnings` in `NumericalResult` | Non-fatal numerical observations | Inverse-metric inconsistency. `DuplicateCoordinateWarning` is not here: validation throws `MetricSignatureError` by default, and emits the warning as a Node process warning only when `UPT_ALLOW_COORD_SHADOW=1` |
 
 Error-severity violations make `ValidationResult.ok = false` and cause `evaluateNumerical()` to throw. Warning-severity violations appear in `NumericalResult.warnings` but do not block evaluation.
 
