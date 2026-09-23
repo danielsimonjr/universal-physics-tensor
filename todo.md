@@ -318,7 +318,7 @@ warning-silencing, not debug logging).
         - [ ] Stale source JSDoc found during the DATAFLOW audit: `lowerCurvature` (`src/numerical/lowering.ts`) says `CURVATURE_KIND_REGISTRY[node.kind]` supplies the per-kind spec; the code never reads the registry.
         - [x] DATAFLOW.md follow-up fact fix: the 17 FALSE claims from the full-claim audit, each re-verified against source (likely bugs filed as code questions).
         - [x] API.md to 0 STE findings, stateless.
-        - [ ] API.md fact fix: `DuplicateCoordinateWarning` is documented as appearing in `NumericalResult.warnings`; validation throws `MetricSignatureError` by default and emits the warning (a process warning) only with `UPT_ALLOW_COORD_SHADOW=1`.
+        - [x] API.md fact fix: `DuplicateCoordinateWarning` is documented as appearing in `NumericalResult.warnings`; validation throws `MetricSignatureError` by default and emits the warning (a process warning) only with `UPT_ALLOW_COORD_SHADOW=1`.
         - [ ] Stale test header: `tests/bridges/dimensional-signature-catalog.test.ts` says only BE-11 and BE-14 have AST encodings; `BRIDGE_RHS_BY_ID` holds 42.
         - [x] `tools/create-dependency-graph`: an opt-in per-export API-surface report (signature, async, stability tag, root reachability) in its own module, with tests; existing outputs byte-identical without the flag.
         - [ ] OVERVIEW.md to 0 STE findings, stateless.

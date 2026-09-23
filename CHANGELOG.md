@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `API.md`: `DuplicateCoordinateWarning` is not a `NumericalResult` warning
+
+- The entry said the warning "appears in `NumericalResult.warnings`". It never does: a
+  covariant-derivative coordinate collision throws `MetricSignatureError` by default, and validation
+  emits `DuplicateCoordinateWarning` through `process.emitWarning` only when
+  `UPT_ALLOW_COORD_SHADOW=1` (`src/dimensional/connection-validators.ts`; the class's own JSDoc in
+  `src/dimensional/errors.ts` already said so). The same error was fixed in `DATAFLOW.md`'s error
+  table; this is the sibling copy.
+
 ### Changed (2026-09-23) — `API.md` in Simplified Technical English, stateless
 
 - 15 STE findings fixed (13 long sentences, 2 ambiguous references), prose only; `ste_check`

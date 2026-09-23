@@ -375,7 +375,7 @@ Thrown when an AD method is invoked on an engine that does not implement it.
 
 ### `DuplicateCoordinateWarning` — warning class
 
-A non-fatal warning (not thrown) emitted when duplicate coordinate labels are detected. Appears in `NumericalResult.warnings`.
+A warning class for a covariant derivative whose `wrt` coordinate label collides with a free index of the operand. By default the collision throws `MetricSignatureError`. Only when `UPT_ALLOW_COORD_SHADOW=1` is set does validation emit this class through `process.emitWarning` instead. It never appears in `NumericalResult.warnings`.
 
 **Kind**: warning class
 **Stability**: `@public`
