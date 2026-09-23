@@ -25,10 +25,17 @@ describe('pre-registration ↔ frozen item set', () => {
     expect(note).toContain(hashCanonical(items));
   });
 
-  it('POSITIVE CONTROL: a set with one more item would NOT match the recorded hash', () => {
-    const recorded = /`([0-9a-f]{64})`/.exec(note)?.[1];
-    expect(recorded).toBeDefined();
-    expect(hashCanonical([{ id: 'x' }])).not.toBe(recorded);
+  it('the CURRENT recorded hash (the last one in the note, after any amendment) is the committed set', () => {
+    const all = [...note.matchAll(/`([0-9a-f]{64})`/g)].map((m) => m[1]);
+    expect(all.length).toBeGreaterThan(0);
+    const items = loadFrozenItems(resolve(root, 'tests/fixtures/atlas/benchmark'));
+    expect(all.at(-1)).toBe(hashCanonical(items));
+  });
+
+  it('POSITIVE CONTROL: the committed set minus one item would NOT match the recorded hash', () => {
+    const items = loadFrozenItems(resolve(root, 'tests/fixtures/atlas/benchmark'));
+    expect(items.length).toBeGreaterThan(0);
+    expect(note).not.toContain(hashCanonical(items.slice(1)));
   });
 
   it('names the held-out family the code enforces', () => {

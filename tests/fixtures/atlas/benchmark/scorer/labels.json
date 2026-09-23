@@ -1,1 +1,563 @@
-[]
+[
+ {
+  "itemId": "mb-oscillators-1-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-02",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-04",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-06",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-08",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-1-09",
+  "kind": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "itemId": "mb-oscillators-1-10",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-oscillators-1-11",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-oscillators-1-12",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-oscillators-1-13",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-oscillators-1-14",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-oscillators-1-15",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-oscillators-1-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "itemId": "mb-oscillators-2-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-02",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-04",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-06",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-08",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-oscillators-2-09",
+  "kind": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "itemId": "mb-oscillators-2-10",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-oscillators-2-11",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-oscillators-2-12",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-oscillators-2-13",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-oscillators-2-14",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-oscillators-2-15",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-oscillators-2-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "itemId": "mb-diffusion-1-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-02",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-04",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-06",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-08",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-1-10",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-diffusion-1-11",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-diffusion-1-12",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-diffusion-1-13",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-diffusion-1-14",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-diffusion-1-15",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-diffusion-1-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "itemId": "mb-diffusion-2-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-02",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-04",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-06",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-08",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-diffusion-2-10",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-diffusion-2-11",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-diffusion-2-12",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-diffusion-2-13",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-diffusion-2-14",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-diffusion-2-15",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-diffusion-2-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "itemId": "mb-waves-1-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-02",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-04",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-06",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-08",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-1-10",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-waves-1-11",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-waves-1-12",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-waves-1-13",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-waves-1-14",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-waves-1-15",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-waves-1-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "itemId": "mb-waves-2-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-02",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-04",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-06",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-08",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-waves-2-09",
+  "kind": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "itemId": "mb-waves-2-10",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-waves-2-11",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-waves-2-12",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-waves-2-13",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-waves-2-14",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-waves-2-15",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-waves-2-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-02",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-04",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-06",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-08",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-09",
+  "kind": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-10",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-11",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-12",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-13",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-14",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-15",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-fluid-statics-1-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-01",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-02",
+  "kind": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-03",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-04",
+  "kind": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-05",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-06",
+  "kind": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-07",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-08",
+  "kind": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-09",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-10",
+  "kind": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-11",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-12",
+  "kind": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-13",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-14",
+  "kind": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-15",
+  "kind": "valid"
+ },
+ {
+  "itemId": "mb-fluid-statics-2-16",
+  "kind": "invalid",
+  "failureKind": "analogy-promoted"
+ }
+]

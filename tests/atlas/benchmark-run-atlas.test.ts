@@ -61,6 +61,25 @@ describe('accept — only when every instrument ran and cleared', () => {
   });
 });
 
+describe('accept needs at least one instrument that RAN — never a vacuous accept', () => {
+  const TYPES_ONLY = { types: true, assumptions: false, dimensionsAndConventions: false, regimes: false };
+
+  it('types only, and the item claims no chain: nothing ran, so abstain rather than accept', () => {
+    const v = runAtlasOnItem(CLEAN, TYPES_ONLY);
+    expect(v.outcome).toBe('abstain');
+  });
+
+  it('CONTROL: types only, and the item claims a chain the table clears: that check ran, so accept', () => {
+    const chained: BenchmarkItem = { ...CLEAN, composedFrom: ['exact-equivalence', 'exact-equivalence'] };
+    expect(runAtlasOnItem(chained, TYPES_ONLY).outcome).toBe('accept');
+  });
+
+  it('every instrument off: abstain', () => {
+    const none = { types: false, assumptions: false, dimensionsAndConventions: false, regimes: false };
+    expect(runAtlasOnItem(CLEAN, none).outcome).toBe('abstain');
+  });
+});
+
 describe('reject — when an instrument demonstrably fires', () => {
   it('a convention mismatch rejects as convention-mismatch', () => {
     const v = runAtlasOnItem({

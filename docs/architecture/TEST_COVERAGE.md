@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 345 |
-| Total Test Files | 434 |
+| Total Test Files | 435 |
 | Source Files with Tests | 344 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -37,9 +37,9 @@ The following 1 source files are not directly imported by any test file:
 | `benchmark/backend-shapes.ts` | `barrel-completeness.test.ts`, `benchmark-baselines.test.ts` |
 | `benchmark/baselines.ts` | `barrel-completeness.test.ts`, `benchmark-baselines.test.ts` |
 | `benchmark/leakage.ts` | `barrel-completeness.test.ts`, `benchmark.test.ts` |
-| `benchmark/loader.ts` | `benchmark-preregistration.test.ts`, `benchmark.test.ts` |
+| `benchmark/loader.ts` | `benchmark-model-set.test.ts`, `benchmark-preregistration.test.ts`, `benchmark.test.ts` |
 | `benchmark/run-atlas.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-run-atlas.test.ts` |
-| `benchmark/stats.ts` | `barrel-completeness.test.ts`, `benchmark-stats.test.ts`, `link-prediction.test.ts` |
+| `benchmark/stats.ts` | `barrel-completeness.test.ts`, `benchmark-model-set.test.ts`, `benchmark-stats.test.ts`, `link-prediction.test.ts` |
 | `benchmark/study.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-study.test.ts` |
 | `benchmark/types.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-preregistration.test.ts`, `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
 | `atlas/composition-table.ts` | `barrel-completeness.test.ts`, `composition-table.test.ts`, `path-bound.test.ts` |
@@ -395,6 +395,7 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/barrel-completeness.test.ts` | 38 files |
 | `atlas/benchmark-ablation.test.ts` | 5 files |
 | `atlas/benchmark-baselines.test.ts` | 4 files |
+| `atlas/benchmark-model-set.test.ts` | 2 files |
 | `atlas/benchmark-preregistration.test.ts` | 3 files |
 | `atlas/benchmark-run-atlas.test.ts` | 4 files |
 | `atlas/benchmark-stats.test.ts` | 1 files |

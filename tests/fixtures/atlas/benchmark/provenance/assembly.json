@@ -1,0 +1,59 @@
+{
+ "model": "claude-fable-5-1",
+ "note": "Authors, encoder and both raters are MODEL instances. Kappa is agreement between two isolated instances of one model, not human inter-rater reliability.",
+ "authored": 128,
+ "kappaBinary": 0.9843520782396088,
+ "binaryMatrix": [
+  [
+   66,
+   1
+  ],
+  [
+   0,
+   61
+  ]
+ ],
+ "kappaNineCategory": 0.9777100565955594,
+ "nineCategoryOffScale": 0,
+ "raterAgreementWithAuthor": {
+  "A": 125,
+  "B": 126
+ },
+ "frozen": 125,
+ "frozenValid": 64,
+ "frozenInvalid": 61,
+ "frozenHeldOut": 32,
+ "frozenByFailureKind": {
+  "omitted-premise": 5,
+  "domain-violation": 8,
+  "convention-mismatch": 8,
+  "notation-collision": 8,
+  "dimensional-coincidence": 8,
+  "non-uniform-limit": 8,
+  "false-inverse": 8,
+  "analogy-promoted": 8
+ },
+ "contested": 3,
+ "contestedReasons": [
+  {
+   "id": "mb-diffusion-1-09",
+   "reasons": [
+    "the two raters disagree"
+   ]
+  },
+  {
+   "id": "mb-diffusion-2-09",
+   "reasons": [
+    "both raters contradict the author"
+   ]
+  },
+  {
+   "id": "mb-waves-1-09",
+   "reasons": [
+    "both raters contradict the author"
+   ]
+  }
+ ],
+ "crossSplitLeakage": [],
+ "frozenSetSha256": "0274f3cd275981434a6b8cac358a31b44bd1c38846a70f0ec7b9d72d12ce74a3"
+}

@@ -1,1 +1,333 @@
-[]
+[
+ {
+  "id": "mb-diffusion-1-09",
+  "kind": "invalid",
+  "failureKind": "omitted-premise",
+  "premises": [
+   "Fick's first law states that the diffusive flux of a solute is proportional to the negative concentration gradient, J = -D dc/dx, where D is the diffusion coefficient of the solute in the given solvent.",
+   "Conservation of solute gives the continuity equation dc/dt + dJ/dx = 0."
+  ],
+  "conclusion": "Combining the two laws gives Fick's second law dc/dt = D d^2c/dx^2.",
+  "claimedRelation": "derivation",
+  "family": "diffusion",
+  "split": "in-distribution",
+  "expr": {
+   "kind": "op",
+   "op": "-",
+   "args": [
+    {
+     "kind": "op",
+     "op": "/",
+     "args": [
+      {
+       "kind": "symbol",
+       "name": "c",
+       "dim": {
+        "L": -3,
+        "M": 0,
+        "T": 0,
+        "I": 0,
+        "Theta": 0,
+        "N": 1,
+        "J": 0
+       }
+      },
+      {
+       "kind": "symbol",
+       "name": "t",
+       "dim": {
+        "L": 0,
+        "M": 0,
+        "T": 1,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      }
+     ]
+    },
+    {
+     "kind": "op",
+     "op": "*",
+     "args": [
+      {
+       "kind": "symbol",
+       "name": "D",
+       "dim": {
+        "L": 2,
+        "M": 0,
+        "T": -1,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      },
+      {
+       "kind": "op",
+       "op": "/",
+       "args": [
+        {
+         "kind": "symbol",
+         "name": "c",
+         "dim": {
+          "L": -3,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 1,
+          "J": 0
+         }
+        },
+        {
+         "kind": "op",
+         "op": "^",
+         "args": [
+          {
+           "kind": "symbol",
+           "name": "x",
+           "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+           }
+          },
+          {
+           "kind": "symbol",
+           "name": "2",
+           "dim": {
+            "L": 0,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "authorship": "contested-draft",
+  "source": "model-authored (claude-fable-5-1, atlas-blind): Common textbook shortcut; Crank notes that the form dc/dt = D d^2c/dx^2 requires D independent of concentration and position.",
+  "sideConditions": []
+ },
+ {
+  "id": "mb-diffusion-2-09",
+  "kind": "invalid",
+  "failureKind": "omitted-premise",
+  "premises": [
+   "A rigid sphere of radius a is suspended in an unbounded incompressible Newtonian fluid of shear viscosity eta at temperature T; the Reynolds number of its motion is negligible, so the surrounding flow is Stokes flow.",
+   "The mobility mu is defined through the steady drift velocity under a constant applied force, v = mu F, and the Einstein relation D = mu k_B T holds."
+  ],
+  "conclusion": "The diffusion coefficient of the sphere is D = k_B T / (6 pi eta a).",
+  "claimedRelation": "derivation",
+  "family": "diffusion",
+  "split": "in-distribution",
+  "expr": {
+   "kind": "op",
+   "op": "-",
+   "args": [
+    {
+     "kind": "symbol",
+     "name": "D",
+     "dim": {
+      "L": 2,
+      "M": 0,
+      "T": -1,
+      "I": 0,
+      "Theta": 0,
+      "N": 0,
+      "J": 0
+     }
+    },
+    {
+     "kind": "op",
+     "op": "/",
+     "args": [
+      {
+       "kind": "op",
+       "op": "*",
+       "args": [
+        {
+         "kind": "symbol",
+         "name": "k_B",
+         "dim": {
+          "L": 2,
+          "M": 1,
+          "T": -2,
+          "I": 0,
+          "Theta": -1,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "T",
+         "dim": {
+          "L": 0,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 1,
+          "N": 0,
+          "J": 0
+         }
+        }
+       ]
+      },
+      {
+       "kind": "op",
+       "op": "*",
+       "args": [
+        {
+         "kind": "symbol",
+         "name": "6",
+         "dim": {
+          "L": 0,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "pi",
+         "dim": {
+          "L": 0,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "eta",
+         "dim": {
+          "L": -1,
+          "M": 1,
+          "T": -1,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "a",
+         "dim": {
+          "L": 1,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "authorship": "contested-draft",
+  "source": "model-authored (claude-fable-5-1, atlas-blind): Stokes-Einstein-Sutherland relation (Einstein 1905, Sutherland 1905); slip-dependence discussed in Lamb, Hydrodynamics, and Happel & Brenner.",
+  "sideConditions": [
+   "Reynolds number negligible (Stokes flow)",
+   "fluid unbounded",
+   "eta ≠ 0",
+   "a ≠ 0"
+  ]
+ },
+ {
+  "id": "mb-waves-1-09",
+  "kind": "invalid",
+  "failureKind": "omitted-premise",
+  "premises": [
+   "A linear, homogeneous, time-invariant medium supports plane waves exp(i(kx - omega t)) with a dispersion relation omega = omega(k), and the group velocity is v_g = d omega/dk.",
+   "A narrow-band wave packet centred at k_0 carries a time-averaged energy density <w> and a time-averaged energy flux <S>, and the energy transport velocity is defined by v_E = <S>/<w>.",
+   "Energy conservation holds in the form dw/dt + dS/dx = 0 for the fields of the medium."
+  ],
+  "conclusion": "v_E = d omega/dk evaluated at k = k_0",
+  "claimedRelation": "derivation",
+  "family": "waves",
+  "split": "in-distribution",
+  "expr": {
+   "kind": "op",
+   "op": "-",
+   "args": [
+    {
+     "kind": "symbol",
+     "name": "v_E",
+     "dim": {
+      "L": 1,
+      "M": 0,
+      "T": -1,
+      "I": 0,
+      "Theta": 0,
+      "N": 0,
+      "J": 0
+     }
+    },
+    {
+     "kind": "op",
+     "op": "/",
+     "args": [
+      {
+       "kind": "symbol",
+       "name": "omega",
+       "dim": {
+        "L": 0,
+        "M": 0,
+        "T": -1,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      },
+      {
+       "kind": "symbol",
+       "name": "k",
+       "dim": {
+        "L": -1,
+        "M": 0,
+        "T": 0,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "authorship": "contested-draft",
+  "source": "model-authored (claude-fable-5-1, atlas-blind): Brillouin, Wave Propagation and Group Velocity (1960); Landau and Lifshitz, Electrodynamics of Continuous Media, sec. 84, where the equality is shown to require a transparent (non-absorbing) medium.",
+  "sideConditions": [
+   "k = k_0",
+   "narrow-band packet"
+  ]
+ }
+]

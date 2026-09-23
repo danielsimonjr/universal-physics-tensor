@@ -1,16 +1,6 @@
 [
  {
   "id": "mb-oscillators-1-01",
-  "kind": "valid",
-  "premises": [
-   "A mass m on a linear spring of constant k, with a viscous damping force -b x', is driven by F0 cos(omega t). The equation of motion is written x'' + 2 beta x' + omega0^2 x = (F0/m) cos(omega t), with beta = b/(2m) and omega0^2 = k/m.",
-   "After the transients have decayed, the displacement is x = A cos(omega t - delta) with A = (F0/m) / sqrt((omega0^2 - omega^2)^2 + 4 beta^2 omega^2).",
-   "The damping is light enough that 2 beta^2 < omega0^2."
-  ],
-  "conclusion": "The steady-state amplitude A is largest at the driving frequency omega_r given by omega_r^2 = omega0^2 - 2 beta^2, which lies below the natural frequency omega0.",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -138,23 +128,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard result (e.g. Marion & Thornton, Classical Dynamics, ch. 3): amplitude resonance of a damped driven oscillator.",
   "sideConditions": [
    "2 beta^2 < omega0^2"
   ]
  },
  {
   "id": "mb-oscillators-1-02",
-  "kind": "valid",
-  "premises": [
-   "A mass m hangs from a linear spring of constant k in a uniform gravitational field g. The coordinate x is the extension of the spring beyond its unstretched length, positive downward, so Newton's law reads m x'' = -k x + m g.",
-   "Define the new coordinate y = x - m g/k, the displacement measured from the static equilibrium position."
-  ],
-  "conclusion": "In the variable y the motion obeys y'' = -(k/m) y, so the hanging spring in gravity and the free horizontal mass-spring oscillator are the same oscillator; gravity only shifts the centre of oscillation and leaves the frequency unchanged.",
-  "claimedRelation": "exact-equivalence",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "+",
@@ -263,21 +242,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Introductory mechanics texts (e.g. Halliday-Resnick-Walker, vertical spring-mass system).",
   "sideConditions": []
  },
  {
   "id": "mb-oscillators-1-03",
-  "kind": "valid",
-  "premises": [
-   "A damped oscillator m x'' + b x' + k x = F0 cos(omega t), with b > 0, has the steady-state solution x = A cos(omega t - delta), where A = (F0/m) / sqrt((omega0^2 - omega^2)^2 + 4 beta^2 omega^2), tan(delta) = 2 beta omega / (omega0^2 - omega^2), beta = b/(2m) and omega0^2 = k/m.",
-   "The driving frequency is now fixed at the natural frequency, omega = omega0."
-  ],
-  "conclusion": "The steady-state amplitude reduces to A = F0/(b omega0), and the displacement lags the driving force by exactly a quarter of a period.",
-  "claimedRelation": "restriction",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -348,8 +316,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Special case of the general forced-oscillator solution; e.g. French, Vibrations and Waves, ch. 4.",
   "sideConditions": [
    "b > 0",
    "omega = omega0"
@@ -357,16 +323,6 @@
  },
  {
   "id": "mb-oscillators-1-04",
-  "kind": "valid",
-  "premises": [
-   "For the driven oscillator x'' + 2 beta x' + omega0^2 x = (F0/m) cos(omega t), the steady-state amplitude is A(omega) = (F0/m) / sqrt((omega0^2 - omega^2)^2 + 4 beta^2 omega^2).",
-   "The exact maximum of A over omega occurs at omega_r^2 = omega0^2 - 2 beta^2 and equals A_max = (F0/m) / (2 beta sqrt(omega0^2 - beta^2)).",
-   "The oscillator is lightly damped: beta << omega0."
-  ],
-  "conclusion": "In this regime the peak amplitude is A_max = F0/(2 m beta omega0), with a relative error of order beta^2/omega0^2.",
-  "claimedRelation": "approximation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -463,24 +419,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Light-damping approximation to the resonance peak; e.g. Fowles & Cassiday, Analytical Mechanics.",
   "sideConditions": [
    "beta << omega0"
   ]
  },
  {
   "id": "mb-oscillators-1-05",
-  "kind": "valid",
-  "premises": [
-   "A weakly damped oscillator (beta << omega0) has displacement x(t) = A0 e^{-beta t} cos(omega_d t + phi), with omega_d^2 = omega0^2 - beta^2 and omega0^2 = k/m.",
-   "Its instantaneous mechanical energy is E = (1/2) m x'^2 + (1/2) k x^2, which fluctuates within each cycle because the damping force does work non-uniformly.",
-   "Denote by <E>(t) the energy averaged over one period 2 pi/omega_d of the fast oscillation, treating the slowly varying envelope e^{-beta t} as constant over that period."
-  ],
-  "conclusion": "To leading order in beta/omega0 the cycle-averaged energy decays exponentially, <E>(t) = (1/2) k A0^2 e^{-2 beta t}.",
-  "claimedRelation": "coarse-graining",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -632,24 +576,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard treatment of energy decay and Q in lightly damped oscillators; e.g. French, Vibrations and Waves, ch. 3.",
   "sideConditions": [
    "beta << omega0"
   ]
  },
  {
   "id": "mb-oscillators-1-06",
-  "kind": "valid",
-  "premises": [
-   "The underdamped oscillator x'' + 2 beta x' + omega0^2 x = 0 with beta < omega0 has solution x(t) = e^{-beta t} [C cos(omega_d t) + D sin(omega_d t)/omega_d], where omega_d = sqrt(omega0^2 - beta^2), C = x(0) and D = x'(0) + beta x(0).",
-   "Both cos(omega_d t) and sin(omega_d t)/omega_d are entire functions of omega_d^2, so the solution is an analytic function of the parameter omega_d^2 = omega0^2 - beta^2 and satisfies the differential equation identically in that parameter.",
-   "For beta > omega0 define gamma = sqrt(beta^2 - omega0^2), so that omega_d = i gamma."
-  ],
-  "conclusion": "Continuing the parameter omega_d^2 to negative values gives the overdamped solution x(t) = e^{-beta t} [C cosh(gamma t) + D sinh(gamma t)/gamma] with the same C and D.",
-  "claimedRelation": "analytic-continuation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -859,24 +791,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Unified treatment of under- and overdamped motion via cos(i z) = cosh(z); e.g. Symon, Mechanics, ch. 2.",
   "sideConditions": [
    "beta > omega0"
   ]
  },
  {
   "id": "mb-oscillators-1-07",
-  "kind": "valid",
-  "premises": [
-   "A resistor R, inductor L and capacitor C are connected in parallel and fed by a current source I_s(t). Kirchhoff's current law for the common node voltage v(t), after one time derivative, is C v'' + (1/R) v' + (1/L) v = I_s'(t).",
-   "A driven mechanical oscillator obeys m x'' + b x' + k x = F(t), with quality factor Q = sqrt(k m)/b.",
-   "The two equations have identical mathematical form under the correspondence v <-> x, C <-> m, 1/R <-> b, 1/L <-> k, although voltage, capacitance and conductance are not displacement, mass and friction."
-  ],
-  "conclusion": "Transcribing the mechanical quality factor through this correspondence, the parallel RLC circuit has Q = R sqrt(C/L), the reciprocal of the series-circuit expression, so a larger resistance means lighter damping in the parallel circuit.",
-  "claimedRelation": "structural-analogy",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -966,22 +886,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Duality of series and parallel RLC circuits; e.g. Horowitz & Hill, The Art of Electronics, LC resonant circuits.",
   "sideConditions": []
  },
  {
   "id": "mb-oscillators-1-08",
-  "kind": "valid",
-  "premises": [
-   "A lossless LC circuit stores charge Q on the capacitor and magnetic flux Phi in the inductor. Its Hamiltonian is H = Q^2/(2C) + Phi^2/(2L), with Phi and Q a canonical pair, Poisson bracket {Phi, Q} = 1, so that Hamilton's equations reproduce dPhi/dt = Q/C and dQ/dt = -Phi/L.",
-   "The classical oscillation frequency is omega0 = 1/sqrt(LC).",
-   "The circuit is quantized by promoting Phi and Q to operators with the Poisson bracket replaced by the commutator [Phi, Q] = i hbar."
-  ],
-  "conclusion": "The energy spectrum of the quantized circuit is E_n = hbar omega0 (n + 1/2), n = 0, 1, 2, ..., and the classical Hamiltonian is recovered as hbar -> 0.",
-  "claimedRelation": "deformation-quantization",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -1084,24 +992,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Canonical quantization of the LC oscillator, the starting point of circuit QED (e.g. Devoret, Les Houches lectures 1995).",
   "sideConditions": [
    "n = 0, 1, 2, ..."
   ]
  },
  {
   "id": "mb-oscillators-1-09",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
-  "premises": [
-   "Two bodies slide without friction along a line. Each is attached to a fixed wall by a linear spring of constant k, and the two bodies are joined to each other by a linear spring of constant kappa. Let m denote the mass of the first body, and consider small oscillations.",
-   "The normal modes are the in-phase motion, in which both bodies move together and the coupling spring stays at its natural length, and the anti-phase motion, in which the midpoint of the coupling spring stays at rest and each body feels an extra restoring force 2 kappa times its displacement."
-  ],
-  "conclusion": "The anti-phase normal mode has angular frequency given by omega_2^2 = (k + 2 kappa)/m.",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -1210,25 +1106,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Textbook two-mass coupled oscillator; common error of applying the symmetric-mode analysis to an unspecified (possibly asymmetric) system.",
   "sideConditions": [
    "small oscillations"
   ]
  },
  {
   "id": "mb-oscillators-1-10",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "A series RLC circuit with L = 1.0 mH, C = 1.0 microfarad and R = 60 ohm is driven by an ideal source V0 cos(omega t). Writing omega0^2 = 1/(LC), the steady-state charge amplitude is q0 = (V0/L) / sqrt((omega0^2 - omega^2)^2 + (R omega/L)^2).",
-   "The capacitor voltage amplitude is V_C = q0/C, so V_C(omega) = V0 omega0^2 / sqrt((omega0^2 - omega^2)^2 + (R omega/L)^2).",
-   "Setting the derivative of the expression under the square root with respect to omega^2 to zero locates the extremum of V_C."
-  ],
-  "conclusion": "The capacitor voltage is therefore maximal at a driving frequency somewhat below resonance, omega_max^2 = 1/(LC) - R^2/(2 L^2).",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -1413,23 +1296,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Capacitor-voltage resonance of the series RLC circuit; the formula is used outside its range R^2 < 2L/C (a frequent errata-type slip in worked examples).",
   "sideConditions": []
  },
  {
   "id": "mb-oscillators-1-11",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "For a lightly damped oscillator written in the form x'' + gamma x' + omega0^2 x = 0, the stored energy decays as e^{-gamma t} and the quality factor is defined by Q = omega0/gamma.",
-   "The series RLC circuit obeys L q'' + R q' + q/C = 0 with omega0^2 = 1/(LC); its charge amplitude decays as e^{-R t/(2L)}, so the circuit's damping rate is gamma = R/(2L).",
-   "The circuit equation has the same form as the mechanical one, so the mechanical definition of Q may be carried over term by term."
-  ],
-  "conclusion": "The quality factor of the series RLC circuit is Q = 2 omega0 L / R.",
-  "claimedRelation": "structural-analogy",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -1513,24 +1383,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Classic factor-of-two error from mixing the 'gamma' convention (energy decay rate) with the 'beta' convention (amplitude decay rate); appears in student solutions and some errata lists.",
   "sideConditions": [
    "lightly damped"
   ]
  },
  {
   "id": "mb-oscillators-1-12",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "A mass m on a spring of constant k with viscous damping -b x' is driven sinusoidally. In the steady state x = A cos(omega t - delta), and the average power dissipated by the damping force over one cycle is P = (1/2) b omega^2 A^2, where omega is the angular frequency appearing in x(t).",
-   "The oscillator's angular frequency satisfies omega^2 = k/m."
-  ],
-  "conclusion": "Substituting the second relation into the first, the average dissipated power is P = b k A^2/(2 m), whatever the frequency at which the oscillator is driven.",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -1652,25 +1510,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Common student conflation of the driving frequency and the natural frequency, both written omega (Kleppner & Kolenkow-style problem sets).",
   "sideConditions": [
    "omega^2 = k/m"
   ]
  },
  {
   "id": "mb-oscillators-1-13",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "A capacitor C charged to q0 is connected at t = 0 through a switch to a series combination of an inductor L and resistor R, with R small enough that the discharge is oscillatory at angular frequency omega_d.",
-   "The product RC has the dimensions of time and is the characteristic time constant associated with a resistor and capacitor in a circuit.",
-   "The oscillating charge is confined within an exponentially decaying envelope whose time constant is fixed by the dissipative element R together with the energy-storing elements."
-  ],
-  "conclusion": "The charge on the capacitor is q(t) = q0 e^{-t/(RC)} cos(omega_d t).",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -1819,8 +1664,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Student misconception: transplanting the RC time constant into the underdamped RLC envelope (seen in introductory E&M exams).",
   "sideConditions": [
    "R small enough that the discharge is oscillatory",
    "t >= 0"
@@ -1828,17 +1671,6 @@
  },
  {
   "id": "mb-oscillators-1-14",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "A simple pendulum obeys theta'' + omega0^2 sin(theta) = 0 with omega0^2 = g/L; it is released from rest at angle theta0.",
-   "For small angles sin(theta) = theta - theta^3/6 + ..., so the exact equation differs from the linearized equation theta'' + omega0^2 theta = 0 by terms of order theta0^3.",
-   "The linearized equation with the same initial conditions has the solution theta0 cos(omega0 t)."
-  ],
-  "conclusion": "Hence for small release angles the exact motion is theta(t) = theta0 cos(omega0 t) + O(theta0^3), the error bound holding uniformly for all t >= 0.",
-  "claimedRelation": "approximation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -1913,8 +1745,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Secular-term issue in naive perturbation theory (Poincare-Lindstedt method motivation; Bender & Orszag ch. 11).",
   "sideConditions": [
    "|theta0| << 1",
    "t >= 0",
@@ -1923,16 +1753,6 @@
  },
  {
   "id": "mb-oscillators-1-15",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "Any one-dimensional motion satisfying x'' = -omega^2 x, with omega > 0, is periodic: the system returns to the same position and velocity after every interval T = 2 pi/omega.",
-   "A mechanical oscillator is observed with a stopwatch to return exactly to its initial position and velocity after every interval of T seconds."
-  ],
-  "conclusion": "The oscillator's displacement therefore obeys x'' = -(2 pi/T)^2 x.",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "+",
@@ -2079,25 +1899,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misconception that 'periodic' means 'simple harmonic' (documented in physics-education studies on oscillation concepts).",
   "sideConditions": [
    "T > 0"
   ]
  },
  {
   "id": "mb-oscillators-1-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "The series RLC equation L q'' + R q' + q/C = V(t) and the mechanical equation m x'' + b x' + k x = F(t) are identical in form under q <-> x, L <-> m, R <-> b, 1/C <-> k, V <-> F.",
-   "In the mechanical system m is the inertia of the moving body and (1/2) m v^2 is the kinetic energy of that body; correspondingly the inductor's energy (1/2) L I^2 is the energy associated with the moving charge.",
-   "The current in the coil's wire, of length l, cross-section A and conduction-electron density n, is I = n e A v_d, carried by N = n A l electrons of mass m_e moving at drift velocity v_d."
-  ],
-  "conclusion": "Identifying (1/2) L I^2 with the electrons' kinetic energy (1/2) N m_e v_d^2 gives the coil's inductance as L = m_e l/(n e^2 A).",
-  "claimedRelation": "exact-equivalence",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -2219,22 +2026,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misconception that inductance is the 'inertia of electrons'; the expression is the (usually negligible) kinetic inductance, not the magnetic inductance of a coil.",
   "sideConditions": []
  },
  {
   "id": "mb-oscillators-2-01",
-  "kind": "valid",
-  "premises": [
-   "A mass m on a spring of constant k moves along a line under a viscous drag force -b dx/dt, so that m d^2x/dt^2 + b dx/dt + k x = 0 with b, k, m > 0 in SI units.",
-   "The damping is subcritical, b^2 < 4 m k. Write gamma = b/(2m) and omega_d = sqrt(k/m - gamma^2).",
-   "x_n denotes the value of x at its n-th successive local maximum, n = 1, 2, 3, ..."
-  ],
-  "conclusion": "ln(x_n / x_(n+1)) = 2 pi gamma / omega_d",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -2341,8 +2136,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Logarithmic decrement; standard result in French, Vibrations and Waves, and in engineering vibration texts.",
   "sideConditions": [
    "b > 0",
    "k > 0",
@@ -2357,15 +2150,6 @@
  },
  {
   "id": "mb-oscillators-2-02",
-  "kind": "valid",
-  "premises": [
-   "x(t) satisfies d^2x/dt^2 + 2 gamma dx/dt + omega0^2 x = 0, where gamma >= 0 and omega0 > 0 are constants (any ratio gamma/omega0 is allowed).",
-   "Define the new dependent variable y(t) = e^(gamma t) x(t), so that x(t) = e^(-gamma t) y(t)."
-  ],
-  "conclusion": "d^2y/dt^2 + (omega0^2 - gamma^2) y = 0",
-  "claimedRelation": "exact-equivalence",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -2531,8 +2315,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard substitution that removes the first-derivative term; e.g. Marion and Thornton, Classical Dynamics, damped oscillations.",
   "sideConditions": [
    "gamma >= 0",
    "omega0 > 0"
@@ -2540,16 +2322,6 @@
  },
  {
   "id": "mb-oscillators-2-03",
-  "kind": "valid",
-  "premises": [
-   "Two equal masses m slide without friction on a line. Each mass is joined to a fixed wall by a spring of constant k, and the two masses are joined to each other by a spring of constant kappa. x1 and x2 are the displacements from equilibrium, measured positive in the same direction.",
-   "The equations of motion are m d^2x1/dt^2 = -k x1 - kappa (x1 - x2) and m d^2x2/dt^2 = -k x2 - kappa (x2 - x1).",
-   "Impose the initial condition x1(0) = A, x2(0) = -A, dx1/dt(0) = dx2/dt(0) = 0."
-  ],
-  "conclusion": "x1(t) = A cos( sqrt((k + 2 kappa)/m) t )",
-  "claimedRelation": "restriction",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -2700,21 +2472,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Antisymmetric normal mode of two coupled masses; any intermediate mechanics text.",
   "sideConditions": []
  },
  {
   "id": "mb-oscillators-2-04",
-  "kind": "valid",
-  "premises": [
-   "The steady state of m d^2x/dt^2 + b dx/dt + k x = F0 cos(omega t) has amplitude A(omega) = (F0/m) / sqrt((omega0^2 - omega^2)^2 + (2 gamma omega)^2), where omega0 = sqrt(k/m) and gamma = b/(2m).",
-   "The damping is weak, gamma << omega0, and the driving frequency lies in the band |omega - omega0| << omega0."
-  ],
-  "conclusion": "Within this band, with relative error of order |omega - omega0| / omega0, A(omega) = (F0 / (2 m omega0)) / sqrt((omega - omega0)^2 + gamma^2)",
-  "claimedRelation": "approximation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -2912,8 +2673,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Lorentzian (resonance) approximation to the driven oscillator; e.g. Feynman Lectures Vol. I ch. 23.",
   "sideConditions": [
    "gamma << omega0",
    "|omega - omega0| << omega0"
@@ -2921,17 +2680,6 @@
  },
  {
   "id": "mb-oscillators-2-05",
-  "kind": "valid",
-  "premises": [
-   "Two identical pendulums (bob mass m, length l, omega0 = sqrt(g/l)) swing at small angles in the same plane; their bobs are joined by a weak spring of constant kappa with kappa/(m omega0^2) << 1.",
-   "The normal modes are the in-phase mode with angular frequency omega_+ = omega0 and the anti-phase mode with omega_- = sqrt(omega0^2 + 2 kappa/m); define Delta = omega_- - omega_+.",
-   "At t = 0 pendulum 1 is released from rest with displacement A and pendulum 2 is at rest at its equilibrium position.",
-   "E1(t) denotes the kinetic plus gravitational potential energy of pendulum 1 averaged over one period 2 pi/omega0 of the fast oscillation, and E0 = (1/2) m omega0^2 A^2 is the initial energy."
-  ],
-  "conclusion": "E1(t) = E0 cos^2(Delta t / 2)",
-  "claimedRelation": "coarse-graining",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -3044,23 +2792,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Beats and energy exchange between weakly coupled pendulums; French, Vibrations and Waves ch. 5; Crawford, Waves.",
   "sideConditions": [
    "kappa/(m omega0^2) << 1"
   ]
  },
  {
   "id": "mb-oscillators-2-06",
-  "kind": "valid",
-  "premises": [
-   "For d^2x/dt^2 + 2 gamma dx/dt + omega0^2 x = 0 with 0 < gamma < omega0, the solution with x(0) = A and dx/dt(0) = B - gamma A is x(t) = e^(-gamma t) [ A cos(omega_d t) + B sin(omega_d t) / omega_d ], where omega_d = sqrt(omega0^2 - gamma^2).",
-   "Now let gamma > omega0 and define kappa = sqrt(gamma^2 - omega0^2) > 0, so that omega_d is continued to the imaginary value omega_d = i kappa, using cos(i u) = cosh(u) and sin(i u) = i sinh(u)."
-  ],
-  "conclusion": "x(t) = e^(-gamma t) [ A cosh(kappa t) + B sinh(kappa t) / kappa ]",
-  "claimedRelation": "analytic-continuation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -3270,8 +3007,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Underdamped-to-overdamped continuation; e.g. Taylor, Classical Mechanics sec. 5.4, and Morin.",
   "sideConditions": [
    "gamma > omega0",
    "kappa > 0"
@@ -3279,15 +3014,6 @@
  },
  {
   "id": "mb-oscillators-2-07",
-  "kind": "valid",
-  "premises": [
-   "A chain of equal masses m on a line, each joined to its two neighbours by springs of constant K with lattice spacing a, obeys m d^2u_n/dt^2 = K (u_(n+1) - 2 u_n + u_(n-1)) for small displacements u_n, and has travelling-wave solutions u_n = U exp(i(q n a - omega t)) with dispersion relation omega = 2 sqrt(K/m) |sin(q a / 2)|.",
-   "A ladder network consists of identical series inductors L between successive nodes, each node connected to ground through a capacitor C, with a nominal cell length a. By Kirchhoff's laws the node charge q_n obeys L d^2q_n/dt^2 = (q_(n+1) - 2 q_n + q_(n-1)) / C, which has the same form as the chain equation under the correspondence m -> L, K -> 1/C, u_n -> q_n."
-  ],
-  "conclusion": "omega = (2 / sqrt(L C)) |sin(q a / 2)|",
-  "claimedRelation": "structural-analogy",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -3476,21 +3202,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Mechanical chain versus LC transmission-line ladder; Crawford, Waves (Berkeley Physics Course vol. 3) ch. 2-4.",
   "sideConditions": []
  },
  {
   "id": "mb-oscillators-2-08",
-  "kind": "valid",
-  "premises": [
-   "An ideal LC circuit (no resistance) has energy H = q^2/(2C) + Phi^2/(2L), where q is the capacitor charge and Phi = L I is the flux linkage of the inductor; Hamilton's equations with q as coordinate and Phi as conjugate momentum reproduce dq/dt = I and L dI/dt = -q/C.",
-   "The circuit is quantized canonically by promoting q and Phi to operators with [q, Phi] = i hbar, and E_n (n = 0, 1, 2, ...) denote the energy eigenvalues of the resulting Hamiltonian."
-  ],
-  "conclusion": "E_n = hbar (n + 1/2) / sqrt(L C)",
-  "claimedRelation": "deformation-quantization",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -3618,24 +3333,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Quantum LC oscillator, the starting point of circuit QED; e.g. Devoret's Les Houches lectures on quantum fluctuations in electrical circuits.",
   "sideConditions": [
    "n = 0, 1, 2, ..."
   ]
  },
  {
   "id": "mb-oscillators-2-09",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
-  "premises": [
-   "A particle of mass m moves in one dimension in a smooth potential U(x) with a single minimum at x = 0, where U'(0) = 0 and U''(0) = k > 0.",
-   "The particle is released from rest at x = A > 0 and oscillates about x = 0; T denotes the period of this oscillation."
-  ],
-  "conclusion": "T = 2 pi sqrt(m / k)",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -3738,8 +3441,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Common student error: treating every oscillation about a potential minimum as isochronous; cf. Landau and Lifshitz Mechanics sec. 11 on the amplitude dependence of the period.",
   "sideConditions": [
    "k > 0",
    "A > 0"
@@ -3747,17 +3448,6 @@
  },
  {
   "id": "mb-oscillators-2-10",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "For m d^2x/dt^2 + b dx/dt + k x = 0 define omega0 = sqrt(k/m), the quality factor Q = m omega0 / b, and omega_d as the angular frequency of the damped oscillation.",
-   "For Q >> 1 the damped frequency is given by omega_d = omega0 (1 - 1/(8 Q^2)), with relative error of order Q^(-4).",
-   "Consider the oscillator with b = 2 sqrt(k m), that is Q = 1/2."
-  ],
-  "conclusion": "omega_d = omega0 / 2",
-  "claimedRelation": "approximation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -3809,8 +3499,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misuse of the large-Q expansion of omega_d = omega0 sqrt(1 - 1/(4 Q^2)); recurring homework error.",
   "sideConditions": [
    "Q >> 1",
    "b = 2 sqrt(k m)",
@@ -3831,17 +3519,6 @@
  },
  {
   "id": "mb-oscillators-2-11",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "The free damped oscillator d^2x/dt^2 + 2 gamma dx/dt + omega0^2 x = 0 with 0 < gamma < omega0 has solutions whose amplitude decays as exp(-gamma t), and the energy E is proportional to the square of the amplitude.",
-   "For a lightly damped oscillator the quality factor is Q = omega0 / gamma, where gamma is the damping constant of the oscillator.",
-   "E0 denotes the energy at t = 0."
-  ],
-  "conclusion": "E(t) = E0 exp(-2 omega0 t / Q)",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -3948,24 +3625,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Factor-of-two mismatch between texts writing 2 gamma x' (Taylor, Q = omega0/(2 gamma)) and texts writing gamma x' (French, Q = omega0/gamma).",
   "sideConditions": [
    "0 < gamma < omega0"
   ]
  },
  {
   "id": "mb-oscillators-2-12",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "A driven damped oscillator obeys m d^2x/dt^2 + b dx/dt + k x = F0 cos(omega t), and its steady-state motion is x(t) = A cos(omega t - phi) with tan(phi) = b omega / (k - m omega^2), where 0 <= phi <= pi.",
-   "The oscillator's angular frequency is omega = sqrt(k/m), so that k - m omega^2 = 0."
-  ],
-  "conclusion": "phi = pi / 2",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -4017,8 +3682,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Student misconception that a driven oscillator vibrates at its own natural frequency; conflation of driving and natural frequency symbols.",
   "sideConditions": [
    "0 <= phi <= pi",
    "k - m omega^2 = 0"
@@ -4026,16 +3689,6 @@
  },
  {
   "id": "mb-oscillators-2-13",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "A series RLC circuit obeys L d^2q/dt^2 + R dq/dt + q/C = 0. Its free response changes from oscillatory to non-oscillatory at a critical resistance R_c that depends only on L and C.",
-   "The only combination of L and C with the SI units of resistance (ohm) is sqrt(L/C), the characteristic impedance of the circuit; the transition to non-oscillatory behaviour occurs when the resistance matches this impedance."
-  ],
-  "conclusion": "R_c = sqrt(L / C)",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -4106,8 +3759,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Confusion between characteristic impedance sqrt(L/C) and the critical-damping resistance 2 sqrt(L/C); a recurring erratum in circuit problem solutions.",
   "sideConditions": [],
   "conventions": {
    "premise": {
@@ -4117,17 +3768,6 @@
  },
  {
   "id": "mb-oscillators-2-14",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "For m d^2x/dt^2 + b dx/dt + k x = F0 cos(omega t) with b > 0, every solution approaches the steady state x_s(t) = A(omega) cos(omega t - phi) as t -> infinity, with A(omega) = (F0/m) / sqrt((omega0^2 - omega^2)^2 + (b omega/m)^2) and omega0 = sqrt(k/m).",
-   "For fixed omega != omega0, as b -> 0 the steady state tends to x_s(t) = F0 cos(omega t) / (m (omega0^2 - omega^2)), since A -> F0/(m |omega0^2 - omega^2|) and phi -> 0 or pi.",
-   "Consider the undamped oscillator b = 0 driven at omega != omega0 and starting from rest at x = 0."
-  ],
-  "conclusion": "lim_(t -> infinity) [ x(t) - F0 cos(omega t) / (m (omega0^2 - omega^2)) ] = 0",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -4316,8 +3956,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Interchange of the limits t -> infinity and b -> 0 for the driven oscillator; the undamped solution (cos(omega t) - cos(omega0 t)) never loses its transient.",
   "sideConditions": [
    "omega ≠ omega0",
    "b = 0"
@@ -4325,16 +3963,6 @@
  },
  {
   "id": "mb-oscillators-2-15",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "For the weakly damped oscillator m d^2x/dt^2 + b dx/dt + k x = 0 with b << sqrt(k m), the energy E = (1/2) m (dx/dt)^2 + (1/2) k x^2 averaged over one cycle, <E>, obeys d<E>/dt = -(b/m) <E>, so that <E>(t) = E0 exp(-b t/m).",
-   "Because the cycle average commutes with d/dt and the exponential law for <E> holds at every instant t, the same first-order law governs the unaveraged energy E(t)."
-  ],
-  "conclusion": "dE/dt = -(b/m) E",
-  "claimedRelation": "derivation",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -4437,25 +4065,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Reversal of the cycle-averaging step in the standard Q derivation; cf. French, Vibrations and Waves, and common exam errors.",
   "sideConditions": [
    "b << sqrt(k m)"
   ]
  },
  {
   "id": "mb-oscillators-2-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "Two identical pendulums (mass m, omega0 = sqrt(g/l)) coupled by a weak spring of constant kappa, with pendulum 1 initially excited, exchange energy so that the fraction in pendulum 2 averaged over the fast oscillation is E2/E0 = sin^2(Delta t / 2), where Delta = omega_- - omega_+ = kappa / (m omega0) to first order in kappa/(m omega0^2).",
-   "A two-level atom initially in its ground state and driven resonantly by a classical field has excited-state probability P_e(t) = sin^2(Omega_R t / 2), where Omega_R is the Rabi frequency (optical Bloch equations in the rotating-wave approximation).",
-   "Both systems are governed by the same pair of coupled first-order equations for two slowly varying amplitudes, so the coupled pendulums are a two-level quantum system whose Rabi frequency is set by the spring coupling."
-  ],
-  "conclusion": "Omega_R = kappa / (m omega0)",
-  "claimedRelation": "exact-equivalence",
-  "family": "oscillators",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -4526,24 +4141,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Popular 'classical Rabi oscillation' demonstrations with coupled pendulums, sometimes overstated as an equivalence rather than an analogy.",
   "sideConditions": [
    "kappa/(m omega0^2) << 1"
   ]
  },
  {
   "id": "mb-diffusion-1-01",
-  "kind": "valid",
-  "premises": [
-   "A particle on a line moves with constant speed v and reverses direction at the events of a Poisson process of rate lambda (reversals are independent of position and of past history).",
-   "Let p_+(x,t) and p_-(x,t) be the probability densities of right-moving and left-moving particles. They obey dp_+/dt + v dp_+/dx = lambda (p_- - p_+) and dp_-/dt - v dp_-/dx = lambda (p_+ - p_-).",
-   "The total density is p = p_+ + p_- and the current is j = v (p_+ - p_-)."
-  ],
-  "conclusion": "The total density satisfies the telegraph equation d^2p/dt^2 + 2 lambda dp/dt = v^2 d^2p/dx^2.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -4760,21 +4363,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Goldstein (1951) and Kac (1974), persistent random walk and the telegraph equation.",
   "sideConditions": []
  },
  {
   "id": "mb-diffusion-1-02",
-  "kind": "valid",
-  "premises": [
-   "A passive scalar u(x,t) in a uniform flow of velocity v along x obeys the advection-diffusion equation du/dt + v du/dx = D d^2u/dx^2 on the whole real line, with D a constant.",
-   "Define the co-moving coordinate xi = x - v t and the function w(xi,t) = u(xi + v t, t)."
-  ],
-  "conclusion": "u solves the advection-diffusion equation if and only if w solves the pure diffusion equation dw/dt = D d^2w/dxi^2.",
-  "claimedRelation": "exact-equivalence",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -4883,22 +4475,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard Galilean invariance of the advection-diffusion equation (e.g. Crank, The Mathematics of Diffusion).",
   "sideConditions": []
  },
  {
   "id": "mb-diffusion-1-03",
-  "kind": "valid",
-  "premises": [
-   "An overdamped Brownian particle in a potential U(x) obeys the Langevin equation gamma dx/dt = -U'(x) + xi(t), with gamma the friction coefficient in kg/s and Gaussian white noise <xi(t) xi(t')> = 2 gamma k_B T delta(t - t').",
-   "Its probability density obeys the Smoluchowski equation dp/dt = d/dx[ (U'(x)/gamma) p ] + D d^2p/dx^2 with D = k_B T/gamma.",
-   "The potential is now taken to be harmonic, U(x) = (1/2) kappa x^2, with kappa > 0."
-  ],
-  "conclusion": "The density obeys dp/dt = (kappa/gamma) d(x p)/dx + D d^2p/dx^2.",
-  "claimedRelation": "restriction",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -5102,24 +4682,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Ornstein-Uhlenbeck process as the harmonic special case of the Smoluchowski equation (Risken, The Fokker-Planck Equation).",
   "sideConditions": [
    "kappa > 0"
   ]
  },
  {
   "id": "mb-diffusion-1-04",
-  "kind": "valid",
-  "premises": [
-   "A particle on a one-dimensional lattice of spacing a jumps to each neighbouring site with rate nu/2 (total jump rate nu), the waiting times being exponential and independent.",
-   "The occupation probability obeys the master equation dp_n/dt = (nu/2)(p_{n+1} + p_{n-1} - 2 p_n).",
-   "The probability is smooth on a length scale L, in the sense that p_n = p(n a, t) with p having bounded derivatives and a << L."
-  ],
-  "conclusion": "Expanding p(x +/- a) in a Taylor series, the master equation becomes dp/dt = D d^2p/dx^2 with D = nu a^2/2, the neglected term (D a^2/12) d^4p/dx^4 being of relative size O(a^2/L^2).",
-  "claimedRelation": "approximation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -5285,24 +4853,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Kramers-Moyal expansion of the simple random walk master equation (van Kampen, Stochastic Processes in Physics and Chemistry).",
   "sideConditions": [
    "a << L"
   ]
  },
  {
   "id": "mb-diffusion-1-05",
-  "kind": "valid",
-  "premises": [
-   "A solute of molecular diffusivity D is carried by steady laminar Poiseuille flow u(r) = 2U(1 - r^2/a^2) in a straight circular tube of radius a, U being the cross-sectionally averaged speed.",
-   "The concentration obeys dc/dt + u(r) dc/dz = D ( (1/r) d/dr (r dc/dr) + d^2c/dz^2 ) with zero radial flux at the wall r = a.",
-   "Times considered satisfy t >> a^2/D, so the solute has sampled the whole cross-section many times, and the cross-sectionally averaged concentration C(z,t) = (2/a^2) integral_0^a c r dr varies slowly along z."
-  ],
-  "conclusion": "The averaged concentration obeys the one-dimensional advection-diffusion equation dC/dt + U dC/dz = D_eff d^2C/dz^2 with D_eff = D + a^2 U^2/(48 D).",
-  "claimedRelation": "coarse-graining",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -5582,24 +5138,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Taylor (1953) and Aris (1956), shear dispersion in a tube.",
   "sideConditions": [
    "t >> a^2/D"
   ]
  },
  {
   "id": "mb-diffusion-1-06",
-  "kind": "valid",
-  "premises": [
-   "For real D > 0 the fundamental solution of du/dt = D d^2u/dx^2 with u(x,0) = delta(x) is G(x,t) = (4 pi D t)^(-1/2) exp(-x^2/(4 D t)) for t > 0.",
-   "The free Schroedinger equation i hbar dpsi/dt = -(hbar^2/2m) d^2psi/dx^2 can be written dpsi/dt = D_q d^2psi/dx^2 with D_q = i hbar/(2m).",
-   "The expression for G is continued in D from the positive real axis to D_q along a path in the right half-plane, the square root being taken on the branch that is continuous along this path."
-  ],
-  "conclusion": "The free-particle propagator is K(x,t) = (m/(2 pi i hbar t))^(1/2) exp(i m x^2/(2 hbar t)).",
-  "claimedRelation": "analytic-continuation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -5853,8 +5397,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Feynman and Hibbs, free-particle kernel via Wick rotation of the heat kernel.",
   "sideConditions": [
    "D > 0",
    "t > 0"
@@ -5862,15 +5404,6 @@
  },
  {
   "id": "mb-diffusion-1-07",
-  "kind": "valid",
-  "premises": [
-   "A submarine cable has series resistance r per unit length and shunt capacitance c per unit length; series inductance and shunt leakage conductance are negligible.",
-   "Kirchhoff's laws for a line element give dV/dx = -r I and dI/dx = -c dV/dt, where V(x,t) is the voltage to ground and I(x,t) the series current."
-  ],
-  "conclusion": "The voltage obeys dV/dt = (1/(r c)) d^2V/dx^2, which has the same mathematical form as the one-dimensional heat equation with diffusivity 1/(r c), although V is a potential rather than a conserved density and no random motion of charge carriers is implied.",
-  "claimedRelation": "structural-analogy",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -6017,21 +5550,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Kelvin (1855), the RC cable equation and Fourier's theory of heat.",
   "sideConditions": []
  },
  {
   "id": "mb-diffusion-1-08",
-  "kind": "valid",
-  "premises": [
-   "A quantum particle of mass m in a potential U(x), coupled to an Ohmic bath at temperature T with k_B T >> hbar gamma, has a Wigner function obeying the Caldeira-Leggett master equation dW/dt = -(p/m) dW/dx + U'(x) dW/dp - (hbar^2/24) U'''(x) d^3W/dp^3 + O(hbar^4) + gamma d(p W)/dp + gamma m k_B T d^2W/dp^2, where gamma is the momentum damping rate in 1/s.",
-   "The classical limit is taken as hbar -> 0 with m, T, gamma and U fixed, the Wigner function remaining smooth in p on scales set by m k_B T."
-  ],
-  "conclusion": "In this limit W obeys the classical Kramers equation dW/dt = -(p/m) dW/dx + U'(x) dW/dp + gamma d(p W)/dp + gamma m k_B T d^2W/dp^2.",
-  "claimedRelation": "deformation-quantization",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -6395,26 +5917,125 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Caldeira and Leggett (1983); classical limit of the quantum Brownian motion master equation in Wigner representation.",
   "sideConditions": [
    "k_B T >> hbar gamma",
    "hbar -> 0"
   ]
  },
  {
+  "id": "mb-diffusion-1-09",
+  "expr": {
+   "kind": "op",
+   "op": "-",
+   "args": [
+    {
+     "kind": "op",
+     "op": "/",
+     "args": [
+      {
+       "kind": "symbol",
+       "name": "c",
+       "dim": {
+        "L": -3,
+        "M": 0,
+        "T": 0,
+        "I": 0,
+        "Theta": 0,
+        "N": 1,
+        "J": 0
+       }
+      },
+      {
+       "kind": "symbol",
+       "name": "t",
+       "dim": {
+        "L": 0,
+        "M": 0,
+        "T": 1,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      }
+     ]
+    },
+    {
+     "kind": "op",
+     "op": "*",
+     "args": [
+      {
+       "kind": "symbol",
+       "name": "D",
+       "dim": {
+        "L": 2,
+        "M": 0,
+        "T": -1,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      },
+      {
+       "kind": "op",
+       "op": "/",
+       "args": [
+        {
+         "kind": "symbol",
+         "name": "c",
+         "dim": {
+          "L": -3,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 1,
+          "J": 0
+         }
+        },
+        {
+         "kind": "op",
+         "op": "^",
+         "args": [
+          {
+           "kind": "symbol",
+           "name": "x",
+           "dim": {
+            "L": 1,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+           }
+          },
+          {
+           "kind": "symbol",
+           "name": "2",
+           "dim": {
+            "L": 0,
+            "M": 0,
+            "T": 0,
+            "I": 0,
+            "Theta": 0,
+            "N": 0,
+            "J": 0
+           }
+          }
+         ]
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "sideConditions": []
+ },
+ {
   "id": "mb-diffusion-1-10",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "A Brownian sphere of radius a in a fluid of viscosity eta is described by the overdamped Langevin equation 6 pi eta a dx/dt = xi(t) with <xi(t) xi(t')> = 2 (6 pi eta a) k_B T delta(t - t'), which gives <Delta x^2(t)> = 2 D t with D = k_B T/(6 pi eta a) for all t > 0.",
-   "A silica bead has a = 0.5e-6 m and density 2000 kg/m^3; it is suspended in water with eta = 1.0e-3 Pa s at T = 300 K, so D = 4.4e-13 m^2/s.",
-   "The bead's position is sampled with a time resolution of 1 ns."
-  ],
-  "conclusion": "Over one sampling interval the mean-square displacement along x is <Delta x^2(1 ns)> = 2 D t = 8.8e-22 m^2.",
-  "claimedRelation": "approximation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -6479,8 +6100,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misapplication of the overdamped limit; see Li et al. (2010) on the ballistic regime of Brownian motion.",
   "sideConditions": [
    "t > 0",
    "t = 1e-9 s",
@@ -6492,17 +6111,6 @@
  },
  {
   "id": "mb-diffusion-1-11",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "Einstein's 1905 result for a Brownian particle is <Delta x^2(t)> = 2 D t, the mean-square displacement along a single coordinate axis over a time t.",
-   "The Stokes-Einstein relation gives D = k_B T/(6 pi eta a) for a sphere of radius a in a fluid of viscosity eta.",
-   "In a three-dimensional single-particle tracking experiment the quantity recorded is the full squared displacement |Delta r|^2 = Delta x^2 + Delta y^2 + Delta z^2, averaged over many trajectories."
-  ],
-  "conclusion": "The recorded mean-square displacement grows as <|Delta r|^2(t)> = k_B T t/(3 pi eta a).",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -6631,23 +6239,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Known factor-of-d error in particle-tracking analyses when 1D and 3D MSD normalizations are mixed (see e.g. Qian, Sheetz and Elson 1991).",
   "sideConditions": []
  },
  {
   "id": "mb-diffusion-1-12",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "A Brownian particle of mass m obeys m dv/dt = -gamma v + xi(t), where gamma = 6 pi eta a is the Stokes friction coefficient and <xi(t) xi(t')> = 2 gamma k_B T delta(t - t').",
-   "The velocity is an Ornstein-Uhlenbeck process whose autocorrelation decays exponentially, <v(0) v(t)> = <v^2> exp(-gamma t), with <v^2> = k_B T/m by equipartition.",
-   "The Green-Kubo formula gives the diffusion coefficient as D = integral_0^infinity <v(0) v(t)> dt."
-  ],
-  "conclusion": "Evaluating the integral gives D = k_B T/(m gamma).",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -6737,23 +6332,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Widespread student error from using gamma both for the friction coefficient (kg/s) and for the velocity relaxation rate (1/s); noted in errata to several statistical mechanics texts.",
   "sideConditions": []
  },
  {
   "id": "mb-diffusion-1-13",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "When a flat plate bounding a fluid at rest is impulsively set in motion, the fluid velocity obeys du/dt = nu d^2u/dy^2 with nu = eta/rho, and vorticity has penetrated a distance delta_v(t) = 2 (nu t)^(1/2) after time t.",
-   "When the same plate is instead suddenly heated, the fluid temperature obeys dT/dt = alpha d^2T/dy^2 with alpha = k/(rho c_p).",
-   "Both nu and alpha are diffusivities measured in m^2/s, and the two governing equations are identical in form."
-  ],
-  "conclusion": "The thermal penetration depth therefore equals the viscous one, delta_T(t) = 2 (nu t)^(1/2).",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -6843,23 +6425,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misconception that equal units imply equal transport rates; the ratio nu/alpha is the Prandtl number (Pr = 7 for water, 0.7 for air).",
   "sideConditions": []
  },
  {
   "id": "mb-diffusion-1-14",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "The Goldstein-Kac density obeys d^2p/dt^2 + 2 lambda dp/dt = v^2 d^2p/dx^2 with p(x,0) = delta(x) and dp/dt(x,0) = 0.",
-   "In the diffusion limit lambda -> infinity, v -> infinity with D = v^2/(2 lambda) fixed, p(x,t) converges for each fixed x and t to G(x,t) = (4 pi D t)^(-1/2) exp(-x^2/(4 D t)).",
-   "For finite but large lambda the diffusion limit is approached once t >> 1/lambda."
-  ],
-  "conclusion": "For t >> 1/lambda the telegraph solution is described by the Gaussian throughout space, p(x,t) = G(x,t) (1 + O(1/(lambda t))) for all x.",
-  "claimedRelation": "approximation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7100,8 +6669,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Known subtlety of the telegraph-to-diffusion limit (Kac 1974; Weiss, Aspects and Applications of the Random Walk).",
   "sideConditions": [
    "t >> 1/lambda",
    "D = v^2/(2 lambda)"
@@ -7109,16 +6676,6 @@
  },
  {
   "id": "mb-diffusion-1-15",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "A random walker on a lattice of spacing a that steps to a random neighbour every tau seconds has, on scales x >> a and t >> tau, a coarse-grained density obeying dc/dt = D d^2c/dx^2 with D = a^2/(2 tau).",
-   "In a bench experiment the concentration of a dye in water is found, on millimetre and minute scales, to obey dc/dt = D d^2c/dx^2 with D = 1.0e-9 m^2/s to within measurement error."
-  ],
-  "conclusion": "The dye molecules therefore move between collisions in steps of a fixed length a separated by a fixed time tau, with a^2 = 2 D tau.",
-  "claimedRelation": "coarse-graining",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7202,8 +6759,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misconception that the macroscopic diffusion equation identifies the microscopic dynamics; discussed in Chandrasekhar (1943) and in van Kampen.",
   "sideConditions": [
    "x >> a",
    "t >> tau",
@@ -7212,16 +6767,6 @@
  },
  {
   "id": "mb-diffusion-1-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "The free Schroedinger equation i hbar dpsi/dt = -(hbar^2/2m) d^2psi/dx^2 can be written as a diffusion equation dpsi/dt = D_q d^2psi/dx^2 with complex diffusivity D_q = i hbar/(2m), of magnitude hbar/(2m).",
-   "For the diffusion equation du/dt = D d^2u/dx^2 the variance of an initially localized packet grows linearly, <x^2>(t) = 2 D t."
-  ],
-  "conclusion": "A free quantum wave packet therefore spreads diffusively, its position variance growing as <Delta x^2>(t) = hbar t/m.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7292,22 +6837,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Common misreading of the Schroedinger-diffusion correspondence; contrast with the exact free Gaussian packet result in any quantum mechanics text.",
   "sideConditions": []
  },
  {
   "id": "mb-diffusion-2-01",
-  "kind": "valid",
-  "premises": [
-   "A particle moving in one dimension has a stationary velocity process v(t) with autocorrelation C(t) = <v(0) v(t)>, satisfying C(-t) = C(t), and C decays fast enough that integral_0^infinity |C(t)| dt and integral_0^infinity t |C(t)| dt are both finite.",
-   "The displacement is x(t) - x(0) = integral_0^t v(t') dt', so that, by stationarity, <(x(t) - x(0))^2> = 2 integral_0^t (t - s) C(s) ds.",
-   "The diffusion coefficient is defined as D = lim_{t -> infinity} <(x(t) - x(0))^2> / (2 t)."
-  ],
-  "conclusion": "D = integral_0^infinity C(t) dt.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7359,8 +6892,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Green-Kubo relation for self-diffusion (Kubo 1957; Zwanzig, Nonequilibrium Statistical Mechanics, ch. 4).",
   "sideConditions": [
    "C(-t) = C(t)",
    "integral_0^infinity |C(t)| dt finite",
@@ -7370,16 +6901,6 @@
  },
  {
   "id": "mb-diffusion-2-02",
-  "kind": "valid",
-  "premises": [
-   "A particle of mass m obeys the Langevin equation m dv/dt = -gamma v + xi(t), where gamma > 0 is a friction coefficient with units kg/s.",
-   "xi(t) is Gaussian white noise with <xi(t)> = 0 and <xi(t) xi(t')> = 2 gamma k_B T delta(t - t').",
-   "At t = 0 the velocity is in thermal equilibrium, <v(0)^2> = k_B T / m, and v(0) is uncorrelated with xi(t) for all t > 0 (causality)."
-  ],
-  "conclusion": "<v(0) v(t)> = (k_B T / m) exp(-gamma t / m) for t >= 0.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7524,8 +7045,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Ornstein-Uhlenbeck velocity process (Uhlenbeck & Ornstein 1930; Reif, Fundamentals of Statistical and Thermal Physics, sec. 15.7).",
   "sideConditions": [
    "t >= 0",
    "gamma > 0",
@@ -7535,16 +7054,6 @@
  },
  {
   "id": "mb-diffusion-2-03",
-  "kind": "valid",
-  "premises": [
-   "A passive solute of molecular diffusivity D is carried by steady Poiseuille flow in a straight circular tube of radius a, with axial velocity u(r) = 2 U (1 - r^2/a^2), where U is the cross-sectional mean speed.",
-   "The concentration c(r, z, t) obeys the advection-diffusion equation dc/dt + u(r) dc/dz = D (nabla_perp^2 c + d^2c/dz^2) with zero flux through the tube wall (partial derivatives understood).",
-   "The solute cloud is observed at times t >> a^2 / D, so that radial diffusion has mixed the solute across the section, and its axial extent is much larger than a."
-  ],
-  "conclusion": "The cross-sectionally averaged concentration obeys a one-dimensional advection-diffusion equation in the frame moving with speed U, with effective axial diffusivity D_eff = D + a^2 U^2 / (48 D).",
-  "claimedRelation": "coarse-graining",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7691,8 +7200,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Taylor dispersion (Taylor, Proc. R. Soc. A 219, 186 (1953); Aris 1956 moment method).",
   "sideConditions": [
    "t >> a^2 / D",
    "axial extent of solute cloud >> a",
@@ -7702,16 +7209,6 @@
  },
  {
   "id": "mb-diffusion-2-04",
-  "kind": "valid",
-  "premises": [
-   "An overdamped Brownian particle in one dimension obeys the Smoluchowski equation dp/dt = d/dx [ D0 ( dp/dx + (V'(x) / (k_B T)) p ) ] with a constant bare diffusivity D0 (partial derivatives understood).",
-   "The potential V(x) is smooth and periodic with period L, V(x + L) = V(x), and the bath is at temperature T.",
-   "Angle brackets <f> denote the spatial average (1/L) integral_0^L f(x) dx over one period."
-  ],
-  "conclusion": "On length scales much larger than L and times much longer than L^2 / D0, the particle performs ordinary diffusion with effective coefficient D_eff = D0 / ( <exp(V / k_B T)> <exp(-V / k_B T)> ).",
-  "claimedRelation": "coarse-graining",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7885,8 +7382,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Lifson-Jackson formula (Lifson & Jackson, J. Chem. Phys. 36, 2410 (1962)); also derived by homogenization of the Smoluchowski equation.",
   "sideConditions": [
    "V(x + L) = V(x)",
    "V smooth",
@@ -7896,15 +7391,6 @@
  },
  {
   "id": "mb-diffusion-2-05",
-  "kind": "valid",
-  "premises": [
-   "An incompressible Newtonian fluid of kinematic viscosity nu fills the half-space y > 0 above a flat plate; at t = 0 the plate is impulsively set moving in its own plane at speed U_0. With no pressure gradient and a unidirectional velocity u = u(y, t), the Navier-Stokes equations reduce to du/dt = nu d^2u/dy^2 with u(0, t) = U_0, u(y, 0) = 0 and u -> 0 as y -> infinity.",
-   "A semi-infinite solid y > 0 of thermal diffusivity alpha, initially at uniform temperature T_i, has its surface held at T_s for t > 0. Its temperature obeys dT/dt = alpha d^2T/dy^2 and is given by (T - T_i) / (T_s - T_i) = erfc( y / (2 sqrt(alpha t)) )."
-  ],
-  "conclusion": "The velocity profile has the same mathematical form as the temperature profile, with the kinematic viscosity in the role of the thermal diffusivity: u(y, t) / U_0 = erfc( y / (2 sqrt(nu t)) ).",
-  "claimedRelation": "structural-analogy",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -7956,8 +7442,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Stokes' first (Rayleigh) problem, Schlichting, Boundary-Layer Theory; comparison with Carslaw & Jaeger semi-infinite solid.",
   "sideConditions": [
    "y > 0",
    "u(0, t) = U_0",
@@ -7969,16 +7453,6 @@
  },
  {
   "id": "mb-diffusion-2-06",
-  "kind": "valid",
-  "premises": [
-   "In a homogeneous half-space y > 0 the temperature obeys dT/dt = alpha d^2T/dy^2 with constant thermal diffusivity alpha.",
-   "For real wavenumber k, the equation admits solutions exp(i k y - i omega t) with complex frequency fixed by the dispersion relation omega = -i alpha k^2, i.e. pure exponential decay in time.",
-   "The surface temperature is driven periodically, T(0, t) = T_0 + Delta T cos(omega t) with real omega > 0, and the temperature must remain bounded as y -> infinity."
-  ],
-  "conclusion": "Solving the same dispersion relation for complex k at real omega and keeping the branch that is bounded at large y, the temperature oscillation decays into the solid as exp(-y / delta) with penetration depth delta = sqrt(2 alpha / omega).",
-  "claimedRelation": "analytic-continuation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8068,8 +7542,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Periodic surface heating (Kelvin; Angstrom method); Carslaw & Jaeger, Conduction of Heat in Solids, sec. 2.6.",
   "sideConditions": [
    "omega > 0",
    "omega real",
@@ -8079,16 +7551,6 @@
  },
  {
   "id": "mb-diffusion-2-07",
-  "kind": "valid",
-  "premises": [
-   "A quantum Brownian particle linearly coupled to an Ohmic bath with friction coefficient gamma experiences a fluctuating force whose symmetrized two-sided spectral density, S_F(omega) = integral_{-infinity}^{infinity} <{F(t), F(0)}/2> exp(i omega t) dt, is S_F(omega) = gamma hbar omega coth( hbar omega / (2 k_B T) ) (quantum fluctuation-dissipation theorem).",
-   "In the same two-sided convention, the classical Langevin force with <F(t) F(t')> = 2 gamma k_B T delta(t - t') has the flat spectrum 2 gamma k_B T.",
-   "Only frequencies satisfying hbar |omega| << k_B T are relevant to the dynamics considered."
-  ],
-  "conclusion": "In this regime the quantum spectrum reduces to the classical white-noise spectrum, S_F(omega) = 2 gamma k_B T, with relative corrections of order (hbar omega / k_B T)^2.",
-  "claimedRelation": "deformation-quantization",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8166,8 +7628,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Callen-Welton theorem and its classical (hbar -> 0) limit; Weiss, Quantum Dissipative Systems, ch. 3.",
   "sideConditions": [
    "hbar |omega| << k_B T",
    "relative corrections of order (hbar omega / k_B T)^2"
@@ -8180,16 +7640,6 @@
  },
  {
   "id": "mb-diffusion-2-08",
-  "kind": "valid",
-  "premises": [
-   "A one-dimensional diffusion process is defined by the Ito stochastic differential equation dx = a(x) dt + b(x) dW, with W a standard Wiener process and a, b smooth; its transition density obeys the Fokker-Planck equation dp/dt = -d(a p)/dx + (1/2) d^2(b^2 p)/dx^2.",
-   "A Stratonovich stochastic differential equation dx = A(x) dt + B(x) o dW, defined with the midpoint rule for the stochastic integral, has transition density obeying dp/dt = -d(A p)/dx + (1/2) d/dx [ B d(B p)/dx ].",
-   "The two equations are to have the same noise amplitude, B(x) = b(x)."
-  ],
-  "conclusion": "The Ito and Stratonovich equations describe exactly the same stochastic process (identical transition probabilities) if and only if their drifts are related by A(x) = a(x) - (1/2) b(x) b'(x).",
-  "claimedRelation": "exact-equivalence",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8273,8 +7723,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Ito-Stratonovich drift correction; Gardiner, Handbook of Stochastic Methods, sec. 4.3.6; van Kampen 1981.",
   "sideConditions": [
    "B(x) = b(x)",
    "a, b smooth",
@@ -8283,18 +7731,131 @@
   ]
  },
  {
+  "id": "mb-diffusion-2-09",
+  "expr": {
+   "kind": "op",
+   "op": "-",
+   "args": [
+    {
+     "kind": "symbol",
+     "name": "D",
+     "dim": {
+      "L": 2,
+      "M": 0,
+      "T": -1,
+      "I": 0,
+      "Theta": 0,
+      "N": 0,
+      "J": 0
+     }
+    },
+    {
+     "kind": "op",
+     "op": "/",
+     "args": [
+      {
+       "kind": "op",
+       "op": "*",
+       "args": [
+        {
+         "kind": "symbol",
+         "name": "k_B",
+         "dim": {
+          "L": 2,
+          "M": 1,
+          "T": -2,
+          "I": 0,
+          "Theta": -1,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "T",
+         "dim": {
+          "L": 0,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 1,
+          "N": 0,
+          "J": 0
+         }
+        }
+       ]
+      },
+      {
+       "kind": "op",
+       "op": "*",
+       "args": [
+        {
+         "kind": "symbol",
+         "name": "6",
+         "dim": {
+          "L": 0,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "pi",
+         "dim": {
+          "L": 0,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "eta",
+         "dim": {
+          "L": -1,
+          "M": 1,
+          "T": -1,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        },
+        {
+         "kind": "symbol",
+         "name": "a",
+         "dim": {
+          "L": 1,
+          "M": 0,
+          "T": 0,
+          "I": 0,
+          "Theta": 0,
+          "N": 0,
+          "J": 0
+         }
+        }
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  "sideConditions": [
+   "Reynolds number negligible (Stokes flow)",
+   "fluid unbounded",
+   "eta ≠ 0",
+   "a ≠ 0"
+  ]
+ },
+ {
   "id": "mb-diffusion-2-10",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "Fourier's law q = -k dT/dx relates the heat flux in a solid to the temperature gradient through the thermal conductivity k; combined with steady-state energy conservation dq/dx = 0 it gives a linear temperature profile across a slab.",
-   "A single-crystal silicon film of thickness L = 20 nm at 300 K is held between two reservoirs differing in temperature by Delta T. The bulk thermal conductivity of silicon at 300 K is k = 150 W/(m K), and the phonons carrying most of the heat at this temperature have mean free paths of order 300 nm.",
-   "Transport across the film is one-dimensional and steady."
-  ],
-  "conclusion": "The steady heat flux through the film is q = (150 W/(m K)) Delta T / L.",
-  "claimedRelation": "restriction",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8365,8 +7926,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Casimir (1938) boundary-scattering limit; G. Chen, Nanoscale Energy Transport and Conversion, ch. 7; measured thin-film silicon conductivities.",
   "sideConditions": [
    "L = 20 nm",
    "T = 300 K",
@@ -8378,17 +7937,6 @@
  },
  {
   "id": "mb-diffusion-2-11",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "By the Nyquist-Johnson formula in the engineering convention, the thermal force on a Brownian particle with friction coefficient gamma has one-sided spectral density S_F(f) = 4 gamma k_B T, where f >= 0 is the frequency in Hz and <F^2> = integral_0^infinity S_F(f) df.",
-   "A stationary white noise with autocorrelation <F(t) F(t')> = Gamma delta(t - t') has two-sided spectral density S(omega) = integral_{-infinity}^{infinity} <F(t) F(0)> exp(i omega t) dt = Gamma, flat in omega, with <F^2> = integral_{-infinity}^{infinity} S(omega) domega / (2 pi).",
-   "For the overdamped Langevin equation gamma dx/dt = F(t) with <F(t) F(t')> = Gamma delta(t - t'), the diffusion coefficient is D = Gamma / (2 gamma^2)."
-  ],
-  "conclusion": "Identifying the flat white-noise spectrum with the Nyquist value gives the diffusion coefficient D = 2 k_B T / gamma.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8472,8 +8020,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Classic factor-of-two error between one-sided per-Hz and two-sided per-(rad/s) spectral densities; see Kittel, Elementary Statistical Physics, and errata to several noise chapters.",
   "sideConditions": [
    "f >= 0",
    "Gamma = 4 gamma k_B T (flat white-noise spectrum identified with Nyquist value)",
@@ -8487,16 +8033,6 @@
  },
  {
   "id": "mb-diffusion-2-12",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "A particle in one dimension moves at constant speed v and reverses its direction at random instants forming a Poisson process; the mean time between successive reversals is tau.",
-   "The probability density of such a persistent random walk obeys the telegraph equation tau d^2p/dt^2 + dp/dt = D d^2p/dx^2, where tau is the relaxation time of the velocity autocorrelation <v(0) v(t)> = v^2 exp(-t / tau) and D = v^2 tau is the long-time diffusion coefficient (partial derivatives understood)."
-  ],
-  "conclusion": "The long-time diffusion coefficient of the persistent random walk is D = v^2 tau, where tau is the mean time between reversals.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8567,8 +8103,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Goldstein (1951) / Kac persistent random walk; the factor-of-two pitfall is discussed in Weiss, Aspects and Applications of the Random Walk.",
   "sideConditions": [
    "v constant",
    "reversals form a Poisson process",
@@ -8578,17 +8112,6 @@
  },
  {
   "id": "mb-diffusion-2-13",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "In a unidirectional flow of an incompressible Newtonian fluid, momentum diffuses according to du/dt = nu d^2u/dy^2, where nu = eta / rho is the kinematic viscosity with units m^2/s; for water at 20 °C, nu = 1.0e-6 m^2/s.",
-   "A dilute passive solute in the same fluid obeys Fick's second law dc/dt = D d^2c/dx^2, where D also has units m^2/s, and a solute molecule's mean squared displacement grows as <x^2> = 2 D t.",
-   "Both coefficients are transport coefficients of the same solvent, have the same dimensions m^2/s, and multiply the second spatial derivative in equations of identical form; the water is at rest at 20 °C."
-  ],
-  "conclusion": "A sucrose molecule in this water therefore has mean squared displacement <x^2> = 2 (1.0e-6 m^2/s) t.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8653,8 +8176,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Common student conflation of momentum diffusivity with mass diffusivity; Bird, Stewart & Lightfoot on the Schmidt number of liquids.",
   "sideConditions": [
    "water at 20 °C",
    "water at rest",
@@ -8663,17 +8184,6 @@
  },
  {
   "id": "mb-diffusion-2-14",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "A Brownian particle of mass m and friction coefficient gamma obeys m dv/dt = -gamma v + xi(t) with <xi(t) xi(t')> = 2 gamma k_B T delta(t - t'), in equilibrium at temperature T.",
-   "In the limit m -> 0 at fixed gamma and T, the position process converges to the overdamped Langevin equation gamma dx/dt = xi(t), whose mean squared displacement is <(Delta x)^2> = 2 D t with D = k_B T / gamma for every t > 0.",
-   "For a micrometre-sized colloidal sphere in water the momentum relaxation time m / gamma is a few hundred nanoseconds, so m is negligibly small and the overdamped description is taken to apply."
-  ],
-  "conclusion": "Hence the mean squared displacement of the colloidal sphere is linear at all times, with initial slope d<(Delta x)^2>/dt at t = 0 equal to 2 k_B T / gamma.",
-  "claimedRelation": "approximation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8776,8 +8286,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Ballistic Brownian motion (Uhlenbeck & Ornstein 1930; Li et al., Science 328, 1673 (2010)); textbook warning in Pathria & Beale on the short-time regime.",
   "sideConditions": [
    "t = 0 (initial slope)",
    "mean squared displacement linear at all times",
@@ -8788,17 +8296,6 @@
  },
  {
   "id": "mb-diffusion-2-15",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "In a rigid isotropic solid with constant density rho and specific heat c, conservation of energy reads rho c dT/dt = -div q, where q is the heat flux vector.",
-   "Every temperature field measured in the solid is found to satisfy the heat equation dT/dt = alpha nabla^2 T with the same constant alpha.",
-   "Fourier's law q = -k grad T, inserted into the energy equation, implies the heat equation with alpha = k / (rho c)."
-  ],
-  "conclusion": "Therefore the heat flux in the solid is q = -rho c alpha grad T.",
-  "claimedRelation": "derivation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8889,8 +8386,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Non-uniqueness of the heat flux given only the temperature field; Day, Heat Conduction Within Linear Thermoelasticity; Truesdell on constitutive theory.",
   "sideConditions": [
    "rho constant",
    "c constant",
@@ -8900,17 +8395,6 @@
  },
  {
   "id": "mb-diffusion-2-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "The free-particle Schrodinger equation i hbar dpsi/dt = -(hbar^2 / 2m) d^2psi/dx^2 can be rewritten as dpsi/dt = D_q d^2psi/dx^2 with the imaginary coefficient D_q = i hbar / (2m).",
-   "A diffusion equation dp/dt = D d^2p/dx^2 with real D > 0 describes a random walker whose mean squared displacement grows as <x^2> = 2 D t.",
-   "For the quantum particle the position variance is computed from |psi|^2, and the initial state is a real Gaussian wavepacket of width sigma_0 centred at x = 0."
-  ],
-  "conclusion": "Because the Schrodinger equation is a diffusion equation with diffusion constant of magnitude hbar / (2m), the wavepacket spreads diffusively as <x^2>(t) = hbar t / m.",
-  "claimedRelation": "analytic-continuation",
-  "family": "diffusion",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -8981,8 +8465,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misreading of the Wick-rotation correspondence between the heat kernel and the free propagator; standard wavepacket-spreading result in any quantum mechanics text (e.g. Griffiths, Problem 2.22).",
   "sideConditions": [
    "initial state is a real Gaussian wavepacket of width sigma_0 centred at x = 0",
    "position variance computed from |psi|^2",
@@ -8992,16 +8474,6 @@
  },
  {
   "id": "mb-waves-1-01",
-  "kind": "valid",
-  "premises": [
-   "A scalar field phi(x,t) obeys the one-dimensional Klein-Gordon equation (1/c^2) d^2phi/dt^2 - d^2phi/dx^2 + (m c/hbar)^2 phi = 0, with c the speed of light, m > 0 a constant mass and hbar the reduced Planck constant.",
-   "Plane-wave solutions phi = exp(i(kx - omega t)) with real k are substituted, giving omega^2 = c^2 k^2 + (m c^2/hbar)^2.",
-   "The phase velocity is defined as v_p = omega/k and the group velocity as v_g = d omega/dk, with k > 0 and the positive root omega > 0 taken."
-  ],
-  "conclusion": "v_p v_g = c^2",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -9072,8 +8544,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard result for the Klein-Gordon dispersion relation; e.g. Bjorken and Drell, Relativistic Quantum Mechanics, ch. 9; also Crawford, Waves, ch. 4.",
   "sideConditions": [
    "m > 0",
    "k > 0",
@@ -9082,16 +8552,6 @@
  },
  {
   "id": "mb-waves-1-02",
-  "kind": "valid",
-  "premises": [
-   "A function u(x,t) is twice continuously differentiable and satisfies the one-dimensional wave equation d^2u/dt^2 = c^2 d^2u/dx^2 with constant c > 0 on the whole real line.",
-   "New independent variables are introduced by xi = x - c t and eta = x + c t; this map is linear and invertible with x = (xi + eta)/2 and t = (eta - xi)/(2c).",
-   "Derivatives transform by the chain rule: d/dx = d/dxi + d/deta and d/dt = -c d/dxi + c d/deta."
-  ],
-  "conclusion": "d^2u/(dxi deta) = 0",
-  "claimedRelation": "exact-equivalence",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -9162,24 +8622,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): d'Alembert's reduction to characteristic coordinates; e.g. Morse and Ingard, Theoretical Acoustics, sec. 4.1; Strauss, Partial Differential Equations, sec. 2.1.",
   "sideConditions": [
    "c > 0"
   ]
  },
  {
   "id": "mb-waves-1-03",
-  "kind": "valid",
-  "premises": [
-   "A uniform stiff string of linear mass density mu, tension T and bending stiffness EI (Young's modulus times second moment of area) has small transverse displacement y(x,t) obeying mu d^2y/dt^2 = T d^2y/dx^2 - EI d^4y/dx^4, valid for wavelengths long compared with the string's thickness.",
-   "For plane waves y = exp(i(kx - omega t)) with real k this gives the dispersion relation omega^2 = (T/mu) k^2 + (EI/mu) k^4.",
-   "The tension is now set to zero, T = 0, all other parameters being unchanged."
-  ],
-  "conclusion": "omega = sqrt(EI/mu) k^2",
-  "claimedRelation": "restriction",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -9288,8 +8736,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Euler-Bernoulli beam as the zero-tension case of the stiff string; e.g. Fletcher and Rossing, The Physics of Musical Instruments, secs. 2.18-2.19; Morse and Ingard, sec. 5.1.",
   "sideConditions": [
    "T = 0",
    "wavelength >> string thickness"
@@ -9297,16 +8743,6 @@
  },
  {
   "id": "mb-waves-1-04",
-  "kind": "valid",
-  "premises": [
-   "In an ideal gas of molar mass M and adiabatic index gamma, sound propagates adiabatically with speed c = sqrt(gamma R T/M), where T is the absolute temperature in kelvin and R = 8.314 J/(mol K).",
-   "For dry air, gamma and M are taken constant over the range considered, and the speed at T = 273.15 K is c_0 = 331.3 m/s.",
-   "The Celsius temperature T_C is defined by T = 273.15 K + T_C, and the regime |T_C| <= 40 is considered."
-  ],
-  "conclusion": "c = 331.3 m/s + (0.606 m/(s degC)) T_C",
-  "claimedRelation": "approximation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -9377,8 +8813,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Linearized temperature dependence of the speed of sound in air; e.g. Kinsler, Frey, Coppens and Sanders, Fundamentals of Acoustics, sec. 5.6; Halliday and Resnick, ch. 17.",
   "sideConditions": [
    "|T_C| <= 40",
    "gamma constant",
@@ -9387,16 +8821,6 @@
  },
  {
   "id": "mb-waves-1-05",
-  "kind": "valid",
-  "premises": [
-   "A massless string under tension T carries point masses m at equal spacing a; the transverse displacement y_j of mass j obeys m d^2y_j/dt^2 = (T/a)(y_{j+1} - 2 y_j + y_{j-1}) for small displacements.",
-   "Normal modes y_j = exp(i(k j a - omega t)) have the exact dispersion relation omega = 2 sqrt(T/(m a)) |sin(k a/2)|.",
-   "Only disturbances whose wavelength is much larger than the spacing, k a << 1, are considered, and a smooth field y(x,t) is defined so that y(j a, t) = y_j(t) with mu = m/a the average mass per unit length."
-  ],
-  "conclusion": "d^2y/dt^2 = (T a/m) d^2y/dx^2",
-  "claimedRelation": "coarse-graining",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -9562,8 +8986,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Continuum limit of the beaded string / monatomic chain; e.g. French, Vibrations and Waves, ch. 5; Crawford, Waves, sec. 2.4.",
   "sideConditions": [
    "k a << 1",
    "small displacements"
@@ -9571,16 +8993,6 @@
  },
  {
   "id": "mb-waves-1-06",
-  "kind": "valid",
-  "premises": [
-   "A stretched string resting on a uniform elastic foundation (restoring force per unit length -kappa_f y) obeys d^2y/dt^2 = c^2 d^2y/dx^2 - omega_0^2 y with c^2 = T/mu and omega_0^2 = kappa_f/mu, both constant.",
-   "For real wavenumber k the dispersion relation is omega^2 = c^2 k^2 + omega_0^2, so propagating solutions exist only for omega >= omega_0.",
-   "The string is driven at one end at a fixed angular frequency omega < omega_0, and the steady-state solution y = Y(x) exp(-i omega t) is sought in the form Y = exp(i k x) with k now allowed to be complex, k = i kappa with kappa > 0 chosen so that Y is bounded as x -> +infinity."
-  ],
-  "conclusion": "kappa = sqrt(omega_0^2 - omega^2)/c",
-  "claimedRelation": "analytic-continuation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -9708,8 +9120,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Evanescent waves below cutoff in a Klein-Gordon-type medium; e.g. Crawford, Waves, sec. 3.5; Morse and Ingard, sec. 4.1.",
   "sideConditions": [
    "omega < omega_0",
    "kappa > 0"
@@ -9717,16 +9127,6 @@
  },
  {
   "id": "mb-waves-1-07",
-  "kind": "valid",
-  "premises": [
-   "In a hollow perfectly conducting waveguide of uniform cross-section, a TE mode has fields proportional to exp(i(k z - omega t)) times a transverse profile, and Maxwell's equations in vacuum give omega^2 = c^2 k^2 + omega_c^2, where omega_c is the mode's cutoff frequency fixed by the cross-section geometry and c is the speed of light.",
-   "A free relativistic scalar particle of mass m is described by the Klein-Gordon equation, whose plane waves obey omega^2 = c^2 k^2 + (m c^2/hbar)^2.",
-   "The two systems are otherwise unrelated: the waveguide relation involves no Planck constant and no particle mass, and its cutoff can be changed by changing the guide dimensions."
-  ],
-  "conclusion": "omega^2 = c^2 k^2 + omega_c^2",
-  "claimedRelation": "structural-analogy",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -9873,22 +9273,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Waveguide dispersion as a classical analogue of the Klein-Gordon relation; e.g. Jackson, Classical Electrodynamics, sec. 8.3; Crawford, Waves, ch. 4 (discussion of cutoff).",
   "sideConditions": []
  },
  {
   "id": "mb-waves-1-08",
-  "kind": "valid",
-  "premises": [
-   "A complex scalar field psi(x,t) obeys the Klein-Gordon equation -hbar^2 d^2psi/dt^2 = -hbar^2 c^2 Laplacian psi + m^2 c^4 psi.",
-   "The field is written in eikonal form psi = A(x,t) exp(i S(x,t)/hbar) with real A and S, and S is held fixed while hbar -> 0 is taken; terms of order hbar^1 and hbar^2 relative to the leading term are dropped.",
-   "S is identified with Hamilton's principal function of a classical particle, so that E = -dS/dt and p = grad S."
-  ],
-  "conclusion": "(dS/dt)^2 - c^2 (grad S)^2 = m^2 c^4",
-  "claimedRelation": "deformation-quantization",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -10111,8 +9499,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Classical (WKB/eikonal) limit of the Klein-Gordon equation giving the relativistic Hamilton-Jacobi equation; e.g. Landau and Lifshitz, Classical Theory of Fields, sec. 16; Bjorken and Drell, ch. 9.",
   "sideConditions": [
    "hbar -> 0",
    "S fixed",
@@ -10121,18 +9507,65 @@
   ]
  },
  {
+  "id": "mb-waves-1-09",
+  "expr": {
+   "kind": "op",
+   "op": "-",
+   "args": [
+    {
+     "kind": "symbol",
+     "name": "v_E",
+     "dim": {
+      "L": 1,
+      "M": 0,
+      "T": -1,
+      "I": 0,
+      "Theta": 0,
+      "N": 0,
+      "J": 0
+     }
+    },
+    {
+     "kind": "op",
+     "op": "/",
+     "args": [
+      {
+       "kind": "symbol",
+       "name": "omega",
+       "dim": {
+        "L": 0,
+        "M": 0,
+        "T": -1,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      },
+      {
+       "kind": "symbol",
+       "name": "k",
+       "dim": {
+        "L": -1,
+        "M": 0,
+        "T": 0,
+        "I": 0,
+        "Theta": 0,
+        "N": 0,
+        "J": 0
+       }
+      }
+     ]
+    }
+   ]
+  },
+  "sideConditions": [
+   "k = k_0",
+   "narrow-band packet"
+  ]
+ },
+ {
   "id": "mb-waves-1-10",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "A stiff string with hinged ends of length L, tension T, linear density mu and bending stiffness EI has partial frequencies f_n given by the dispersion relation omega^2 = (T/mu) k^2 + (EI/mu) k^4 with k_n = n pi/L.",
-   "With the inharmonicity parameter B = pi^2 EI/(T L^2) and fundamental f_1 = (1/2L) sqrt(T/mu), the partials satisfy f_n = n f_1 (1 + B n^2/2) to first order in the small stiffness parameter B.",
-   "A piano bass string has B = 1.0 x 10^-4, and the frequency of its 200th partial is required."
-  ],
-  "conclusion": "f_200 = 200 f_1 (1 + 2) = 600 f_1",
-  "claimedRelation": "approximation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -10216,8 +9649,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Stiff-string inharmonicity formula (Fletcher and Rossing, sec. 2.18; Morse and Ingard sec. 5.1); the expansion parameter is B n^2, a point often lost when B alone is quoted as small.",
   "sideConditions": [
    "B = 1.0e-4",
    "B << 1",
@@ -10238,17 +9669,6 @@
  },
  {
   "id": "mb-waves-1-11",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "A relativistic field-theory text with metric signature (+,-,-,-) writes the free Klein-Gordon equation as (box + mu^2) phi = 0, where box = d_mu d^mu = (1/c^2) d^2/dt^2 - Laplacian and mu = m c/hbar.",
-   "A general-relativity text with metric signature (-,+,+,+) writes the same physical equation as (box - mu^2) phi = 0, where its box is g^{mu nu} d_mu d_nu.",
-   "Plane waves phi = exp(i(k.x - omega t)) with real k are substituted into the equation (box - mu^2) phi = 0 using box = (1/c^2) d^2/dt^2 - Laplacian."
-  ],
-  "conclusion": "omega^2 = c^2 k^2 - (m c^2/hbar)^2",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -10452,8 +9872,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Metric-signature sign errors in the Klein-Gordon operator; a well-known pitfall discussed e.g. in Peskin and Schroeder ch. 2 (note on conventions) and in errata to several GR/QFT texts.",
   "sideConditions": [
    "k real"
   ],
@@ -10468,17 +9886,6 @@
  },
  {
   "id": "mb-waves-1-12",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "A sinusoidal transverse wave travels along a uniform stretched string of linear mass density mu; its period is T and its wavelength is lambda, so the wave speed is v = lambda / T.",
-   "Transverse waves on a string under tension T travel at speed v = sqrt(T/mu), for small-amplitude displacements.",
-   "Equating the two expressions for v and solving for lambda gives lambda = T v."
-  ],
-  "conclusion": "lambda = T^(3/2) / sqrt(mu)",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -10568,25 +9975,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Classic student error with the symbol T used for both period and tension in string-wave problems; noted in instructor commentaries to Halliday/Resnick ch. 16 and Serway ch. 16.",
   "sideConditions": [
    "small-amplitude displacements"
   ]
  },
  {
   "id": "mb-waves-1-13",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "Plane-wave solutions of the Klein-Gordon equation for a particle of mass m > 0 obey omega^2 = c^2 k^2 + (m c^2/hbar)^2, with c the speed of light.",
-   "The phase velocity of a plane wave is omega/k, and for these waves omega/k = c sqrt(1 + (m c/(hbar k))^2), which exceeds c for every finite real k.",
-   "A signal is any disturbance of the field that propagates through space, and its speed is a velocity measured in metres per second."
-  ],
-  "conclusion": "v_signal = c sqrt(1 + (m c/(hbar k))^2)",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -10752,8 +10146,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Well-known misconception that the superluminal phase velocity of de Broglie/Klein-Gordon waves is a signal velocity; addressed in Brillouin (1960) and in Crawford, Waves, ch. 6.",
   "sideConditions": [
    "m > 0",
    "k real",
@@ -10762,17 +10154,6 @@
  },
  {
   "id": "mb-waves-1-14",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "A string of length L with fixed ends carries N equally spaced beads of mass m at spacing a = L/(N+1), and the massless string between them is under tension T; the exact normal-mode frequencies are f_n = (1/pi) sqrt(T/(m a)) sin(n pi/(2(N+1))) for n = 1, ..., N.",
-   "In the continuum limit N -> infinity at fixed L and fixed mu = m/a, the beaded string becomes a uniform string with wave speed v = sqrt(T/mu), whose modes are f_n = n v/(2L).",
-   "For a piano-like string modelled with N = 1000 beads, the highest mode n = N is considered, and N is large enough that the continuum limit applies."
-  ],
-  "conclusion": "f_N = N v/(2L)",
-  "claimedRelation": "approximation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -10862,8 +10243,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Non-uniform convergence of the discrete-chain spectrum to the string spectrum; discussed in French, Vibrations and Waves, ch. 5 and in Crawford, Waves, sec. 2.4 (dispersion near the zone boundary).",
   "sideConditions": [
    "N = 1000",
    "n = N",
@@ -10886,17 +10265,6 @@
  },
  {
   "id": "mb-waves-1-15",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "In a medium whose dispersion relation is omega = c k with constant c, every disturbance u(x,t) = f(x - c t) propagates without change of shape at speed c, since d'Alembert's solution applies.",
-   "A localized transverse pulse on a long stretched cable resting on a stiff nonlinear foundation is observed to travel several hundred metres at constant speed c_s with no measurable change of shape.",
-   "The medium is homogeneous and time-invariant, so it admits a well-defined dispersion relation for small-amplitude sinusoidal waves."
-  ],
-  "conclusion": "omega = c_s k",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -10948,8 +10316,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Converse of the nondispersive-propagation theorem; solitary waves in dispersive nonlinear media (Russell 1834; Korteweg-de Vries 1895) are the standard counterexample.",
   "sideConditions": [
    "medium homogeneous",
    "medium time-invariant"
@@ -10957,17 +10323,6 @@
  },
  {
   "id": "mb-waves-1-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "Small transverse displacements y(x,t) of a uniform string of tension T and linear density mu obey d^2y/dt^2 = c^2 d^2y/dx^2 with c = sqrt(T/mu), in the rest frame of the string.",
-   "This equation is form-invariant under the Lorentz transformation x' = gamma (x - V t), t' = gamma (t - V x/c^2), gamma = 1/sqrt(1 - V^2/c^2), with c = sqrt(T/mu) as the invariant speed, exactly as the electromagnetic wave equation is invariant with the speed of light.",
-   "An observer moves along the string at constant speed V < c relative to the string and measures the speed of a transverse pulse."
-  ],
-  "conclusion": "c' = c",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11000,8 +10355,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misapplication of the Lorentz invariance of the wave equation to a medium-supported wave; discussed as a warning in French, Special Relativity, ch. 2 and in Feynman Lectures vol. I ch. 15 (ether analogy).",
   "sideConditions": [
    "V < c",
    "small transverse displacements"
@@ -11009,16 +10362,6 @@
  },
  {
   "id": "mb-waves-2-01",
-  "kind": "valid",
-  "premises": [
-   "Two uniform strings of linear densities mu_1 (x < 0) and mu_2 (x > 0) are joined at x = 0 by a massless knot and carry the same static tension T; small transverse displacements obey mu_i u_tt = T u_xx on each side.",
-   "A sinusoidal wave of angular frequency omega is incident from x < 0; the displacement u and the slope u_x are continuous at x = 0 (the knot has no mass, so the transverse forces on it balance).",
-   "The characteristic impedance of each string is defined as Z_i = sqrt(T mu_i), so that the wavenumbers are k_i = omega Z_i / T."
-  ],
-  "conclusion": "The amplitude reflection coefficient for the displacement, referred to the incident amplitude, is r = (Z_1 - Z_2)/(Z_1 + Z_2).",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11108,21 +10451,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard string-junction problem (French, Vibrations and Waves; Crawford, Waves).",
   "sideConditions": []
  },
  {
   "id": "mb-waves-2-02",
-  "kind": "valid",
-  "premises": [
-   "A twice continuously differentiable field u(x,t) on the whole line satisfies the one-dimensional wave equation u_tt = c^2 u_xx with constant c > 0.",
-   "Define the characteristic (Riemann) variables r = u_t + c u_x and s = u_t - c u_x."
-  ],
-  "conclusion": "The wave equation is equivalent to a pair of decoupled first-order advection equations for r and s, the right-moving one being r_t - c r_x = 0, while s obeys the mirror equation with c replaced by -c; conversely, from any smooth (r, s) obeying these two equations one recovers a solution u of the wave equation, unique up to a constant.",
-  "claimedRelation": "exact-equivalence",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11212,24 +10544,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Characteristic form of the 1D wave equation (Whitham, Linear and Nonlinear Waves; Strauss, PDE).",
   "sideConditions": [
    "c > 0"
   ]
  },
  {
   "id": "mb-waves-2-03",
-  "kind": "valid",
-  "premises": [
-   "Small-amplitude sound in a uniform fluid at rest has acoustic pressure p(x,t) obeying the three-dimensional wave equation p_tt = c^2 nabla^2 p, with c the sound speed.",
-   "Attention is restricted to solutions that depend on position only through the distance r from the origin, p = p(r,t), for r > 0.",
-   "In spherical coordinates the Laplacian of a function of r alone is (1/r^2) d/dr (r^2 dp/dr), which can be rewritten as (1/r) d^2(r p)/dr^2."
-  ],
-  "conclusion": "The product r p obeys the one-dimensional wave equation (r p)_tt = c^2 (r p)_rr for r > 0, so spherically symmetric sound consists of outgoing and incoming waves of the form f(r - ct)/r and g(r + ct)/r.",
-  "claimedRelation": "restriction",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11414,24 +10734,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Spherical waves in acoustics (Morse and Ingard; Kinsler et al., Fundamentals of Acoustics).",
   "sideConditions": [
    "r > 0"
   ]
  },
  {
   "id": "mb-waves-2-04",
-  "kind": "valid",
-  "premises": [
-   "A stiff string of linear density mu, tension T, Young's modulus E and area moment I undergoes small transverse motion obeying mu u_tt = T u_xx - E I u_xxxx (Euler-Bernoulli bending term added to the ideal-string equation).",
-   "Sinusoidal waves exp(i(kx - omega t)) therefore satisfy the exact dispersion relation omega^2 = (T/mu) k^2 + (E I/mu) k^4; write c = sqrt(T/mu) and epsilon = E I k^2 / T.",
-   "The regime considered is epsilon << 1, i.e. wavelengths long compared with sqrt(E I / T)."
-  ],
-  "conclusion": "In this regime omega = c k (1 + E I k^2 /(2 T)), with relative error no larger than about epsilon^2/8, so the wave is slightly dispersive with phase speed increasing quadratically with k.",
-  "claimedRelation": "approximation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11604,24 +10912,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Inharmonicity of piano strings (Fletcher and Rossing, The Physics of Musical Instruments).",
   "sideConditions": [
    "epsilon << 1"
   ]
  },
  {
   "id": "mb-waves-2-05",
-  "kind": "valid",
-  "premises": [
-   "A beaded string consists of point masses m at spacing a on a massless string under tension T; the transverse displacement y_n of bead n obeys m y_n'' = (T/a)(y_(n+1) - 2 y_n + y_(n-1)) for small displacements.",
-   "The exact normal modes are y_n = A exp(i(k n a - omega t)) with omega = 2 sqrt(T/(m a)) |sin(k a/2)|.",
-   "One considers only motions that vary slowly on the scale of the bead spacing, k a << 1, and describes them by a smooth field u(x,t) with u(n a, t) = y_n(t) and mass per unit length mu equal to m/a."
-  ],
-  "conclusion": "The slowly varying field obeys the continuum string equation mu u_tt = T u_xx, whose dispersion omega = sqrt(T/mu) k reproduces the beaded-string result to leading order in k a.",
-  "claimedRelation": "coarse-graining",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11711,8 +11007,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Continuum limit of the loaded string (Crawford, Waves; Goldstein, Classical Mechanics ch. on continuous systems).",
   "sideConditions": [
    "k a << 1",
    "mu = m/a"
@@ -11720,16 +11014,6 @@
  },
  {
   "id": "mb-waves-2-06",
-  "kind": "valid",
-  "premises": [
-   "A string of linear density mu and tension T is attached along its length to an elastic foundation of stiffness s per unit length, so that small transverse motion obeys u_tt = c^2 u_xx - omega_0^2 u with c = sqrt(T/mu) and omega_0 = sqrt(s/mu).",
-   "For propagating waves exp(i(k x - omega t)) the dispersion relation is k^2 = (omega^2 - omega_0^2)/c^2, which requires omega > omega_0 for real k.",
-   "The string occupying x > 0 is driven at x = 0 at a frequency omega below omega_0, and only solutions bounded as x -> infinity are admitted."
-  ],
-  "conclusion": "Continuing the wavenumber to the imaginary value k = i kappa gives the bounded steady-state solution u = A exp(-kappa x) cos(omega t) with kappa = sqrt(omega_0^2 - omega^2)/c.",
-  "claimedRelation": "analytic-continuation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11857,8 +11141,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Evanescent waves below cutoff for a string on an elastic bed / waveguide below cutoff (French; Crawford).",
   "sideConditions": [
    "omega < omega_0",
    "x > 0"
@@ -11866,15 +11148,6 @@
  },
  {
   "id": "mb-waves-2-07",
-  "kind": "valid",
-  "premises": [
-   "A lossless transmission line with inductance L' and capacitance C' per unit length obeys the telegrapher's equations V_x = -L' I_t and I_x = -C' V_t, so that V_tt = (1/(L' C')) V_xx.",
-   "A uniform string of linear density mu under tension T obeys u_tt = (T/mu) u_xx; its transverse force F = -T u_x and transverse velocity u_t satisfy F_x = -mu (u_t)_t and (u_t)_x = -(1/T) F_t."
-  ],
-  "conclusion": "The two systems are described by the same pair of first-order equations under V <-> F, I <-> u_t, L' <-> mu, C' <-> 1/T, so the line's signal speed v = 1/sqrt(L' C') plays the role of the string's sqrt(T/mu) and sqrt(L'/C') plays the role of the string impedance sqrt(T mu), even though one system carries voltages and currents and the other displacements and forces.",
-  "claimedRelation": "structural-analogy",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -11964,22 +11237,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Electrical-mechanical analogies (Crawford, Waves; Feynman Lectures II ch. 22-24).",
   "sideConditions": []
  },
  {
   "id": "mb-waves-2-08",
-  "kind": "valid",
-  "premises": [
-   "A string of length L, linear density mu and tension T is fixed at both ends; its classical motion is u(x,t) = sum_n q_n(t) sin(n pi x/L) with normal-mode frequencies omega_n = n pi sqrt(T/mu)/L.",
-   "Substituting this expansion into the Lagrangian (1/2) integral (mu u_t^2 - T u_x^2) dx gives independent oscillators with effective mass M = mu L/2: L = sum_n (M/2)(q_n'^2 - omega_n^2 q_n^2).",
-   "Each mode is quantized canonically by imposing [q_n, p_n] = i hbar with p_n = M q_n', the classical Poisson bracket {q_n, p_n} = 1 being replaced by the commutator."
-  ],
-  "conclusion": "The allowed energies of mode n are E = hbar omega_n (N + 1/2) with N = 0, 1, 2, ..., and coherent states with N >> 1 reproduce the classical sinusoidal motion of the mode amplitude q_n.",
-  "claimedRelation": "deformation-quantization",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12063,25 +11324,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Quantization of the vibrating string / phonons (Sakurai; Peskin and Schroeder ch. 2 for the field analogue).",
   "sideConditions": [
    "N ∈ {0, 1, 2, ...}"
   ]
  },
  {
   "id": "mb-waves-2-09",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
-  "premises": [
-   "A uniform string of linear density mu under tension T undergoes small transverse displacements u(x,t) obeying mu u_tt = T u_xx.",
-   "The kinetic energy per unit length is (1/2) mu u_t^2 and the potential energy per unit length, from the extra stretching of the string, is (1/2) T u_x^2.",
-   "The string carries a sinusoidal wave of wavenumber k and angular frequency omega = k sqrt(T/mu)."
-  ],
-  "conclusion": "At every point and every instant the two energy densities are equal, (1/2) mu u_t^2 = (1/2) T u_x^2, so the kinetic and potential energies of the wave are always identical.",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12254,23 +11502,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Common misconception discussed in French, Vibrations and Waves, and in Griffiths-style energy-partition exercises.",
   "sideConditions": []
  },
  {
   "id": "mb-waves-2-10",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "Transverse waves on a uniform string of linear density mu obey mu u_tt = T u_xx, obtained from Newton's second law by taking the tension along the string to be uniform and equal to the static tension T and linearizing in the slope u_x.",
-   "Traveling-wave solutions of this equation move at sqrt(T/mu), independent of amplitude and wavelength.",
-   "A string with T = 50 N and mu = 5.0 x 10^-3 kg/m carries a sinusoidal wave of wavelength 5.0 cm and amplitude 3.0 cm."
-  ],
-  "conclusion": "The crests of this wave advance along the string at v = 100 m/s, the value of sqrt(T/mu).",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12341,8 +11576,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Large-amplitude string problems; validity condition kA << 1 (Morse and Ingard; Elmore and Heald).",
   "sideConditions": [
    "T = 50 N",
    "mu = 5.0e-3 kg/m",
@@ -12351,17 +11584,6 @@
  },
  {
   "id": "mb-waves-2-11",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "The sound intensity level in decibels is defined as L = 10 log10(I/I_0) with reference intensity I_0 = 1.0 x 10^-12 W/m^2.",
-   "For a plane sound wave in air of density rho and sound speed c, the intensity is I = p_rms^2/(rho c), where p_rms is the root-mean-square acoustic pressure.",
-   "The amplitude of a pure tone is adjusted so that its acoustic pressure amplitude is doubled, all else unchanged."
-  ],
-  "conclusion": "The sound level rises by Delta L = 10 log10(2) dB, about 3 dB, since the level is ten times the base-ten logarithm of the ratio of the two signals.",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12440,23 +11662,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Classic decibel error: 10 log for power-like quantities versus 20 log for field quantities (Kinsler et al.; ISO 1683 conventions).",
   "sideConditions": []
  },
  {
   "id": "mb-waves-2-12",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "A string of linear density mu under tension T carries the traveling wave u(x,t) = A sin(k x - omega t).",
-   "The wave speed is v = omega/k = sqrt(T/mu).",
-   "The transverse velocity of a string element is v = du/dt = -A omega cos(k x - omega t), and its magnitude is greatest as the element passes through its equilibrium position."
-  ],
-  "conclusion": "The maximum transverse speed of a string element is v_max = sqrt(T/mu), reached each time the element crosses the axis.",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12527,23 +11736,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Well-documented student misconception conflating wave speed and particle velocity (Halliday-Resnick concept questions; physics education research on wave velocity).",
   "sideConditions": []
  },
  {
   "id": "mb-waves-2-13",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "A string on an elastic foundation obeys u_tt = c^2 u_xx - omega_0^2 u, so propagating waves exp(i(k x - omega t)) exist only for omega > omega_0, with wavenumber k = 2 pi/lambda.",
-   "When the string occupying x > 0 is driven at x = 0 at a frequency omega < omega_0, the bounded solution is u = A exp(-kappa x) cos(omega t) with kappa = sqrt(omega_0^2 - omega^2)/c.",
-   "The constant kappa is measured in inverse metres, exactly like the wavenumber k of a propagating wave."
-  ],
-  "conclusion": "Below cutoff the disturbance therefore has wavelength lambda = 2 pi/kappa, which shrinks toward zero as the drive frequency is lowered far below omega_0.",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12614,8 +11810,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misreading of evanescent solutions in waveguides and string-on-bed problems (French, Vibrations and Waves; student errors in cutoff problems).",
   "sideConditions": [
    "omega < omega_0",
    "x > 0"
@@ -12623,17 +11817,6 @@
  },
  {
   "id": "mb-waves-2-14",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "A string on an elastic foundation obeys u_tt = c^2 u_xx - omega_0^2 u, with dispersion relation omega^2 = c^2 k^2 + omega_0^2 and group velocity v_g = d omega/dk = c^2 k/omega.",
-   "As omega_0 -> 0 the equation reduces to the ordinary wave equation u_tt = c^2 u_xx, for which the group velocity equals c for every wavenumber.",
-   "A long-wavelength wave packet is one whose dominant wavenumber satisfies k -> 0."
-  ],
-  "conclusion": "Long-wavelength packets on the string with foundation travel at the group velocity v_g = c, the foundation being negligible for waves whose spatial scale greatly exceeds any other length in the problem.",
-  "claimedRelation": "approximation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12666,25 +11849,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Known interchange-of-limits error for the Klein-Gordon dispersion; see discussions of the massless limit versus the long-wavelength limit (Goldstein; Whitham).",
   "sideConditions": [
    "k -> 0"
   ]
  },
  {
   "id": "mb-waves-2-15",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "A uniform string of length L and wave speed c whose displacement vanishes at both ends, u(0,t) = u(L,t) = 0, has normal modes sin(n pi x/L) cos(omega_n t) with omega_n = n pi c/L for n = 1, 2, 3, ...",
-   "A second string of the same length and wave speed is observed to vibrate freely with a discrete spectrum of normal-mode frequencies omega_n = n pi c/L, n = 1, 2, 3, ...",
-   "The spectrum of a uniform string is determined by its boundary conditions."
-  ],
-  "conclusion": "The second string must therefore have its displacement clamped at the ends, u(x_end, t) = 0 at both x_end values, so its boundary conditions are the same as those of the first string.",
-  "claimedRelation": "derivation",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12717,8 +11887,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Inverse spectral problem; free-free and fixed-fixed strings (and open-open versus closed-closed pipes) share the harmonic series (Kac, 'Can one hear the shape of a drum?'; Morse, Vibration and Sound).",
   "sideConditions": [
    "x = x_end at both ends",
    "omega_n = n pi c/L, n = 1, 2, 3, ..."
@@ -12726,17 +11894,6 @@
  },
  {
   "id": "mb-waves-2-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "A string of linear density mu and tension T attached to an elastic foundation of stiffness s per unit length obeys mu u_tt = T u_xx - s u, i.e. u_tt = c_s^2 u_xx - omega_0^2 u with c_s = sqrt(T/mu) and omega_0 = sqrt(s/mu).",
-   "The relativistic Klein-Gordon equation for a free particle of mass m is phi_tt = c^2 phi_xx - (m c^2/hbar)^2 phi, whose plane waves obey E^2 = p^2 c^2 + m^2 c^4 with E = hbar omega and p = hbar k.",
-   "The two equations are identical under the replacements c -> c_s and m c^2/hbar -> omega_0, and the quantized string modes carry energy hbar omega and momentum hbar k."
-  ],
-  "conclusion": "The quanta of transverse waves on the string are therefore relativistic particles of rest mass hbar omega_0 divided by c_s^2, and their energy-momentum relation E^2 = p^2 c_s^2 + m^2 c_s^4 holds in every inertial frame, with c_s playing the role of the invariant speed of special relativity.",
-  "claimedRelation": "exact-equivalence",
-  "family": "waves",
-  "split": "in-distribution",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -12921,8 +12078,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Over-reading of the Klein-Gordon / string-on-elastic-bed analogy (Feynman Lectures II ch. 20-24 style analogies; discussions of 'analogue' relativity).",
   "sideConditions": [
    "m = hbar omega_0 / c_s^2",
    "E = hbar omega",
@@ -12931,16 +12086,6 @@
  },
  {
   "id": "mb-fluid-statics-1-01",
-  "kind": "valid",
-  "premises": [
-   "A liquid of uniform density rho fills an open cylindrical bucket that rotates about its vertical axis with constant angular velocity omega; in the co-rotating frame the liquid is at rest.",
-   "In the co-rotating frame the body force per unit volume is rho(-g e_z + omega^2 r e_r), where r is the distance from the axis and z is measured upward, and the liquid obeys the hydrostatic balance grad p = rho(-g e_z + omega^2 r e_r).",
-   "The free surface is the isobar on which p equals the atmospheric pressure p_atm, and it meets the axis at height z_0."
-  ],
-  "conclusion": "The free surface is the paraboloid z(r) = z_0 + omega^2 r^2/(2 g).",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13087,8 +12232,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard rotating-bucket problem (Batchelor, Introduction to Fluid Dynamics; Landau and Lifshitz, Fluid Mechanics).",
   "sideConditions": [
    "omega constant",
    "rho uniform"
@@ -13096,16 +12239,6 @@
  },
  {
   "id": "mb-fluid-statics-1-02",
-  "kind": "valid",
-  "premises": [
-   "An ideal gas of molar mass M is in hydrostatic balance dp/dz = -rho g with rho = p M/(R T) and g constant.",
-   "The temperature falls linearly with height, T(z) = T_0 - L z, with constant lapse rate L > 0, so that the exact pressure profile is p(z) = p_0 (1 - L z/T_0)^(g M/(R L)).",
-   "Only altitudes satisfying L z/T_0 << 1 are considered."
-  ],
-  "conclusion": "In this regime the pressure is approximated by the isothermal form p(z) = p_0 exp(-M g z/(R T_0)), with the relative error in ln(p/p_0) not exceeding (L z/(2 T_0))/(1 - L z/T_0).",
-  "claimedRelation": "approximation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13250,8 +12383,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Polytropic versus isothermal atmosphere; series expansion of ln(1 - x) (e.g. Wallace and Hobbs, Atmospheric Science).",
   "sideConditions": [
    "L > 0",
    "L z/T_0 << 1",
@@ -13260,16 +12391,6 @@
  },
  {
   "id": "mb-fluid-statics-1-03",
-  "kind": "valid",
-  "premises": [
-   "An incompressible fluid at rest under uniform gravity g has a smooth density profile rho(z) that decreases with height z, and its pressure obeys dp/dz = -rho(z) g.",
-   "A small rigid body of volume V has density rho_b equal to the fluid density rho_0 at its equilibrium height; its size is much smaller than the length rho/|drho/dz|, so the fluid it displaces has the density evaluated at the height of its centre.",
-   "Archimedes' principle holds in the stratified fluid (the fluid exerts an upward force equal to g times the mass of the displaced fluid); viscous drag and added mass are neglected, and displacements are small enough that drho/dz may be treated as constant."
-  ],
-  "conclusion": "The body oscillates harmonically about its equilibrium height with angular frequency N given by N^2 = -(g/rho_0) drho/dz, evaluated at the equilibrium height.",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13397,8 +12518,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Brunt-Vaisala frequency from Archimedes' principle (Gill, Atmosphere-Ocean Dynamics; Kundu and Cohen, Fluid Mechanics).",
   "sideConditions": [
    "rho_b = rho_0",
    "body size << rho/|drho/dz|",
@@ -13409,16 +12528,6 @@
  },
  {
   "id": "mb-fluid-statics-1-04",
-  "kind": "valid",
-  "premises": [
-   "A connected region of fluid at rest obeys the hydrostatic equation grad p = rho g_vec, where g_vec is the gravitational field and rho the local density.",
-   "Consider the special case in which the gravitational body force is absent or negligible, g_vec = 0 (for example a small hydraulic device in which rho g times the height differences is negligible compared with the applied pressures).",
-   "A pressure p_a is applied at one part of the boundary of the fluid."
-  ],
-  "conclusion": "Throughout the connected fluid region p = p_a, so the applied pressure is transmitted undiminished to every point and every wall.",
-  "claimedRelation": "restriction",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13451,24 +12560,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Pascal's principle as the zero-gravity special case of the hydrostatic equation (any introductory fluid statics text).",
   "sideConditions": [
    "g_vec = 0"
   ]
  },
  {
   "id": "mb-fluid-statics-1-05",
-  "kind": "valid",
-  "premises": [
-   "An ideal gas of molecules of mass m is in thermal equilibrium at uniform temperature T in a uniform gravitational field g, with the z axis pointing upward.",
-   "The single-particle equilibrium distribution is the Maxwell-Boltzmann distribution f(r, v) proportional to exp(-(m v^2/2 + m g z)/(k_B T)).",
-   "The continuum pressure is defined as the z-momentum flux p = integral of m v_z^2 f d^3v, averaged over a volume that contains many molecules but is small compared with the height k_B T/(m g)."
-  ],
-  "conclusion": "The averaged pressure field is p(z) = p_0 exp(-m g z/(k_B T)), which satisfies the hydrostatic equation dp/dz = -rho g with rho the averaged mass density.",
-  "claimedRelation": "coarse-graining",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13613,8 +12710,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Barometric formula from the Boltzmann factor (Reif, Fundamentals of Statistical and Thermal Physics, Ch. 7).",
   "sideConditions": [
    "T uniform",
    "averaging volume small compared with k_B T/(m g)"
@@ -13622,15 +12717,6 @@
  },
  {
   "id": "mb-fluid-statics-1-06",
-  "kind": "valid",
-  "premises": [
-   "An isothermal ideal-gas atmosphere in uniform gravity has pressure p(z) = p_0 exp(-z/H) with scale height H = R T/(M g), obtained from dp/dz = -p/H.",
-   "Monochromatic light travelling a distance x through a homogeneous absorber obeys the Beer-Lambert law I(x) = I_0 exp(-x/l), obtained from dI/dx = -I/l with absorption length l."
-  ],
-  "conclusion": "The two laws are solutions of the same first-order equation dy/ds = -y/lambda, and under the correspondence z <-> x, H <-> l one profile maps onto the other: p(z)/p_0 = I(z l/H)/I_0.",
-  "claimedRelation": "structural-analogy",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13701,22 +12787,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard comparison of exponential attenuation laws (barometric formula and Beer-Lambert law).",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-1-07",
-  "kind": "valid",
-  "premises": [
-   "An ideal gas of molar mass M with temperature profile T(z) is in hydrostatic balance dp/dz = -rho g with rho = p M/(R T) and g constant; p > 0 everywhere.",
-   "Because dp/dz < 0, p(z) is strictly decreasing, so height can be used as a function of pressure, z = z(p).",
-   "The geopotential is defined as Phi = g z."
-  ],
-  "conclusion": "In pressure coordinates the hydrostatic equation reads dPhi/d(ln p) = -R T/M, and this hypsometric form and the height-coordinate form dp/dz = -rho g imply each other.",
-  "claimedRelation": "exact-equivalence",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13829,8 +12903,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Hypsometric equation in pressure coordinates (Holton, An Introduction to Dynamic Meteorology).",
   "sideConditions": [
    "p > 0",
    "dp/dz < 0",
@@ -13839,16 +12911,6 @@
  },
  {
   "id": "mb-fluid-statics-1-08",
-  "kind": "valid",
-  "premises": [
-   "A liquid has a constant isothermal bulk modulus K, so that drho/dp = rho/K, and its density at the surface pressure p_0 is rho_0.",
-   "The liquid is at rest under uniform gravity g and obeys dp/dh = rho g, where h is depth below the surface.",
-   "The exact solution of these equations is p - p_0 = -K ln(1 - rho_0 g h/K), valid for rho_0 g h < K."
-  ],
-  "conclusion": "For depths with rho_0 g h << K the gauge pressure is p - p_0 = rho_0 g h, with relative error not exceeding (rho_0 g h/(2K))/(1 - rho_0 g h/K).",
-  "claimedRelation": "approximation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -13932,8 +12994,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Compressibility correction to hydrostatic pressure in deep water (e.g. Fox and McDonald, Fluid Mechanics, problems on the Mariana Trench).",
   "sideConditions": [
    "rho_0 g h << K",
    "rho_0 g h < K",
@@ -13942,17 +13002,6 @@
  },
  {
   "id": "mb-fluid-statics-1-09",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
-  "premises": [
-   "In a liquid of density rho_f at rest under gravity g, the pressure at depth d below the free surface is p = p_atm + rho_f g d.",
-   "The force exerted by the liquid on a surface element dA of a body, with unit normal n pointing out of the body, is -p n dA.",
-   "A rectangular block of base area A, height b and volume V = A b rests on the flat horizontal bottom of a tank filled with the liquid to depth H > b."
-  ],
-  "conclusion": "Summing the vertical pressure forces on the top and bottom faces, the liquid exerts a net upward force on the block equal to F = rho_f g V.",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14017,8 +13066,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Classic 'block sealed to the tank bottom' problem (Halliday, Resnick and Walker; American Journal of Physics notes on Archimedes' principle).",
   "sideConditions": [
    "H > b",
    "V = A b"
@@ -14026,17 +13073,6 @@
  },
  {
   "id": "mb-fluid-statics-1-10",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "An ideal gas of molar mass M = 0.02896 kg/mol is in hydrostatic balance dp/dz = -rho g with rho = p M/(R T), g = 9.81 m/s^2 and R = 8.314 J/(mol K).",
-   "Near the ground the temperature falls linearly with height at the tropospheric lapse rate L = 6.5e-3 K/m from T_0 = 288 K, and the surface pressure is p_0 = 101325 Pa.",
-   "Integrating the hydrostatic equation with this temperature profile gives p(z) = p_0 (1 - L z/T_0)^(g M/(R L))."
-  ],
-  "conclusion": "Evaluating this expression at an altitude of 40 km gives p(40 km) = 0.5 Pa.",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14088,8 +13124,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): U.S. Standard Atmosphere 1976 (piecewise layers); common student extrapolation error.",
   "sideConditions": [
    "z = 40 km",
    "M = 0.02896 kg/mol",
@@ -14102,17 +13136,6 @@
  },
  {
   "id": "mb-fluid-statics-1-11",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "In sea water of density rho = 1025 kg/m^3 at rest under g = 9.81 m/s^2, the gauge pressure at depth d is p_g = rho g d; at depths of 20.2 m and 10.1 m this gives p_g = 2.0 atm and 1.0 atm respectively (1 atm = 101325 Pa).",
-   "A small air bubble rises slowly from 20.2 m to 10.1 m; the air behaves as an ideal gas and remains at the temperature of the water.",
-   "For an isothermal ideal gas Boyle's law holds: p V = constant."
-  ],
-  "conclusion": "Applying Boyle's law between the two depths, the bubble's volume doubles: V_2 = 2 V_1.",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14164,8 +13187,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard diving-physics erratum: gauge pressure inserted into Boyle's law.",
   "sideConditions": [
    "T constant",
    "rho = 1025 kg/m^3",
@@ -14176,17 +13197,6 @@
  },
  {
   "id": "mb-fluid-statics-1-12",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "Dry air obeys the ideal-gas relation p = rho R T, where R is the gas constant for air.",
-   "The atmosphere is at rest in uniform gravity g = 9.81 m/s^2 with uniform temperature T = 288 K and obeys dp/dz = -rho g.",
-   "The gas constant has the value R = 8.314 J/(mol K)."
-  ],
-  "conclusion": "Eliminating rho gives dp/dz = -g p/(R T), so the pressure decays exponentially with scale height H = R T/g, numerically 244 m.",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14257,8 +13267,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Common confusion between the universal gas constant and the specific gas constant of air (R_air = 287 J/(kg K)).",
   "sideConditions": [
    "T uniform",
    "T = 288 K",
@@ -14268,17 +13276,6 @@
  },
  {
   "id": "mb-fluid-statics-1-13",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "The work done on a fluid element in a quasi-static compression is dW = -p dV, and for a liquid of bulk modulus K the compression is reversible and isothermal.",
-   "A rigid tank of volume V = 1.0 m^3 is filled with water (K = 2.2e9 Pa) and pumped up to a gauge pressure p = 1.0e7 Pa.",
-   "Pressure has the dimensions of energy per unit volume: 1 Pa = 1 J/m^3."
-  ],
-  "conclusion": "The elastic energy stored in the pressurised water is U = p V, numerically 1.0e7 J.",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14330,8 +13327,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Known misconception that pressure is a stored energy density (discussions of hydraulic accumulators and pressure-vessel test safety).",
   "sideConditions": [
    "V = 1.0 m^3",
    "K = 2.2e9 Pa",
@@ -14340,17 +13335,6 @@
  },
  {
   "id": "mb-fluid-statics-1-14",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "A neutrally buoyant particle in a linearly stratified incompressible fluid at rest, with drag and added mass neglected, obeys z'' = -N^2 z, where N^2 = -(g/rho_0) drho/dz > 0.",
-   "At time zero the particle is at its equilibrium height and moves upward with speed w_0, so the solution is z(t) = (w_0/N) sin(N t).",
-   "Weak stratification corresponds to N -> 0, and in this limit sin(N t)/N -> t."
-  ],
-  "conclusion": "In a weakly stratified fluid the particle drifts at constant velocity, z(t) = w_0 t, and the stratification may be neglected in computing its position at all later times.",
-  "claimedRelation": "approximation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14402,8 +13386,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Standard example of non-commuting limits (weak restoring force at fixed time versus long time at fixed restoring force).",
   "sideConditions": [
    "N -> 0",
    "N^2 > 0",
@@ -14412,17 +13394,6 @@
  },
  {
   "id": "mb-fluid-statics-1-15",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "An incompressible fluid at rest under uniform gravity g has an unknown smooth density profile rho(z), and its pressure obeys dp/dz = -rho(z) g.",
-   "Integrating the pressure over the surface of any fully submerged body gives the buoyant force F_b = g times the integral of rho over the displaced volume (Archimedes' principle for a stratified fluid).",
-   "A rigid sphere of radius a and volume V is held fully submerged with its centre at height z_c, and the net force exerted by the fluid on it, F_b(z_c), is measured as z_c is varied."
-  ],
-  "conclusion": "Since the buoyant force is determined by the density profile, the measurement determines the density profile: rho(z) = F_b(z)/(g V) at every height z.",
-  "claimedRelation": "exact-equivalence",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14493,25 +13464,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Subtlety in density probing with finite-size floats (hydrometer resolution; American Journal of Physics discussions of Archimedes in stratified fluids).",
   "sideConditions": [
    "body fully submerged"
   ]
  },
  {
   "id": "mb-fluid-statics-1-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "In the hydraulic-electric analogy used for pipe networks, pressure difference corresponds to voltage, volume flow rate Q to current, Poiseuille resistance to Ohmic resistance, and hydraulic power Delta_p Q to electrical power V I.",
-   "A hydraulic press consists of two pistons of areas A_1 < A_2 connected by an incompressible fluid at rest with negligible weight; a force F_1 on the small piston balances a force F_2 = F_1 A_2/A_1 on the large one, while a displacement d_1 of the small piston moves the large one by d_2 = d_1 A_1/A_2, so that work is conserved.",
-   "An ideal transformer of turns ratio n multiplies voltage by n and divides current by n while conserving power; the press, which multiplies force by A_2/A_1 while conserving work, plays the role of an ideal transformer with n = A_2/A_1 in the hydraulic-electric analogy."
-  ],
-  "conclusion": "Therefore the pressure at the large piston exceeds that at the small piston by the turns ratio: p_2 = (A_2/A_1) p_1.",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14582,8 +13540,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Student misconception that a hydraulic press multiplies pressure; overextension of the hydraulic-electric circuit analogy.",
   "sideConditions": [
    "A_1 < A_2",
    "fluid weight negligible",
@@ -14592,16 +13548,6 @@
  },
  {
   "id": "mb-fluid-statics-2-01",
-  "kind": "valid",
-  "premises": [
-   "Hydrostatic balance in a fluid at rest, with z measured upward and uniform gravitational acceleration g: dp/dz = -rho g.",
-   "The air is an ideal gas, p = rho R_s T, with specific gas constant R_s = 287 J kg^-1 K^-1.",
-   "The temperature decreases linearly with height, T(z) = T_0 - Gamma z, with a constant lapse rate Gamma > 0, for 0 <= z < T_0/Gamma; the pressure at z = 0 is p_0."
-  ],
-  "conclusion": "p(z) = p_0 (1 - Gamma z/T_0)^(g/(R_s Gamma))",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14767,8 +13713,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Constant-lapse-rate (standard atmosphere) pressure profile, e.g. Wallace and Hobbs, Atmospheric Science, Ch. 3.",
   "sideConditions": [
    "Gamma > 0",
    "0 <= z < T_0/Gamma"
@@ -14776,18 +13720,6 @@
  },
  {
   "id": "mb-fluid-statics-2-02",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
-  "premises": [
-   "A tank contains water of density rho at rest under uniform gravity; the pressure at depth d below the free surface is p(d) = p_a + rho g d.",
-   "A rectangular block of height c and horizontal cross-section a x b, volume V = a b c, lies flat on the horizontal floor of the tank with its top face at depth D.",
-   "The top face and the four vertical faces of the block are in contact with the water; the force exerted by the water on the block is the sum of the pressure forces on its faces, each normal to the face and directed into the block.",
-   "Pressure forces on opposite vertical faces cancel because the pressure distribution is the same on both."
-  ],
-  "conclusion": "F = rho g V, directed upward",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14852,22 +13784,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Archimedes' principle derived for a rectangular block; the block sealed to the tank floor is a classic counterexample (the 'suction' problem in Halliday-Resnick-Walker and similar problem sets).",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-03",
-  "kind": "valid",
-  "premises": [
-   "In a connected body of incompressible liquid of density rho at rest under uniform gravity, any two points 1 and 2 satisfy p_1 + rho g z_1 = p_2 + rho g z_2, with z measured upward.",
-   "The liquid is enclosed by two frictionless pistons of face areas A_1 and A_2 whose faces are at heights z_1 and z_2; the pressure immediately under piston i equals F_i/A_i, where F_i is the total downward force on that piston (applied load plus piston weight), and the same atmospheric pressure acts on the outside of both pistons so that it cancels.",
-   "The two piston faces are held at the same height, z_1 = z_2."
-  ],
-  "conclusion": "F_2 = F_1 A_2/A_1",
-  "claimedRelation": "restriction",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14938,25 +13858,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Hydraulic press; Pascal's principle as a special case of the hydrostatic relation (Halliday-Resnick-Walker, Ch. 14).",
   "sideConditions": [
    "z_1 = z_2"
   ]
  },
  {
   "id": "mb-fluid-statics-2-04",
-  "kind": "invalid",
-  "failureKind": "domain-violation",
-  "premises": [
-   "In a connected body of liquid at rest, points at the same height have the same pressure, and along any vertical line the pressure increases downward by rho g times the depth.",
-   "A U-tube contains water of density rho = 1000 kg m^-3; the free surface in each arm is open to the atmosphere and is treated as a horizontal plane at pressure p_a.",
-   "The two arms are cylindrical, one of inner radius 20 mm and the other of inner radius 0.1 mm; h_1 and h_2 denote the heights of the two free surfaces above a common datum."
-  ],
-  "conclusion": "h_1 = h_2",
-  "claimedRelation": "restriction",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -14989,23 +13896,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Communicating vessels; the breakdown in narrow tubes is the capillary-rise (Jurin) effect.",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-05",
-  "kind": "valid",
-  "premises": [
-   "A liquid has density depending linearly on pressure, rho = rho_0 [1 + kappa (p - p_0)], with constant compressibility kappa (for water about 4.6 x 10^-10 Pa^-1) and density rho_0 at the surface pressure p_0.",
-   "With depth h measured downward from the free surface, hydrostatic balance reads dp/dh = rho g with g uniform.",
-   "The exact solution of this system is p(h) - p_0 = (1/kappa) [exp(kappa rho_0 g h) - 1].",
-   "The regime considered is kappa rho_0 g h << 1 (for water this parameter is about 0.045 at h = 10 km)."
-  ],
-  "conclusion": "p(h) = p_0 + rho_0 g h (1 + kappa rho_0 g h/2), with relative error in the pressure excess of order (kappa rho_0 g h)^2/6",
-  "claimedRelation": "approximation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -15185,8 +14079,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Compressibility correction to deep-ocean pressure; cf. Batchelor, An Introduction to Fluid Dynamics, Sec. 1.4, and Kundu and Cohen, Fluid Mechanics, Ch. 1.",
   "sideConditions": [
    "kappa rho_0 g h << 1"
   ],
@@ -15205,17 +14097,6 @@
  },
  {
   "id": "mb-fluid-statics-2-06",
-  "kind": "invalid",
-  "failureKind": "convention-mismatch",
-  "premises": [
-   "A diver's pressure gauge is calibrated to read zero at the free surface; at depth h in water of density rho = 1000 kg m^-3 it reads p_gauge = rho g h with g = 9.81 m s^-2, i.e. 1.0 x 10^5 Pa per 10.2 m of depth.",
-   "A small air bubble is released at a depth of 20.4 m, where the gauge reads 2.0 x 10^5 Pa, and rises to a depth of 10.2 m, where the gauge reads 1.0 x 10^5 Pa; water and bubble are at the same uniform temperature throughout.",
-   "The air in the bubble obeys Boyle's law at constant temperature, p V = constant, and the pressure inside the bubble equals the water pressure at its position (surface tension neglected)."
-  ],
-  "conclusion": "V_2/V_1 = 2",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -15267,23 +14148,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Common student error of inserting gauge pressures into the gas laws (rising-bubble problems in Giancoli and Serway).",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-07",
-  "kind": "valid",
-  "premises": [
-   "Solid spheres of density rho_p and volume V_p are uniformly dispersed at volume fraction phi in a liquid of density rho_f in a vessel; the mean interparticle spacing is very small compared with the depth h of the suspension.",
-   "Each sphere falls at its terminal velocity, so the hydrodynamic force exerted on it by the liquid is upward and equal to (rho_p - rho_f) g V_p; by Newton's third law the sphere exerts an equal and opposite force on the liquid.",
-   "On the microscopic scale the liquid pressure varies around each particle; the pressure p(h) is defined as the average of the liquid pressure over horizontal slabs whose thickness is large compared with the interparticle spacing but small compared with h.",
-   "For such a slab, vertical force balance includes the weight of the liquid in the slab and the forces transmitted to the liquid by the particles within it; the pressure at the free surface is p_0."
-  ],
-  "conclusion": "p(h) = p_0 + [phi rho_p + (1 - phi) rho_f] g h",
-  "claimedRelation": "coarse-graining",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -15443,25 +14311,12 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Pressure in settling suspensions and fluidized beds (Richardson and Zaki 1954; Davis and Acrivos, Annu. Rev. Fluid Mech. 1985).",
   "sideConditions": [
    "mean interparticle spacing << h"
   ]
  },
  {
   "id": "mb-fluid-statics-2-08",
-  "kind": "invalid",
-  "failureKind": "notation-collision",
-  "premises": [
-   "The equation of state of air is written in the form p = rho R T, where R is the gas constant.",
-   "The gas constant has the value R = 8.314 J mol^-1 K^-1.",
-   "The atmosphere is at rest, isothermal at 288 K, under uniform gravity g = 9.81 m s^-2, so that dp/dz = -rho g with z measured upward; combining with the equation of state gives dp/dz = -g p/(R T)."
-  ],
-  "conclusion": "p(z) = p_0 exp(-g z/(R T)), so that the scale height R T/g is about 244 m at 288 K",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -15593,22 +14448,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Confusion between the universal (molar) gas constant and the specific gas constant R_s = R/M used in the engineering form of the ideal-gas law.",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-09",
-  "kind": "valid",
-  "premises": [
-   "An incompressible liquid of density rho rotates rigidly about the vertical z axis with angular velocity Omega under uniform gravity g directed along -z; in the co-rotating frame the liquid is at rest and satisfies grad p = rho (-g e_z + Omega^2 r e_r), where r is the distance from the axis.",
-   "The solution with pressure p_a at the point r = 0, z = z_0 is p(r, z) = p_a + (1/2) rho Omega^2 r^2 - rho g (z - z_0), which is a polynomial in the parameter Omega^2.",
-   "The parameter Omega is continued to the imaginary value i omega with omega real, so that Omega^2 becomes -omega^2."
-  ],
-  "conclusion": "p(r, z) = p_a - (1/2) rho omega^2 r^2 - rho g (z - z_0), which is the hydrostatic pressure field of a liquid at rest in an inertial frame under gravity together with an inward radial body force of magnitude omega^2 r per unit mass, as inside a uniformly dense self-gravitating cylinder with omega^2 equal to 2 pi G rho",
-  "claimedRelation": "analytic-continuation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -15832,8 +14675,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Newton's rotating-bucket problem and the hydrostatic interior of a uniform self-gravitating cylinder; the continuation Omega^2 -> -omega^2 maps a centrifugal body force to a centripetal one.",
   "sideConditions": [
    "omega real",
    "Omega = i omega",
@@ -15842,17 +14683,6 @@
  },
  {
   "id": "mb-fluid-statics-2-10",
-  "kind": "invalid",
-  "failureKind": "dimensional-coincidence",
-  "premises": [
-   "In water at rest under uniform gravity the pressure at depth h is p(h) = p_a + rho g h, where rho g h is the pressure excess over atmospheric produced by the weight of the overlying water.",
-   "The pascal is identical to the joule per cubic metre, so pressure has the dimensions of an energy per unit volume.",
-   "Water at depth is slightly compressed by the pressure and therefore stores elastic energy in its compressed state."
-  ],
-  "conclusion": "u(h) = rho g h, where u is the elastic energy stored per unit volume of water at depth h",
-  "claimedRelation": "exact-equivalence",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -15917,22 +14747,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Misidentification of pressure with energy density; the correct elastic energy density is (p - p_a)^2/(2 K) with bulk modulus K (Landau and Lifshitz, Theory of Elasticity).",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-11",
-  "kind": "valid",
-  "premises": [
-   "Hydraulic press: an incompressible liquid at rest connects two pistons of areas A_1 and A_2 at the same level; the pressure under both pistons is the same, and if piston 1 moves down by d_1 the volume conservation A_1 d_1 = A_2 d_2 fixes the displacement d_2 of piston 2.",
-   "Law of the lever: a rigid massless bar pivoted at a point with arms l_1 and l_2 is in rotational equilibrium under forces F_1 and F_2 when F_1 l_1 = F_2 l_2; for a small rotation the end displacements satisfy d_1/l_1 = d_2/l_2.",
-   "In both systems the work done on one side equals the work delivered on the other, F_1 d_1 = F_2 d_2."
-  ],
-  "conclusion": "F_2/F_1 = A_2/A_1, in which the area ratio plays the same role that the arm ratio l_1/l_2 plays in the law of the lever",
-  "claimedRelation": "structural-analogy",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -16003,23 +14821,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Classical comparison of the hydraulic press with the lever (Pascal, Traite de l'equilibre des liqueurs; Feynman Lectures Vol. I, Ch. 4).",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-12",
-  "kind": "invalid",
-  "failureKind": "non-uniform-limit",
-  "premises": [
-   "For an ideal-gas atmosphere with constant lapse rate Gamma > 0, surface temperature T_0 and surface pressure p_0, hydrostatic balance gives p_Gamma(z) = p_0 (1 - Gamma z/T_0)^(g/(R_s Gamma)) for 0 <= z <= T_0/Gamma, and p_Gamma(z) = 0 above the height T_0/Gamma at which the temperature reaches zero.",
-   "The isothermal profile is p_iso(z) = p_0 exp(-g z/(R_s T_0)).",
-   "For every fixed z >= 0 the limit Gamma -> 0 of p_Gamma(z) is p_iso(z), since (1 - Gamma z/T_0)^(g/(R_s Gamma)) tends to exp(-g z/(R_s T_0))."
-  ],
-  "conclusion": "p_Gamma(z) = p_iso(z) (1 + O(Gamma)) uniformly in z >= 0, so that for sufficiently small Gamma the isothermal formula reproduces the lapse-rate atmosphere to within any prescribed relative error at all heights",
-  "claimedRelation": "approximation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -16090,8 +14895,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Pointwise versus uniform convergence of the polytropic atmosphere to the isothermal one; cf. Wallace and Hobbs Ch. 3 and the standard analysis caution about limits of (1 - x/n)^n.",
   "sideConditions": [
    "Gamma > 0",
    "z >= 0",
@@ -16101,16 +14904,6 @@
  },
  {
   "id": "mb-fluid-statics-2-13",
-  "kind": "valid",
-  "premises": [
-   "An ideal-gas column at rest under uniform gravity satisfies dp/dz = -rho g, with z measured upward.",
-   "The column is isothermal at temperature T_0, so p = rho R_s T_0 with constant R_s; consequently rho is a fixed multiple of p at every height, rho = p/(R_s T_0), and rho_0 = p_0/(R_s T_0) at z = 0.",
-   "The pressure profile of this column is p(z) = p_0 exp(-g z/(R_s T_0))."
-  ],
-  "conclusion": "rho(z) = rho_0 exp(-g z/(R_s T_0))",
-  "claimedRelation": "exact-equivalence",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -16242,23 +15035,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Isothermal barometric formula in pressure and density form (Feynman Lectures Vol. I, Ch. 40).",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-14",
-  "kind": "invalid",
-  "failureKind": "false-inverse",
-  "premises": [
-   "For a body floating at rest in a liquid of density rho_f, Archimedes' principle gives rho_f g V_sub = M g, where V_sub is the submerged volume and M the mass of the body.",
-   "Defining the mean density rho_mean = M/V, with V the total volume of the body, it follows that V_sub/V = rho_mean/rho_f; the submerged fraction therefore determines the mean density of the body.",
-   "A log of freshly cut timber floats in fresh water (rho_f = 1000 kg m^-3) with 60 percent of its volume submerged."
-  ],
-  "conclusion": "rho_substance = 0.60 rho_f, i.e. the solid wood substance (cell-wall material) of which the log is composed has a density of about 600 kg m^-3",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -16310,21 +15090,10 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Inverting a volume average to infer a constituent density; wood cell-wall substance has density about 1500 kg m^-3 regardless of species (Kollmann and Cote, Principles of Wood Science and Technology).",
   "sideConditions": []
  },
  {
   "id": "mb-fluid-statics-2-15",
-  "kind": "valid",
-  "premises": [
-   "An ideal gas of spin-1/2 fermions of mass m is held at temperature T in uniform gravity g along -z; in the local-density approximation (valid when the thermal de Broglie wavelength lambda_T = h/sqrt(2 pi m k_B T) is small compared with k_B T/(m g)) the number density is n(z) = -(2/lambda_T^3) Li_{3/2}(-zeta exp(-m g z/(k_B T))), where zeta is the fugacity and Li_{3/2} the polylogarithm.",
-   "The classical (non-degenerate) limit is zeta -> 0, equivalently n lambda_T^3 -> 0, which is the limit h -> 0 at fixed n and T; in this limit Li_{3/2}(-x) = -x + O(x^2)."
-  ],
-  "conclusion": "n(z) = n(0) exp(-m g z/(k_B T))",
-  "claimedRelation": "deformation-quantization",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -16469,8 +15238,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Fermi gas in a gravitational field in the local-density approximation (Pathria and Beale, Statistical Mechanics, Ch. 8 problems); the classical limit reproduces the Boltzmann barometric law.",
   "sideConditions": [
    "lambda_T << k_B T/(m g)",
    "zeta -> 0",
@@ -16480,17 +15247,6 @@
  },
  {
   "id": "mb-fluid-statics-2-16",
-  "kind": "invalid",
-  "failureKind": "analogy-promoted",
-  "premises": [
-   "Dry sand of bulk density rho_b = 1600 kg m^-3 fills a tall vertical cylindrical silo of diameter 3 m to a height h and is at rest.",
-   "Like a liquid, the sand has no shape of its own, conforms to the container, and transmits contact forces between neighbouring grains; the granular column is therefore treated as a liquid of density rho_b at rest under gravity.",
-   "For a liquid at rest, vertical force balance on a thin horizontal slab of thickness dh gives dp/dh = rho g with p = 0 (gauge) at the free surface; the same slab balance is applied to the granular column with the vertical compressive stress sigma across horizontal planes in place of p."
-  ],
-  "conclusion": "sigma(h) = rho_b g h",
-  "claimedRelation": "derivation",
-  "family": "fluid-statics",
-  "split": "held-out",
   "expr": {
    "kind": "op",
    "op": "-",
@@ -16555,8 +15311,6 @@
     }
    ]
   },
-  "authorship": "independent",
-  "source": "model-authored (claude-fable-5-1, atlas-blind): Janssen's silo problem (1895); the assumption that a granular column is hydrostatic is a standard misconception discussed in Duran, Sands, Powders, and Grains, Ch. 3.",
   "sideConditions": []
  }
 ]

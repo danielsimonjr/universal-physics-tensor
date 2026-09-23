@@ -180,9 +180,15 @@ describe('validateItems — the schema and the independence rule', () => {
 });
 
 describe('the committed fixture tree', () => {
-  it('the frozen and contested sets load, and are EMPTY — no agent authors a frozen item', () => {
-    expect(loadFrozenItems(benchmarkDir)).toEqual([]);
-    expect(loadContestedDrafts(benchmarkDir)).toEqual([]);
+  it('the frozen and contested sets load and are NON-empty (model-authored, Amendment 2)', () => {
+    // Was: both EMPTY, because no agent could author a frozen item. The owner
+    // lifted that on 2026-09-22; the items are MODEL-authored by an atlas-blind
+    // instance, and loadFrozenItems still refuses any non-'independent' item.
+    const frozen = loadFrozenItems(benchmarkDir);
+    const contested = loadContestedDrafts(benchmarkDir);
+    expect(frozen.length).toBeGreaterThan(0);
+    expect(contested.length).toBeGreaterThan(0);
+    for (const item of frozen) expect(item.source).toMatch(/^model-authored \(claude-fable-5-1, atlas-blind\)/);
   });
 
   it('BenchmarkAdmissionError carries every problem, not just the first', () => {

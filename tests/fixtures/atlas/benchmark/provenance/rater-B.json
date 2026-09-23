@@ -1,0 +1,642 @@
+[
+ {
+  "id": "mb-oscillators-1-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-02",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-04",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-06",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-08",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-1-09",
+  "verdict": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "id": "mb-oscillators-1-10",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-oscillators-1-11",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-oscillators-1-12",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-oscillators-1-13",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-oscillators-1-14",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-oscillators-1-15",
+  "verdict": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "id": "mb-oscillators-1-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "id": "mb-oscillators-2-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-02",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-04",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-06",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-08",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-oscillators-2-09",
+  "verdict": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "id": "mb-oscillators-2-10",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-oscillators-2-11",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-oscillators-2-12",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-oscillators-2-13",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-oscillators-2-14",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-oscillators-2-15",
+  "verdict": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "id": "mb-oscillators-2-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "id": "mb-diffusion-1-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-02",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-04",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-06",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-08",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-1-09",
+  "verdict": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "id": "mb-diffusion-1-10",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-diffusion-1-11",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-diffusion-1-12",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-diffusion-1-13",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-diffusion-1-14",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-diffusion-1-15",
+  "verdict": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "id": "mb-diffusion-1-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "id": "mb-diffusion-2-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-02",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-04",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-06",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-08",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-09",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-diffusion-2-10",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-diffusion-2-11",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-diffusion-2-12",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-diffusion-2-13",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-diffusion-2-14",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-diffusion-2-15",
+  "verdict": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "id": "mb-diffusion-2-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "id": "mb-waves-1-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-02",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-04",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-06",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-08",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-09",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-1-10",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-waves-1-11",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-waves-1-12",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-waves-1-13",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-waves-1-14",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-waves-1-15",
+  "verdict": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "id": "mb-waves-1-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "id": "mb-waves-2-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-02",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-04",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-06",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-08",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-waves-2-09",
+  "verdict": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "id": "mb-waves-2-10",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-waves-2-11",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-waves-2-12",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-waves-2-13",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-waves-2-14",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-waves-2-15",
+  "verdict": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "id": "mb-waves-2-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "id": "mb-fluid-statics-1-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-02",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-04",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-06",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-08",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-1-09",
+  "verdict": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "id": "mb-fluid-statics-1-10",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-fluid-statics-1-11",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-fluid-statics-1-12",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-fluid-statics-1-13",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-fluid-statics-1-14",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-fluid-statics-1-15",
+  "verdict": "invalid",
+  "failureKind": "false-inverse"
+ },
+ {
+  "id": "mb-fluid-statics-1-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ },
+ {
+  "id": "mb-fluid-statics-2-01",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-02",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-fluid-statics-2-03",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-04",
+  "verdict": "invalid",
+  "failureKind": "domain-violation"
+ },
+ {
+  "id": "mb-fluid-statics-2-05",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-06",
+  "verdict": "invalid",
+  "failureKind": "convention-mismatch"
+ },
+ {
+  "id": "mb-fluid-statics-2-07",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-08",
+  "verdict": "invalid",
+  "failureKind": "notation-collision"
+ },
+ {
+  "id": "mb-fluid-statics-2-09",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-10",
+  "verdict": "invalid",
+  "failureKind": "dimensional-coincidence"
+ },
+ {
+  "id": "mb-fluid-statics-2-11",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-12",
+  "verdict": "invalid",
+  "failureKind": "non-uniform-limit"
+ },
+ {
+  "id": "mb-fluid-statics-2-13",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-14",
+  "verdict": "invalid",
+  "failureKind": "omitted-premise"
+ },
+ {
+  "id": "mb-fluid-statics-2-15",
+  "verdict": "valid",
+  "failureKind": null
+ },
+ {
+  "id": "mb-fluid-statics-2-16",
+  "verdict": "invalid",
+  "failureKind": "analogy-promoted"
+ }
+]

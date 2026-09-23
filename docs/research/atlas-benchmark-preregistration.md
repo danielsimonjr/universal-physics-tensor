@@ -103,3 +103,43 @@ threshold, rater, family or item changes. The frozen-set hash in §1 is unchange
 **On ordering.** This note was registered while the frozen item set was EMPTY, before any condition
 ran. That is the intended order — method fixed before data — not a gap. The study has NOT been
 conducted: no result exists yet.
+
+**Amendment 2 (2026-09-22) — MODEL authors and MODEL raters; the frozen set is no longer empty.**
+The owner removed the human requirement ("use a fable model"). This changes §1 and §2. The
+thresholds, the held-out family and the criteria in §3–§7 do not change.
+
+- **Who.** Every author, encoder and rater is an instance of `claude-fable-5-1`. No human authored
+  or rated an item. The kappa below is agreement between two MODEL instances, not human
+  inter-rater reliability.
+- **Isolation, enforced by the launch and recorded per call.** Each instance is a separate
+  `claude -p` process with no tools, no MCP servers, no settings sources, no auto-memory, a
+  replaced system prompt, and a working directory outside the repository. Each of the 32 calls
+  stores the launch's own `init` record (`tools: []`, `mcp_servers: []`, the model id) next to its
+  exact prompt and reply in `tests/fixtures/atlas/benchmark/provenance/`. The pipeline refuses any
+  reply whose `init` record shows a tool or an MCP server. Prompts: `scripts/atlas-benchmark-models.mjs`.
+- **Roles.** The AUTHOR wrote 128 items (16 per batch, two batches per family, 8 valid and 8
+  invalid per batch, each failure kind once per batch). It saw the domain names, the relation-type
+  definitions and the failure-kind definitions, and no atlas content. The ENCODER turned each
+  item's public prose into the machine fields and never saw the answer, the explanation or the
+  source. RATER A and RATER B are separate instances with no shared context. Each saw only the
+  public prose. The session that ran the pipeline has read `src/atlas/`, so it authored, encoded
+  and rated nothing.
+- **Kappa, over all 128 items, before the freeze.** Binary (valid/invalid): **0.984**
+  (2×2 = [[66, 1], [0, 61]]). Nine categories (valid plus the eight kinds): **0.978**. Agreement
+  with the author's key: rater A 125/128, rater B 126/128. **All three roles are the same model**,
+  so this high agreement is partly shared model judgement. It does not show that humans would
+  agree.
+- **Freeze rule.** An item is frozen when rater A, rater B and the author give the same
+  valid/invalid verdict and its encoding is well formed. Otherwise it goes to `contested/`.
+  Result: **125 frozen** (64 valid, 61 invalid; 32 held-out) and **3 contested**. All 3
+  contested items are `omitted-premise` items, so that kind has 5 frozen items and every other
+  kind has 8. Cross-split leakage: none found.
+- **Frozen set.** SHA-256 of the canonical JSON: `0274f3cd275981434a6b8cac358a31b44bd1c38846a70f0ec7b9d72d12ce74a3`.
+- **Criterion 6 (curation cost) is measured as MODEL cost, not human person-hours:** USD 19.34
+  for the whole set (author 10.78, encoder 5.45, raters 3.11), about USD 0.15 per authored item.
+  **Criterion 5 (practical value) is not converted.** It is defined as human time and error rate,
+  a model's run is neither, and it stays unmet.
+- **Criteria 2 and 3 cannot be scored yet.** They compare the atlas against LLM and embedding
+  conditions, and no out-of-process worker exists. Also, the public item schema carries `kind` and
+  `failureKind` (the answer). This must move to the scorer half before any such condition reads
+  `public/items.json`.

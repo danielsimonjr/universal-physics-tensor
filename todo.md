@@ -306,6 +306,13 @@ warning-silencing, not debug logging).
       - [ ] **Frozen item set needs INDEPENDENT human authors and two named κ raters.** No agent may
         author a frozen item; until authors exist, Phase 5's "κ reported" exit criterion cannot be met
         by code. Route to the user via Mothership.
+      - [x] Model-authored frozen set (owner 2026-09-22: "use a fable model"): isolated atlas-blind author, label-blind encoder.
+      - [x] Two independent model raters (separate isolated instances) and Cohen's kappa, reported as MODEL agreement.
+      - [x] Freeze the set; the empty-set hash test must go RED before the note is amended.
+      - [x] First run of the study success path on the non-empty set; fix what breaks.
+      - [ ] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own
+        "never the answer" docstring. The atlas condition never reads them; an LLM or embedding condition fed
+        `public/items.json` would see the key. Fix before any out-of-process condition runs: move both to the scorer half.
 
 - [ ] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
       `docs/planning/ACTIVE.md` 2026-09-22; design note `docs/planning/Atlas-Phase-4-Design.md`.

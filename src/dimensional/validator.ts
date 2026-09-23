@@ -463,10 +463,14 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       let acc: Dimension | null = null;
       let firstFI: Map<string, { upper: number; lower: number }> | null = null;
       for (let i = 0; i < node.args.length; i++) {
+        // A literal zero is the additive identity and carries no dimension of
+        // its own. Numbers are dimensionless symbols in this grammar, so
+        // without this `x = 0`, written `x - 0`, could never validate.
+        if (isDimensionlessZeroLiteral(node.args[i])) continue;
         const probe = inferArgLocal(node.args[i], ctx, `args[${i}]`);
         const childDim = probe.dim;
         if (childDim === null) return null;
-        if (i === 0) {
+        if (acc === null) {
           acc = childDim;
           firstFI = probe.freeIndices;
         } else {
@@ -499,7 +503,7 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
       if (firstFI !== null) {
         mergeFreeIndices(ctx.freeIndices, firstFI);
       }
-      return acc;
+      return acc ?? DIMENSIONLESS;
     }
 
     case 'integral': {
@@ -799,6 +803,18 @@ function infer(node: ExprNode, ctx: InferContext): Dimension | null {
  */
 function okFromViolations(violations: ReadonlyArray<Violation>): boolean {
   return !violations.some((v) => (v.severity ?? 'error') === 'error');
+}
+
+/**
+ * A symbol whose name is a numeric literal equal to zero and whose dimension
+ * is dimensionless. In a sum it is the additive identity and is skipped.
+ * A "0" that carries a dimension is an ordinary term.
+ */
+function isDimensionlessZeroLiteral(node: ExprNode | undefined): boolean {
+  if (node === undefined || node.kind !== 'symbol' || node.name.trim() === '') return false;
+  if (Number(node.name) !== 0) return false;
+  const d = node.dim;
+  return d.L === 0 && d.M === 0 && d.T === 0 && d.I === 0 && d.Theta === 0 && d.N === 0 && d.J === 0;
 }
 
 /**

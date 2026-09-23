@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 434,
+    "totalTestFiles": 435,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -377,6 +377,7 @@
       "tests/atlas/benchmark.test.ts"
     ],
     "src/atlas/benchmark/loader.ts": [
+      "tests/atlas/benchmark-model-set.test.ts",
       "tests/atlas/benchmark-preregistration.test.ts",
       "tests/atlas/benchmark.test.ts"
     ],
@@ -387,6 +388,7 @@
     ],
     "src/atlas/benchmark/stats.ts": [
       "tests/atlas/barrel-completeness.test.ts",
+      "tests/atlas/benchmark-model-set.test.ts",
       "tests/atlas/benchmark-stats.test.ts",
       "tests/atlas/link-prediction.test.ts"
     ],
@@ -5651,6 +5653,10 @@
       "src/atlas/benchmark/backend-shapes.ts",
       "src/dimensional/ast-builders.ts",
       "src/dimensional/ast-types.ts"
+    ],
+    "tests/atlas/benchmark-model-set.test.ts": [
+      "src/atlas/benchmark/stats.ts",
+      "src/atlas/benchmark/loader.ts"
     ],
     "tests/atlas/benchmark-preregistration.test.ts": [
       "src/atlas/benchmark/loader.ts",

@@ -8,6 +8,50 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-22) — the benchmark set exists: model-authored, model-rated, and run once
+
+- **125 frozen items and 3 contested**, written and rated by `claude-fable-5-1` instances
+  (pre-registration Amendment 2). The owner removed the human requirement. No human authored or
+  rated an item.
+- **The instances were isolated by how they were launched.** Each role ran as a separate `claude -p`
+  process with no tools, no MCP servers, no settings, no memory, and a working directory outside the
+  repository. The launch's own `init` record (`tools: []`, `mcp_servers: []`) is stored with the
+  exact prompt and reply of all 32 calls in `tests/fixtures/atlas/benchmark/provenance/`, and the
+  pipeline refuses a reply whose record shows a tool.
+  - The author was atlas-blind.
+  - The encoder never saw the answers.
+  - The two raters shared no context.
+  - This session has read `src/atlas/`, so it authored, encoded and rated nothing.
+  Scripts: `scripts/atlas-benchmark-models.mjs` and `scripts/atlas-benchmark-assemble.mjs`.
+- **Kappa between the two MODEL raters, over all 128 items and before the freeze:** 0.984
+  (valid/invalid) and 0.978 (nine categories). All three roles are the same model, so this is
+  model self-agreement and not evidence of human agreement.
+  `tests/atlas/benchmark-model-set.test.ts` recomputes kappa and the freeze from the raw rater
+  files. A control shows that one flipped verdict moves kappa.
+- **The freeze took:** the empty-set hash test and the "EMPTY" fixture test both went RED on the new
+  set before the note was amended. The pre-registration test now checks the LAST recorded hash, and
+  its control drops one item.
+- **First run of the study path on a non-empty set.** The atlas rejects 6 of 61 invalid items
+  (Wilson 95% [4.6%, 19.8%]) and names the right failure kind for all 6. It abstains on 116 of 125
+  items, wrongly accepts 1, and falsely rejects 1. The false reject comes from the encoding: a
+  derivative with respect to ln p was encoded as a literal `ln(p)`. No LLM or embedding condition
+  exists, so no paired comparison was made.
+- Model cost for the whole set: USD 19.34 (author 10.78, encoder 5.45, raters 3.11). This is model
+  cost, not human curation time.
+
+### Fixed (2026-09-22) — two defects the first real run exposed
+
+- **The dimensional validator rejected every equation of the form "x = 0".** Numbers are
+  dimensionless symbols in this grammar, so "x = 0" is written `x - 0`, and the validator treated
+  the literal zero as a dimensionless term. Zero is the additive identity: a dimensionless literal
+  zero in a sum is now skipped. Controls: a non-zero number is still rejected, a zero does not hide
+  a mismatch between the other terms, and a zero that carries a dimension is an ordinary term. On
+  the benchmark this removed 4 false rejects of valid items. It also removed 2 rejections of
+  invalid items that had been correct only by accident, through the same bug.
+- **The atlas condition accepted an item that no instrument checked.** In the "types only"
+  ablation, every item without a claimed chain was accepted, with nothing run: 61 wrong accepts.
+  An accept now needs at least one instrument that ran. Otherwise the item abstains.
+
 ### Added (2026-09-22) — Newcombe's paired interval checked against the PUBLISHED table
 
 - `tests/atlas/benchmark-stats.test.ts` now checks `pairedDifferenceInterval` against all 18 rows of
