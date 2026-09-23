@@ -293,6 +293,7 @@ warning-silencing, not debug logging).
       - [x] Search the 8 Sprint 4 closure bridges against Physlib (were unsearched at S4.6): keyword search
         + NavierStokes.lean read, no counterpart.
       - [ ] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
+      - [ ] `repo_map.py check . --docs docs/architecture` fails: hand-written counts in API, ARCHITECTURE, COMPONENTS, DATAFLOW, duplicate-symbols, FILE_INVENTORY and OVERVIEW are stale (e.g. 710 source files claimed, 842 actual), and COMPONENTS.md has no atlas section.
 
 - [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
       2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,
