@@ -8,6 +8,38 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `ARCHITECTURE.md`: 24 false claims corrected, release history moved out
+
+A read-only full-claim audit (Opus, about 190 claims) found 24 false; the load-bearing ones were
+re-checked by the session before editing.
+
+- **How the code works, which the doc had wrong:** per-bridge `evaluate*()` functions are plain JS
+  (only BE-37 goes through `evaluateNumerical`), and evaluator code is spread over `equations/`, two
+  closed-form modules and `bridges/be55…be65-*.ts`; `derivativeStrategy: 'computed'` makes the
+  lowering treat a raw-tensor metric as constant, not finite-difference it; the validator DOES check
+  valence homogeneity and dimensioned transcendental arguments; `FreeIndexMismatchError` and
+  `TensorInScalarOpError` throw out of `validate()` instead of accumulating; `ok` also requires an
+  inferred dimension; the reverse-mode tape is `EngineTape.backward()`; `bridgeGradient` is not
+  "analytic" for plain-JS bridges; `numerical/index.ts` does re-export `Float64ReferenceEngine`.
+- **Where things live:** `ExprNode` and the curvature/field-equation node types are declared in
+  `ast-types.ts`; `parsePhysics` is in `formula-registry.ts`; the union has four more arms than the
+  doc listed; `catalog-full.ts` is a barrel over four per-domain edge files; tests live in
+  `tests/dimensional/` and `tests/bridges/`, not `tests/unit/…`.
+- **Counts:** 55 catalog entries (not 44), 19 data-confronted bridges (not 9), `composition/` has 71
+  files (not 47), both cycle counts are 0 (not "two type-only cycles remain").
+- **History moved here from the doc:** the v0.9.0 / v0.10.0 / v0.11.0 milestone bullets, the
+  v0.28–v0.40 arc, and the per-row release labels (every present fact they carried is kept). The
+  suite snapshot the doc quoted — 3,700 passed / 4 skipped / 1 todo (3,705 tests) across 353 files,
+  98.5% file coverage (259/263) — is retired history: `TEST_COVERAGE.md` (generated) and `NOTES.md`
+  carry the current figures.
+- **Review:** an Opus review (in-session, not human) FAILED two corrections as first written:
+  more structural errors than two throw out of `validate()` (e.g. `IndexLabelCollisionError`), and
+  the stress-energy node kind is `'stress-energy'`, with all eleven curvature/equation kinds
+  dispatching through `validator-registry.ts`. It also caught an overclaim (five equation modules
+  have no `validate*Dimensions()` helper) and a dropped "contested". All fixed before commit.
+- Found by the same audit, filed for a separate commit: two stale source comments
+  (`validator.ts:10-11`, `metric.ts:35-39`).
+
 ### Added (2026-09-23) — `checkKillingEquation`, a verdict on the relative Killing residual
 
 - `checkKillingEquation(killingFn, metricFn, christoffelAt, x, opts?)` returns
