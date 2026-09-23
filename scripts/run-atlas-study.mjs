@@ -18,7 +18,7 @@
  *
  * Run via `bun run atlas:study` (builds dist/ first).
  */
-import { readFileSync, writeFileSync } from 'node:fs';
+import { existsSync, readFileSync, writeFileSync } from 'node:fs';
 import { fileURLToPath, pathToFileURL } from 'node:url';
 import { dirname, resolve } from 'node:path';
 
@@ -49,7 +49,57 @@ if (labelProblems.length > 0) {
 const pkg = JSON.parse(readFileSync(resolve(repoRoot, 'package.json'), 'utf-8'));
 
 const conditions = { atlas: runAtlasCondition(items) };
+
+// Out-of-process LLM conditions (pre-registration Amendment 4). Each model's answers are read
+// from the file the local runner wrote. A model whose file is missing or does not cover every
+// frozen item is NOT scored: a partial run would be scored on a different item set.
+const llmNotes = [];
+const llmConfigPath = resolve(benchmarkDir, 'conditions', 'llm-local.config.json');
+const llmNames = [];
+const llmErrors = {};
+if (existsSync(llmConfigPath)) {
+  const llmConfig = JSON.parse(readFileSync(llmConfigPath, 'utf-8'));
+  for (const m of llmConfig.models) {
+    const file = resolve(benchmarkDir, 'conditions', 'llm-local', `${m.name.replace(/[^A-Za-z0-9._-]/g, '_')}.json`);
+    if (!existsSync(file)) {
+      llmNotes.push(`- \`${m.name}\`: not run (no answers file).`);
+      continue;
+    }
+    const results = JSON.parse(readFileSync(file, 'utf-8'));
+    // A transport failure is an UNFINISHED item (the runner re-asks it on resume), not an answer.
+    const missing = items.filter(
+      (it) => results[it.id] === undefined || results[it.id].error === 'transport failed twice',
+    ).length;
+    if (missing > 0) {
+      llmNotes.push(`- \`${m.name}\`: NOT scored, ${missing} item(s) are unfinished (no record, or a transport failure the runner will retry).`);
+      continue;
+    }
+    const name = `llm-local:${m.name}`;
+    // An errored item (malformed reply or failed transport) has no outcome: it is UNANSWERED.
+    conditions[name] = items
+      .filter((it) => results[it.id].outcome !== null)
+      .map((it) => ({
+        itemId: it.id,
+        outcome: results[it.id].outcome,
+        ...(results[it.id].failureKind ? { detectedFailure: results[it.id].failureKind } : {}),
+      }));
+    llmNames.push(name);
+    llmErrors[name] = items.filter((it) => results[it.id].error).length;
+  }
+}
+
 const metrics = Object.entries(conditions).map(([name, answers]) => scoreCondition(name, answers, labels));
+const byName = Object.fromEntries(metrics.map((m) => [m.condition, m]));
+
+// The pre-registered "best LLM baseline": highest balanced accuracy, ties on invalid-rejection
+// count, then on name. Fixed in Amendment 4 before any model was called.
+const balanced = (m) => (m.validAccepted / m.nValid + m.invalidRejected / m.nInvalid) / 2;
+const best = [...llmNames].sort((x, y) => {
+  const a = byName[x];
+  const b = byName[y];
+  return balanced(b) - balanced(a) || b.invalidRejected - a.invalidRejected || x.localeCompare(y);
+})[0];
+
 const comparisons = Object.entries(conditions)
   .filter(([name]) => name !== 'atlas')
   .map(([name, answers]) => pairedRejection('atlas', conditions.atlas, name, answers, labels));
@@ -75,16 +125,29 @@ const lines = [
   ),
   '',
   comparisons.length === 0
-    ? '**No paired comparison:** only the in-process atlas condition ran. The embedding and LLM ' +
-      'conditions need an out-of-process worker, and none exists in the repository yet.'
-    : comparisons
-        .map(
+    ? '**No paired comparison:** no out-of-process condition has a finished run. The local LLM ' +
+      'runner is `scripts/atlas-benchmark-llm-local.mjs`; no embedding condition exists.'
+    : [
+        '## Criterion 2 — atlas vs the LLM baselines (pre-registration Amendment 4)',
+        '',
+        'The LLM baselines are LOCAL models. A MET result says the atlas beats these models, not ' +
+          'that it beats the best available LLM.',
+        '',
+        '| LLM condition | balanced accuracy | errors (unanswered) | atlas − LLM rejection, 95% Newcombe | McNemar exact p | criterion |',
+        '|---|---|---|---|---|---|',
+        ...comparisons.map(
           (c) =>
-            `- atlas vs ${c.conditionB}: Δ = ${pct(c.difference.diff)} [${pct(c.difference.lower)}, ` +
-            `${pct(c.difference.upper)}], McNemar exact p = ${c.mcnemar.exactP.toPrecision(3)}; ` +
-            `criterion ${c.aBetterExcludingZero ? 'MET' : 'NOT met'}`,
-        )
-        .join('\n'),
+            `| ${c.conditionB}${c.conditionB === best ? ' **(best)**' : ''} | ${pct(balanced(byName[c.conditionB]))} | ` +
+            `${llmErrors[c.conditionB] ?? 0} | ${pct(c.difference.diff)} [${pct(c.difference.lower)}, ${pct(c.difference.upper)}] | ` +
+            `${c.mcnemar.exactP.toPrecision(3)} | ${c.aBetterExcludingZero ? 'MET' : 'NOT met'} |`,
+        ),
+        '',
+        best === undefined
+          ? ''
+          : `**Pre-registered criterion 2 (atlas vs the best baseline, \`${best}\`): ` +
+            `${comparisons.find((c) => c.conditionB === best).aBetterExcludingZero ? 'MET' : 'NOT MET'}.**`,
+      ].join('\n'),
+  ...(llmNotes.length > 0 ? ['', ...llmNotes] : []),
   '',
   '## Ablation (S6.2) — cumulative configurations of the atlas condition',
   '',

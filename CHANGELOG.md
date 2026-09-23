@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-22) — the local LLM runner and its scoring (criterion 2, Amendment 4)
+
+- `scripts/atlas-benchmark-llm-local.mjs` runs the frozen configuration: one item per call, public
+  fields only, and the model's digest checked against the config before any call. A malformed
+  reply is an error, never a default. A transport failure is retried once and re-asked on resume.
+  The runner flushes after every item and exits non-zero when any item errored.
+- `scripts/run-atlas-study.mjs` now scores each local LLM condition, picks the pre-registered best
+  baseline (highest balanced accuracy), and reports atlas vs each model with the Newcombe interval
+  and McNemar p. It refuses to score a model whose run is unfinished: a missing record, or a
+  transport failure the runner will retry. Checked on a partial run, where it reported 103
+  unfinished items rather than scoring them as unanswered.
+- The first run lost every request from item 3 onward: the llm-wiki `OllamaServe` watchdog
+  restarted a healthy Ollama when the probe model was merely NOT-LOADED. Starship owns that fix.
+  It exposed two runner defects, now fixed: resume skipped items that had failed on transport, and
+  a failed digest check crashed the run instead of reporting.
+
 ### Fixed (2026-09-22) — a doc comment that named a parameter the function does not have
 
 - `validateBEDimensions` (`src/bridges/equations/_be-helpers.ts`) documented `equationLabel`, but

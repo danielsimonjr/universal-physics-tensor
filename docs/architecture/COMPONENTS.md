@@ -791,14 +791,14 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 842 | dependency-graph.json |
+| totalSourceFiles | 843 | dependency-graph.json |
 | totalExports | 2990 | dependency-graph.json |
 | totalTypeOnlyImports | 875 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`npm run docs:deps`): 348 files, 2446 exports, 1229 of them re-exports. 842 and 348 do not
+(`npm run docs:deps`): 348 files, 2446 exports, 1229 of them re-exports. 843 and 348 do not
 contradict each other; they answer different questions. Every figure states its scope.
 
 **Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19
