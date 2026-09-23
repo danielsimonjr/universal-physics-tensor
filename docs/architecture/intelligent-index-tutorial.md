@@ -2,9 +2,9 @@
 
 <!-- repo-map:no-verification -->
 
-> **No `## Verification` block, deliberately.** This document is a tutorial. It teaches an API through worked examples and asserts nothing about the size or shape of the repository.
-> The drift gate treats a missing Verification section as a failure, so the opt-out is
-> stated here explicitly rather than left to be inferred from its absence.
+> **No `## Verification` block, deliberately.** This document is a tutorial. The tutorial teaches an API through worked examples. It asserts nothing about the size or shape of the repository.
+> The drift gate treats a missing Verification section as a failure. This document states
+> the opt-out here, so a reader does not have to infer it from its absence.
 
 > The `LabeledTensor` wrapper carries
 > persistent physics-axis identity over the existing
@@ -13,12 +13,12 @@
 
 ## What problem does this solve?
 
-Two bridges in the catalog might both contract over "the quantum
-scale axis." On the AST side, an index label is a plain string like
-`'μ'` — bridge author A writes `'μ'`, bridge author B writes `'μ'`,
+Two bridges in the catalog might both contract over the quantum
+scale axis. On the AST side, an index label is a plain string like
+`'μ'`. Bridge author A writes `'μ'`, bridge author B writes `'μ'`,
 and they contract by happy coincidence. If A renames to `'mu'`,
-the contraction silently breaks; if A and B *mean* different things
-by `'μ'`, the contraction silently misfires.
+the contraction breaks silently. If A and B *mean* different things
+by `'μ'`, the contraction misfires silently.
 
 The Intelligent Index layer introduces a singleton registry, `Axes`,
 that holds stable `UniversalIndex` references at module load.
@@ -96,17 +96,17 @@ use `makeIndex` only when you genuinely want a fresh local index.
 
 `UniversalIndex` carries an `axis` discriminator (one of `'scale'`,
 `'force'`, `'symmetry'`, `'information'`, `'dimension'`,
-`'topology'`). If two contracting indices share an `id` but
-disagree on `axis` (only possible via direct `makeIndex` mis-use
-or off-registry index construction), `contract` throws
-`AxisMismatchError` before calling `engine.einsum`. The error
-names the shared index id and both axes.
+`'topology'`). Two contracting indices can share an `id` but
+disagree on `axis`, only through direct `makeIndex` misuse or
+off-registry index construction. When that happens, `contract`
+throws `AxisMismatchError` before it calls `engine.einsum`. The
+error names the shared index id and both axes.
 
 ### Bridge-level demo
 
 `src/bridges/perihelion-precession-labeled.ts` is the
-single-bridge demonstration. It adds an alternative entry point
-`evaluatePerihelionPrecessionLabeled(inputs, engine)` that wraps
+single-bridge demonstration. The file adds an alternative entry point,
+`evaluatePerihelionPrecessionLabeled(inputs, engine)`, that wraps
 the three perihelion-advance quantities in a rank-1 `LabeledTensor`
 tagged with `Axes.scale.classical`. The original
 `evaluatePerihelionPrecession` evaluator is left untouched —

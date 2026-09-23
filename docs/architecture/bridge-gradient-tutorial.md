@@ -2,9 +2,9 @@
 
 <!-- repo-map:no-verification -->
 
-> **No `## Verification` block, deliberately.** This document is a tutorial. It teaches an API through worked examples and asserts nothing about the size or shape of the repository.
-> The drift gate treats a missing Verification section as a failure, so the opt-out is
-> stated here explicitly rather than left to be inferred from its absence.
+> **No `## Verification` block, deliberately.** This document is a tutorial. The tutorial teaches an API through worked examples. It asserts nothing about the size or shape of the repository.
+> The drift gate treats a missing Verification section as a failure. This document states
+> the opt-out here, so a reader does not have to infer it from its absence.
 
 > Five-minute walkthrough for differentiating UPT catalog bridges
 > with respect to their input parameters.
@@ -18,16 +18,16 @@ its inputs:
 
 - `bridgeGradientNumerical(spec, params, opts?)` — central finite
   differences over a registered bridge spec. No engine and no
-  optional peer. This is the supported path for the catalog's
-  plain-JS evaluators.
+  optional peer. This function is the supported path for the
+  catalog's plain-JS evaluators.
 - `bridgeGradientAST(rhs, varName, bindings)` and
   `bridgeGradientASTById(bridgeId, varName, bindings)` — exact
   reverse-mode AD over a bridge's symbolic RHS AST, through the
   optional `@danielsimonjr/mathts-autograd` peer (with `@danielsimonjr/mathts-tensor`).
 - `bridgeGradient(spec, engine, params)` — engine AD. It works only
   for functions written in engine ops. The catalog evaluators use
-  plain JS `Math.*`, so `bridgeGradient` cannot trace them: with a
-  real engine it throws `NumericalBackendError`, and with an engine
+  plain JS `Math.*`, so `bridgeGradient` cannot trace them. With a
+  real engine it throws `NumericalBackendError`. With an engine
   that lacks AD methods it throws `EngineCapabilityError`.
 
 ## Five-minute walkthrough

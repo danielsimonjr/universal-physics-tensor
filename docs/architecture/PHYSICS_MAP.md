@@ -6,12 +6,13 @@
 > The drift gate treats a missing Verification section as a failure, so the opt-out is
 > stated here explicitly rather than left to be inferred from its absence.
 
-UPT's bridge/law catalog is a **graph**: round nodes are *quantities*
-(`mass`, `temperature`, `photon-energy`, …) and box nodes are *equations* —
-laws, bridges, or machine-derived proposals — each an n-ary junction whose
-source quantities point in and whose target points out. `upt map` renders that
-graph as Mermaid or Graphviz-DOT **source text**, or as rendered SVG, straight from the live data
-(`CATALOG_GRAPH` / `CANONICAL_GRAPH` / `PROPOSED_BRIDGES`).
+UPT's bridge/law catalog is a **graph**. Round nodes are *quantities*
+(`mass`, `temperature`, `photon-energy`, …). Box nodes are *equations* —
+laws, bridges, or machine-derived proposals. Each one is an n-ary
+junction whose source quantities point in and whose target points out.
+`upt map` renders that graph straight from the live data
+(`CATALOG_GRAPH` / `CANONICAL_GRAPH` / `PROPOSED_BRIDGES`), as Mermaid
+or Graphviz-DOT **source text**, or as rendered SVG.
 
 > **Read this map honestly.** It is *deliberately disjointed*. The catalog is
 > sparse — one anchored cluster hubbed on a few quantities, plus a long tail of
@@ -24,12 +25,14 @@ graph as Mermaid or Graphviz-DOT **source text**, or as rendered SVG, straight f
 
 ## The standard-physics (canonical) layer
 
-The textbook L-layer alone — every node a `law` (blue). Even established physics
-is only loosely connected: an 83-law core hubbed on `mass`, `temperature`,
-`length`, `force`, and other widely-shared quantities; two small two-law clusters
-(`radioactive-decay ↔ half-life` on the decay constant, and `thomson-cross-section
-↔ classical-electron-radius`); and 20 isolated laws (listed in the map's
-`isolated` group below) that share no quantity with any other law in this layer.
+The textbook L-layer alone — every node a `law` (blue). Even established
+physics is only loosely connected. The layer has an 83-law core hubbed on
+`mass`, `temperature`, `length`, `force`, and other widely-shared quantities.
+The layer also has two small two-law clusters (`radioactive-decay ↔ half-life`
+on the decay constant, and `thomson-cross-section
+↔ classical-electron-radius`). It also has 20 isolated laws, listed in the
+map's `isolated` group below, that share no quantity with any other law in
+this layer.
 
 ```mermaid
 flowchart LR
@@ -672,11 +675,12 @@ flowchart LR
 
 ## The bridge catalog and the full map
 
-The 55-bridge catalog (`--source=catalog`, 41 edges → 23 components) and the
-combined laws-plus-bridges graph (`--source=both`, 148 edges → 40 components, over
-the 107-law canonical L-layer) are larger and more disjointed — better
-viewed as rendered SVG than inline. Both the
-DOT sources and the rendered SVGs are committed under [`maps/`](./maps/):
+Two larger, more disjointed graphs exist. One is the 55-bridge catalog
+(`--source=catalog`, 41 edges → 23 components). The other is the combined
+laws-plus-bridges graph (`--source=both`, 148 edges → 40 components, over
+the 107-law canonical L-layer). Rendered SVG shows them better than the
+inline view. Both the DOT sources and the rendered SVGs are committed
+under [`maps/`](./maps/):
 
 - catalog — [`maps/catalog.svg`](./maps/catalog.svg) · [`maps/catalog.dot`](./maps/catalog.dot)
 - canonical (107-law L-layer) — [`maps/canonical.svg`](./maps/canonical.svg) · [`maps/canonical.dot`](./maps/canonical.dot)
@@ -705,18 +709,21 @@ only with `--equation`.
 ## Place your own equation on the map
 
 `upt map --equation "TARGET = EXPR"` injects a user-supplied equation as a
-**violet `user` junction**, **dimensionally validates it**, and reports where it
-lands — which cluster it joins and the quantities that connect it — without ever
-writing it into the catalog. The left of `=` is the target quantity; the
-right-hand symbols (minus constants like `pi`/`hbar`/`c` and functions) are the
-sources. It connects by **shared quantity name**, so use the catalog vocabulary
-(multi-word names with underscores, e.g. `photon_energy` → `photon-energy`).
+**violet `user` junction** and **dimensionally validates it**. It reports where
+the equation lands — which cluster it joins and the quantities that connect
+it — without ever writing it into the catalog. The left of `=` is the target
+quantity. The right-hand symbols, minus constants like `pi`/`hbar`/`c` and
+functions, are the sources. The equation connects by **shared quantity
+name**, so use the catalog vocabulary (multi-word names with underscores,
+e.g. `photon_energy` → `photon-energy`).
 
-The equation is parsed to a dimensional `ExprNode` (via `parsePhysics`, over the
-catalog's dimensions, with physics constants carrying their real dimensions), so
-the CLI reports whether the RHS is **dimensionally consistent** with the target,
-and — for a single unknown symbol — **infers its dimension** to give a
-dimension-based "did you mean?" (falling back to name-similarity).
+`parsePhysics` parses the equation to a dimensional `ExprNode`, over the
+catalog's dimensions, with physics constants carrying their real dimensions.
+The CLI then reports whether the RHS is **dimensionally consistent** with the
+target. For a single unknown symbol, the CLI also **infers its dimension**.
+The CLI uses the inferred dimension to give a dimension-based "did you
+mean?", and falls back to
+name-similarity when it cannot.
 
 ```bash
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
@@ -729,8 +736,9 @@ node bin/upt.mjs map --source=canonical --equation "period = uu / gravity"
 #   ⚠ 'uu' is unknown — by its inferred dimension, did you mean: drift-velocity, fermi-velocity, flow-velocity, most-probable-speed, sound-speed?
 ```
 
-The free variables are extracted by the active formula parser — the MathTS
-expression parser when the optional peer is installed, else the built-in one.
+The active formula parser extracts the free variables. That parser is the
+MathTS expression parser when the optional peer is installed, and the
+built-in parser otherwise.
 
 ## Regenerating
 

@@ -7,11 +7,11 @@
 > stated here explicitly rather than left to be inferred from its absence.
 
 This file records benchmark baselines and per-release gate results from
-v0.4.5 onward. The original AD baselines were established in v0.4.5 (no
-threshold gates existed then — they were reference points for regression
-detection starting in v0.5.0); subsequent sections append per-release
-benchmark runs and PASS/FAIL gate verdicts, including the v0.6.0 BR-2
-migration sections below.
+v0.4.5 onward. v0.4.5 established the original AD baselines. No threshold
+gates existed then; they were reference points for regression detection
+starting in v0.5.0. Subsequent sections append per-release benchmark runs
+and PASS/FAIL gate verdicts, including the v0.6.0 BR-2 migration sections
+below.
 
 ## Measurement notes
 
@@ -26,11 +26,12 @@ migration sections below.
 - vitest 4.1.4 verbose reporter does not display per-bench hz tables for async
   bench callbacks (only the BENCH Summary with relative comparisons is shown).
   Absolute hz values are not captured in this baseline.
-  **Update 2026-05-23 (v0.7 follow-up)**: **RESOLVED at vitest 4.1.7**. After
-  bumping vitest 4.1.4 → 4.1.7 (commit `28f6f8b`) the per-bench hz column
-  prints for async benches as well; the 4.1.4 limitation was a vitest
-  patch-level bug, not a structural async-vs-sync split. Re-run any v0.4.5
-  baseline against the new vitest to capture absolute hz numbers.
+  **Update 2026-05-23 (v0.7 follow-up)**: **RESOLVED at vitest 4.1.7**.
+  Commit `28f6f8b` bumped vitest from 4.1.4 to 4.1.7. After that
+  bump, the per-bench hz column prints for async benches as well. The 4.1.4
+  limitation was a vitest patch-level bug, not a structural async-vs-sync
+  split. Re-run any v0.4.5 baseline against the new vitest to capture
+  absolute hz numbers.
 - MathTSEngine: optional dep (`@danielsimonjr/mathts-tensor` +
   `@danielsimonjr/mathts-autograd`) not installed on this machine — skipped
   gracefully with `[bench/ad] MathTSEngine unavailable` warning.
@@ -52,15 +53,15 @@ MathTSEngine: skipped (optional dep absent)
 | `[100, 100]` | 10 000 | slower | faster | ~8 000–14 000x |
 
 **Interpretation:** Reverse-mode shows dramatically higher throughput than
-forward-mode at large tensor sizes in `Float64ReferenceEngine`. This is
-expected: the reverse-mode pass only traverses the tape once, while the
-forward-mode dual-number path pays per-element tangent propagation cost on
-every operation. At `[100, 100]` (10 000 elements), the per-element tangent
-cost in forward mode dominates the async wrapper overhead, making the
-reverse-mode speedup appear very large in the BENCH Summary ratios. These
-ratios are not a tuning signal — both modes are naive O(n) implementations
-and the ratios are a property of the dual-number vs. tape traversal costs at
-this scale.
+forward-mode at large tensor sizes in `Float64ReferenceEngine`. This result
+is expected. The reverse-mode pass only traverses the tape once, while the
+forward-mode dual-number path pays a per-element tangent propagation cost
+on every operation. At `[100, 100]` (10 000 elements), the per-element
+tangent cost in forward mode dominates the async wrapper overhead. That
+domination makes the reverse-mode speedup appear very large in the BENCH
+Summary ratios. These ratios are not a tuning signal. Both modes are naive
+O(n) implementations, and the ratios are a property of the dual-number vs.
+tape traversal costs at this scale.
 
 **Absolute hz values:** not captured in this baseline (vitest 4.1.4 async
 bench limitation — see measurement notes above). The BENCH Summary provides
@@ -82,21 +83,22 @@ MathTS benches will appear in this table once the optional dep is installed.
 
 ## v0.4.5 BE-37 Shapiro RK4 baseline — `bench/be37-eikonal.bench.ts`
 
-Run date: 2026-05-17  
-Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench)  
-Physical scenario: solar grazing ray — M_sun = 1.989e30 kg, R_near = 1.0e9 m, R_far = 1.5e11 m (~1 AU)
+Run date: 2026-05-17.  
+Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench).  
+Physical scenario: solar grazing ray — M_sun = 1.989e30 kg, R_near = 1.0e9 m, R_far = 1.5e11 m (~1 AU).
 
-**F1 note:** Two functions are benched:
+**F1 note:** This run benches two functions.
 
-1. `evaluateBE37EikonalNumerical` (`src/bridges/equations/be-37-shapiro-delay.ts`) — the actual
+1. `evaluateBE37EikonalNumerical` (`src/bridges/equations/be-37-shapiro-delay.ts`) is the actual
    RK4 Shapiro-delay evaluator (4096 fixed steps, no arguments, scenario hardcoded internally).
-   This is the primary AST→lowering→engine roundtrip baseline.
+   This evaluator is the primary AST→lowering→engine roundtrip baseline.
 
-2. `evaluateBE37CovariantEikonalNumerical` (`src/numerical/be37-covariant-eikonal.ts`) —
-   benched in this run while it was a structural preview that returned `eikonalResidual=0` by
-   construction (null-ray identity) and `shapiroDelaySec=0` (a stub with no integration). The
-   function in `src/` integrates the null geodesic with `integrateGeodesicGL4`, and the bench's
-   describe block is named "BE-37 covariant eikonal — v0.5.0 GL4 null-geodesic Shapiro"; the timings in this section
+2. `evaluateBE37CovariantEikonalNumerical` (`src/numerical/be37-covariant-eikonal.ts`) was
+   benched in this run while it was a structural preview. That preview returned
+   `eikonalResidual=0` by construction (null-ray identity) and `shapiroDelaySec=0` (a stub
+   with no integration). The function in `src/` integrates the null geodesic with
+   `integrateGeodesicGL4`. The bench's describe block is named "BE-37 covariant
+   eikonal — v0.5.0 GL4 null-geodesic Shapiro". The timings in this section
    describe the stub.
 
 ### Results (hz tables available — sync-like throughput for both async benches)
@@ -109,7 +111,7 @@ Physical scenario: solar grazing ray — M_sun = 1.989e30 kg, R_near = 1.0e9 m, 
 **Interpretation:**
 
 - The RK4 evaluator runs at ~813 hz (1.2 ms/call mean), dominated by 4096 × 4 = 16 384 derivative
-  evaluations per call. This is the baseline for v0.5.0 symplectic integrator comparison.
+  evaluations per call. This result is the baseline for the v0.5.0 symplectic integrator comparison.
 - The structural-preview evaluator runs at ~762 000 hz (1.3 µs/call mean), measuring only async
   wrapper + three guard checks. The ~940× speedup vs. the RK4 path is consistent with the absence
   of any numerical integration.
@@ -133,11 +135,11 @@ BE-37 covariant eikonal — v0.4.0 structural preview (stub baseline):
 
 ## v0.4.5 Schwarzschild geodesic RK4 baseline — `bench/geodesic.bench.ts`
 
-Run date: 2026-05-17  
-Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench)  
-Physical scenario: cycloid-radial infall — M_sun = 1.989e30 kg, r₀ = 100·r_s, η_final = 0.5  
-Integrator: `integrateGeodesic` (fixed-step RK4, `src/numerical/geodesic-integrator.ts`)  
-Bench discipline: inputs pre-built outside bench callback (F4); sync bench (hz tables available)
+Run date: 2026-05-17.  
+Machine: the dev box (Windows 11, vitest bench v4.1.4 tinybench).  
+Physical scenario: cycloid-radial infall — M_sun = 1.989e30 kg, r₀ = 100·r_s, η_final = 0.5.  
+Integrator: `integrateGeodesic` (fixed-step RK4, `src/numerical/geodesic-integrator.ts`).  
+Bench discipline: inputs pre-built outside bench callback (F4); sync bench (hz tables available).
 
 **Scenario parameters (F17 — consistent with Task 14 conformance test):**
 - M_kg = 1.989e30 (solar mass), r_s = 2·G·M/c² ≈ 2953 m
@@ -209,13 +211,13 @@ f = STEPS x X_hz / Y_hz
   = 63.9%
 ```
 
-where X_hz = full GL4 1000-step bench hz, Y_hz = Christoffel-only bench hz, and
-STEPS = 1000 (each full-bench call runs 1000 steps; each Christoffel-bench call
-runs 70 evals = CHRISTOFFEL_EVALS_PER_STEP).
+Here X_hz is the full GL4 1000-step bench hz, and Y_hz is the Christoffel-only
+bench hz. STEPS is 1000: each full-bench call runs 1000 steps, and each
+Christoffel-bench call runs 70 evals (CHRISTOFFEL_EVALS_PER_STEP).
 
-**Caveat — Christoffel bench high variance (+-61.48% rme):** The Christoffel-only
-bench mean (6.82 ms/call) is heavily skewed by GC pause outliers (p99 = 85 ms,
-p75 = 1.45 ms). A p75-based estimate gives the lower bound on the fraction:
+**Caveat — Christoffel bench high variance (+-61.48% rme):** GC pause outliers
+(p99 = 85 ms, p75 = 1.45 ms) heavily skew the Christoffel-only bench mean
+(6.82 ms/call). A p75-based estimate gives the lower bound on the fraction:
 
 ```
 f_lower = p75_christoffel_ms / (mean_full_ms / STEPS)
@@ -249,10 +251,11 @@ max_end_to_end    = 1 - 1/1.16      = 13.6% wall-time reduction
 
 **Decision (E-4 measure-then-lock, Decision #6):**
 
-Because the Christoffel bench exhibited high rme (+-61.48%) — GC pause outliers
+The Christoffel bench exhibited high rme (+-61.48%). GC pause outliers
 dominate the mean, pushing the hz-based fraction estimate to 64% while the
-p75-based lower bound is only 14% — the 40%-threshold test (Decision #6 primary
-gate: >=30% end-to-end if Y >= 40%) cannot be applied with confidence.
+p75-based lower bound is only 14%. Because of that spread, this data cannot
+support the 40%-threshold test (Decision #6 primary gate: >=30% end-to-end if
+Y >= 40%) with confidence.
 
 **Locked gate: dual-condition (conservative, robust to measurement uncertainty)**
 
@@ -263,17 +266,19 @@ Task 2.11 PASS condition:
 ```
 
 Rationale: if the true fraction is ~14% (p75 lower bound), a 30% christoffel
-speedup yields only ~4.2% end-to-end improvement — below the >=30% gate, so
-the primary gate would be unachievable by Amdahl's law. The dual gate (christoffel-
-itself + modest 5% end-to-end) is reachable under both scenarios and cannot produce
-a false pass. If the true fraction is ~64%, the BR-2 migration will easily achieve
->=5% end-to-end — the dual gate is conservative.
+speedup yields only ~4.2% end-to-end improvement. That result is below the
+>=30% gate, so the primary gate would be unachievable by Amdahl's law. The
+dual gate (christoffel-itself + modest 5% end-to-end) is reachable under
+both scenarios and cannot produce a false pass. If the true fraction is
+~64%, the BR-2 migration will easily achieve >=5% end-to-end, so the dual
+gate is conservative.
 
 **Additional finding:** GL4 per-step cost is approximately 10.7 ms at Mercury
-perihelion (compared to approximately 52.6 ms per 1000-step RK4 call, ≈ 0.053 ms/step, in the
-v0.4.5 geodesic bench). The GL4 Picard solver (~35 iterations x 2 stages x
-gInverseFn + dgInverseFn per stage) drives the cost; eliminating the
-nested-array allocation in `christoffelFn` is the correct optimization target.
+perihelion. The v0.4.5 geodesic bench measured approximately 52.6 ms per
+1000-step RK4 call (≈ 0.053 ms/step) for comparison. The GL4 Picard solver
+(~35 iterations x 2 stages x gInverseFn + dgInverseFn per stage) drives the
+cost. Eliminating the nested-array allocation in `christoffelFn` is the
+correct optimization target.
 
 ---
 
@@ -287,11 +292,12 @@ Integrator under test: `integrateGeodesic` (fixed-step RK4, `src/numerical/geode
 ### Plan-defect correction: GL4 does NOT consume christoffelFn
 
 Task 2.0's gate was designed around `bench/gl4-mercury-1000step.bench.ts` on the assumption
-that both the GL4 and RK4 integrators consume `christoffelFn`. This is **incorrect**:
+that both the GL4 and RK4 integrators consume `christoffelFn`. That assumption is
+**incorrect**:
 
 - `src/numerical/gl4-integrator.ts` has **zero** `christoffel` references. GL4 operates
   on the Hamiltonian `(x, p)` state via `gInverseFn` (inverse metric) and `dgInverseFn`
-  (its derivatives). It does not call `christoffelFn` at any step.
+  (its derivatives). GL4 does not call `christoffelFn` at any step.
 - `src/numerical/geodesic-integrator.ts` (`integrateGeodesic`, RK4) references `christoffel`
   and is the sole consumer of `christoffelFn`.
 
@@ -333,14 +339,16 @@ The improvement is structurally consistent with the migration's intent. The pre-
 path called `christoffelFn` once per RK4 stage — 4 times per step — and each call allocated
 a fresh `number[4][4][4]` (64-element nested array). At 10k steps that is 40 000
 nested-array allocations per `integrateGeodesic` call, each triggering GC pressure. The
-post-BR-2 path that this run measured still allocated one flat `Float64Array(64)` per call,
-where each pre-BR-2 call built a nested `number[4][4][4]` of 21 array objects. The ~5×
-wall-time reduction maps onto this reduction in allocations. A later change (`c2fc0fc`)
-reuses one scratch buffer and removes the per-call allocation; these timings predate it.
+post-BR-2 path that this run measured still allocated one flat `Float64Array(64)` per
+call. Each pre-BR-2 call, by contrast, built a nested `number[4][4][4]` of 21 array
+objects. The ~5× wall-time reduction maps onto this reduction in allocations. A later
+change (`c2fc0fc`) reuses one scratch buffer and removes the per-call allocation; these
+timings predate it.
 
-The post-BR-2 1k-step result (61.31 hz, 16.3 ms mean) also improves substantially over the
-original v0.4.5 baseline (19.0 hz, 52.6 ms mean at 1k steps), reflecting both BR-2 and the
-incremental improvements landed in v0.5.x since that baseline.
+The post-BR-2 1k-step result (61.31 hz, 16.3 ms mean) also improves substantially over
+the original v0.4.5 baseline (19.0 hz, 52.6 ms mean at 1k steps). That improvement
+reflects both BR-2 and the incremental improvements landed in v0.5.x since that
+baseline.
 
 ### Gate verdict: PASS
 
@@ -409,14 +417,15 @@ g_{μν} closure evaluated across a 3×3 spatial grid (r ∈ {2.5, 5, 10} r_s,
 | order=2 — 2-point centered stencil | 20,243.94 | 0.049 | 1.36 | ±0.27% |
 | order=4 — 4-point centered stencil (v0.6.0 default) | 8,388.45 | 0.119 | 3.31 | ±0.27% |
 
-Ratio: order=4 is **2.41× slower** than order=2. Close to the expected ~2×
-from twice as many metric evaluations per derivative (4 vs 2 calls), plus
-some constant overhead from the larger stencil arithmetic. **Verdict**: the
-v0.6.0 default-order flip (2→4) carries a ~2.4× wall-time penalty per
-`pderiv` call. The truncation-error reduction is ~10⁴× on smooth inputs;
-the tradeoff is favorable for the catastrophic-cancellation cases that
-motivated the flip (c²·g_tt on Schwarzschild) and acceptable for routine
-use.
+Ratio: order=4 is **2.41× slower** than order=2. This ratio is close to the
+expected ~2× from twice as many metric evaluations per derivative (4 vs 2
+calls). Some constant overhead from the larger stencil arithmetic adds the
+rest.
+**Verdict**: the v0.6.0 default-order flip (2→4) carries a ~2.4× wall-time
+penalty per `pderiv` call. The truncation-error reduction is ~10⁴× on
+smooth inputs. The tradeoff favors the catastrophic-cancellation cases
+that motivated the flip (c²·g_tt on Schwarzschild), and it stays
+acceptable for routine use.
 
 ## v0.7.1 PO-1 post-O-2 (Picard ping-pong) — Phase 5 Task 5.2
 
@@ -463,13 +472,15 @@ their site. The harnesses exist as regression-detection points only.
 
 ## computeKretschmann factored-raising optimization (2026-06-11)
 
-The O-3 carry-forward landed — not as the symmetry pair-iteration
-originally sketched (rejected: the FD-built Riemann is only
-approximately antisymmetric, and `K = 4·Σ_{ρ<σ}Σ_{μ<ν}` is exact only
-under exact antisymmetry), but as an EXACT loop-factoring: the naive
-O(4⁸) four-index raise inside the contraction is replaced by four
-successive single-index raisings (4 × 4⁵ mult-adds) + one 256-term
-contraction. Pure sum reassociation — no input-symmetry assumption.
+The O-3 carry-forward landed as an EXACT loop-factoring, not as the
+symmetry pair-iteration originally sketched. The design rejected the
+symmetry pair-iteration: the FD-built Riemann is only approximately
+antisymmetric, and `K = 4·Σ_{ρ<σ}Σ_{μ<ν}` is exact only under exact
+antisymmetry. The loop-factoring instead replaces the naive O(4⁸)
+four-index raise inside the contraction with four successive
+single-index raisings (4 × 4⁵ mult-adds) plus one 256-term contraction.
+The factoring is pure sum reassociation, with no input-symmetry
+assumption.
 Value-identity pins (relative 1e-15 vs the inlined naive reference,
 incl. a seeded random NON-symmetric tensor):
 `tests/numerical/kretschmann-factored-raising.test.ts`.

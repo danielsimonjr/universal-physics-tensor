@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — the five living docs in Simplified Technical English
+
+`PHYSICS_MAP.md`, `benchmarks.md`, `bridge-gradient-tutorial.md`, `intelligent-index-tutorial.md`
+and `archive/README.md` are rewritten to STE, prose only, on top of their fact fixes. `ste_check`
+reports 0 findings on each (it had 6, 23, 2, 3 and 3). `verify_rewrite.py` exits 0 on each, so every
+table row, code fence and heading is byte-identical and the technical tokens are unchanged. An
+in-session Sonnet review (not human) compared every changed sentence and found no change of meaning.
+
+- **Corrected after review:** the rewrite added an actor, "the writer", in three `benchmarks.md`
+  sentences that had no subject. The vitest bump now names its commit (`28f6f8b`), the 40%-threshold
+  sentence says the data cannot support the test, and the pair-iteration sentence says the design
+  rejected it.
+
 ### Fixed (2026-09-23) — `PHYSICS_MAP.md` and `benchmarks.md` corrected against the source
 
 An Opus review (in-session, not human) re-ran every changed figure against the live CLI and the
