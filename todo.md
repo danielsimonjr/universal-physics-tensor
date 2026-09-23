@@ -326,7 +326,7 @@ warning-silencing, not debug logging).
         - [x] OVERVIEW.md to 0 STE findings, stateless.
         - [x] `src/cli/graphs.ts` labels the catalog source `catalog (44-bridge)`; the catalog holds 55 (user-visible CLI string; check the goldens).
         - [x] ARCHITECTURE.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
-        - [ ] ARCHITECTURE.md to 0 STE findings, stateless.
+        - [x] ARCHITECTURE.md to 0 STE findings, stateless.
         - [x] Stale source comments found by the ARCHITECTURE audit: `src/dimensional/validator.ts:10-11` says special-function arguments are not yet checked (line ~653 checks them); `src/dimensional/metric.ts:35-39` says `'computed'` auto-differentiates the metric (lowering treats it as constant).
         - [ ] COMPONENTS.md to 0 STE findings, stateless.
         - [ ] DEPENDENCY_GRAPH.md findings fixed at the SOURCE module doc comments, then regenerated.

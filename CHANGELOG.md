@@ -8,6 +8,16 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `ARCHITECTURE.md` in Simplified Technical English, stateless
+
+- 44 STE findings fixed, prose only; `ste_check` reports 0. Long enumerations (the composition-layer
+  file list, the GR layers, the L1-sum tier, the curvature evaluators) became bullet lists with the
+  same items in the same order. Tables, fences and headings are byte-identical, and every technical
+  token is preserved (no allow-lists).
+- Written by an Opus subagent under those checks; reviewed independently by Sonnet (in-session, not
+  human), which FAILED one passage — "The kinds are ..." made a non-exhaustive list read as complete
+  — fixed to "The kinds include ...". All other passages PASS.
+
 ### Fixed (2026-09-23) — two stale source comments found by the `ARCHITECTURE.md` audit
 
 Comments only.
