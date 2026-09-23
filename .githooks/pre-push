@@ -98,7 +98,26 @@ BASELINE_FILE="$(dirname "$0")/code-docs-baseline.txt"
 if [ -f "$CODE_DOCS" ] && [ -f "$BASELINE_FILE" ]; then
   echo "pre-push gate: code-docs ratchet"
   baseline=$(cat "$BASELINE_FILE")
-  current=$(python "$CODE_DOCS" check src 2>&1 | grep -oE "FAIL -- [0-9]+ MUST" | grep -oE "[0-9]+" || echo 0)
+  # `check` exits 1 whenever MUST issues exist, and this hook runs under `set -e`,
+  # so the exit status cannot be the verdict. The PASS/FAIL line is, below.
+  cd_out=$(python "$CODE_DOCS" check src 2>&1) || true
+  # Read the count ONLY from a line the tool writes on purpose. This used to be
+  # `grep ... || echo 0`, so a crash, or a change in the tool's output, read as
+  # "0 MUST issues" and the ratchet passed - and even reported an improvement.
+  if current=$(printf '%s
+' "$cd_out" | grep -oE "^FAIL -- [0-9]+ MUST" | grep -oE "[0-9]+"); then
+    :
+  elif printf '%s
+' "$cd_out" | grep -qE "^PASS -- "; then
+    current=0
+  else
+    echo ""
+    echo "PRE-PUSH GATE FAILED: code-docs gave neither a PASS nor a FAIL line."
+    echo "The tool crashed or its output changed; its output was:"
+    printf '%s
+' "$cd_out" | tail -20
+    exit 1
+  fi
 
   if [ "$current" -gt "$baseline" ]; then
     echo ""
@@ -118,6 +137,31 @@ else
   # fails because a SKILL is missing would train people to bypass it for reasons
   # that have nothing to do with this codebase.
   echo "pre-push gate: code-docs SKIPPED (tool or baseline not found)"
+fi
+
+# Architecture-docs CLAIMS: the `## Verification` tables in docs/architecture/
+# checked against a fresh parse by repo_map.py. Its scope is those claim tables,
+# and only those: it does not check prose, and `docs:deps` / the `docs-fresh` CI
+# job check only the generated dependency artifacts. The two gates cover
+# different files; neither is "the docs gate".
+#
+# This runs HERE and not in CI because repo_map.py lives in a private repository
+# that CI cannot read without a credential. That is a recorded decision, not an
+# oversight.
+REPO_MAP="$HOME/Github/skills/architecture-docs/scripts/repo_map.py"
+if [ -f "$REPO_MAP" ]; then
+  echo "pre-push gate: architecture-docs claims (repo_map check)"
+  if ! rm_out=$(python "$REPO_MAP" check . --docs docs/architecture 2>&1); then
+    echo ""
+    echo "PRE-PUSH GATE FAILED: architecture-docs claims do not match the source."
+    printf '%s
+' "$rm_out" | tail -40
+    echo "Re-measure with repo_map.py map and correct the Verification tables and the"
+    echo "text that restates them. Never edit a generated report to make this pass."
+    exit 1
+  fi
+else
+  echo "pre-push gate: architecture-docs claims SKIPPED (repo_map.py not found)"
 fi
 
 echo "pre-push gate: OK"

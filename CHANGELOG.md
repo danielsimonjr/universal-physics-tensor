@@ -8,6 +8,38 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-22) — the architecture-docs claims now have a gate, and the stale ones are corrected
+
+- **The architecture-docs claims had no gate that could fail.** The `docs-fresh` CI job regenerates
+  only the dependency artifacts. It never runs `repo_map.py check`, so the `## Verification` tables
+  in seven hand-written docs had drifted: for example 710 source files were claimed where there are
+  842, and 2,377 exports where there are 2,990. The pre-push hook now runs a gate named
+  "architecture-docs claims (repo_map check)", scoped to those tables. It was run RED on the
+  unfixed tree first, with 19 stale claims in 7 docs. It runs in the hook and not in CI, because
+  `repo_map.py` lives in a private repository that CI cannot read without a credential. That
+  decision is filed in `todo.md`.
+- **Also fixed in the hook: the code-docs ratchet could pass on a crash.** It read its count with
+  `grep ... || echo 0`, so a crash, or a change in the tool's output, read as "0 MUST issues" and
+  was reported as an improvement. It now needs a PASS or FAIL line from the tool. A crashing fake
+  tool fails the hook, and a genuine PASS still passes.
+- **The docs, corrected from a fresh map.** Every `## Verification` row was updated from
+  `repo_map.py check` output. The prose that restates a number was corrected as well, because the
+  gate reads only the tables:
+  - the `src/`-scope figures are now 348 files, 2,446 exports and 1,229 re-exports, read from
+    `dependency-graph.json`; the module count went from 10 to 11 with `atlas`;
+  - the per-module file counts are taken from the generator;
+  - the bridge count (55, IDs 11–65) and the confrontation count (19) come from the built
+    registries, each counted two ways;
+  - the per-zone and per-disposition inventories each sum to 842;
+  - the entry roots are now 5 (the atlas and probe subpaths);
+  - `duplicate-symbols.md` gained a third group. It is `AdjudicationVerdict`: two DIFFERENT unions
+    under one name, one `@internal` in the atlas and one `@public` in composition. A rename is
+    recommended.
+- **`COMPONENTS.md` has an Atlas Module section**, with the real signatures. `ste_check.py` finds
+  no problem in it; the doc's other sections still carry 33 STE findings. The remaining ungated
+  prose (release versions, "Currently" counts, 691 STE findings across the architecture docs) is
+  filed in `todo.md`, not claimed as fixed.
+
 ### Changed (2026-09-22) — `CLAUDE.md` is a thin loader; each of its facts moved to one home
 
 - `CLAUDE.md` went from 20,983 bytes to a 742-byte loader that `@`-imports `AGENTS.md`,

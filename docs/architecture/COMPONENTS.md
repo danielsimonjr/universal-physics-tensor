@@ -8,20 +8,21 @@
 2. [Bridge Module](#bridge-module)
 3. [Composition Module (v0.8.0 → v0.13)](#composition-module-v080--v013)
 4. [Canonical Module (v0.11+)](#canonical-module-v011)
-5. [Dimensional Module](#dimensional-module)
-6. [Numerical Module](#numerical-module)
-7. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
-8. [Core Module](#core-module)
-9. [CLI Module](#cli-module)
-10. [Entry Point](#entry-point)
-11. [Component Dependencies](#component-dependencies)
-12. [Curvature composite layer (v0.5.0 → v0.6.0)](#curvature-composite-layer-v050--v060)
+5. [Atlas Module](#atlas-module)
+6. [Dimensional Module](#dimensional-module)
+7. [Numerical Module](#numerical-module)
+8. [Curvature / GR Module (v0.5.0 → v0.6.0)](#curvature--gr-module-v050--v060)
+9. [Core Module](#core-module)
+10. [CLI Module](#cli-module)
+11. [Entry Point](#entry-point)
+12. [Component Dependencies](#component-dependencies)
+13. [Curvature composite layer (v0.5.0 → v0.6.0)](#curvature-composite-layer-v050--v060)
 
 ---
 
 ## Overview
 
-UPT follows a layered architecture. The 266 source files fall into ten modules whose responsibilities are strictly separated: `bridges` catalogs, evaluates, adjudicates (v0.8.0), and (since v0.33.0) confronts established equations against real data via the evidence-spine registry, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+; 103 equations as of v0.36.0, spanning a monomial L0 tier, the v0.35.0/v0.36.0 non-monomial L1-sum tier, and a condensed-matter domain), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph, the discovery-hardening funnel, and the v0.37.0 epistemic-grounding ledger), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, `cli` is the typed CLI command tree ported from the old `bin/upt.mjs` monolith in v0.30.0, and `entry` (alongside the one-file `cli-api` barrel it sits next to at the `src/` root) is the public re-export surface.
+UPT follows a layered architecture. The 348 source files fall into eleven modules whose responsibilities are strictly separated: `atlas` holds typed relations between physical models (see Atlas Module), `bridges` catalogs, evaluates, adjudicates (v0.8.0), and (since v0.33.0) confronts established equations against real data via the evidence-spine registry, `canonical` is the textbook L-layer registry bridges are validated against (v0.11+; 103 equations as of v0.36.0, spanning a monomial L0 tier, the v0.35.0/v0.36.0 non-monomial L1-sum tier, and a condensed-matter domain), `composition` is the graph-lite bridge-composition layer (v0.8.0, grown through v0.11 to the full 41-edge graph, plus the canonical-only graph, the discovery-hardening funnel, and the v0.37.0 epistemic-grounding ledger), `dimensional` provides the symbolic layer (including the connection + curvature AST), `numerical` provides the compute layer (including the GR integrators and evaluators), `core` holds legacy high-level utilities, the flat constants, and the v0.7 intelligent-index / regime layer, `diff` is the v0.7 bridge-gradient layer, `cli` is the typed CLI command tree ported from the old `bin/upt.mjs` monolith in v0.30.0, and `entry` (alongside the one-file `cli-api` barrel it sits next to at the `src/` root) is the public re-export surface.
 
 ```
 ┌────────────────────────────────────────────────────────────────┐
@@ -74,7 +75,7 @@ UPT follows a layered architecture. The 266 source files fall into ten modules w
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total** (`src/` scope): 266 TypeScript files | 1764 exports (849 re-exports) | 55 bridge catalog entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative) | 41 composition-graph edges (+ 107 canonical-only `law` edges via `CANONICAL_GRAPH`) | 19 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65)
+**Total** (`src/` scope): 348 TypeScript files | 2446 exports (1229 re-exports) | 55 bridge catalog entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative) | 41 composition-graph edges (+ 107 canonical-only `law` edges via `CANONICAL_GRAPH`) | 19 real-data confrontations (BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65)
 
 (Authoritative numbers from `docs/architecture/DEPENDENCY_GRAPH.md` Summary Statistics, regenerated 2026-07-05 via `npm run docs:deps`; catalog/canonical/confrontation counts cross-checked against `node bin/upt.mjs coverage --json` and `node bin/upt.mjs canonical --json`.)
 
@@ -243,6 +244,121 @@ The structural hash — "the same relation up to dimensionless **constants**." N
 ### `classifyLinkage` / `scanLinkages` (`src/canonical/linkage.ts`)
 
 The "validate against standard physics" engine + the **F4 circularity guard**. Each bridge↔canonical pair classifies as `restates-canonical` (a declared X≡X, NOT a discovery), `recovers` (an undeclared structural match), `dimensional-only`, or `unrelated`. `upt recover` surfaces the scan.
+
+---
+
+## Atlas Module
+
+The atlas (`src/atlas/`) records typed relations BETWEEN physical models. The bridge catalog
+records relations between QUANTITIES. Each atlas bridge has a relation type, side conditions, a
+regime, an error bound with a machine horizon, and witnesses and counterexamples. An evidence
+tag is never set by hand; `deriveEvidence` derives it.
+
+The public set is the root `atlas` namespace (`src/atlas/public.ts`). All other atlas symbols are
+`@internal` and reachable only through the `universal-physics-tensor/atlas` subpath.
+`src/bridges/` and `src/composition/` never import the atlas barrel `src/atlas/index.ts`, because
+that import closes a cycle.
+
+### `RelationType` / `AtlasBridge` / `ApproximationBound` / `Regime` (`src/atlas/types.ts`)
+
+The record types. `RelationType` is `'derivation' | 'exact-equivalence' | 'restriction' |
+'approximation' | 'coarse-graining' | 'analytic-continuation' | 'structural-analogy' |
+'deformation-quantization'`. An `ApproximationBound` must carry a machine `horizonHolds`; a
+constructor without it throws `MissingHorizonError`. A `Regime` holds a list of
+`RegimeInequality` (`{ group, op, bound }`), keyed by `PiGroup.formula`.
+
+### `composeBounds(outer, inner)` / `composeBoundPath(bounds)` (`src/atlas/error-algebra.ts`)
+
+`composeBounds(outer: BoundPair, inner: BoundPair): BoundPair` composes two error bounds, outer
+after inner: `K = outer.K * inner.K`, `delta = outer.K * inner.delta + outer.delta`.
+`composeBoundPath(bounds: readonly (BoundPair | null)[]): ComposedPath` folds a path, and refuses a
+path that has no Lipschitz constant except at its end (`MissingLipschitzError`).
+`IDENTITY_BOUND` is `{ K: 1, delta: 0 }`.
+
+### `regimeHolds(regime, groupValues)` (`src/atlas/regime.ts`)
+
+`regimeHolds(regime: Regime, groupValues: Readonly<Record<string, number>>): RegimeCheck`. The
+result is three-state: `ok` is `true`, `false` (an inequality is violated) or `'unknown'` (an
+inequality has no value). An empty inequality list returns `true`, which means "nothing to check",
+not "checked and held"; callers treat it as unchecked. The same module holds
+`deriveRegimeGroups`, `intersectRegimes`, `regimeOverlap`, `uncoveredRegions` and
+`admitApproximation`.
+
+### `composeRelation(first, second)` / `COMPOSITION_TABLE` (`src/atlas/composition-table.ts`)
+
+`composeRelation(first: RelationType, second: RelationType): CompositionResult` reads the 8×8
+table. A cell the table declines returns `NO_COMPOSITE_CLAIM` (`'no-composite-claim'`), never a
+guess.
+
+### `findPath(...)` / `boundPath(bridges)` (`src/atlas/path-bound.ts`)
+
+`findPath(family: string, from: string, to: string): readonly AtlasBridge[] | null` routes
+between two models through the bridges of ONE family; a route that crosses families is outside its
+scope. `boundPath(bridges: readonly AtlasBridge[]): PathBoundResult` composes the relation types
+and the error bounds along a route, and returns a no-claim result when the table declines.
+
+### `deriveEvidence(record, passingWitnessIds)` (`src/atlas/derive-evidence.ts`)
+
+`deriveEvidence(record: EvidenceInput, passingWitnessIds: ReadonlySet<string>):
+ReadonlySet<EvidenceTag>`. The second argument is required, so "no witness passed" is a written
+choice (`NO_PASSING_WITNESSES`). `formally-proved` is reachable only through a reviewed
+`formalRef`; a file allow-list lint forbids spelling the tag anywhere a record could set it.
+
+### `checkApplicability(input)` (`src/atlas/applicability.ts`)
+
+`checkApplicability(input: ApplicabilityInput): readonly ApplicabilityFinding[]`. It returns
+findings, not a boolean. A `'blocking'` finding is a contradiction in the data (a dimensional
+failure, opposite conventions, a literal zero divisor). A `'question'` finding is a silence (an
+unguarded divisor, a convention only one side declares). `sideConditions` is required, so "none"
+is written as `[]`.
+
+### Witness runners (`src/atlas/witness-numeric.ts`, `witness-symbolic.ts`, `witness-artifact.ts`, `witness-specs.ts`)
+
+`runNumericWitness(spec: NumericWitnessSpec): NumericWitnessRunResult` measures the error at two
+resolutions and returns `checked`, `refuted` or `unresolved`. `runSymbolicWitness(spec:
+SymbolicWitnessSpec, simplifier?: SymbolicSimplifier | null): Promise<WitnessRunResult>` asks the
+CAS peer whether `lhs - rhs` simplifies to zero; `null` means the peer is absent, and the result
+is then `unresolved` with reason `peer-absent`. `WITNESS_REGISTRY` in `witness-specs.ts` is the
+executable list. `runWitnessRegistry` runs it, and only `bun run atlas:witness-results` writes the
+result to `data/atlas/witness-results.json`. Every registered witness has a negative control in
+`tests/atlas/`.
+
+### Families (`src/atlas/oscillators/`, `diffusion/`, `waves/`, `families.ts`)
+
+Each family module holds its models, bridges and rejections. `ATLAS_FAMILIES` in `families.ts`
+lists every family; a whole-atlas gate iterates it and never names one family. A bridge can end in
+a model of another family instead of defining that model again.
+
+### Export (`src/atlas/serialize.ts`, `export.ts`)
+
+`toAtlasJson` writes one family as versioned JSON (`ATLAS_RECORD_SCHEMA_VERSION`).
+`toCombinedAtlasJson(families, packageVersion)` and `toAtlasJsonLd(...)` write the whole atlas;
+ids use the prefix `ATLAS_ID_PREFIX` (`urn:upt:atlas:`).
+
+### Invalid-bridge benchmark (`src/atlas/benchmark/`)
+
+- `types.ts`: `BenchmarkItem`, the PUBLIC half of an item. It never carries the answer.
+- `loader.ts`: `loadFrozenItems(benchmarkDir: string): BenchmarkItem[]` and `validateItems(items,
+  frozen): ItemProblem[]`. The loader refuses a frozen item that is not `'independent'`, and any
+  public item that carries `kind` or `failureKind`.
+- `run-atlas.ts`: `runAtlasOnItem(item, config?): AtlasVerdict` applies the applicability checker,
+  the composition table and the regime check. It rejects when an instrument demonstrably fires,
+  accepts only when at least one instrument ran and every enabled instrument cleared, and abstains
+  otherwise. `ABLATION_CONFIGS` holds the four cumulative configurations.
+- `study.ts`: `validateLabels(itemIds, labels)`, `scoreCondition(condition, answers, labels)`,
+  `pairedRejection(...)` and `scoreAblation(...)`. The answer key is always an argument; no `src/`
+  file reads the scorer half. An empty key throws.
+- `stats.ts`: `wilsonInterval`, `mcnemar`, `pairedDifferenceInterval` (Newcombe method 10),
+  `cohensKappa` and `powerReport`.
+- `leakage.ts`: `leakageKey(expr)` renames every dimensioned symbol to its dimension before
+  `normalForm`, so renamed-variable variants collide. `findCrossSplitLeakage` and
+  `checkRenamedVariants` use it.
+
+### `runLinkPrediction(families, k?)` (`src/atlas/link-prediction.ts`)
+
+Leave-one-bridge-out link prediction over the typed graph, scored against a word-overlap baseline.
+`docs/research/atlas-link-prediction.md` records the result, and
+`tests/atlas/link-prediction.test.ts` recomputes every figure.
 
 ---
 
@@ -675,14 +791,14 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 710 | dependency-graph.json |
-| totalExports | 2377 | dependency-graph.json |
-| totalTypeOnlyImports | 676 | dependency-graph.json |
+| totalSourceFiles | 842 | dependency-graph.json |
+| totalExports | 2990 | dependency-graph.json |
+| totalTypeOnlyImports | 875 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`npm run docs:deps`): 266 files, 1764 exports, 849 of them re-exports. 658 and 266 do not
+(`npm run docs:deps`): 348 files, 2446 exports, 1229 of them re-exports. 842 and 348 do not
 contradict each other; they answer different questions. Every figure states its scope.
 
 **Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19

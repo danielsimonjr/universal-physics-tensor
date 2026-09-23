@@ -865,12 +865,13 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| entryRoots | 4 | dependency-graph.json |
-| reachableFiles | 282 | dependency-graph.json |
+| entryRoots | 5 | dependency-graph.json |
+| reachableFiles | 335 | dependency-graph.json |
 | runtimeCircularDeps | 0 | dependency-graph.json |
 
-**`entryRoots` is 3, and that is the interesting number.** The roots are `src/index.ts`,
-`src/numerical/mathts-engine.ts` and `src/cli/main.ts`. The third is reached only through
+**`entryRoots` is 5.** The roots are `src/index.ts`, the subpath entries
+`src/numerical/mathts-engine.ts`, `src/atlas/index.ts` and `src/composition/probe/index.ts`, and
+`src/cli/main.ts`. The last is the interesting one: it is reached only through
 `bin/upt.mjs`, a launcher that loads `dist/cli/main.js` via a path assembled at runtime. A
 static resolver cannot follow that, so until `repo_map` 0.4.2 the whole CLI was absent from the
 graph and 28 live files were reported as orphans.
