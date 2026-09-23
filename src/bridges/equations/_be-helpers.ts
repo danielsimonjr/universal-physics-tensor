@@ -54,8 +54,8 @@ export { validateFiniteInputs, type FieldSpec } from '../../numerical/input-vali
  *
  * @param lhs - The bridge's encoded LHS AST.
  * @param rhs - The bridge's encoded RHS AST.
- * @param equationLabel - Human label (e.g., `'BE37'`); reserved for
- *   future error-message use.
+ * @param _equationLabel - Human label (e.g., `'BE37'`); reserved for
+ *   future error-message use, and unused today (hence the underscore).
  *
  * @internal
  */

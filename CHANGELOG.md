@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-22) — a doc comment that named a parameter the function does not have
+
+- `validateBEDimensions` (`src/bridges/equations/_be-helpers.ts`) documented `equationLabel`, but
+  the parameter is `_equationLabel`: it is unused, hence the underscore. A doc that is wrong about
+  a signature is worse than a missing one. The code-docs MUST count drops from 168 to 167, and the
+  committed ratchet baseline is lowered to match, so the ratchet keeps its bite. Mothership found
+  this in a report-only run.
+
 ### Added (2026-09-22) — pre-registration Amendment 4: criterion 2 on local LLM baselines
 
 - Committed BEFORE any model call. The owner chose to spend nothing, so criterion 2 runs against
