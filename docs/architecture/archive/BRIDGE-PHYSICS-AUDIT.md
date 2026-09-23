@@ -1,5 +1,7 @@
 # UPT Bridge Catalog — Physics-Correctness Audit
 
+<!-- ste:historical-record -->
+
 **Generated:** 2026-05-20
 **Catalog audited:** `universal-physics-tensor` v0.5.1, the 42-bridge `BRIDGE_EQUATIONS` registry
 **Method:** each bridge reviewed independently by two frontier reasoning models — Adam (Gemini 2.5 Pro) and Eve (OpenAI o3) — on six axes: dimensional consistency, canonical correctness, bridge legitimacy, status calibration, strongest objection, overall verdict. 84 reviews total. Verdicts then categorized, and every concrete "error" claim mechanically re-checked.

@@ -1,4 +1,6 @@
 # Batch E — specification Part V–VIII — Doc Integrity Findings
+
+<!-- ste:historical-record -->
 **Reviewer**: opus subagent. **Date**: 2026-05-20. **Files**: Part-V, Part-VI, Part-VII-Tensor-Algebra, Part-VIII-Metric-Layer.
 
 ## Summary

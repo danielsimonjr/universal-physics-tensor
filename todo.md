@@ -305,8 +305,17 @@ warning-silencing, not debug logging).
       - [x] Drop `totalLinesOfCode` from the gated Verification table (Mothership 2026-09-23, option b); prove the gate passes a code edit without a docs touch-up and still fails on a structural claim.
       - [ ] The architecture-docs gate runs in the pre-push hook only. CI cannot read `repo_map.py` (private `skills` repo) without a credential; the credential decision is with Mothership / the owner.
       - [ ] `docs/architecture/` still carries release versions, "Currently" counts and 691 Simplified-Technical-English findings (`ste_check.py`) that the skill forbids; the ungated prose needs a full one-writer pass.
+        - [x] Mark the 45 dated historical records with `<!-- ste:historical-record -->` (separate commit; never a canonical doc).
+        - [ ] FILE_INVENTORY.md to 0 STE findings, stateless.
+        - [ ] duplicate-symbols.md to 0 STE findings, stateless.
+        - [ ] DATAFLOW.md to 0 STE findings, stateless.
+        - [ ] API.md to 0 STE findings, stateless.
+        - [ ] OVERVIEW.md to 0 STE findings, stateless.
+        - [ ] ARCHITECTURE.md to 0 STE findings, stateless.
+        - [ ] COMPONENTS.md to 0 STE findings, stateless.
+        - [ ] DEPENDENCY_GRAPH.md findings fixed at the SOURCE module doc comments, then regenerated.
       - [x] Rename the `@internal` atlas `AdjudicationVerdict` (a bridge-membership verdict) so it no longer shares a name with the public composition `AdjudicationVerdict` (`duplicate-symbols.md`).
-      - [ ] `repo_map` files `tests/tools/plan-doc-audit.test.ts` in the `tools` zone because the path contains `tools/`; report to the `skills` repo owner.
+      - [x] `repo_map` files `tests/tools/plan-doc-audit.test.ts` in the `tools` zone because the path contains `tools/`; report to the `skills` repo owner.
 
 - [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
       2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,

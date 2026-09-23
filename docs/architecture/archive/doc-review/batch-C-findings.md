@@ -1,5 +1,7 @@
 # Batch C — architecture docs — Doc Integrity Findings
 
+<!-- ste:historical-record -->
+
 **Reviewer**: opus subagent. **Date**: 2026-05-20. **Files**: `API.md`, `ARCHITECTURE.md`, `OVERVIEW.md`, `COMPONENTS.md`, `DATAFLOW.md`, `DEPENDENCY_GRAPH.md`, `benchmarks.md`, `TEST_COVERAGE.md`, `bridge-coverage-audit.md`, `BRIDGE-PHYSICS-AUDIT.md`, `unused-analysis.md`.
 
 ## Summary

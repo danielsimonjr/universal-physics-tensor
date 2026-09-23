@@ -1,5 +1,7 @@
 # Bridge Audit — Fix Spec (post-code-inspection)
 
+<!-- ste:historical-record -->
+
 **Date:** 2026-05-20
 **Status of this spec:** honest work-order after reading the actual `src/bridges/equations/be-NN-*.ts` modules.
 

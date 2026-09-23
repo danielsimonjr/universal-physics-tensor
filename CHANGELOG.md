@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — 40 dated architecture records are marked historical for the STE check
+
+- Each of the 40 dated, point-in-time records under `docs/architecture/` now carries
+  `<!-- ste:historical-record -->` in its first five lines. `ste_check.py` (architecture-docs 0.6.0)
+  reports these files as SKIPPED, not as passes: history is not rewritten into Simplified Technical
+  English. No canonical document is marked. The 10 canonical documents, and the 5 LIVING
+  non-canonical documents (`PHYSICS_MAP.md`, `benchmarks.md`, both tutorials and
+  `archive/README.md`), are rewritten to 0 findings in their own commits.
+- The first count was 45, then 43. Reading each file's head showed 5 were living documents and not
+  records; 3 archive records had no findings and were left unmarked. Exactly 40 are marked.
+
 ### Changed (2026-09-23) — the atlas's `AdjudicationVerdict` is now `MembershipVerdict`
 
 - Two DIFFERENT unions shared the name `AdjudicationVerdict`. The atlas one

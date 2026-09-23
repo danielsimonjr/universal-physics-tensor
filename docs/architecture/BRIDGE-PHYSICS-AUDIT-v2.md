@@ -1,5 +1,7 @@
 # UPT Bridge Catalog — Physics-Correctness Audit v2
 
+<!-- ste:historical-record -->
+
 <!-- repo-map:no-verification -->
 
 > **No `## Verification` block, deliberately.** This document is a physics-correctness audit dated 2026-05-24. Its claims are about the physics of catalog entries and are established by literature review, not by any parse of the source.
