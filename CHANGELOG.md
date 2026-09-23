@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `OVERVIEW.md` in Simplified Technical English, stateless
+
+- 14 STE findings fixed, prose only; `ste_check` reports 0. Two inline lists became bullet lists
+  with the same items in the same order. Tables, fences and headings are byte-identical, and every
+  technical token is preserved (one punctuation artifact of the checker's number pattern, `2,` →
+  `2`, is declared).
+- Sonnet review (in-session, not human): PASS on all 14 passages; its one cosmetic nit (a stray
+  space) is fixed.
+
 ### Fixed (2026-09-23) — the CLI said "44-bridge"; the catalog holds 55, and the label is now derived
 
 - **User-visible:** `upt discover`, `candidates` and `map` printed `[source: catalog (44-bridge)]`. The

@@ -4,9 +4,9 @@
 
 ## What Is This?
 
-Universal Physics Tensor (UPT) is a **TypeScript dimensional-analyzer and bridge-equation library** for exploring unified physics through tensor formalism. It provides machine-readable encoding of 55 bridge equations that connect distinct physics regimes (quantum to classical, gravity to gauge, thermodynamics to information theory), paired with a layered computational backend that can validate, symbolically analyze, and numerically evaluate those equations.
+Universal Physics Tensor (UPT) is a **TypeScript dimensional-analyzer and bridge-equation library** for exploring unified physics through tensor formalism. The library provides machine-readable encoding of 55 bridge equations that connect distinct physics regimes (quantum to classical, gravity to gauge, thermodynamics to information theory). A layered computational backend can validate, symbolically analyze, and numerically evaluate those equations.
 
-The library serves two audiences: researchers who want to query the bridge-equation catalog and catch dimensional errors in novel formulations, and implementors who want to evaluate tensor contractions numerically, compute Christoffel symbols, or integrate geodesics in an arbitrary Lorentzian manifold.
+The library serves two audiences. Researchers want to query the bridge-equation catalog and catch dimensional errors in novel formulations. Implementors want to evaluate tensor contractions numerically, compute Christoffel symbols, or integrate geodesics in an arbitrary Lorentzian manifold.
 
 ---
 
@@ -16,11 +16,11 @@ Four goals govern every design choice in UPT:
 
 1. **Bridges drive the work.** The 55 bridge equations in `src/bridges/` are the scientific core. Tooling, tests, and new capabilities exist to serve the catalog, not the other way around. A new feature earns its place by enabling or improving a bridge encoding.
 
-2. **MathTS first-class.** `@danielsimonjr/mathts-tensor` is the preferred numerical backend. The `TensorEngine` interface keeps UPT backend-agnostic, but the selection of MathTSEngine as the intended default (when the optional dep is present) is a deliberate signal about the dependency shape of the ecosystem, not a performance claim.
+2. **MathTS first-class.** `@danielsimonjr/mathts-tensor` is the preferred numerical backend. The `TensorEngine` interface keeps UPT backend-agnostic. Even so, MathTSEngine is the intended default when the optional dep is present. The selection is a deliberate signal about the dependency shape of the ecosystem, not a performance claim.
 
-3. **Integrated scientific environment.** UPT aims to be a self-contained environment for computational physics — Christoffel symbols, geodesic integration, curvature (Riemann/Ricci/Einstein/Weyl/Kretschmann), Killing-vector and Einstein-field-equation machinery, and symbolic composition and simplification (`src/composition/compose-symbolic.ts`, `src/composition/expr-simplify.ts`) — all sharing a common AST and type system.
+3. **Integrated scientific environment.** UPT aims to be a self-contained environment for computational physics. The environment covers Christoffel symbols, geodesic integration, curvature (Riemann/Ricci/Einstein/Weyl/Kretschmann), and Killing-vector and Einstein-field-equation machinery. The environment also covers symbolic composition and simplification (`src/composition/compose-symbolic.ts`, `src/composition/expr-simplify.ts`). All of these share a common AST and type system.
 
-4. **An honest falsification instrument.** The **PI-instrument program** reframed UPT explicitly as an instrument a physicist can stake a claim on: a trustworthy **no** and an extraordinary **yes**. The *no* is `upt discover`'s vetting funnel plus the epistemic-grounding ledger (`src/composition/grounding.ts`, which falsifiers actually passed vs. the gaps, on every verdict) — across every review round it has adjudicated **0 of 8** machine-surfaced candidate bridges as genuine, and a separate connector-adjudication pass found **0 of 7** candidate graph connectors genuine (the isolated-bridge frontier is isolated by physics, not vocabulary, not a vocabulary gap the tool can close). The *yes* is the evidence spine (`upt confront`): **19** real-data confrontations of catalog bridges (15 established, 4 speculative), including all three classic tests of general relativity — Mercury perihelion (0.26σ), Shapiro delay (0.91σ), gravitational lensing (0.67σ) — each within 1σ, honestly read as precision GR at ~10⁻⁵ across two independent PPN parameters (γ twice, β once) rather than nineteen equal confirmations.
+4. **An honest falsification instrument.** The **PI-instrument program** reframed UPT explicitly as an instrument a physicist can stake a claim on. The instrument gives a trustworthy **no** and an extraordinary **yes**. The *no* is `upt discover`'s vetting funnel plus the epistemic-grounding ledger (`src/composition/grounding.ts`). On every verdict, the ledger records which falsifiers actually passed vs. the gaps. Across every review round, the funnel has adjudicated **0 of 8** machine-surfaced candidate bridges as genuine. A separate connector-adjudication pass found **0 of 7** candidate graph connectors genuine. Physics, not vocabulary, isolates the isolated-bridge frontier. The frontier is not a vocabulary gap that the tool can close. The *yes* is the evidence spine (`upt confront`): **19** real-data confrontations of catalog bridges (15 established, 4 speculative). The spine includes all three classic tests of general relativity: Mercury perihelion (0.26σ), Shapiro delay (0.91σ), gravitational lensing (0.67σ). Each is within 1σ. The honest reading is precision GR at ~10⁻⁵ across two independent PPN parameters (γ twice, β once). The reading is not nineteen equal confirmations.
 
 ---
 
@@ -56,9 +56,15 @@ UPT is organized into five conceptual layers that build on each other:
 └──────────────────────────────────────────────────────────────┘
 ```
 
-A bridge equation module at Layer 1 builds AST nodes at Layer 2, validates them with the dimensional algebra, optionally raises/lowers indices using Layer 3 metric primitives, and can be numerically evaluated through Layer 4. Layer 5 (the curvature / general-relativity layer) is built on top of Layers 2–4: its curvature node kinds are `ExprNode` members with their own validators and lowering arms, and its integrators reuse the same Christoffel-closure convention as the Layer-4 RK4 solver. Callers who only want catalog metadata (status, known issues, references) never touch layers 2–5.
+A bridge equation module at Layer 1 builds AST nodes at Layer 2 and validates them with the dimensional algebra. The module optionally raises/lowers indices using Layer 3 metric primitives, and Layer 4 can evaluate the module numerically. Layer 5 (the curvature / general-relativity layer) is built on top of Layers 2–4. Its curvature node kinds are `ExprNode` members with their own validators and lowering arms. Its integrators reuse the same Christoffel-closure convention as the Layer-4 RK4 solver. Callers who only want catalog metadata (status, known issues, references) never touch layers 2–5.
 
-Beside the layers sits a **composition graph** (`src/composition/`): bridges as `BridgeEdge` objects over `Quantity` endpoints, composable via `composeEdges`, with pre-registered calibration edges (including the first diagonal-law edge, `lawSchwarzschildRadius`). Its first derived result (CT-1) chains BE-42∘BE-16 to E_min(M) = ℏc³ln2/(8πGM). Catalog membership is computable (`src/bridges/membership.ts` + the `src/bridges/rejected.ts` negative catalog — see `v0.8.0-catalog-adjudication.md`), and GW170817 vs. BE-36 is a real-data confrontation. The graph has **41 edges**, a Phase-D candidate enumerator (`enumerateCompositions`), first-order uncertainty propagation (`propagateUncertainty`), and a name-collision namespacing gate (`CompositionAliasError` + `SOURCE_ALIAS_DISPOSITIONS` over 131 centralized `Quantity` nodes in `quantities.ts`); BE-23 vs. cuprate Planckian dissipation is another data confrontation. The 55-bridge catalog (41 graph edges) is validated against the **canonical L-layer** (`src/canonical/`, 107 equations — the textbook ground truth the catalog's bridges are checked against), and the real-data confrontations form an **evidence spine** of 19 (`upt confront` / `upt coverage`), carried in `src/bridges/confrontations.ts` + per-bridge `be*-confrontation.ts` evaluators.
+Beside the layers sits a **composition graph** (`src/composition/`). The graph holds bridges as `BridgeEdge` objects over `Quantity` endpoints, composable via `composeEdges`. The pre-registered calibration edges include the first diagonal-law edge, `lawSchwarzschildRadius`. Its first derived result (CT-1) chains BE-42∘BE-16 to E_min(M) = ℏc³ln2/(8πGM). Catalog membership is computable (`src/bridges/membership.ts` + the `src/bridges/rejected.ts` negative catalog — see `v0.8.0-catalog-adjudication.md`), and GW170817 vs. BE-36 is a real-data confrontation. The graph has **41 edges**. The graph also has:
+
+- a Phase-D candidate enumerator (`enumerateCompositions`);
+- first-order uncertainty propagation (`propagateUncertainty`);
+- a name-collision namespacing gate (`CompositionAliasError` + `SOURCE_ALIAS_DISPOSITIONS` over 131 centralized `Quantity` nodes in `quantities.ts`).
+
+BE-23 vs. cuprate Planckian dissipation is another data confrontation. The 55-bridge catalog (41 graph edges) is validated against the **canonical L-layer** (`src/canonical/`, 107 equations). The L-layer is the textbook ground truth that the catalog's bridges are checked against. The real-data confrontations form an **evidence spine** of 19 (`upt confront` / `upt coverage`). `src/bridges/confrontations.ts` + the per-bridge `be*-confrontation.ts` evaluators carry the spine.
 
 ---
 
@@ -101,10 +107,15 @@ contradict each other; they answer different questions. Every figure states its 
 > silently. The whole-repository figures in the table belong to `repo_map.py` and its own check
 > gate; do not hand-edit them here.
 
-**Claims the gate cannot hold.** Catalog figures — 55 bridge entries (IDs 11–65; 19
-established, 33 speculative, 3 highly-speculative), 107 canonical equations, 41
-composition-graph edges, 19 real-data confrontations — are properties of the physics catalog,
-not of the dependency graph. They were measured by importing the built package and reading
+**Claims the gate cannot hold.** These catalog figures are properties of the physics catalog,
+not of the dependency graph:
+
+- 55 bridge entries (IDs 11–65; 19 established, 33 speculative, 3 highly-speculative);
+- 107 canonical equations;
+- 41 composition-graph edges;
+- 19 real-data confrontations.
+
+They were measured by importing the built package and reading
 `BRIDGE_EQUATIONS`, `CANONICAL_EQUATIONS`, `CATALOG_GRAPH` and `listConfrontations()` directly,
 not taken from any metric. Re-measure the same way; `repo_map` cannot check them.
 
@@ -113,7 +124,7 @@ not taken from any metric. Re-measure the same way; `repo_map` cannot check them
 ## Product A vs Product B (expression search)
 
 `upt discover` remains the **quantity-identification** funnel (`VettedCandidate`, `a ≡ b`).
-That funnel is frozen: it is not an AST generator. **Product B** (`src/composition/probe/`,
+That funnel is frozen and is not an AST generator. **Product B** (`src/composition/probe/`,
 CLI `upt probe`, experimental subpath `universal-physics-tensor/probe`) searches scalar
 expressions against residuals under a budget, with exploratory/holdout isolation and
 corpus-relative novelty wording. Relation-link gaps stay Product A — `upt probe run`
