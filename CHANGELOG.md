@@ -8,6 +8,16 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — master CI was red after PR #184
+
+- PR #184 (0ae8cbf) added a `uniformity:` line to the `upt atlas` report on purpose
+  (`formatUniformity` in `src/cli/commands/atlas.ts`), but did not update the CLI golden corpus.
+  `tests/cli/upt-golden.test.ts > atlas-pendulum` failed in CI on the merge (run 35882497084;
+  the only failure) and in the pre-push hook. The corpus was regenerated with
+  `node tests/cli/golden-capture.mjs`. It changed exactly one line in one file,
+  `tests/cli/golden/atlas-pendulum.txt`: the intended `uniformity:` line. This was a deterministic
+  failure, not the open flaky test.
+
 ### Decided (2026-09-23) — the Tier 1 `atlas` namespace stays; the roadmap rule says why
 
 - `docs/decisions/atlas-tier1-namespace.md` records the decision. Mothership decided it as lead,

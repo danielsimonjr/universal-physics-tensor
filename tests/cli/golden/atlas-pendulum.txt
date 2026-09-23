@@ -13,6 +13,7 @@ bound:
   domain: θ0 ≤ 0.5 rad
   horizon: t ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time
   limit: regular
+  uniformity: one period, for θ0 in the stated domain
 preserves:
   - harmonic frequency ω0 to O(θ0²)
   - energy conservation
