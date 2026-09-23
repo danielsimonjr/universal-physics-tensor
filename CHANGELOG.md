@@ -8,6 +8,46 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `API.md` stale facts corrected against the source
+
+A fact-fix commit, kept separate from the Simplified Technical English pass. Every correction was
+measured against the current tree or `dist`:
+
+- **Wrong signatures and examples.** `evaluateGravitationalLensing` and
+  `evaluatePerihelionPrecession` are synchronous, take `M_kg`/`b_m` and `M_kg`/`a_m`/`e`/`T_yr`, and
+  return `alpha_rad` and `dphi_rad_per_orbit`; the doc showed `async` calls with other field
+  names. `inferDimensionForBridge` takes `(bridgeId, expr)`; `evaluateMetricInverse` takes
+  `(gInverse, g, inputs, tolerance?, options?)` and also returns `residualNorm`. The
+  `integrateGeodesic` example used inputs that do not exist; the GL4 and `findPerihelion` entries
+  had the same errors fixed in `DATAFLOW.md`.
+- **`enumerateCompositions` reports no failures.** Junction and dimension refusals are skipped
+  (`src/composition/enumerate.ts`); the doc promised "failures with attribution", and its example
+  read a `report.candidates` field that does not exist.
+- **Counts:** the catalog has 55 entries (ids 11–65), not 44 (11–54). The confrontation table had 9
+  rows; the registry holds 19, and the 10 missing rows (BE-55, 56, 58–65) are added. The constants
+  list gains `B_WIEN_SI`. The public-surface test counts (217 / 116 / 245) were stale — measured
+  218 / 116 / 289 — and are dropped for a pointer to the test.
+- **The header said** any symbol outside `EXPECTED_RUNTIME_EXPORTS` is `@internal`. The snapshot
+  pins all 289 root exports, 71 of them outside that list, so the sentence contradicted the tier
+  table. It now states what the test pins.
+- **Subpaths that do not exist.** "Exported via `numerical/killing`" (and five others) and
+  "reachable via the bridges subpath" named package subpaths that `package.json` does not export.
+  They now name the defining source file, and `isActiveStatus` is stated to be unreachable.
+- **History moved here from the doc:** the layers by release — connection v0.4.0, curvature v0.5.0
+  (the GR-foundations release), constants v0.5.1 (`M_SUN_SI` v0.8.0, `M_E_SI` v0.11), Killing /
+  field-equation / invariants v0.6.0, intelligent index v0.7.x, composition / membership / GW170817
+  v0.8.0 (BE-42 reversed to a bridge in its Phase-4 adjudication), calibration edges `be12Edge`,
+  `be11ZurekEdge`, `be37Edge` v0.9.0, the catalog-edge tranche v0.10.0, `CATALOG_FULL_EDGES`,
+  the namespacing gate, Klein-Gordon and BE-23 v0.11, symbolic composition v0.12, geometrized
+  adapters (G-9 increment 2), `BridgeEquations` and the axis-order extension v0.14, and the
+  discovery / confrontation program: BE-52 × Mercury v0.28.0, the adjudication ledger v0.31.0,
+  `rankDiscoveries` on the root v0.32.0, the unified registry, consequence propagation and
+  sensitivity v0.33.0, BE-51 v0.35.0, the grounding ledger and BE-21 v0.37.0, BE-35 v0.38.0,
+  BE-11 v0.39.0, the BE-36 one-sided `caveat` v0.40.0. The v0.9.0 Painlevé–Gullstrand
+  `Float64Array` migration was breaking only for deep importers of that module. The type table's
+  "Added" column (v0.1.0–v0.6.0 per type) and the confrontation table's "Added" column are
+  dropped.
+
 ### ⚠ Stability promise tightened (2026-09-23) — no `@public-new` tier; those symbols are `@public`
 
 **What changes for a consumer.** `docs/architecture/API.md` labelled about 60 exports `@public-new`,
