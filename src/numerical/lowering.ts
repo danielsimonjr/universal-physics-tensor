@@ -195,9 +195,9 @@ function lowerContractable(
  * Dispatcher for the six curvature-composite AST kinds.
  *
  * v0.6.0 Task 3.10e: extracted from `lowerNode`'s switch so all curvature
- * lowering logic lives in one named helper. `CURVATURE_KIND_REGISTRY[node.kind]`
- * supplies the per-kind shape/dim spec; the actual numerical paths are
- * preserved verbatim from the prior per-kind arms — no logic changes.
+ * lowering logic lives in one named helper. It switches on `node.kind`
+ * directly; `CURVATURE_KIND_REGISTRY` is not read here. The numerical paths
+ * are preserved verbatim from the prior per-kind arms — no logic changes.
  *
  * Called from `lowerNode` for all `CurvatureKind` discriminants.
  * @internal

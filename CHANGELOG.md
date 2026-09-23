@@ -8,6 +8,24 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — stale source doc comments found while fact-checking `docs/architecture/`
+
+Comments only; no code changes.
+
+- `src/numerical/gl4-integrator.ts`: the module header said it "ships types + Butcher constants
+  only" and that `integrateGeodesicGL4` "lands in Task 3"; the module holds the solver and the
+  integrator. `GL4Options` and the stage-result JSDoc said "lands in Task 3" / "the upcoming".
+- `src/numerical/perihelion-finder.ts`: the `findPerihelion` `@example` called
+  `integrateGeodesicGL4` with a signature that does not exist (`christoffelFn`, `x0`, `p0`,
+  `gl4.snapshots`). It now shows the real `(GL4State, GL4Options)` call and points to the full
+  setup in `tests/bridges/perihelion-precession.test.ts`.
+- `src/dimensional/bridge-check.ts`: `inferDimensionForBridge` said bridge ids run 11..50; they run
+  to 65.
+- `src/numerical/lowering.ts`: the `lowerCurvature` JSDoc said `CURVATURE_KIND_REGISTRY` supplies the
+  per-kind spec; the function never reads it.
+- `tests/bridges/dimensional-signature-catalog.test.ts`: the header said only BE-11 and BE-14 have
+  AST encodings; the test covers every entry of `BRIDGE_RHS_BY_ID` (42).
+
 ### Fixed (2026-09-23) — `API.md`: `DuplicateCoordinateWarning` is not a `NumericalResult` warning
 
 - The entry said the warning "appears in `NumericalResult.warnings`". It never does: a

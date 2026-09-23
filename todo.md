@@ -309,17 +309,17 @@ warning-silencing, not debug logging).
         - [x] FILE_INVENTORY.md to 0 STE findings, stateless.
         - [x] duplicate-symbols.md to 0 STE findings, stateless.
         - [x] DATAFLOW.md stale facts in diagrams and headings corrected against measurement (fact-fix commit, before the STE commit).
-        - [ ] Stale source JSDoc found during the DATAFLOW fact fix: `src/numerical/gl4-integrator.ts` header says "types + Butcher constants only" and `GL4Options` "lands in Task 3"; the `findPerihelion` `@example` calls `integrateGeodesicGL4` with a signature that does not exist.
+        - [x] Stale source JSDoc found during the DATAFLOW fact fix: `src/numerical/gl4-integrator.ts` header says "types + Butcher constants only" and `GL4Options` "lands in Task 3"; the `findPerihelion` `@example` calls `integrateGeodesicGL4` with a signature that does not exist.
         - [x] DATAFLOW.md to 0 STE findings, stateless.
         - [x] API.md: the `@public-new` tier aligned to the source — every such symbol is `@public` (Mothership decision (a), own commit).
         - [x] API.md stale facts corrected against measurement (fact-fix commit, before the STE commit).
-        - [ ] Stale source JSDoc found during the API.md fact fix: `inferDimensionForBridge` says bridge ids "11..50"; the catalog runs to 65.
+        - [x] Stale source JSDoc found during the API.md fact fix: `inferDimensionForBridge` says bridge ids "11..50"; the catalog runs to 65.
         - [ ] CODE QUESTION for Mothership: `KillingEquationOptions.tolerance` is documented as "Maximum tolerated residual ... Default 1e-10" but `verifyKillingEquation` never reads it (it returns the raw residual). Remove the option, or make the function use it?
-        - [ ] Stale source JSDoc found during the DATAFLOW audit: `lowerCurvature` (`src/numerical/lowering.ts`) says `CURVATURE_KIND_REGISTRY[node.kind]` supplies the per-kind spec; the code never reads the registry.
+        - [x] Stale source JSDoc found during the DATAFLOW audit: `lowerCurvature` (`src/numerical/lowering.ts`) says `CURVATURE_KIND_REGISTRY[node.kind]` supplies the per-kind spec; the code never reads the registry.
         - [x] DATAFLOW.md follow-up fact fix: the 17 FALSE claims from the full-claim audit, each re-verified against source (likely bugs filed as code questions).
         - [x] API.md to 0 STE findings, stateless.
         - [x] API.md fact fix: `DuplicateCoordinateWarning` is documented as appearing in `NumericalResult.warnings`; validation throws `MetricSignatureError` by default and emits the warning (a process warning) only with `UPT_ALLOW_COORD_SHADOW=1`.
-        - [ ] Stale test header: `tests/bridges/dimensional-signature-catalog.test.ts` says only BE-11 and BE-14 have AST encodings; `BRIDGE_RHS_BY_ID` holds 42.
+        - [x] Stale test header: `tests/bridges/dimensional-signature-catalog.test.ts` says only BE-11 and BE-14 have AST encodings; `BRIDGE_RHS_BY_ID` holds 42.
         - [x] `tools/create-dependency-graph`: an opt-in per-export API-surface report (signature, async, stability tag, root reachability) in its own module, with tests; existing outputs byte-identical without the flag.
         - [ ] OVERVIEW.md to 0 STE findings, stateless.
         - [ ] ARCHITECTURE.md to 0 STE findings, stateless.

@@ -17,9 +17,9 @@
  * p_μ = g_μν dx^ν/dτ — not (x, v). This is what makes the flow symplectic
  * on T*M.
  *
- * This module ships **types + Butcher constants only**. The implicit Picard
- * stage solver lands in Task 2; the integrator entry-point
- * `integrateGeodesicGL4` lands in Task 3.
+ * This module holds the types, the Butcher constants, the implicit Picard
+ * stage solver (`solveGL4Stage`, internal), and the integrator entry point
+ * `integrateGeodesicGL4`.
  *
  * @module numerical/gl4-integrator
  */
@@ -98,7 +98,7 @@ export interface GL4Snapshot {
 }
 
 /**
- * Options for `integrateGeodesicGL4` (lands in Task 3).
+ * Options for `integrateGeodesicGL4`.
  *
  * @public
  */
@@ -148,8 +148,8 @@ export interface GL4Options {
 
 /**
  * Result of `solveGL4Stage` — the two converged stage values plus the
- * iteration count actually consumed. Consumed by the upcoming
- * `integrateGeodesicGL4` step driver (Task 3).
+ * iteration count actually consumed. Consumed by the
+ * `integrateGeodesicGL4` step driver.
  *
  * v0.6.1: dropped export — internal-only result shape (was already
  * @internal-tagged but had no external consumer).
