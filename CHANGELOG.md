@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Verified (2026-09-23) — a fresh environment reproduces every published artifact byte for byte
+
+- A clean clone of `master` (6ec5f7f) outside the working tree ran: install (frozen lockfile), build,
+  the full suite (4,659 passed), `catalog:json`, `atlas:json`, `atlas:witness-results` (18/18
+  checked), `atlas:study`, `docs:deps` and `smoke`. Every one of the eight regenerated artifacts is
+  BYTE-IDENTICAL to its committed blob, checked by comparing bytes with `git cat-file blob`.
+- **Fixed: a clean regeneration still left the tree "modified" on Windows.** `.gitattributes`
+  pinned `docs/architecture/**` to LF because tools write it, but not the other tool-written
+  artifacts. With `core.autocrlf=true` they checked out as CRLF, and a generator's LF output then
+  showed as a change with no content difference. `data/**`, `docs/research/atlas-study-results.md`
+  and `tests/fixtures/atlas/benchmark/**` are now pinned to LF as well. Proven in the fresh clone:
+  before the fix, 8 files showed modified after regeneration; after it, only the fix itself did. The
+  artifacts were already deterministic, so the fix is to the checkout, not to the comparison.
+
 ### Changed (2026-09-23) — the architecture-docs gate stops checking lines of code
 
 - `totalLinesOfCode` is no longer a gated claim in `docs/architecture/OVERVIEW.md` (Mothership,
