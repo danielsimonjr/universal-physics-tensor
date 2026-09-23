@@ -152,3 +152,23 @@ in `scorer/labels.json`; the loader refuses a public item that carries either, a
 count are unchanged. A rerun of the study produced a byte-identical results file.
 
 - **Frozen set.** SHA-256 of the canonical JSON: `6ab7c2c32358ebbddfdc73cad118095fdf33f4770c07230f622febe2eeedc8d8`.
+
+**Amendment 4 (2026-09-22) — criterion 2 runs on LOCAL LLM baselines; criterion 3 is not run.**
+This amendment is committed before the first model call. The owner chose to spend nothing, so
+the LLM baselines for criterion 2 are local Ollama models, not a hosted frontier model. The run
+configuration is frozen in `tests/fixtures/atlas/benchmark/conditions/llm-local.config.json`:
+the three models with their digests, the options (temperature 0, fixed seed, `num_ctx` 8192), the
+exact prompt, one item per call, and the public fields only.
+
+- **"Best LLM baseline" is defined before the run:** the model with the highest balanced accuracy,
+  `(validAccepted/nValid + invalidRejected/nInvalid)/2`. A model that rejects everything
+  maximizes rejection without being a better judge, and balanced accuracy does not reward it.
+  Ties break on the invalid-rejection count, then on the model name.
+- **The criterion is unchanged:** the Newcombe method-10 95% interval for the atlas's rejection
+  rate minus the best baseline's, paired over the same invalid items, must lie above zero.
+- **Limit, stated before the result:** a local model is a weaker "best LLM baseline" than a hosted
+  frontier model. A MET result here says the atlas beats these three local models. It does not say
+  the atlas beats the best available LLM.
+- **A malformed reply is an error, recorded and scored as unanswered.** It is never defaulted.
+- **Criterion 3 is NOT run.** It needs a reference corpus and an atlas-blind correct-reference
+  label per item, and the set as built has neither. That task must be designed before it runs.

@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-22) — pre-registration Amendment 4: criterion 2 on local LLM baselines
+
+- Committed BEFORE any model call. The owner chose to spend nothing, so criterion 2 runs against
+  local Ollama models (qwen3.8:27b, gemma4:26b, gpt-oss:20b). The frozen configuration is in
+  `tests/fixtures/atlas/benchmark/conditions/llm-local.config.json`: models and digests,
+  temperature 0 and a fixed seed, the exact prompt, one item per call, and the public fields
+  only. The "best baseline" is fixed in advance as the model with the highest balanced accuracy,
+  so a model that rejects everything cannot win. Stated limit: local models are weaker baselines
+  than a hosted frontier model. Criterion 3 is not run, because the set has no reference corpus
+  or correct-reference labels.
+
 ### Changed (2026-09-22) — Dependabot holds the optional mathts-* peers
 
 - `.github/dependabot.yml` ignores `@danielsimonjr/mathts-*`. The optional peers are held for a

@@ -1,0 +1,24 @@
+{
+  "condition": "llm-local",
+  "registeredIn": "docs/research/atlas-benchmark-preregistration.md, Amendment 4",
+  "criterion": 2,
+  "spend": "USD 0: local Ollama models only, by the owner's decision",
+  "endpoint": "http://localhost:11434/api/chat",
+  "models": [
+    { "name": "qwen3.8:27b", "digest": "22130167c4c2" },
+    { "name": "gemma4:26b", "digest": "5571076f3d70" },
+    { "name": "gpt-oss:20b", "digest": "17052f91a42e" }
+  ],
+  "options": { "temperature": 0, "seed": 0, "num_ctx": 8192 },
+  "format": "json",
+  "itemsPerCall": 1,
+  "input": "the PUBLIC half only: premises, conclusion, claimedRelation. No family, source, id text or answer.",
+  "retries": "one retry on a transport error or timeout, recorded; NONE on a malformed reply",
+  "malformedReply": "an ERROR, recorded and scored as unanswered; never defaulted to an outcome",
+  "timeoutMs": 300000,
+  "bestBaselineRule": "the model with the highest balanced accuracy = (validAccepted/nValid + invalidRejected/nInvalid)/2; ties break on the higher invalid-rejection count, then on model name",
+  "comparison": "pairedRejection(atlas, best) on the SAME invalid items; the criterion is MET when the Newcombe method-10 95% interval for atlas minus best lies above zero",
+  "alsoReported": "every model's full metrics, abstentions and wrong accepts beside accuracy, and the errors",
+  "systemPrompt": "You are an expert physicist. You answer only from the text you are given. You reply with one JSON object and nothing else.",
+  "userPrompt": "Judge one physics claim. It has premises, a conclusion and a claimed relation between them.\n\nThe relation names mean:\n- derivation: the conclusion follows from the premises by valid mathematical steps; one-way.\n- exact-equivalence: the two descriptions are the same physics under a change of variables; each implies the other.\n- restriction: the conclusion is the premise theory with an extra condition imposed (a special case).\n- approximation: the conclusion approximates the premise theory, within a stated error, in a stated regime.\n- coarse-graining: the conclusion describes the averaged or large-scale behaviour of the premise theory.\n- analytic-continuation: the conclusion is obtained by continuing a parameter to complex or imaginary values.\n- structural-analogy: the two share a mathematical form but describe different physics.\n- deformation-quantization: the conclusion is a quantum deformation of a classical theory, or its classical limit.\n\nAnswer ACCEPT when the conclusion stands in the claimed relation to the premises under the conditions the text states. Answer REJECT when the claim contains a defect, and name the ONE defect that best describes it:\n- omitted-premise: the conclusion needs an assumption that the premises do not state.\n- domain-violation: a relation is used outside the parameter range where it holds.\n- convention-mismatch: statements with different sign, unit or normalization conventions are combined without conversion.\n- notation-collision: one symbol stands for two different quantities, and the argument conflates them.\n- dimensional-coincidence: two quantities with the same units are treated as the same physical quantity.\n- non-uniform-limit: a limit is used as if it held uniformly, or two limits are interchanged, when that is not valid.\n- false-inverse: a one-way relation (a derivation, an average, a limit) is claimed to run backwards.\n- analogy-promoted: a mathematical analogy is claimed as a physical equivalence or a derivation.\nAnswer ABSTAIN when you cannot decide from the text.\n\nReply with exactly this JSON object:\n{\"itemId\": \"<copied from the input>\", \"outcome\": \"accept\" | \"reject\" | \"abstain\", \"failureKind\": <one of the eight names above, or null>}\n\nClaim:\n"
+}

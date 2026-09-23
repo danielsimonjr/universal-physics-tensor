@@ -317,6 +317,9 @@ warning-silencing, not debug logging).
       - [x] Two independent model raters (separate isolated instances) and Cohen's kappa, reported as MODEL agreement.
       - [x] Freeze the set; the empty-set hash test must go RED before the note is amended.
       - [x] First run of the study success path on the non-empty set; fix what breaks.
+      - [x] Criterion 2 on LOCAL models only (user 2026-09-22: "$0"): pre-register the run config (Amendment 4) and commit it BEFORE any call.
+      - [ ] Run the local LLM baselines (qwen3.8:27b, gemma4:26b, gpt-oss:20b) on the frozen public items; score atlas vs the pre-registered best baseline.
+      - [ ] Criterion 3 (recall@10 vs embeddings) cannot run on the set as built: it needs a reference corpus and atlas-blind correct-reference labels. Design the task first.
       - [x] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own
         "never the answer" docstring. The atlas condition never reads them; an LLM or embedding condition fed
         `public/items.json` would see the key. Fix before any out-of-process condition runs: move both to the scorer half.
