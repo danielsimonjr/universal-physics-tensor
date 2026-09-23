@@ -196,17 +196,21 @@ McNemar), and writes `docs/research/atlas-study-results.md` with its reproducer 
   `scoreCondition` throws on an empty key for the same reason.
 - Unanswered items are COUNTED as wrong, never dropped. A wrong-kind rejection counts as rejected
   but not as kind-correct. Wrong accepts, abstentions and non-answers are separate columns.
-- **Out-of-process conditions are not run.** The worker protocol and shapes exist, but no
-  embedding or LLM worker exists in the repository. The results file states that it holds no
-  paired comparison and does not score a condition that never ran.
+- `scripts/atlas-benchmark-llm-local.mjs` runs local models from
+  `tests/fixtures/atlas/benchmark/conditions/llm-local.config.json`.
+- `scripts/run-atlas-study.mjs` scores a model's answers only when the file exists and covers
+  every frozen item. A missing file or an unfinished item is not scored.
+- Embeddings still have no in-repo worker.
+- The numeric outcome of criterion 2 lives in `docs/research/atlas-study-results.md` and `NOTES.md`.
 
 ## 10. The ablation (Phase 6, S6.2) — as built
 
 There are four cumulative configurations of the atlas runner (`ABLATION_CONFIGS`): **types only**,
 **+ assumptions**, **+ dimensions & conventions**, and **+ regimes**. An applicability finding is
-assigned to the instrument that produced it, so each layer switches on independently. Accept
-requires every ENABLED instrument to have run and cleared. A types-only run therefore accepts
-whatever the composition table does not flag, which is the baseline an ablation must expose.
+assigned to the instrument that produced it, so each layer switches on independently. Accept only
+when every enabled instrument ran and cleared and at least one instrument ran. If no enabled
+instrument applies, the outcome is abstain.
+
 `scoreAblation` scores each row and pairs it against the row before it on the same invalid items.
 The tests pin that four items, each built to be caught by exactly one layer, are rejected
 cumulatively as 1, 2, 3 and 4.

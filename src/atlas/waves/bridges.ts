@@ -229,6 +229,8 @@ export const BRIDGE_KLEIN_GORDON_WAVE: AtlasBridge = {
     },
     parameterRange: 'ω₀/(c k) ≤ 0.1',
     limitCharacter: 'regular',
+    // A phase-velocity error. The record says it is not uniform in time.
+    uniformity: ['phase velocity of one Fourier mode, for ω₀/(ck) ≤ 0.1'],
   }),
   regime: {
     family: WAVES_FAMILY_NAME,

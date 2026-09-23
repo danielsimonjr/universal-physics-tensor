@@ -59,15 +59,18 @@ describe('atlas-record.v0.json — definitions', () => {
     expect(def('limitCharacter')['enum']).toEqual(['regular', 'singular', 'unknown']);
   });
 
-  it('approximationBound requires K, delta, norm, domain and horizon', () => {
+  it('approximationBound requires K, delta, norm, domain, horizon, limitCharacter and uniformity', () => {
     expect(def('approximationBound')['required']).toEqual([
       'K',
       'delta',
       'norm',
       'domain',
       'horizon',
+      'limitCharacter',
+      'uniformity',
     ]);
     expect(def('approximationBound')['properties']['horizon']['minLength']).toBe(1);
+    expect(def('approximationBound')['properties']['uniformity']['type']).toEqual(['array', 'null']);
     expect(def('approximationBound')['additionalProperties']).toBe(false);
   });
 

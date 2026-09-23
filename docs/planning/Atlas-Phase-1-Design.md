@@ -3,9 +3,10 @@
 **Status:** draft for Adam vet A1. Authorized by the Sprint 1 promotion in
 [`ACTIVE.md`](../../ACTIVE.md).
 
-**Goal.** Carry the Sprint 0 pilot's relation vocabulary onto the EXISTING records as optional
-overlay fields, without editing a single catalog row and without changing the behaviour of any
-record that does not opt in.
+**Goal.** Carry the Sprint 0 pilot's relation vocabulary onto the existing records as optional
+overlay fields (`relation`, `conventions`, `counterexamples`, `regime`), without changing the
+behaviour of any record that does not opt in. The overlay does not change `status`. The catalog
+stays 55 rows and 41 edges.
 
 **The one-sentence contract of this sprint:** a `BridgeEdge` or `BridgeEquationEntry` with no
 overlay field must behave byte-identically to today. If that is ever false, the sprint has failed,
@@ -40,23 +41,23 @@ into `src/atlas/error-algebra.ts:13-14`:
 > — not in every norm (design note §9 YELLOW (a))."*
 
 So `K = 1` is real but **norm-relative**. Composing an exact equivalence with an approximation is
-sound only if both are stated in the SAME norm, and **no field in Sprint 1's types records a
-norm.** A composite asserted across two unrecorded norms is precisely a false physical claim of
-the kind the `'no-composite-claim'` default exists to prevent.
+sound only if both are stated in the SAME norm. `ApproximationBound.norm` is a mandatory `string`
+from Phase 0. The cell stays `'no-composite-claim'` because the matrix does not define it;
+widening the table is the reviewed act in Phase 2 §4, not a new `norm?` field.
 
 **Resolution adopted:**
 
 | Cell | Verdict | Why |
 |---|---|---|
-| `exact-equivalence ∘ approximation` (either order) | **`no-composite-claim`** | `K = 1` holds only in the norm the bridge states; no field records that norm, so norm-compatibility cannot be checked. |
+| `exact-equivalence ∘ approximation` (either order) | **`no-composite-claim`** | The cell is not in the defined table. `ApproximationBound.norm` is a mandatory `string` from Phase 0. Widening the table is a reviewed act (Phase 2 §4), not a new `norm?` field. |
 | `derivation ∘ approximation` (either order) | **`no-composite-claim`** | A `derivation` carries no bound at all. |
 
 **Brief S1.2a is therefore the incorrect one** and must not be implemented as written; L1.1's
 conservative row stands. But L1.1's stated *reason* — "needs `K` for the exact map" — is also
-imprecise: `K` is known. The blocker is that it is known only in an unrecorded norm. The
-difference matters because it names the fix: **record the norm** (a `norm?: string` on
-`ApproximationBound`, Phase 2) and the cell becomes definable. "Unknown `K`" would have suggested
-the wrong remedy.
+imprecise: `K` is known. The difference matters because it names the fix: the norm has to be on
+the bound, and `ApproximationBound.norm` is already a mandatory `string` from Phase 0. The cell
+stays `'no-composite-claim'` until the table is widened by the reviewed act in Phase 2 §4.
+Adding `norm?` does not define the cell. "Unknown `K`" would have suggested the wrong remedy.
 
 **Adam: attack this anyway.** I reversed myself once here already. The specific question is
 whether norm-relativity is a real obstruction or whether the Phase 0 bridges happen to state a
@@ -141,9 +142,10 @@ edge data that would justify it does not exist until Phase 2:
    structure. `preserves[]` is free text in Sprint 1, not a checkable set. → `'no-composite-claim'`.
 3. **`approximation` composed with anything exact** (`derivation ∘ approximation` and
    `exact-equivalence ∘ approximation`, both orders) — see §0. For `derivation` there is no bound
-   at all; for `exact-equivalence` the bound is `IDENTITY_BOUND` but only in an **unrecorded
-   norm**. → `'no-composite-claim'`. Unblocked by a `norm?` field in Phase 2, not by more
-   reasoning.
+   at all; for `exact-equivalence` the identity holds in the norm a bridge states, and
+   `ApproximationBound.norm` is already a mandatory `string`. The matrix does not define the cell.
+   → `'no-composite-claim'`. Widening it is Phase 2 §4: fail the 56-cell pin first, assert each
+   new cell, and name the edge field that licenses it.
 4. **`X` ∘ `deformation-quantization`** — the classical limit of a quantization is never the
    identity. This is a statement ABOUT the composite, not that the composite is undefined; encoding
    it needs an ħ-order field that does not exist. → `'no-composite-claim'`.
@@ -164,8 +166,9 @@ claims the library makes.
 
 ## 3. Evidence tags are DERIVED, never stored
 
-`EvidenceTag` values are computed from what a record actually carries, at read time. No row stores
-an evidence set, and `derive-evidence.ts` has no write path.
+`EvidenceTag` values on a catalog row are computed from what the row actually carries, at read
+time. No catalog row stores an evidence set, and `derive-evidence.ts` has no write path. A stored
+`evidence` set on an atlas record is the separate Phase 0 rule; this derivation does not write it.
 
 | Tag | Derived from |
 |---|---|
@@ -173,8 +176,11 @@ an evidence set, and `derive-evidence.ts` has no write path.
 | `symbolically-checked` | a passing symbolic witness exists |
 | `numerically-supported` | a passing numeric witness exists |
 | `convention-checked` | `conventions` declares **at least one** field AND every field it declares is consumed by a witness — see the exploit below |
-| `contradicted` | a `counterexample` exists with no `resolvedBy` |
+| `contradicted` | an unresolved counterexample — one with no `resolvedBy`. `Counterexample` has no `resolvedBy`, so any counterexample counts |
 | `proposed` | the fallback when nothing above fires |
+
+`empirically-supported`, `reviewed`, and `unresolved` are members of the `EvidenceTag` union.
+This derivation does not emit them. A confrontation entry does not yield `empirically-supported`.
 
 ### ⚠ The rule as first written DID invent evidence — Adam A1 RED, confirmed by execution
 
@@ -213,47 +219,32 @@ raise a row's evidence without adding a witness is a bug, and the coverage repor
 
 ---
 
-## 4. BE-35's double status — handled by PRECEDENCE, not a fourth rule
+## 4. BE-35's double status — membership and refutation are different facts
 
-BE-35 appears both in the catalog and in `REJECTED_BRIDGE_ADJUDICATIONS`. Sprint 1 adds no rule
-for this. It **reuses** the existing precedence in `adjudicateBridgeEntry`
+BE-35 appears both in the catalog and in `REJECTED_BRIDGE_ADJUDICATIONS`. Sprint 1 adds no
+membership rule for this. It **reuses** the existing precedence in `adjudicateBridgeEntry`
 (`src/bridges/membership.ts`): the rejection adjudication wins, and the catalog row is retained
-with its rejected disposition.
+with its rejected disposition. The function reads `REJECTED_BRIDGE_IDS`, the set derived from
+those adjudications. The caller passes that verdict in; `deriveEvidenceForVerdict` does not keep
+its own rejected-id list.
 
-The overlay follows that same precedence rather than introducing its own: **a row whose
-adjudication is rejected derives `{'contradicted'}` regardless of what witnesses it carries.** A
-fourth rule here would be a second source of truth about what BE-35 is, which is the defect this
-repo's charter names as its recurring one.
+`adjudicateBridgeEntry` returns three verdicts. Beside `'not-a-bridge'` and `'bridge'` there is
+`'unadjudicated'`, returned when either endpoint of `entry.bridges` is `'unknown'`.
 
-### ✅ VERIFIED against source 2026-09-20 — with two corrections and one hole I had missed
+Membership and refutation are different facts. A `'not-a-bridge'` verdict does **not** force
+`contradicted`. That reading invented a refutation for a row with no counterexample.
+`deriveEvidence` runs normally.
 
-Read directly rather than waiting on the scout, so the scout's answer becomes a second method
-instead of the only one.
-
-**Confirmed.** `src/bridges/membership.ts:34` tests the rejection set on the FIRST line of
-`adjudicateBridgeEntry`, before any other branch, so rejection does win. BE-35 is genuinely in
-`REJECTED_BRIDGE_ADJUDICATIONS` (`src/bridges/rejected.ts:76`), so the double status is real and
-not a plan artifact.
-
-**Correction 1 (minor).** The function reads `REJECTED_BRIDGE_IDS`, not
-`REJECTED_BRIDGE_ADJUDICATIONS`. The Set is *derived* from the adjudications at
-`rejected.ts:98-100`, so the substance holds — but the overlay must read the same derived Set, or
-it becomes a second source of truth about which ids are rejected, which is the exact defect §4
-claims to avoid.
-
-**Correction 2 — THE HOLE. `adjudicateBridgeEntry` has THREE verdicts, not two.** Beside
-`'not-a-bridge'` and `'bridge'` there is **`'unadjudicated'`**, returned when either endpoint of
-`entry.bridges` is `'unknown'` (`membership.ts:36`). My §4 said only what a *rejected* row
-derives and was silent about this third case — an omission no reviewer flagged because I never
-asked about it.
-
-**Resolution, from §3's own principle:** an unadjudicated row is neither refuted nor supported.
+- `contradicted` is derived only from an unresolved counterexample (no `resolvedBy`). Today's
+  `Counterexample` type has no `resolvedBy`, so any counterexample counts as unresolved.
+- `'unadjudicated'` derives `{'proposed'}` only — never `contradicted`, and never a checked tag.
+- `'bridge'` runs the §3 derivation.
 
 | Verdict | Derives |
 |---|---|
-| `'not-a-bridge'` (rejected) | `{'contradicted'}`, regardless of witnesses |
-| `'unadjudicated'` | `{'proposed'}` only — **never** `'contradicted'` (that would invent a refutation) and never any checked tag (that would invent support) |
-| `'bridge'` | the §3 derivation runs normally |
+| `'not-a-bridge'` | `deriveEvidence` runs normally. The verdict does not force `contradicted`. |
+| `'unadjudicated'` | `{'proposed'}` only |
+| `'bridge'` | the §3 derivation |
 
 `tests/atlas/derive-evidence.test.ts` pins all three, using a real catalog entry per verdict
 rather than a hand-built fixture, so the test fails if the verdict set ever grows a fourth member.
@@ -273,20 +264,24 @@ only one.
 | A serializer emits the new fields | No `JSON.stringify` anywhere in `src/composition/*.ts`. | **Safe** |
 | Catalog deep-equal | `tests/bridges/catalog-json.test.ts:84` runs `expect(artifact.entries).toEqual(live)` — the committed `data/bridge-catalog.json` against the live registry. | **THE ONE REAL RISK** |
 
-**The rule that follows, and it is the single instruction every Wave 1 implementer gets:** adding
-the fields to the *interface* is safe, because an absent optional field is absent on both sides of
-the deep-equal. **Populating any catalog row is not** — the committed artifact would then lack a
-field the live registry has, and `catalog-json.test.ts:84` fails until `bun run catalog:json`
-regenerates it. Sprint 1 therefore edits **no rows at all**, which is already a boundary in
-`ACTIVE.md`; this is the mechanical reason behind it rather than a matter of taste.
+**The rule that follows:** adding the fields to the *interface* is safe, because an absent optional
+field is absent on both sides of the deep-equal. Setting `relation`, `conventions`,
+`counterexamples`, or `regime` on an existing row is allowed. It changes the live registry
+relative to the committed artifact, and `catalog-json.test.ts` fails until `bun run catalog:json`
+regenerates it. What stays fixed is the count — `BRIDGE_EQUATIONS` stays 55 rows, `CATALOG_GRAPH`
+stays 41 edges — and `status` is not changed by the overlay.
 
 ## 5. What this sprint explicitly does NOT do
 
-- No catalog row edits. `BRIDGE_EQUATIONS` stays 55 rows; `CATALOG_GRAPH` stays 41 edges.
-- No new export on `src/index.ts`. Everything stays `@internal` behind the `atlas` subpath.
+- Optional overlay fields (`relation`, `conventions`, `counterexamples`, `regime`) may be set on
+  existing rows. `BRIDGE_EQUATIONS` stays 55 rows; `CATALOG_GRAPH` stays 41 edges. `status` is
+  not changed by the overlay.
+- This sprint adds no new export on `src/index.ts`. Phase 6's API review
+  ([`Atlas-API-Review.md`](Atlas-API-Review.md)) later promotes Tier 1 as the `atlas` namespace
+  from `src/atlas/public.ts`, re-exported from `src/index.ts`.
 - No change to `composeEdges` behaviour for operands without `relation`.
-- No `Association` semantics beyond a registry of typed pairs — the registry is a container in
-  Sprint 1, and it makes no composite claims.
+- No `Association` semantics beyond a registry of typed pairs — the registry is a container, and
+  it makes no composite claims.
 
 ## 6. Open items for Adam (A1)
 
@@ -313,7 +308,7 @@ regenerates it. Sprint 1 therefore edits **no rows at all**, which is already a 
 
 | # | Finding | Verdict | Disposition |
 |---|---|---|---|
-| 1 | §0 norm-relativity is a REAL obstruction, not over-caution. An exact equivalence is an isometry only with respect to its own norm `N_T`; composing with an approximation stated in `N_A` needs the Lipschitz constant of the transformation **in `N_A`**, which is unrecorded. | GREEN on the reversal | Kept. My second answer was right and my first was wrong. |
+| 1 | §0 norm-relativity is a REAL obstruction, not over-caution. An exact equivalence is an isometry only with respect to its own norm `N_T`; composing with an approximation stated in `N_A` needs the Lipschitz constant of the transformation **in `N_A`**. | GREEN on the reversal | Kept as `'no-composite-claim'`. `ApproximationBound.norm` is a mandatory `string` from Phase 0. The cell stays undefined until the reviewed widening in Phase 2 §4; adding `norm?` does not define it. |
 | 2 | **`restriction ∘ exact-equivalence` was missing.** `A→B` by restriction then `B≡C` gives `C` a restriction of `A`; the logic is symmetric to the `derivation` pair I *did* define both ways, so the omission had no principle behind it. | **RED** | **Accepted — cell added** to §2.1. |
 | 3 | **`convention-checked` derived evidence it had not earned** via the empty `conventions` object (vacuous universal). | **RED** | **Accepted — confirmed by execution, not argument**, and fixed with a non-emptiness requirement plus a pinned regression test. See §3. |
 | 4 | `structural-analogy ∘ structural-analogy`: **analogy is not transitive**; shared structure dilutes across a chain. | YELLOW | **Accepted — demoted** to `'no-composite-claim'` (§2.2 row 5). The design's own principle decides it. |

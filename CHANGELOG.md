@@ -8,6 +8,9 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+- Fixed: atlas design notes and ROADMAP.md stated rules the code no longer follows (not-a-bridge forces contradicted; types-only ablation accepts unchecked items; no LLM runner; empty frozen set; Phase 2 adds optional norm and puts path bounds in propagateUncertainty).
+- Added: `ApproximationBound.uniformity`; `boundPath` refuses an unanalysed bound (`uniformity-unanalysed`) before it computes a number.
+
 ### Verified (2026-09-23) — a fresh environment reproduces every published artifact byte for byte
 
 - A clean clone of `master` (6ec5f7f) outside the working tree ran: install (frozen lockfile), build,

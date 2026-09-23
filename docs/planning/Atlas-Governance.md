@@ -8,7 +8,12 @@ contributions arrive, and what licence covers the code and the data. ROADMAP Pha
 | Scope | Maintainer |
 |---|---|
 | All atlas families (`oscillators`, `diffusion`, `waves`) and the atlas infrastructure | Daniel Simon Jr. (@danielsimonjr) |
-| The invalid-bridge benchmark's frozen item set | Independent authors, TO BE NAMED in the pre-registration note |
+| The invalid-bridge benchmark's frozen item set | Atlas-blind model instances named in [`docs/research/atlas-benchmark-preregistration.md`](../research/atlas-benchmark-preregistration.md), recorded as models |
+
+Frozen-set authors and raters are the atlas-blind model instances named in
+[`docs/research/atlas-benchmark-preregistration.md`](../research/atlas-benchmark-preregistration.md),
+recorded as models. Model-rater agreement is not human inter-rater reliability. An agent that has
+read `src/atlas/` does not author, encode, or rate a frozen item.
 
 A maintainer decides whether a record is admitted, but a record's evidence is never the
 maintainer's to set. `formally-proved` and `symbolically-checked` are DERIVED from artifacts, and
@@ -52,8 +57,10 @@ id. The same PR runs every gate:
 
 A formal reference is accepted only with its axioms measured by `#print axioms` on a real build,
 and with a fidelity other than `unreviewed` established by the route its field names. A benchmark
-item is accepted into the frozen set only from an independent author (Phase 5 design note §0).
-No agent authors a frozen item.
+item is accepted into the frozen set only from an atlas-blind model instance named in
+[`docs/research/atlas-benchmark-preregistration.md`](../research/atlas-benchmark-preregistration.md)
+(Phase 5 design note §0), recorded as a model. An agent that has read `src/atlas/` does not
+author, encode, or rate a frozen item.
 
 `CONTRIBUTING.md` lists the bounded physics-review tasks open to physicists who do not read
 TypeScript.

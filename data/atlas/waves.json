@@ -554,7 +554,10 @@
         "domain": "ω₀/(c k) ≤ 0.1",
         "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 c k δ(ω₀, c, k))",
         "parameterRange": "ω₀/(c k) ≤ 0.1",
-        "limitCharacter": "regular"
+        "limitCharacter": "regular",
+        "uniformity": [
+          "phase velocity of one Fourier mode, for ω₀/(ck) ≤ 0.1"
+        ]
       },
       "regime": {
         "family": "waves",
@@ -634,7 +637,10 @@
         "domain": "x = ck/ω₀ ≤ 0.1",
         "horizon": "t ≪ π/(δ ω₀ x²): the kinetic-phase drift reaches π/2; machine form t < π/(δ ω₀ x²)",
         "parameterRange": "x = ck/ω₀ ≤ 0.1",
-        "limitCharacter": "regular"
+        "limitCharacter": "regular",
+        "uniformity": [
+          "kinetic frequency of one mode, for x = ck/ω₀ ≤ 0.1"
+        ]
       },
       "regime": {
         "family": "waves",
@@ -777,7 +783,10 @@
         "domain": "β = EIk²/F ≤ 0.01",
         "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 √(F/μ) k δ)",
         "parameterRange": "β = EIk²/F ≤ 0.01",
-        "limitCharacter": "regular"
+        "limitCharacter": "regular",
+        "uniformity": [
+          "phase velocity of one Fourier mode, for β = EIk²/F ≤ 0.01"
+        ]
       },
       "regime": {
         "family": "waves",

@@ -122,54 +122,52 @@ conservative default is the point: a caller who supplies nothing gets `'unknown'
 
 ---
 
-## 2. Uniformity is a field, and the gate is at USE, not at admission
+## 2. Uniformity is not a construction-time throw
 
 Sprint 0 established that an approximation's error may be **non-uniform** — the pendulum's phase
 error grows without bound in time while its period error stays small. A bound with no statement of
-what it is uniform *in* is not a bound.
+what it is uniform *in* has not been analysed.
 
-So `ApproximationBound` gains a uniformity statement. My first draft **enforced it at construction**
-— throwing, like `MissingHorizonError` — on the reasoning that a validator running "later" can be
-skipped.
+The first draft **enforced a uniformity statement at construction** — throwing, like
+`MissingHorizonError` — on the reasoning that a validator running "later" can be skipped. That
+conflates recording a `(K, δ)` with having finished the analysis of what it is uniform in. Under a
+construction-time throw a researcher cannot record a derived bound until that analysis exists, so
+they withhold the data or supply a placeholder, and a placeholder reads as an analysis.
 
-**Adam A2 YELLOW, accepted: that conflates data modelling with data use, and I have moved the gate.**
-His case is real and I had not considered it: a researcher derives a `(K, δ)` from first principles
-but has not yet completed the separate, often harder, analysis of *what it is uniform in*. Under a
-construction-time throw they cannot record the bound at all — so they either withhold real data or
-supply a placeholder, and **a placeholder is a lie that reads as an analysis**. The design would
-have manufactured exactly the kind of unearned-looking content this project keeps removing.
+**Contract.** `ApproximationBound.uniformity` is `readonly string[] | null`. `null` and `[]`
+both mean not yet analysed: an empty list is a universal over nothing and must not count as an
+analysis. Admission does not throw for that state, so a derived `(K, δ)` can be recorded before
+the uniformity analysis exists. `propagateUncertainty` does not implement this gate.
 
-**Corrected:** `uniformity` is `readonly string[] | null`, where `null` means NOT YET ANALYSED and
-is a legitimate, constructible state. The safety check moves to the point of **use**:
-`propagateUncertainty` treats a `null` uniformity exactly like `'no-composite-claim'` — it breaks
-the chain and the path yields no bound.
-
-That is strictly safer than the construction throw, because it constrains the operation that could
-produce a wrong NUMBER rather than the act of recording a true fact. Storing a bound asserts
-nothing about a path; composing one does.
+`boundPath` (`src/atlas/path-bound.ts`) is the path gate. After the relation gate, and before
+Lipschitz arithmetic, a bound whose `uniformity` is `null` or `[]` returns
+`{ kind: 'no-claim', reason: 'uniformity-unanalysed' }` and no number. An edge with no `bound`
+does not fail this gate. A non-empty `uniformity` names what the error is uniform in; it does not
+by itself make the relation compose.
 
 ---
 
 ## 3. Path bounds: `(K, δ)` composed along a route
 
-`propagateUncertainty` composes bounds along a path using the existing outer-after-inner algebra
-(`composeBoundPath`, `K₂K₁` and `K₂δ₁ + δ₂`). Two constraints carried from Sprint 1:
+`(K, δ)` composition along a path is `boundPath` (`src/atlas/path-bound.ts`) / `composeBoundPath`
+(`K₂K₁` and `K₂δ₁ + δ₂`). `propagateUncertainty` (`src/composition/uncertainty.ts`) is not that
+operation. It propagates input sigmas through an edge. A deterministic `delta`, when a bound is
+supplied, is reported beside `sigma` and is not folded into it.
 
 1. **A path containing any edge whose relation composes to `'no-composite-claim'` has NO bound.**
-   It must return an explicit no-claim, never a number. A composed number over an undefined
-   composite would be the most dangerous output this library could produce: precise-looking and
-   unfounded.
-2. **Norm-relativity is still unrecorded** (Phase 1 §0). `IDENTITY_BOUND` holds *in the norm a
-   bridge states*, and no field records that norm, so a path crossing two differently-normed
-   bounds cannot be composed soundly. **Phase 2 should add `norm?` to `ApproximationBound`** —
-   this is the field whose absence forced four conservative table cells, and adding it is what
-   makes them revisitable.
+   `boundPath` returns an explicit no-claim, never a number, and it does so at the relation gate,
+   before Lipschitz arithmetic. A composed number over an undefined composite would be the most
+   dangerous output this library could produce: precise-looking and unfounded.
+2. **`ApproximationBound.norm` is a mandatory `string` from Phase 0.** Phase 2 does not add
+   `norm?`. The composition table was not widened. Widening remains the reviewed act in §4: fail
+   the 56 `'no-composite-claim'` pin first, assert each new cell, and name the edge field that
+   licenses it.
 
 ---
 
 ## 4. Widening the composition table is a reviewed act
 
-Phase 2 supplies the edge data that Phase 1's four conservative rows were waiting on. Any widening
+`norm` was already a mandatory string, and that fact does not widen the table. Any widening
 must:
 
 - fail the **pinned cell-count test** first (56 `'no-composite-claim'` of 64), so the change is
@@ -184,7 +182,9 @@ must:
 ## 5. Out of scope, deliberately
 
 - No change to `status`, `EdgeConfidence`, or any existing confrontation value.
-- No new export on `src/index.ts`; everything stays `@internal` behind the `atlas` subpath.
+- This sprint adds no new export on `src/index.ts`. Phase 6's API review
+  ([`Atlas-API-Review.md`](Atlas-API-Review.md)) later promotes Tier 1 as the `atlas` namespace
+  from `src/atlas/public.ts`, re-exported from `src/index.ts`.
 - Row and edge counts stay 55 / 41.
 - No migration of any `ValidityDomain` to a `Regime`.
 
@@ -199,7 +199,7 @@ must:
 | 1 | **The golden is necessary but NOT sufficient.** It proves identical behaviour only on the subspace the 19 confrontations span; a spin-dependent error is invisible if every one of them has `a = 0`. | **RED** | **Accepted.** Golden relabelled a REGRESSION gate; correctness now rests on per-inequality boundary tests (inside / outside / exactly on). See §0. |
 | 2 | **"Absent ⇒ unknown ⇒ not a violation" is a silent pass.** A caller omitting `Re` gets a confident hold while `Re = 50` grossly violates. The conventions analogy is a surface resemblance: convention silence is a meta-question, a regime inequality is a direct physical constraint. | **RED** | **Accepted.** `regimeHolds` becomes tri-state; `'unknown'` is a failure to confirm, never validity. See §1. |
 | 3 | "Additionally evaluates" is not a specification; the likely wrong guess is that the regime supersedes the predicate — the silent replacement §1 forbids. | YELLOW | **Accepted.** Composition stated as logical **AND**. |
-| 4 | Uniformity at construction blocks recording a real bound whose uniformity is not yet analysed, forcing a placeholder — a lie that reads as an analysis. | YELLOW | **Accepted.** `uniformity: string[] \| null`; the gate moves to `propagateUncertainty`, where a `null` breaks the chain like `'no-composite-claim'`. |
+| 4 | Uniformity at construction blocks recording a real bound whose uniformity is not yet analysed, forcing a placeholder — a lie that reads as an analysis. | YELLOW | **Accepted.** No construction-time throw. `uniformity` is `readonly string[] \| null`; `null` and `[]` mean not yet analysed. The refusal is `boundPath`'s `'uniformity-unanalysed'`, after the relation gate and before Lipschitz arithmetic. It is not inside `propagateUncertainty`. See §2. |
 
 **What I got wrong, and the shape of it.** Both REDs are cases where I applied a rule that was
 right *somewhere else*. The golden was the instrument I built to answer "could this have come out

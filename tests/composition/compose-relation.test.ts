@@ -77,6 +77,7 @@ const APPROX: RelationContract = {
     horizon: 'ε < 0.1',
     horizonHolds: () => true,
     limitCharacter: 'regular',
+    uniformity: ['test'],
   },
 };
 const DEFQ: RelationContract = {
