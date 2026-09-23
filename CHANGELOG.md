@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `API.md` in Simplified Technical English, stateless
+
+- 15 STE findings fixed (13 long sentences, 2 ambiguous references), prose only; `ste_check`
+  reports 0. Long inline lists (the `*_SI` constants, the 17 confrontation result types, the
+  `explainQuantity` and `describeGrounding` outputs) became bullet lists with the same items in the
+  same order. Tables, fences and headings are byte-identical, and every technical token is preserved.
+- Sonnet review (in-session, not human): PASS on all 14 changed passages.
+
 ### Fixed (2026-09-23) — `DATAFLOW.md`: 18 more false claims corrected after a full-claim audit
 
 The first `DATAFLOW.md` fact fix checked only the lines it changed, and a claim it left alone (Flow 9's

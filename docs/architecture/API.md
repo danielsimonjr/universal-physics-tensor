@@ -125,9 +125,24 @@ import { C_SI, G_SI, HBAR_SI, K_B_SI } from 'universal-physics-tensor';
 const rs = 2 * G_SI * solarMass / (C_SI ** 2);  // Schwarzschild radius
 ```
 
-Full list: `C_SI` (speed of light), `G_SI` (Newtonian gravitation), `H_SI` (Planck), `HBAR_SI` (reduced Planck), `K_B_SI` (Boltzmann), `E_SI` (elementary charge), `ALPHA` (fine-structure constant, dimensionless), `M_P_SI` (Planck mass), `L_P_SI` (Planck length), `T_P_SI` (Planck time), `H0_SI` (Hubble constant), `M_SUN_SI` (solar mass), `M_E_SI` (electron mass), `B_WIEN_SI` (Wien displacement constant).
+Full list:
 
-These are distinct from the legacy `PhysicalConstants` lookup object (see [Core](#core)); the `*_SI` constants are the preferred current surface.
+- `C_SI` (speed of light)
+- `G_SI` (Newtonian gravitation)
+- `H_SI` (Planck)
+- `HBAR_SI` (reduced Planck)
+- `K_B_SI` (Boltzmann)
+- `E_SI` (elementary charge)
+- `ALPHA` (fine-structure constant, dimensionless)
+- `M_P_SI` (Planck mass)
+- `L_P_SI` (Planck length)
+- `T_P_SI` (Planck time)
+- `H0_SI` (Hubble constant)
+- `M_SUN_SI` (solar mass)
+- `M_E_SI` (electron mass)
+- `B_WIEN_SI` (Wien displacement constant)
+
+The legacy `PhysicalConstants` lookup object (see [Core](#core)) is a separate surface. Prefer the `*_SI` constants.
 
 ---
 
@@ -456,7 +471,7 @@ The GL4 (Gauss–Legendre 4th-order) symplectic integrator for the geodesic Hami
 
 ### `findPerihelion(...)` — function
 
-Perihelion finder over `(tau, x, p)` snapshots from `integrateGeodesicGL4`: a cubic-Hermite root of dr/dτ, refined by bisection on the polynomial when the analytic root misses `tauTolerance`; returns a `PerihelionResult`. Options are `FindPerihelionOptions`. Defined in `src/numerical/perihelion-finder.ts`.
+Perihelion finder over `(tau, x, p)` snapshots from `integrateGeodesicGL4`. The finder takes a cubic-Hermite root of dr/dτ. When the analytic root misses `tauTolerance`, the finder refines the root by bisection on the polynomial. The finder returns a `PerihelionResult`. Options are `FindPerihelionOptions`. Defined in `src/numerical/perihelion-finder.ts`.
 
 **Kind**: function
 **Stability**: `@public`
@@ -526,7 +541,7 @@ This layer holds the composition graph (`src/composition/`), the computable brid
 - **`minConfidence(...)`** / **`QUANTITY_IDENTIFICATIONS`** — confidence combination and quantity-identification table used by `composeEdges`.
 - **`CompositionDimensionError`** / **`CompositionJunctionError`** / **`DomainViolationError`** — error classes for incompatible compositions.
 - **Calibration edges** — `be16Edge`, `be42Edge`, `be42ViaRsEdge`, `be51Edge`, `be52Edge`, `lawSchwarzschildRadius` (the first diagonal-law edge), and the `M_SUN_KG` anchor constant, plus `be12Edge`, `be11ZurekEdge` (CT-3), and `be37Edge` (CT-4). The CT-1 target derives E_min(M) = ℏc³ln2/(8πGM) from BE-42∘BE-16.
-- **Catalog edges** — the tranche `be14Edge`/`be19Edge`/`be21Edge`/`be48Edge`/`be53Edge`/`be54Edge` (individually on the root surface) and the `CATALOG_FULL_EDGES` array (26 more edges; the array is the root surface — per-edge exports stay at the composition barrel) bring the graph to 41 edges. See [§11](#phase-cd-analysis-namespacing-gate-and-related-exports).
+- **Catalog edges** — the tranche `be14Edge`/`be19Edge`/`be21Edge`/`be48Edge`/`be53Edge`/`be54Edge` is individually on the root surface. The `CATALOG_FULL_EDGES` array adds 26 more edges: the array is on the root surface, and the per-edge exports stay at the composition barrel. Together they bring the graph to 41 edges. See [§11](#phase-cd-analysis-namespacing-gate-and-related-exports).
 
 ```typescript
 import { composeEdges, be42Edge, be16Edge } from 'universal-physics-tensor';
@@ -558,9 +573,15 @@ Everything in this section is `@public` and re-exported from `src/index.ts` unle
 - **`enumerateCompositions(...)`** — the Phase-D candidate enumerator: walks all ordered edge pairs, attempts composition, and returns an `EnumerationReport` of `CompositionCandidate`s (`all`, split into `registered` vs. `novel` against `REGISTERED_COMPOSITION_IDS`) and the alias collisions held at the gate (`requiresDisposition`, typed `DispositionRequired`). Junction and dimension refusals are skipped, not reported.
 - **`propagateUncertainty(...)`** — first-order uncertainty propagation via a central-difference Jacobian over an edge's transfer function; returns an `UncertaintyResult`. Works on composed edges for free.
 - **`confrontBE36WithUncertainty(...)`** — GW170817 confrontation with propagated observational uncertainty (returns `BE36ConfrontationWithUncertainty`).
-- **`classifyIdentifiability(edges, known, target, opts?)`** / **`classifyAll(...)`** / **`forwardClosure(...)`** — the structural identifiability classifier. Counts a target's independent derivations from a known-quantity set and returns an `IdentifiabilityResult` with an `IdentifiabilityVerdict` of `under-determined` / `exactly-determined` / `over-determined` / `given` (the over-determined surplus are falsifiable consistency constraints). Structural, not parametric; honors `QUANTITY_IDENTIFICATIONS`; excludes circular self-support. Types: `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`.
+- **`classifyIdentifiability(edges, known, target, opts?)`** / **`classifyAll(...)`** / **`forwardClosure(...)`** — the structural identifiability classifier. Counts a target's independent derivations from a known-quantity set. Returns an `IdentifiabilityResult` with an `IdentifiabilityVerdict`: `under-determined` / `exactly-determined` / `over-determined` / `given`. The over-determined surplus are falsifiable consistency constraints. Structural, not parametric; honors `QUANTITY_IDENTIFICATIONS`; excludes circular self-support. Types: `IdentifiabilityVerdict`, `IdentifiabilityResult`, `IdentifiabilityOptions`.
 - **`retrodict(edges, groundTruth, opts?)`** / **`retrodictNode(...)`** — the retrodiction harness (the framework's own falsification benchmark). Masks each over-determined node, recomputes it via every independent derivation from `groundTruth` values, and scores the spread (`consistent` / `inconsistent` / `single` / `unrecoverable`; headline `allConsistent`). Optional `references` add external-value scoring. Pass bar pre-registered (spread ≤ 1e-6). Types: `RetrodictionOutcome`, `RetrodictionPrediction`, `RetrodictionResult`, `RetrodictionReport`, `RetrodictionOptions`.
-- **`explainQuantity(edges, target, known, opts?)`** — the unified entry point synthesizing the three primitives above into one `QuantityExplanation`: the identifiability verdict, per-derivation values + the consistency check (when `known` is a `name → value` map), the dimensional sufficiency of the known set (Buckingham-π), and a plain-language `summary`. `known` may be a name list (structural + dimensional only) or values (adds recovery + consistency); `extraDimensions` declares dims for non-graph knowns (raw `G`, `c`, …). Types: `QuantityExplanation`, `DerivationExplanation`, `ExplainOptions`.
+- **`explainQuantity(edges, target, known, opts?)`** — the unified entry point. It synthesizes the three primitives above into one `QuantityExplanation`, which holds:
+  - the identifiability verdict;
+  - per-derivation values + the consistency check (when `known` is a `name → value` map);
+  - the dimensional sufficiency of the known set (Buckingham-π);
+  - a plain-language `summary`.
+
+   `known` may be a name list (structural + dimensional only) or values (adds recovery + consistency); `extraDimensions` declares dims for non-graph knowns (raw `G`, `c`, …). Types: `QuantityExplanation`, `DerivationExplanation`, `ExplainOptions`.
 
 ```typescript
 import { enumerateCompositions, CATALOG_FULL_EDGES } from 'universal-physics-tensor';
@@ -574,7 +595,7 @@ const report = enumerateCompositions(CATALOG_FULL_EDGES);
 - **`CompositionAliasError`** — thrown by `composeEdges` when both operands carry a same-named source quantity and no disposition is recorded.
 - **`SOURCE_ALIAS_DISPOSITIONS`** — the reviewable registry of per-composition `AliasDisposition`s (`'shared'` or `{renameSecond}` with input remap); `composeEdges(…, { aliases })` is the per-call escape hatch.
 - Type-only: `AliasDisposition`, `DispositionRequired`.
-- The 131 centralized `Quantity` node constants in `src/composition/quantities/` (re-exported by the `quantities.ts` barrel) are `@internal` (consumed by the edge files; not on the composition barrel or root surface).
+- The 131 centralized `Quantity` node constants live in `src/composition/quantities/`, and the `quantities.ts` barrel re-exports them. They are `@internal`: the edge files consume them, and they are not on the composition barrel or the root surface.
 
 ### Klein-Gordon dispersion evaluator
 
@@ -646,8 +667,8 @@ Types: **`CanonicalEquation`**, **`CanonicalDomain`**, **`EpistemicStatus`**,
 
 Review memory and a machine pre-classifier sit on top of the existing
 discovery funnel
-(`rankDiscoveries`, `src/composition/discovery.ts`) — annotation-only passes
-that never mutate the catalog, graphs, or funnel verdicts.
+(`rankDiscoveries`, `src/composition/discovery.ts`). Both are annotation-only
+passes: they never mutate the catalog, graphs, or funnel verdicts.
 
 ### Discovery funnel entry point
 
@@ -699,11 +720,11 @@ Type-only: `AdjudicationVerdict`, `CandidateAdjudication`, `AnnotatedCandidate`.
 
 ### Consequence propagation
 
-A post-pass annotator over ranked candidates (mirrors `annotateAdjudications`):
-for each `promising` candidate, derives its monomial algebraic consequence and
-compares it against the canonical registry to label it `entailed` (re-derives
-known physics), `novel-consequence` (valid, no canonical match), or
-`inconclusive` (no monomial consequence derivable).
+A post-pass annotator over ranked candidates (mirrors `annotateAdjudications`).
+For each `promising` candidate, it derives the monomial algebraic consequence
+and compares the consequence against the canonical registry. The label is
+`entailed` (re-derives known physics), `novel-consequence` (valid, no canonical
+match), or `inconclusive` (no monomial consequence derivable).
 
 - **`annotateConsequences(candidates)`** — generic over the input candidate
   type (`<T extends VettedCandidate>`), so it composes with
@@ -801,31 +822,33 @@ above).
 | BE-64 (Eddington luminosity) | `confrontBE64` | `EDDINGTON_RATIO_BRIGHT` | consistency |
 | BE-65 (Jeans mass) | `confrontBE65` | `MOLECULAR_CLOUD_FRAGMENT` | consistency |
 
-BE-36 and BE-23 predate the unified `ConfrontationOutcome` shape (their native
+BE-36 and BE-23 predate the unified `ConfrontationOutcome` shape. Their native
 result types — `BE36ConfrontationResult`, `BE23ConfrontationResult`, etc. —
-stay the direct return type of their own `confront*` functions; the registry
-above adapts them to `ConfrontationOutcome` internally) and are already
-documented in [§10](#composition--membership--confrontation-layer) and
+stay the direct return type of their own `confront*` functions. The registry
+above adapts those types to `ConfrontationOutcome` internally. Both bridges
+are already documented in [§10](#composition--membership--confrontation-layer) and
 [§11](#phase-cd-analysis-namespacing-gate-and-related-exports).
 
 Each of the other seventeen confrontation functions' own result type is also
-`@public` and exported: `BE52ConfrontationResult`/`PerihelionObservation`,
-`BE37ConfrontationResult`/`CassiniObservation`,
-`BE51ConfrontationResult`/`VLBIDeflectionObservation`,
-`BE48ConfrontationResult`/`CollapseBoundObservation`,
-`BE21ConfrontationResult`/`QGPViscosityObservation`,
-`BE35ConfrontationResult`/`IsingExponentObservation`,
-`BE11ConfrontationResult`/`CollisionalDecoherenceObservation`,
-`BE55ConfrontationResult`/`QHUniversalityObservation`,
-`BE56ConfrontationResult`/`CasimirAgreementObservation`,
-`BE58ConfrontationResult`/`JNTObservation`,
-`BE59ConfrontationResult`/`JosephsonUniversalityObservation`,
-`BE60ConfrontationResult`/`FractionalQHObservation`,
-`BE61ConfrontationResult`/`LorenzNumberObservation`,
-`BE62ConfrontationResult`/`BCSRatioObservation`,
-`BE63ConfrontationResult`/`WhiteDwarfMassObservation`,
-`BE64ConfrontationResult`/`EddingtonRatioObservation`,
-`BE65ConfrontationResult`/`CloudFragmentObservation`.
+`@public` and exported:
+
+- `BE52ConfrontationResult`/`PerihelionObservation`
+- `BE37ConfrontationResult`/`CassiniObservation`
+- `BE51ConfrontationResult`/`VLBIDeflectionObservation`
+- `BE48ConfrontationResult`/`CollapseBoundObservation`
+- `BE21ConfrontationResult`/`QGPViscosityObservation`
+- `BE35ConfrontationResult`/`IsingExponentObservation`
+- `BE11ConfrontationResult`/`CollisionalDecoherenceObservation`
+- `BE55ConfrontationResult`/`QHUniversalityObservation`
+- `BE56ConfrontationResult`/`CasimirAgreementObservation`
+- `BE58ConfrontationResult`/`JNTObservation`
+- `BE59ConfrontationResult`/`JosephsonUniversalityObservation`
+- `BE60ConfrontationResult`/`FractionalQHObservation`
+- `BE61ConfrontationResult`/`LorenzNumberObservation`
+- `BE62ConfrontationResult`/`BCSRatioObservation`
+- `BE63ConfrontationResult`/`WhiteDwarfMassObservation`
+- `BE64ConfrontationResult`/`EddingtonRatioObservation`
+- `BE65ConfrontationResult`/`CloudFragmentObservation`
 
 ```typescript
 import { confrontBE52, MERCURY } from 'universal-physics-tensor';
@@ -839,9 +862,9 @@ const result = confrontBE52();
 
 **`decidingMeasurement(bridgeId)`** — for a value-kind confrontation, ranks
 its numeric inputs by dimensionless log-sensitivity
-`E_i = |∂P/∂x_i|·x_i/P` (central finite differences, descending) — which
-input the prediction depends on MOST STRONGLY, not which dominates the
-uncertainty budget. Returns `[]` for a non-value-kind or unregistered id.
+`E_i = |∂P/∂x_i|·x_i/P` (central finite differences, descending). The ranking
+shows which input the prediction depends on MOST STRONGLY, not which
+dominates the uncertainty budget. Returns `[]` for a non-value-kind or unregistered id.
 
 ```typescript
 import { decidingMeasurement } from 'universal-physics-tensor';
@@ -860,20 +883,22 @@ Type-only: `Elasticity` (`{ input: string; elasticity: number }`).
 ## Epistemic-Grounding Ledger
 
 A pure, derived view over a `VettedCandidate`'s already-computed falsifier
-results — part of the PI-instrument program, reframing the
+results. The view is part of the PI-instrument program, which reframes the
 discovery funnel as an honest falsification instrument (a trustworthy *no*,
 an extraordinary *yes*). Annotation-only: it changes no verdict, score, or
 count.
 
 **`describeGrounding(candidate, consequence?)`** — derives the ledger from a
 candidate's existing falsifier results (and, optionally, its
-`ConsequenceSignal` from `annotateConsequences`). Reports which gates
-actually ran a real comparison and the candidate survived (`passed`) versus
-gates that could not test it or produced an unadjudicated result (`gaps`),
-plus the honest, permanent ceiling for a dimensional discovery candidate:
-`mechanismTested: false` (axis-compatibility is a regime proxy, not a
-mechanism test) and `dataTested: false` (candidates are unconfrontable until
-promoted to an established bridge).
+`ConsequenceSignal` from `annotateConsequences`). The ledger reports:
+
+- the gates that actually ran a real comparison, where the candidate survived (`passed`);
+- the gates that could not test the candidate or produced an unadjudicated result (`gaps`);
+- the honest, permanent ceiling for a dimensional discovery candidate:
+  - `mechanismTested: false` (axis-compatibility is a regime proxy, not a
+    mechanism test);
+  - `dataTested: false` (candidates are unconfrontable until promoted to an
+    established bridge).
 
 ```typescript
 import { describeGrounding } from 'universal-physics-tensor';
@@ -991,5 +1016,5 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 | unusedExportsCount | 49 | dependency-graph.json |
 
 **`unusedExportsCount` is not a deletion list.** It counts exports with no importer *inside
-this repository*. This is a published library: its public surface exists for consumers who are
+this repository*. The package is a published library: its public surface exists for consumers who are
 not in the graph. Confirm with a second method before removing anything.
