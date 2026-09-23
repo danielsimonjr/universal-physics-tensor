@@ -335,7 +335,7 @@ This is an **engineer's approach to theoretical physics** — systematic, organi
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+Code: MIT License - see [LICENSE](LICENSE). Exported atlas data (`data/atlas/`): CC BY 4.0 - see [LICENSE-DATA](LICENSE-DATA).
 
 ## Author
 

@@ -433,7 +433,9 @@ note under `docs/research/` before any condition is run.
 **Deliverables.**
 
 - Seven conditions: text retrieval; symbol matching; contextual equation embeddings; typed
-  structural search; frontier LLM alone; LLM with a CAS tool; LLM with the atlas. LLM and
+  structural search; LLM alone; LLM with a CAS tool; LLM with the atlas. A hosted frontier LLM
+  is NOT in scope: the owner declined the spend. Local models stand in as the LLM baselines, and
+  every result states that they are weaker baselines than a frontier model. LLM and
   embedding conditions run out of process and log their versions. Ablation: types only; plus
   assumptions; plus dimensions and conventions; plus regimes.
 - The discovery hypothesis, tested once and stated once: held-out known bridges are recovered
@@ -453,9 +455,10 @@ note under `docs/research/` before any condition is run.
 - Governance: named maintainers per model family; a written policy for contested entries;
   contribution by small reviewable PRs.
 
-**Exit criteria.** A fresh environment reproduces every published check; paired statistics,
-abstention, and reviewer time reported in `docs/research/`; all qualifications remain visible
-in every output.
+**Exit criteria.** A fresh environment reproduces every published check; paired statistics and
+abstention are reported in `docs/research/`; all qualifications remain visible in every output.
+Reviewer time is NOT MEASURED: there are no independent human reviewers, and a model's or an
+agent's time is not a reviewer's time. The owner amended this criterion; it is not an unmet box.
 
 ---
 

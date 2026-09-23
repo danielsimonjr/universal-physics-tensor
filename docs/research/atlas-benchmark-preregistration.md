@@ -172,3 +172,9 @@ exact prompt, one item per call, and the public fields only.
 - **A malformed reply is an error, recorded and scored as unanswered.** It is never defaulted.
 - **Criterion 3 is NOT run.** It needs a reference corpus and an atlas-blind correct-reference
   label per item, and the set as built has neither. That task must be designed before it runs.
+
+**Amendment 5 (2026-09-23) — the hosted frontier-LLM condition is not run.** By the owner's
+decision, no hosted frontier model is run as an LLM baseline, and no money is spent on one. This is
+a deliberate decision, not an omission. Criterion 2 stands as run in Amendment 4, against local
+models. Its result (NOT MET) and its stated limit, that local models are weaker baselines than a
+frontier model, are unchanged. No threshold, item, rater or hash changes.

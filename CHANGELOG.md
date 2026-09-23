@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Decided (2026-09-23) — four owner decisions on Sprint 6
+
+- **Data licence:** the exported atlas data under `data/atlas/` is CC BY 4.0. The new
+  `LICENSE-DATA` names every covered file and links to the legal code. The code, the JSON schemas,
+  `data/bridge-catalog.json` and the benchmark fixtures stay MIT (`LICENSE`). `README.md` and the
+  governance note §4 say which licence covers what.
+- **Maintainers:** one named maintainer across all atlas families is recorded as a deliberate
+  decision, not a gap (governance note §1). The held-out fluid-statics family still has none.
+- **Hosted frontier LLM:** not run, out of scope, and nothing spent on it (pre-registration
+  Amendment 5; ROADMAP Phase 6 deliverables). Local models stand in, and every result says they are
+  weaker baselines.
+- **Reviewer time:** the Phase 6 exit criterion is amended to NOT MEASURED, because there are no
+  independent human reviewers. The criterion now records this instead of holding an unmet box.
+
 ### Fixed (2026-09-23) — master CI was red after PR #184
 
 - PR #184 (0ae8cbf) added a `uniformity:` line to the `upt atlas` report on purpose

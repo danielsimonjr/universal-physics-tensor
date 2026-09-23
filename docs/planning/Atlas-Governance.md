@@ -20,6 +20,10 @@ maintainer's to set. `formally-proved` and `symbolically-checked` are DERIVED fr
 a file allow-list test forbids spelling either tag anywhere a record could set it. A maintainer
 decision can change `reviewStatus` from `proposed` to `reviewed`. It cannot change a tag.
 
+**One named maintainer across all families is a deliberate decision, not a gap.** The owner chose
+a single accountable maintainer for every family and for the atlas infrastructure. This note does
+not wait for more names.
+
 **The held-out family, fluid statics, has no maintainer on purpose.** It must not be added to
 `src/atlas/` while the benchmark is live (`docs/planning/Atlas-Phase-5-Design.md` §4).
 
@@ -68,10 +72,9 @@ TypeScript.
 ## 4. Licensing
 
 - **Code:** MIT (`LICENSE`).
-- **Data** (`data/atlas/*.json`, `*.jsonld`, `qudt-resolution.json`, `witness-results.json`): in
-  the repository, and covered by its `LICENSE` unless a separate data licence is chosen. **A
-  separate data licence, such as a Creative Commons licence for the exported atlas, is an owner
-  decision.** This note does not choose one.
+- **Data:** the exported atlas data under `data/atlas/` is licensed CC BY 4.0 (`LICENSE-DATA`),
+  which names every covered file. The code, the JSON schemas, `data/bridge-catalog.json` and the
+  benchmark fixtures stay MIT. The owner chose this.
 - **Benchmark items:** contributed into this repository under its licence unless the
   pre-registration note records otherwise by amendment.
 - **Formal references** point at external proof libraries under their own licences. UPT records

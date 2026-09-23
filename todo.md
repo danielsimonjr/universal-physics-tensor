@@ -296,7 +296,10 @@ warning-silencing, not debug logging).
       - [x] Fresh-environment reproduction (Phase 6 exit criterion): clean clone OUTSIDE the working tree, install, build, test, regenerate every published artifact, compare byte for byte; report every mismatch.
       - [x] Tier 1 ADR record: decision note in docs/, amend the ROADMAP "only if the study justifies it" sentence, and audit README + public docs for any claim that the atlas rejects invalid bridges better than alternatives (one commit).
       - [x] Master CI red at 0ae8cbf (PR #184): the `atlas-pendulum` CLI golden lacked the new `uniformity:` line; regenerated with `golden-capture.mjs`.
-      - [ ] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
+      - [x] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
+      - [x] Owner decision: sole maintainership across all atlas families accepted explicitly (governance note §1).
+      - [x] Owner decision: the hosted frontier-LLM condition is NOT run and is out of scope (pre-registration Amendment 5; ROADMAP Phase 6).
+      - [x] Owner decision: the "reviewer time reported" exit criterion is amended to NOT MEASURED (no independent human reviewers).
       - [x] `repo_map.py check . --docs docs/architecture` fails: hand-written counts in API, ARCHITECTURE, COMPONENTS, DATAFLOW, duplicate-symbols, FILE_INVENTORY and OVERVIEW are stale (e.g. 710 source files claimed, 842 actual), and COMPONENTS.md has no atlas section.
       - [x] Add the architecture-docs check (`repo_map.py check`) to CI under a name that matches its scope; prove it RED on master before fixing the docs.
       - [x] Drop `totalLinesOfCode` from the gated Verification table (Mothership 2026-09-23, option b); prove the gate passes a code edit without a docs touch-up and still fails on a structural claim.

@@ -36,6 +36,9 @@ Those are different claims and merging them produces a false green.
 - **Baseline construction (from that run):** a reasoning model needs a context that holds its
   reasoning AND its answer. With `num_ctx` 8192, gemma4:26b's reasoning filled the context on 64/125
   items and left the answer empty. Size the context per model before freezing a baseline config.
+- **Owner decisions (2026-09-23):** exported atlas data is CC BY 4.0 (`LICENSE-DATA`) and the code
+  stays MIT; one maintainer across all families, by choice; no hosted frontier-LLM run (Amendment
+  5); reviewer time is not measured, because there are no independent human reviewers.
 - **Practical value (Phase 5 criterion 5)** is defined as human time and error rate. It is **not
   converted** to a model measurement and stays unmet. Curation cost is recorded as **model cost**
   only: USD 19.34 for the set, about USD 0.15 per authored item.
