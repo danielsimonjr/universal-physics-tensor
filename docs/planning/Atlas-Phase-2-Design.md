@@ -1,7 +1,7 @@
 # Atlas Phase 2 — design note (Sprint 2: regimes and error-carrying paths)
 
 **Status:** draft for Adam vet A2. Authorized by the Sprint 2 promotion in
-[`ACTIVE.md`](ACTIVE.md).
+[`ACTIVE.md`](../../ACTIVE.md).
 
 **Goal.** Make *"at my operating point, which models are valid, and where does each stop"* a
 query, and make path error a computed bound rather than prose.

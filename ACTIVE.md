@@ -4,9 +4,9 @@ This file is the machine-audited backlog for **current code work**. Historical i
 
 As of v0.44.1 completion hardening, there are no known unimplemented code tasks that block the repository's stated purpose as a computational laboratory for organizing, composing, evaluating, and confronting physics relations.
 
-The next strategic evolution of the project is defined in [`Scientific-Bridge-Discovery-v1.md`](Scientific-Bridge-Discovery-v1.md) (re-audited against the v0.44.1 tree on 2026-08-19; see [`Scientific-Bridge-Discovery-v1-AUDIT.md`](Scientific-Bridge-Discovery-v1-AUDIT.md)): a phased plan that **freezes** the shipped identification funnel (`upt discover` / `VettedCandidate`) and, separately, adds an experimental expression/residual search pipeline (`src/composition/probe/`, CLI `upt probe`). That roadmap is intentionally separate from this machine-audited release-blocking backlog until individual phases are promoted into active engineering work. Do not treat Tranche A as authorized by this sentence.
+The next strategic evolution of the project is defined in [`Scientific-Bridge-Discovery-v1.md`](docs/planning/Scientific-Bridge-Discovery-v1.md) (re-audited against the v0.44.1 tree on 2026-08-19; see [`Scientific-Bridge-Discovery-v1-AUDIT.md`](docs/planning/Scientific-Bridge-Discovery-v1-AUDIT.md)): a phased plan that **freezes** the shipped identification funnel (`upt discover` / `VettedCandidate`) and, separately, adds an experimental expression/residual search pipeline (`src/composition/probe/`, CLI `upt probe`). That roadmap is intentionally separate from this machine-audited release-blocking backlog until individual phases are promoted into active engineering work. Do not treat Tranche A as authorized by this sentence.
 
-Ongoing work that requires domain judgment rather than code completion lives in [`CONTRIBUTING.md`](../../CONTRIBUTING.md). Longer-horizon engineering ideas that are explicitly not release blockers live in [`Future-Production-Hardening.md`](Future-Production-Hardening.md).
+Ongoing work that requires domain judgment rather than code completion lives in [`CONTRIBUTING.md`](CONTRIBUTING.md). Longer-horizon engineering ideas that are explicitly not release blockers live in [`Future-Production-Hardening.md`](docs/planning/Future-Production-Hardening.md).
 
 ## Release-blocking code
 
@@ -44,7 +44,7 @@ No open items.
 > written to fix, so **narrowing this range is part of promoting a sprint, not a follow-up.**
 
 - [ ] **Sprint 0 — Oscillator pilot.** Promoted 2026-09-20 by the Lead, which is what authorizes
-  [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) Sprint 0; nothing
+  [`Atlas-Roadmap-Implementation-Plan.md`](docs/planning/Atlas-Roadmap-Implementation-Plan.md) Sprint 0; nothing
   in that plan is authorized until its sprint is promoted here, and this line is the audited
   ledger (`tools/plan-doc-audit` walks this file only — the `- [ ]` boxes in the plan document
   itself are inert records).
@@ -60,11 +60,11 @@ No open items.
   **▶ Status 2026-09-20 — code COMPLETE, box deliberately still OPEN.** All fifteen witnesses pass;
   126 atlas tests inside 384 files / 3,959 tests, exit 0; the JSON artifact is deterministic; the
   boundaries above all held (nothing on `src/index.ts`, 55 rows, 41 edges, funnel counts unmoved).
-  The box stays unticked because two exit criteria in [`ROADMAP.md`](../../ROADMAP.md) §7 Phase 0
+  The box stays unticked because two exit criteria in [`ROADMAP.md`](ROADMAP.md) §7 Phase 0
   are NOT met, and neither is code: **independent physicist review has not happened**, and
   **curation cost was measured per agent, not per bridge** — the scope line above says "per bridge
   by relation type" and that is not what was instrumented
-  ([`Atlas-Phase-0-Curation-Cost.md`](Atlas-Phase-0-Curation-Cost.md) states so and does not
+  ([`Atlas-Phase-0-Curation-Cost.md`](docs/planning/Atlas-Phase-0-Curation-Cost.md) states so and does not
   estimate the missing rows). Ticking this on the code alone would record a measurement that was
   never taken. **Sprint 1 is therefore not promoted**; promoting it needs a decision on whether to
   accept the per-agent cost figure or re-measure.

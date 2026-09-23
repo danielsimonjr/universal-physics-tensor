@@ -1,7 +1,7 @@
 # Atlas Phase 1 — design note (Sprint 1: relation contracts as an additive overlay)
 
 **Status:** draft for Adam vet A1. Authorized by the Sprint 1 promotion in
-[`ACTIVE.md`](ACTIVE.md).
+[`ACTIVE.md`](../../ACTIVE.md).
 
 **Goal.** Carry the Sprint 0 pilot's relation vocabulary onto the EXISTING records as optional
 overlay fields, without editing a single catalog row and without changing the behaviour of any

@@ -1,6 +1,6 @@
 # Atlas Phase 6 — design note: study, scoped release, discovery hypothesis
 
-Authorized by the Sprint 6 entry in [`ACTIVE.md`](ACTIVE.md). Briefs:
+Authorized by the Sprint 6 entry in [`ACTIVE.md`](../../ACTIVE.md). Briefs:
 [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) §Sprint 6.
 
 ## 0. What Phase 6 depends on

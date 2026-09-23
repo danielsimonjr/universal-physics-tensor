@@ -1,6 +1,6 @@
 # Atlas Phase 4 — verification workflow and checked bridges (design note, L4.1)
 
-Authorized by [`ACTIVE.md`](ACTIVE.md) Sprint 4. Briefs in
+Authorized by [`ACTIVE.md`](../../ACTIVE.md) Sprint 4. Briefs in
 [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) §Sprint 4.
 Where this note and the plan disagree, **this note wins and the deviation is stated here**,
 in the same way Phase 3's note superseded the plan's wording on `boundaryData`.

@@ -1,7 +1,7 @@
 # UPT Roadmap — from bridge catalog to verified physics atlas
 
 **Status:** strategic direction, not a release-blocking backlog. Release-blocking work
-stays in [`docs/planning/ACTIVE.md`](docs/planning/ACTIVE.md); cross-session task state
+stays in [`ACTIVE.md`](ACTIVE.md); cross-session task state
 stays in [`todo.md`](todo.md). A phase below becomes engineering work only when it is
 promoted into `ACTIVE.md` with a design note, a plan, and an Adam+Eve review, per the
 conventions in `todo.md` §Conventions. Nothing here is authorized by being written here.
@@ -491,13 +491,13 @@ in every output.
 
 | Phase | Status | Pointer |
 |---|---|---|
-| 0 — Oscillator pilot | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 0 — nine models, five bridges, one rejection. Its box is held open deliberately: per-bridge curation cost is still unmeasured, and that measurement is what Phase 4 and Phase 5 scope is cut against |
-| 1 — Relation contracts overlay | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 1 — additive overlay; relation and evidence fields land as `undefined` / `not-yet-audited` rather than fabricated |
-| 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
-| 3 — Hyperedges, models, poster index | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 3 — `Model`, `Statement`, `Derivation`, multicategory composition, the sixteen poster entries with their hidden nodes, and `upt map --source=poster` |
-| 4 — Verification workflow, checked bridges | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 4 — 20 bridges across 6 relation types (MET); ≥ 5 reviewed `formalRef` is OPEN at 1 of 5 |
-| 5 — Invalid-bridge benchmark | harness delivered; κ criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 5 — pre-registration registered, held-out family fixed; the frozen item set and κ need independent human authors and raters |
-| 6 — Study and scoped release | in progress | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 6 — promoted 2026-09-22; the study refuses to run on the empty frozen set |
+| 0 — Oscillator pilot | delivered; one exit criterion open | [`ACTIVE.md`](ACTIVE.md) Sprint 0 — nine models, five bridges, one rejection. Its box is held open deliberately: per-bridge curation cost is still unmeasured, and that measurement is what Phase 4 and Phase 5 scope is cut against |
+| 1 — Relation contracts overlay | shipped | [`ACTIVE.md`](ACTIVE.md) Sprint 1 — additive overlay; relation and evidence fields land as `undefined` / `not-yet-audited` rather than fabricated |
+| 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
+| 3 — Hyperedges, models, poster index | shipped | [`ACTIVE.md`](ACTIVE.md) Sprint 3 — `Model`, `Statement`, `Derivation`, multicategory composition, the sixteen poster entries with their hidden nodes, and `upt map --source=poster` |
+| 4 — Verification workflow, checked bridges | delivered; one exit criterion open | [`ACTIVE.md`](ACTIVE.md) Sprint 4 — 20 bridges across 6 relation types (MET); ≥ 5 reviewed `formalRef` is OPEN at 1 of 5 |
+| 5 — Invalid-bridge benchmark | harness delivered; κ criterion open | [`ACTIVE.md`](ACTIVE.md) Sprint 5 — pre-registration registered, held-out family fixed; the frozen item set and κ need independent human authors and raters |
+| 6 — Study and scoped release | in progress | [`ACTIVE.md`](ACTIVE.md) Sprint 6 — promoted 2026-09-22; the study refuses to run on the empty frozen set |
 
 > **This table is updated at the END of every sprint, and the risk register above is why.** Its own
 > last row names the failure — *"this document drifts like the old `CLAUDE.md` release section

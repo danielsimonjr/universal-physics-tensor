@@ -1,6 +1,6 @@
 # Atlas Phase 5 — design note (L5.1): the invalid-bridge benchmark
 
-Authorized by the Sprint 5 entry in [`ACTIVE.md`](ACTIVE.md). Briefs:
+Authorized by the Sprint 5 entry in [`ACTIVE.md`](../../ACTIVE.md). Briefs:
 [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) §Sprint 5.
 
 ## 0. The independence wall — read this first

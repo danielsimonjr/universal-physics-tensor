@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 435,
+    "totalTestFiles": 436,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -10319,6 +10319,7 @@
       "src/bridges/rejected.ts",
       "src/core/regime-rule-install.ts",
       "src/core/regimes-builtins.ts"
-    ]
+    ],
+    "tests/tools/plan-doc-audit.test.ts": []
   }
 }

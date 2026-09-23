@@ -1,6 +1,6 @@
 # `tools/plan-doc-audit`
 
-The release gate audits `docs/planning/ACTIVE.md`. Historical implementation plans are records, not mutable completion ledgers; pass explicit `planRoots` to the library API when auditing them for archaeology/cleanup.
+The release gate audits `ACTIVE.md`. Historical implementation plans are records, not mutable completion ledgers; pass explicit `planRoots` to the library API when auditing them for archaeology/cleanup.
 
 Static-analysis tool that walks every `docs/planning/**/*.md`, extracts code symbols mentioned in each `- [ ]` task line, and reports whether the symbol exists in `src/` as real shipped code (vs. a stub that throws `"Not implemented"`).
 

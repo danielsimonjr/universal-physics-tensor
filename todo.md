@@ -315,7 +315,7 @@ warning-silencing, not debug logging).
         `public/items.json` would see the key. Fix before any out-of-process condition runs: move both to the scorer half.
       - [ ] `CLAUDE.md` is 21 KB and holds law, procedure and stateless facts that now have homes in `AGENTS.md`,
         `WORKFLOWS.md`, `TOOLS.md` and `MEMORY.md`. Move each duplicated fact to its one home and leave `CLAUDE.md` a thin loader.
-      - [ ] Move `docs/planning/ACTIVE.md` (an authorization register, status by nature) out of `docs/planning/`; fix every inbound link in the same commit.
+      - [x] Move `docs/planning/ACTIVE.md` (an authorization register, status by nature) out of `docs/planning/`; fix every inbound link in the same commit.
 
 - [ ] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
       `docs/planning/ACTIVE.md` 2026-09-22; design note `docs/planning/Atlas-Phase-4-Design.md`.

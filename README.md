@@ -299,7 +299,7 @@ external evidence/domain review before promotion.
 - Longer-horizon production ideas are explicitly non-blocking and live in
   [`docs/planning/Future-Production-Hardening.md`](docs/planning/Future-Production-Hardening.md).
 - Historical implementation plans are preserved as records; the live code-completion
-  ledger is [`docs/planning/ACTIVE.md`](docs/planning/ACTIVE.md) and is what
+  ledger is [`ACTIVE.md`](ACTIVE.md) and is what
   `npm run audit:plans` gates.
 
 ## Contributing

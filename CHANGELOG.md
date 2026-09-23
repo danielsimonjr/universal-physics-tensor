@@ -8,6 +8,21 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-22) — the active ledger leaves `docs/planning/`; the plan audit can no longer pass on nothing
+
+- `docs/planning/ACTIVE.md` moved to the repository root as `ACTIVE.md`. It is an authorization and
+  completion register, which is status by nature, and `docs/planning/` holds design only. Its
+  outbound links, and every inbound link and path reference, were fixed in the same commit:
+  `ROADMAP.md`, `README.md`, the Atlas design notes, the Scientific-Bridge-Discovery notes and
+  `tools/plan-doc-audit`. The `todo.md` rows that record where a sprint WAS promoted keep the old
+  path, because that is history.
+- **Fixed: a missing plan root made the `audit:plans` release gate pass having scanned nothing.**
+  `collectMd` returned `[]` for a path that did not exist, so moving the ledger without updating the
+  default would have silently disabled the gate. A missing root is now an error, and the default
+  lives in an exported `DEFAULT_PLAN_ROOTS`. `tests/tools/plan-doc-audit.test.ts` pins that every
+  default root exists and that a missing root throws. It failed 2 of 3 before the fix. The audit
+  scans the same 4 unchecked items from the new location as it did from the old one.
+
 ### Fixed (2026-09-22) — the public benchmark file no longer carries the answer
 
 - `BenchmarkItem` carried `kind` and `failureKind`, which are the answer, even though its own

@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 345 |
-| Total Test Files | 435 |
+| Total Test Files | 436 |
 | Source Files with Tests | 344 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -818,3 +818,4 @@ The following 1 source files are not directly imported by any test file:
 | `numerical/weyl-schwarzschild.test.ts` | 4 files |
 | `tests/peers-required.test.ts` | 0 files |
 | `tests/tensor.test.ts` | 127 files |
+| `tools/plan-doc-audit.test.ts` | 0 files |

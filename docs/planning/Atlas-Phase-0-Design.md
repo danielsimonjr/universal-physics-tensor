@@ -4,7 +4,7 @@
 Sprint 0, itself executing [`ROADMAP.md`](../../ROADMAP.md) Phase 0.
 **Baseline:** `universal-physics-tensor@0.45.2`, `master` at `58f1023`, suite ≈ 3,700 across ~353 files.
 Authorized by the Sprint 0 line in
-[`ACTIVE.md`](ACTIVE.md). Entry condition for Wave 1 is Adam returning GREEN, or a YELLOW whose
+[`ACTIVE.md`](../../ACTIVE.md). Entry condition for Wave 1 is Adam returning GREEN, or a YELLOW whose
 items are resolved here.
 **Target:** v0.46.
 

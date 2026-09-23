@@ -4,7 +4,7 @@
 **Baseline:** `universal-physics-tensor@0.45.2`, `master`, suite ≈ 3,700 passing across ~353 files.
 **Revision 2**, after an independent adversarial review and a codebase-consistency audit of
 revision 1; §9 lists what changed. Nothing in this
-document is authorized until the Lead promotes a sprint into [`ACTIVE.md`](ACTIVE.md).
+document is authorized until the Lead promotes a sprint into [`ACTIVE.md`](../../ACTIVE.md).
 Phase 0 is the only sprint specified at brief-level detail on every task; later phases are
 specified to the same structure but their briefs are finalized by the Lead after the
 preceding phase's Eve report, because each phase's types depend on what the previous phase
@@ -17,7 +17,7 @@ artifacts; **implementation agents** execute file-scoped briefs and never commit
 verification, post-implementation) are always independent of the authoring agent. Model
 mapping for Adam/Eve lives in `todo.md` §Reasoning tier.
 
-**Plan-doc audit note.** `tools/plan-doc-audit` walks `docs/planning/ACTIVE.md` only by
+**Plan-doc audit note.** `tools/plan-doc-audit` walks `ACTIVE.md` only by
 default (`audit.ts` line 341), so the `- [ ]` boxes in this file are inert records, not a
 completion ledger. Do not "fix" them; the sprint's `ACTIVE.md` line is the audited ledger.
 

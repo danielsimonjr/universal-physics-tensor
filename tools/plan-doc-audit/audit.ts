@@ -1,7 +1,7 @@
 /**
  * Plan-Doc Audit
  *
- * Audits the current engineering completion ledger (`docs/planning/ACTIVE.md`
+ * Audits the current engineering completion ledger (`ACTIVE.md`
  * by default). Historical plans remain immutable records and are deliberately
  * outside the release gate; callers may pass other roots through `runAudit`.
  * The audit extracts code symbols mentioned in
@@ -323,13 +323,21 @@ function walkMd(rootDir: string): string[] {
 }
 
 function collectMd(root: string): string[] {
+  let isFile: boolean;
   try {
-    if (statSync(root).isFile()) return root.endsWith('.md') ? [root] : [];
+    isFile = statSync(root).isFile();
   } catch {
-    return [];
+    // A missing root used to return [] and let the gate pass having scanned
+    // nothing. Moving the ledger without updating the default would then have
+    // disabled the release gate silently.
+    throw new Error(`plan-doc-audit: plan root does not exist: ${root}`);
   }
+  if (isFile) return root.endsWith('.md') ? [root] : [];
   return walkMd(root);
 }
+
+/** The audited completion ledger(s), relative to the repository root. */
+export const DEFAULT_PLAN_ROOTS: readonly string[] = ['ACTIVE.md'];
 
 export function runAudit(opts: {
   planRoots?: string[];
@@ -338,7 +346,7 @@ export function runAudit(opts: {
   cwd?: string;
 } = {}): { findings: AuditFinding[]; flipsApplied?: number } {
   const cwd = opts.cwd ?? process.cwd();
-  const planRoots = opts.planRoots ?? ['docs/planning/ACTIVE.md'];
+  const planRoots = opts.planRoots ?? [...DEFAULT_PLAN_ROOTS];
   const srcRoot = opts.srcRoot ?? 'src';
   // Resolve plan roots against cwd so the walker finds the right tree.
   const absRoots = planRoots.map((p) => (isAbsolute(p) ? p : join(cwd, p)));
