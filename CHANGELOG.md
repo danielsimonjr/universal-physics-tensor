@@ -8,6 +8,21 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Decided (2026-09-23) — the Tier 1 `atlas` namespace stays; the roadmap rule says why
+
+- `docs/decisions/atlas-tier1-namespace.md` records the decision. Mothership decided it as lead,
+  with the user's delegation for ADR-level calls; no independent human reviewed it. Tier 1 was
+  promoted (07041cc) on API-quality grounds BEFORE the study ran. The study's NOT MET result on
+  criterion 2 refutes a claim that Tier 1 does not expose: the benchmark runner and the
+  applicability checker are `@internal`, and they are absent from `src/atlas/public.ts`.
+- `ROADMAP.md` Phase 6: the promotion rule now reads that a symbol whose value depends on a
+  benchmark claim waits on the study, and a symbol selected on API-quality grounds alone does not.
+  The rule and the practice now agree.
+- **Audit for claims that the atlas rejects invalid bridges better than alternatives:** none found
+  in `README.md`, `cli/README.md`, `docs/specification/` or `docs/README.md`. `ROADMAP.md`
+  named that comparison as the proposal's headline test, and it now points to the result
+  (the atlas did not beat the LLM baselines) so the line cannot be read as a live thesis.
+
 - Fixed: atlas design notes and ROADMAP.md stated rules the code no longer follows (not-a-bridge forces contradicted; types-only ablation accepts unchecked items; no LLM runner; empty frozen set; Phase 2 adds optional norm and puts path bounds in propagateUncertainty).
 - Added: `ApproximationBound.uniformity`; `boundPath` refuses an unanalysed bound (`uniformity-unanalysed`) before it computes a number.
 - Regenerated `docs:deps`. The uniformity edit moved `totalLinesOfCode` from 68633 to 68703 in the four generated architecture artifacts. `docs-fresh` diffs those files.

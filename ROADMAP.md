@@ -71,7 +71,8 @@ Two things the proposal asks for that UPT already answers better than the propos
   (`docs/research/pi-instrument-results.md`). That coincidence-rejecting discipline transfers,
   but it answers `a ≡ b`, not relation validity: no existing gate tests the eight failure kinds
   the proposal's "invalid-bridge rejection versus best LLM baseline" headline needs. That is
-  Phase 5's job.
+  Phase 5's job. The test has since run, and the atlas did NOT beat the LLM baselines
+  (`docs/research/atlas-study-results.md`).
 - **Quantitative confrontation.** Nineteen real-data confrontations with a declared rigor
   hierarchy (`upt confront`). The proposal's "empirically supported (with regime)" tag has a
   numeric backing here that the proposal does not require.
@@ -444,8 +445,11 @@ note under `docs/research/` before any condition is run.
   kinds where they resolve; PROV-O-shaped provenance.
 - Explorer = `upt map` + `upt regime` + `upt path` + a per-bridge `upt atlas <id>` report with
   every qualification visible. No in-package web UI.
-- Experimental API review; promotion of the atlas subpath to `src/index.ts` only if the study
-  justifies it. `package.json` stays `0.x`.
+- Experimental API review. A symbol whose value depends on a benchmark claim is promoted to
+  `src/index.ts` only if the study justifies that claim. A symbol selected on API-quality grounds
+  alone (a stable contract, independent tests, no coupling to repository data, closure under type
+  references) does not wait on the study. `package.json` stays `0.x`. The decision that applied
+  this reading is `docs/decisions/atlas-tier1-namespace.md`.
 - Governance: named maintainers per model family; a written policy for contested entries;
   contribution by small reviewable PRs.
 
