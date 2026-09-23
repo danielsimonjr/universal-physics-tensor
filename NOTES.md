@@ -28,7 +28,11 @@ Those are different claims and merging them produces a false green.
   defects, both fixed: the validator rejected every "x = 0", and the atlas condition accepted items
   that no instrument had checked. Result: the atlas rejects **6 of 61** invalid items, all with the
   right failure kind, abstains on **116 of 125**, **1** wrong accept and **1** false reject.
-  **No LLM or embedding condition exists, so no paired comparison has been made.**
+  **Criterion 2 (atlas vs the best LOCAL LLM, Amendment 4): NOT MET.** qwen3.8:27b rejected 51/61
+  invalid items against the atlas's 6/61; the interval for the difference is −73.8%
+  [−82.7%, −58.7%]. The atlas made 1 wrong accept against 9–13 for the models, by abstaining on
+  116/125. Criterion 3 was not run: there is no reference corpus. gemma4:26b returned empty answers
+  on 64/125 items under the frozen 8,192-token context.
 - **Practical value (Phase 5 criterion 5)** is defined as human time and error rate. It is **not
   converted** to a model measurement and stays unmet. Curation cost is recorded as **model cost**
   only: USD 19.34 for the set, about USD 0.15 per authored item.

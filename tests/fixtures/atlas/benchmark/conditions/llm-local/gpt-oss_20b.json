@@ -1,0 +1,1002 @@
+{
+ "mb-oscillators-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 22854,
+  "attempts": []
+ },
+ "mb-oscillators-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 8505,
+  "attempts": []
+ },
+ "mb-oscillators-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 11176,
+  "attempts": []
+ },
+ "mb-oscillators-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10947,
+  "attempts": []
+ },
+ "mb-oscillators-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 12765,
+  "attempts": []
+ },
+ "mb-oscillators-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10454,
+  "attempts": []
+ },
+ "mb-oscillators-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 9936,
+  "attempts": []
+ },
+ "mb-oscillators-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 9051,
+  "attempts": []
+ },
+ "mb-oscillators-1-09": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-09\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 7442,
+  "attempts": []
+ },
+ "mb-oscillators-1-10": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-10\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 8524,
+  "attempts": []
+ },
+ "mb-oscillators-1-11": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-11\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 31434,
+  "attempts": []
+ },
+ "mb-oscillators-1-12": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-12\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 16320,
+  "attempts": []
+ },
+ "mb-oscillators-1-13": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-13\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 10799,
+  "attempts": []
+ },
+ "mb-oscillators-1-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-14\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 14336,
+  "attempts": []
+ },
+ "mb-oscillators-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 8042,
+  "attempts": []
+ },
+ "mb-oscillators-1-16": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-16\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 18083,
+  "attempts": []
+ },
+ "mb-oscillators-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 21269,
+  "attempts": []
+ },
+ "mb-oscillators-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7901,
+  "attempts": []
+ },
+ "mb-oscillators-2-03": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-03\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 56671,
+  "attempts": []
+ },
+ "mb-oscillators-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 15574,
+  "attempts": []
+ },
+ "mb-oscillators-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 23051,
+  "attempts": []
+ },
+ "mb-oscillators-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 17197,
+  "attempts": []
+ },
+ "mb-oscillators-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 13877,
+  "attempts": []
+ },
+ "mb-oscillators-2-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7175,
+  "attempts": []
+ },
+ "mb-oscillators-2-09": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-09\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 7307,
+  "attempts": []
+ },
+ "mb-oscillators-2-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 9018,
+  "attempts": []
+ },
+ "mb-oscillators-2-11": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-11\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7755,
+  "attempts": []
+ },
+ "mb-oscillators-2-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-12\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 15724,
+  "attempts": []
+ },
+ "mb-oscillators-2-13": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-13\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 33290,
+  "attempts": []
+ },
+ "mb-oscillators-2-14": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-14\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 35542,
+  "attempts": []
+ },
+ "mb-oscillators-2-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 20648,
+  "attempts": []
+ },
+ "mb-oscillators-2-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 20309,
+  "attempts": []
+ },
+ "mb-diffusion-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 19560,
+  "attempts": []
+ },
+ "mb-diffusion-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 6098,
+  "attempts": []
+ },
+ "mb-diffusion-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 6211,
+  "attempts": []
+ },
+ "mb-diffusion-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 9557,
+  "attempts": []
+ },
+ "mb-diffusion-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10548,
+  "attempts": []
+ },
+ "mb-diffusion-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 9318,
+  "attempts": []
+ },
+ "mb-diffusion-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 5247,
+  "attempts": []
+ },
+ "mb-diffusion-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 9048,
+  "attempts": []
+ },
+ "mb-diffusion-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 32314,
+  "attempts": []
+ },
+ "mb-diffusion-1-11": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-11\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 19333,
+  "attempts": []
+ },
+ "mb-diffusion-1-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-12\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 4644,
+  "attempts": []
+ },
+ "mb-diffusion-1-13": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-13\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 9460,
+  "attempts": []
+ },
+ "mb-diffusion-1-14": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-14\",\"outcome\":\"reject\",\"failureKind\":\"non-uniform-limit\"}",
+  "ms": 18885,
+  "attempts": []
+ },
+ "mb-diffusion-1-15": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-15\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 14471,
+  "attempts": []
+ },
+ "mb-diffusion-1-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 19143,
+  "attempts": []
+ },
+ "mb-diffusion-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 12377,
+  "attempts": []
+ },
+ "mb-diffusion-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 8796,
+  "attempts": []
+ },
+ "mb-diffusion-2-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7956,
+  "attempts": []
+ },
+ "mb-diffusion-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 6712,
+  "attempts": []
+ },
+ "mb-diffusion-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 20068,
+  "attempts": []
+ },
+ "mb-diffusion-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 15938,
+  "attempts": []
+ },
+ "mb-diffusion-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 14407,
+  "attempts": []
+ },
+ "mb-diffusion-2-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 33376,
+  "attempts": []
+ },
+ "mb-diffusion-2-10": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-10\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 10062,
+  "attempts": []
+ },
+ "mb-diffusion-2-11": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-11\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 25402,
+  "attempts": []
+ },
+ "mb-diffusion-2-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-12\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7976,
+  "attempts": []
+ },
+ "mb-diffusion-2-13": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-13\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 11826,
+  "attempts": []
+ },
+ "mb-diffusion-2-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-14\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 14637,
+  "attempts": []
+ },
+ "mb-diffusion-2-15": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-15\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10227,
+  "attempts": []
+ },
+ "mb-diffusion-2-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 15178,
+  "attempts": []
+ },
+ "mb-waves-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 11088,
+  "attempts": []
+ },
+ "mb-waves-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 13495,
+  "attempts": []
+ },
+ "mb-waves-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7198,
+  "attempts": []
+ },
+ "mb-waves-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 13228,
+  "attempts": []
+ },
+ "mb-waves-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7064,
+  "attempts": []
+ },
+ "mb-waves-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10048,
+  "attempts": []
+ },
+ "mb-waves-1-07": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-07\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 22596,
+  "attempts": []
+ },
+ "mb-waves-1-08": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-08\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 14703,
+  "attempts": []
+ },
+ "mb-waves-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 14384,
+  "attempts": []
+ },
+ "mb-waves-1-11": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-11\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 42377,
+  "attempts": []
+ },
+ "mb-waves-1-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-12\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 4711,
+  "attempts": []
+ },
+ "mb-waves-1-13": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-13\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 5746,
+  "attempts": []
+ },
+ "mb-waves-1-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-14\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 46181,
+  "attempts": []
+ },
+ "mb-waves-1-15": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-15\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 10856,
+  "attempts": []
+ },
+ "mb-waves-1-16": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-16\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 11345,
+  "attempts": []
+ },
+ "mb-waves-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 5899,
+  "attempts": []
+ },
+ "mb-waves-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 6058,
+  "attempts": []
+ },
+ "mb-waves-2-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10526,
+  "attempts": []
+ },
+ "mb-waves-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10209,
+  "attempts": []
+ },
+ "mb-waves-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 8546,
+  "attempts": []
+ },
+ "mb-waves-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 11084,
+  "attempts": []
+ },
+ "mb-waves-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 16398,
+  "attempts": []
+ },
+ "mb-waves-2-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 6990,
+  "attempts": []
+ },
+ "mb-waves-2-09": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-09\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 11969,
+  "attempts": []
+ },
+ "mb-waves-2-10": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-10\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 7256,
+  "attempts": []
+ },
+ "mb-waves-2-11": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-11\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 33511,
+  "attempts": []
+ },
+ "mb-waves-2-12": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-12\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 14139,
+  "attempts": []
+ },
+ "mb-waves-2-13": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-13\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 13698,
+  "attempts": []
+ },
+ "mb-waves-2-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-14\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 18691,
+  "attempts": []
+ },
+ "mb-waves-2-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 15676,
+  "attempts": []
+ },
+ "mb-waves-2-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 27608,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 6436,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 37625,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 15156,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-04": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-04\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 22283,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10225,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 9905,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 19093,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 19957,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-09": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-09\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 14640,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 24377,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-11": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-11\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 13680,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-12\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 10643,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-13": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-13\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 27727,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-14\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 19334,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 14808,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 16611,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 8373,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-02": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-02\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 31067,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-03": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-03\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 34939,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-04": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-04\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 29445,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 12965,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-06": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-06\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 20530,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 22597,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-08": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-08\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 13338,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-09": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-09\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 40728,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-10": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-10\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 14257,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-11": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-11\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 11357,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-12": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-12\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 13367,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-13": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-13\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 17461,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-14": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-14\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 13646,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-15": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-15\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 15615,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-16": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-16\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 9811,
+  "attempts": []
+ }
+}

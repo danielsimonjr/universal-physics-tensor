@@ -8,6 +8,26 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Result (2026-09-22/23) — criterion 2 is NOT MET: the local LLM baselines beat the atlas by a wide margin
+
+- Pre-registered in Amendment 4 and run as frozen. The best baseline, qwen3.8:27b (balanced
+  accuracy 91.8%), rejected 51 of 61 invalid items and accepted 64 of 64 valid items. The atlas
+  rejected 6 of 61. Atlas minus best-LLM rejection: **−73.8%, 95% Newcombe [−82.7%, −58.7%]**,
+  McNemar exact p = 6.8e−13. The interval excludes zero on the WRONG side. gpt-oss:20b (83.1%)
+  also beats the atlas. Full table: `docs/research/atlas-study-results.md`.
+- **Where the atlas does better:** wrong accepts. The atlas made 1; the models made 9 (qwen),
+  5 (gemma) and 13 (gpt-oss). It gets there by abstaining on 116 of 125 items, because most items
+  do not state the formal fields (regime values, conventions, chains) that its instruments check.
+  The abstentions are reported, not folded into accuracy.
+- **Read with these limits:** the baselines are local models, and the items were written and rated
+  by one model family, so an LLM judge may share the author's framing. gemma4:26b returned an
+  EMPTY answer on 64 of 125 items: its reasoning filled the frozen 8,192-token context. Those
+  items are scored as unanswered, and gemma's score measures that budget, not its judgement.
+- Run record: every model has all 125 items recorded, with nothing dropped. qwen3.8:27b: 1 error;
+  123 items re-asked after the Ollama restart that ended the first run. gemma4:26b: 64 errors, all
+  empty replies. gpt-oss:20b: 0 errors. Wall time: 10,292 s, 13,333 s and 1,977 s, about 7.1 h in
+  total. Spend: USD 0.
+
 ### Added (2026-09-22) — the local LLM runner and its scoring (criterion 2, Amendment 4)
 
 - `scripts/atlas-benchmark-llm-local.mjs` runs the frozen configuration: one item per call, public
