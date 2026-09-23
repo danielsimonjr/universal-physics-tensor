@@ -21,6 +21,8 @@ The LLM baselines are LOCAL models. A MET result says the atlas beats these mode
 
 **Pre-registered criterion 2 (atlas vs the best baseline, `llm-local:qwen3.8:27b`): NOT MET.**
 
+**The atlas abstained on 116 of 125 items.** Most items do not state the formal fields its instruments check (regime values, conventions, a claimed chain), so the atlas could not decide them. Its one advantage, 1 wrong accept against 9 (qwen3.8:27b), 5 (gemma4:26b), 13 (gpt-oss:20b) for the LLM baselines, is bought by that abstention. This is a finding about the interface between natural-language claims and the formal apparatus: what the atlas can check depends on what a claim states in machine-readable form.
+
 ## Ablation (S6.2) — cumulative configurations of the atlas condition
 
 | Configuration | invalid rejected | wrong accepts | abstentions | step over previous (Δ, 95% Newcombe) |

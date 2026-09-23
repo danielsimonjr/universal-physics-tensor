@@ -319,7 +319,7 @@ warning-silencing, not debug logging).
       - [x] First run of the study success path on the non-empty set; fix what breaks.
       - [x] Criterion 2 on LOCAL models only (user 2026-09-22: "$0"): pre-register the run config (Amendment 4) and commit it BEFORE any call.
       - [x] Run the local LLM baselines (qwen3.8:27b, gemma4:26b, gpt-oss:20b) on the frozen public items; score atlas vs the pre-registered best baseline.
-      - [ ] gemma4:26b returned an EMPTY answer on 64/125 items under the frozen `num_ctx` 8192 (its reasoning filled the context). Decide with Mothership whether a clearly-labelled secondary run with a larger context is worth an amendment; the primary result stands as run.
+      - [x] gemma4:26b returned an EMPTY answer on 64/125 items under the frozen `num_ctx` 8192 (its reasoning filled the context). Decide with Mothership whether a clearly-labelled secondary run with a larger context is worth an amendment; the primary result stands as run.
       - [x] Fix the code-docs M3 at `src/bridges/equations/_be-helpers.ts` (`validateBEDimensions` documents `equationLabel`; the parameter is `_equationLabel`) and lower the ratchet baseline.
       - [ ] Criterion 3 (recall@10 vs embeddings) cannot run on the set as built: it needs a reference corpus and atlas-blind correct-reference labels. Design the task first.
       - [x] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own

@@ -33,6 +33,9 @@ Those are different claims and merging them produces a false green.
   [−82.7%, −58.7%]. The atlas made 1 wrong accept against 9–13 for the models, by abstaining on
   116/125. Criterion 3 was not run: there is no reference corpus. gemma4:26b returned empty answers
   on 64/125 items under the frozen 8,192-token context.
+- **Baseline construction (from that run):** a reasoning model needs a context that holds its
+  reasoning AND its answer. With `num_ctx` 8192, gemma4:26b's reasoning filled the context on 64/125
+  items and left the answer empty. Size the context per model before freezing a baseline config.
 - **Practical value (Phase 5 criterion 5)** is defined as human time and error rate. It is **not
   converted** to a model measurement and stays unmet. Curation cost is recorded as **model cost**
   only: USD 19.34 for the set, about USD 0.15 per authored item.

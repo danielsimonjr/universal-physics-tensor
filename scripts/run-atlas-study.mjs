@@ -146,6 +146,23 @@ const lines = [
           ? ''
           : `**Pre-registered criterion 2 (atlas vs the best baseline, \`${best}\`): ` +
             `${comparisons.find((c) => c.conditionB === best).aBetterExcludingZero ? 'MET' : 'NOT MET'}.**`,
+        '',
+        // The finding stated NEXT TO the verdict, not beneath it: the atlas decides only what an
+        // item states formally, and on prose claims that is rarely enough. Computed, never typed.
+        (() => {
+          const a = byName.atlas;
+          const n = a.nValid + a.nInvalid;
+          const llmWrong = llmNames.map((x) => `${byName[x].wrongAccepts} (${x.replace('llm-local:', '')})`).join(', ');
+          return (
+            `**The atlas abstained on ${a.abstentions} of ${n} items.** Most items do not state the ` +
+            'formal fields its instruments check (regime values, conventions, a claimed chain), so ' +
+            'the atlas could not decide them. Its one advantage, ' +
+            `${a.wrongAccepts} wrong accept${a.wrongAccepts === 1 ? '' : 's'} against ${llmWrong} ` +
+            'for the LLM baselines, is bought by that abstention. This is a finding about the ' +
+            'interface between natural-language claims and the formal apparatus: what the atlas ' +
+            'can check depends on what a claim states in machine-readable form.'
+          );
+        })(),
       ].join('\n'),
   ...(llmNotes.length > 0 ? ['', ...llmNotes] : []),
   '',

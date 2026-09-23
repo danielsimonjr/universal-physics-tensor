@@ -8,6 +8,20 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — the study results lead with the abstention finding; the gemma rerun is declined
+
+- `docs/research/atlas-study-results.md` now states, NEXT TO the criterion-2 verdict, that the atlas
+  abstained on 116 of 125 items. The prose items rarely state the formal fields its instruments
+  check, and its one advantage (1 wrong accept against 9, 5 and 13) comes entirely from that
+  abstention. The sentence is computed by `scripts/run-atlas-study.mjs` from the metrics, not typed
+  into the generated file. This is a finding about the interface between natural-language claims
+  and the formal apparatus, and it is the most useful thing the benchmark has produced.
+- **Declined: a secondary gemma4:26b run with a larger context** (Mothership, 2026-09-23). It
+  cannot change the verdict, because qwen3.8:27b is the pre-registered best with 1 error. It would
+  be chosen after seeing error rates, so it could only be exploratory, and it would read as a second
+  chance for the atlas. It would also hold the shared GPU for about 3.7 h. The context-budget lesson
+  is recorded in `NOTES.md` as a note on how baselines are built, not as a rerun.
+
 ### Result (2026-09-22/23) — criterion 2 is NOT MET: the local LLM baselines beat the atlas by a wide margin
 
 - Pre-registered in Amendment 4 and run as frozen. The best baseline, qwen3.8:27b (balanced
