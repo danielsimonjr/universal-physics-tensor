@@ -52,6 +52,10 @@ Those are different claims and merging them produces a false green.
 - **Still not startable here:** the other four reviewed `formalRef`s; an independent physicist
   review; per-bridge person-hours (the logs are per agent / per batch); embeddings (no worker);
   a separate data licence (owner decision).
+- **Standing physicist-review surfaces** (moved from `docs/architecture/OVERVIEW.md` on 2026-09-23;
+  not re-checked then): the CONTRIBUTING.md tasks; the contested BE-44/46/50 adjudications; the
+  C2/C3 calibration targets; the CI-1/CI-2 dynamic-scaling call; and the §XXVII-B adjudication of the
+  Part-XI machine-derived proposals.
 - **Composition table** remains 56 silent cells. Widening was not done.
 - **`8 → 12`** direction is unresolved. The poster records it as one approximation, `d-8-to-12`.
 

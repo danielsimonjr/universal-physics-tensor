@@ -8,6 +8,24 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `OVERVIEW.md`: stale counts corrected, release history moved out
+
+A read-only full-claim audit (Opus, about 115 claims) found 11 false; the session re-checked each.
+
+- **Counts:** the catalog holds 55 bridges, not 44 (four places); the evidence spine is 19
+  confrontations (15 established, 4 speculative), not 9; the canonical L-layer holds 107 equations,
+  not 103; the North Stars list has four goals, not three.
+- **Capability:** symbolic composition and simplification exist
+  (`src/composition/compose-symbolic.ts`, `expr-simplify.ts`); the doc called them "eventual".
+- **History out of a design doc.** The `## Version History` section (v0.1–v0.40, about 135 lines) and
+  the release-by-release `## Roadmap` paragraph are replaced by `## History and plans`, a pointer to
+  this file, `ROADMAP.md`, `todo.md` and `docs/planning/`. Every version they named has an entry here,
+  and every measured figure they quoted is already here. Two of the audit's false claims lived in that
+  section and go with it: "two type-only cycles remain" (both cycle counts are 0) and "`discover`
+  defaults to `--source=both`" (it defaults to `catalog`; `map` and `connectors` default to `both`).
+  The one standing-status sentence (the physicist-review surfaces) moved to `NOTES.md`.
+- Found by the same audit, fixed separately: the CLI labels the catalog source `catalog (44-bridge)`.
+
 ### Fixed (2026-09-23) — stale source doc comments found while fact-checking `docs/architecture/`
 
 Comments only; no code changes.
