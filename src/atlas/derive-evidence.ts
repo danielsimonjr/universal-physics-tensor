@@ -62,7 +62,7 @@ import type { Conventions, EvidenceTag, FormalFidelity } from './types.js';
  *
  * @internal
  */
-export type AdjudicationVerdict = 'bridge' | 'not-a-bridge' | 'unadjudicated';
+export type MembershipVerdict = 'bridge' | 'not-a-bridge' | 'unadjudicated';
 
 /**
  * A witness as this derivation reads it.
@@ -308,7 +308,7 @@ export function deriveEvidence(
  * @internal
  */
 export function deriveEvidenceForVerdict(
-  verdict: AdjudicationVerdict,
+  verdict: MembershipVerdict,
   record: EvidenceInput,
   passingWitnessIds: ReadonlySet<string>,
 ): ReadonlySet<EvidenceTag> {

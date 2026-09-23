@@ -757,9 +757,9 @@ modules:
           reExport: true
         - file: ./derive-evidence.js
           imports:
-            - AdjudicationVerdict
             - CounterexampleLike
             - EvidenceInput
+            - MembershipVerdict
             - RejectionLike
             - WitnessLike
           reExport: true
@@ -1187,9 +1187,9 @@ modules:
         - AtlasRejection
         - FormalFidelity
         - FormalRef
-        - AdjudicationVerdict
         - CounterexampleLike
         - EvidenceInput
+        - MembershipVerdict
         - RejectionLike
         - WitnessLike
         - CompositionResult
@@ -1282,9 +1282,9 @@ modules:
         - deriveEvidence
         - deriveEvidenceForVerdict
         - NO_PASSING_WITNESSES
-        - AdjudicationVerdict
         - CounterexampleLike
         - EvidenceInput
+        - MembershipVerdict
         - RejectionLike
         - WitnessLike
         - composeRelation

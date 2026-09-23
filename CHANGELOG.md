@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — the atlas's `AdjudicationVerdict` is now `MembershipVerdict`
+
+- Two DIFFERENT unions shared the name `AdjudicationVerdict`. The atlas one
+  (`'bridge' | 'not-a-bridge' | 'unadjudicated'`, `@internal`, subpath only) judges whether a
+  catalog row is a bridge at all. The composition one (`'genuine' | 'decoy' | 'entailed' | 'deferred'`,
+  `@public`, package root) judges an identification candidate. The atlas type is renamed
+  `MembershipVerdict` in `src/atlas/derive-evidence.ts`, the atlas barrel and its test. The
+  compile-time pin tying it to `BridgeVerdict` still holds.
+- **No public-surface change, proven:** `src/atlas/public.ts` is byte-identical before and after
+  and names neither type, and the package root still exports the composition `AdjudicationVerdict`.
+  The API and atlas tests pass (62). `duplicate-symbols.md` drops the group: 2 duplicate names
+  now, with 1,657 distinct names re-measured from a fresh map.
+
 ### Decided (2026-09-23) — four owner decisions on Sprint 6
 
 - **Data licence:** the exported atlas data under `data/atlas/` is CC BY 4.0. The new

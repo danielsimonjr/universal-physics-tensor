@@ -47,9 +47,9 @@ export { ALL_EVIDENCE_TAGS } from './types.js';
 // table or path bounding at all (tests/atlas/barrel-completeness.test.ts).
 export { deriveEvidence, deriveEvidenceForVerdict, NO_PASSING_WITNESSES } from './derive-evidence.js';
 export type {
-  AdjudicationVerdict,
   CounterexampleLike,
   EvidenceInput,
+  MembershipVerdict,
   RejectionLike,
   WitnessLike,
 } from './derive-evidence.js';

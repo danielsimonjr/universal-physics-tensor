@@ -6,14 +6,14 @@ Names that more than one `src` file exports.
 
 ## Read this first
 
-**3 names out of 1,656 are exported by more than one file.** For a repository of 350 source
+**2 names out of 1,657 are exported by more than one file.** For a repository of 350 source
 files that is unusually clean, and it is the headline result: this codebase does not have a
 naming-collision problem.
 
 The tool groups **by name only**. It does not compare bodies, so a group means "more than one
-place uses this name", never "these definitions conflict". All three groups below were read.
+place uses this name", never "these definitions conflict". Both groups below were read.
 
-## The three groups
+## The two groups
 
 ### `command` — 22 files. Not a defect.
 
@@ -21,19 +21,6 @@ Every module under `src/cli/commands/` exports a `command`. That is the CLI's re
 convention: `command.ts` defines the shape, the registry collects one per module, and each is
 reached through `CommandCtx`. Renaming them would break the pattern that makes the command tree
 uniform. **No action.**
-
-### `AdjudicationVerdict` — 2 files. Two meanings under one name.
-
-| File | Definition | Tag |
-|---|---|---|
-| `src/atlas/derive-evidence.ts` | `'bridge' \| 'not-a-bridge' \| 'unadjudicated'`: whether a catalog row is a bridge at all | `@internal`, atlas subpath |
-| `src/composition/adjudication.ts` | `'genuine' \| 'decoy' \| 'entailed' \| 'deferred'`: the verdict on an identification candidate | `@public`, package root |
-
-These are NOT two copies of one type. They are two different unions that share a name. They do
-not collide in code today, because one is reached through the atlas subpath and the other through
-the package root. A reader who meets both names can confuse them. **Recommended:** give the
-atlas type a name that says what it judges, such as a membership verdict. The atlas type is
-`@internal`, so the rename does not change the public surface.
 
 ### `MASS_DENSITY` — 2 files. Worth one look.
 
@@ -59,10 +46,10 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| duplicateCount | 3 | duplicate-symbols.json |
+| duplicateCount | 2 | duplicate-symbols.json |
 | totalSourceFiles | 843 | dependency-graph.json |
 
-**Claims the gate cannot hold.** The `totalSymbols` figure of 1,656 and the per-group file lists
+**Claims the gate cannot hold.** The `totalSymbols` figure of 1,657 and the per-group file lists
 come from `duplicate-symbols.json`. The judgement about each group comes from reading the source.
 The artifact states in its own note that it does **not** classify a group as a true duplicate or a
 legitimate one; this document makes no stronger claim than the reading behind it.
