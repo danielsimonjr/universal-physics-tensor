@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — two stale source comments found by the `ARCHITECTURE.md` audit
+
+Comments only.
+
+- `src/dimensional/validator.ts`: the module note said special-function arguments must be
+  dimensionless "but the validator does not yet enforce that". It does: a dimensioned
+  transcendental argument is an error-severity violation, and a tensor argument throws
+  `TensorInScalarOpError` (the `transcendental` arm).
+- `src/dimensional/metric.ts`: `derivativeStrategy: 'computed'` was documented as "engine
+  auto-differentiates the metric function (default)". The lowering treats a raw-tensor metric input
+  as constant (∂g = 0); metric closures in `inputs.fields` take the curvature paths, which
+  finite-difference them.
+
 ### Fixed (2026-09-23) — `ARCHITECTURE.md`: 24 false claims corrected, release history moved out
 
 A read-only full-claim audit (Opus, about 190 claims) found 24 false; the load-bearing ones were

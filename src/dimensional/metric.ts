@@ -32,10 +32,13 @@ import { MetricSignatureError, UPTError } from './errors.js';
  * @param indices    Exactly two TensorIndex entries (rank-2 requirement).
  * @param dim        Physical dimension of the metric components.
  * @param signature  Comma-separated `'+'`/`'-'` signs (e.g. `'+,-,-,-'`).
- * @param derivativeStrategy  Optional v0.4.0 hint for the numerical engine:
+ * @param derivativeStrategy  Optional hint for the numerical engine:
  *   how to compute ∂g for Christoffel / ∇_μ. `'zero'` = constant metric
  *   (∂g=0, Γ=0, ∇_μ=∂_μ); `'supplied'` = caller provides ∂g components;
- *   `'computed'` = engine auto-differentiates the metric function (default).
+ *   `'computed'` (the default) = the lowering treats a raw-tensor metric
+ *   input as constant (∂g=0) — nothing is auto-differentiated. Metric
+ *   closures in `inputs.fields` take the curvature paths, which
+ *   finite-difference the closures.
  *   Omit to leave the field absent (engine defaults to `'computed'`).
  */
 export function metric(

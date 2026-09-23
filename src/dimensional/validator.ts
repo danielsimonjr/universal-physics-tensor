@@ -7,8 +7,9 @@
  *     enforced, and `validateEquation` now checks valence homogeneity
  *     across '=' (so the spec's Bridge Eq 17 rank mismatch — a tensor
  *     equated to a scalar — is caught even when the SI dimensions agree).
- *   - Special functions (log, exp, trig) are out of scope; their arguments
- *     must be dimensionless but the validator does not yet enforce that.
+ *   - Transcendental nodes (exp, ln, log, trig): the argument must be
+ *     dimensionless. A dimensioned argument is an error-severity violation;
+ *     a tensor argument throws `TensorInScalarOpError`.
  *
  * @module dimensional/validator
  */
