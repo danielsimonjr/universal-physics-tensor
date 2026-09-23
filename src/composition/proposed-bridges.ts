@@ -556,7 +556,7 @@ export function promoteProposal(
  * registry and carrying `status: 'unadjudicated'` (NOT a `BridgeEquationStatus`).
  * This is deliberately NOT a `BridgeEquationEntry`: it omits the spec-only fields
  * (`source_part`/`source_section`/numeric `id`) and never enters `BRIDGE_EQUATIONS`,
- * which stays the faithful 44-bridge encoding of the specification.
+ * which stays the faithful encoding of the specification.
  *
  * @internal
  */
@@ -642,7 +642,7 @@ export function toProposedEntry(p: ProposedBridge): ProposedBridgeEntry {
 /**
  * The PROPOSED-BRIDGE review surface: derived identity-consequences in the
  * catalog's field shape, in their OWN registry, every entry `status:
- * 'unadjudicated'`. Separate from `BRIDGE_EQUATIONS` (the faithful 44-bridge spec
+ * 'unadjudicated'`. Separate from `BRIDGE_EQUATIONS` (the faithful spec
  * encoding), which this never mutates. Default scope: canonical-only — widen with
  * `deriveProposedBridges(rankDiscoveries(graph)).map(toProposedEntry)`.
  *

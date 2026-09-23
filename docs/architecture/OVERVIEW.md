@@ -81,7 +81,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 | Claim | Value | Source |
 |---|---|---|
 | totalSourceFiles | 845 | dependency-graph.json |
-| totalExports | 3003 | dependency-graph.json |
+| totalExports | 3004 | dependency-graph.json |
 | entryRoots | 5 | dependency-graph.json |
 
 **Lines of code are not a gated claim.** They change on almost every edit, so a gated figure

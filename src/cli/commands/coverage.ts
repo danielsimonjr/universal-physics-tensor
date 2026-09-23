@@ -1,7 +1,7 @@
 /**
  * `upt coverage` — audit the catalog's empirical grounding. Transposed
  * verbatim from bin/upt.mjs's `coverageCmd()` (lines 716-731), plus `--json`.
- * No `--source`: it audits the 44-bridge catalog specifically.
+ * No `--source`: it audits the bridge catalog specifically.
  */
 import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';

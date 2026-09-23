@@ -1,7 +1,7 @@
 /**
  * Universal Physics Tensor — Bridge Equation Index
  *
- * Machine-readable catalog of all 44 bridge equations (IDs 11-54) from the UPT
+ * Machine-readable catalog of all bridge equations (IDs from 11) from the UPT
  * specification (Parts I-VI; BE-51–54 catalogued in Part-II §V-B). Each entry
  * preserves the spec's stated status, known issues, references, and
  * dependencies on other bridge equations.

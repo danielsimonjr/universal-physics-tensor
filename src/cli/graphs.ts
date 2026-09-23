@@ -21,7 +21,11 @@ export function resolveGraph(
 
   switch (src) {
     case 'catalog':
-      return { graph: [...api.CATALOG_GRAPH], label: 'catalog (44-bridge)', source: 'catalog' };
+      return {
+        graph: [...api.CATALOG_GRAPH],
+        label: `catalog (${api.BRIDGE_EQUATIONS.length}-bridge)`,
+        source: 'catalog',
+      };
     case 'canonical':
       return {
         graph: [...api.CANONICAL_GRAPH],

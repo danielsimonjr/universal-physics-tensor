@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 348,
     "totalModules": 11,
-    "totalExports": 2446
+    "totalExports": 2447
   },
   "entryPoints": [
     {
@@ -10874,6 +10874,13 @@
             "reExport": true
           },
           {
+            "file": "./bridges/index.js",
+            "imports": [
+              "BRIDGE_EQUATIONS"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./bridges/confrontation-coverage.js",
             "imports": [
               "auditCoverage"
@@ -11206,6 +11213,7 @@
           "parseDimensionSpec",
           "predictMissingBridges",
           "rankDiscoveries",
+          "BRIDGE_EQUATIONS",
           "auditCoverage",
           "CONFRONTATIONS",
           "listConfrontations",
@@ -11317,6 +11325,7 @@
           "parseDimensionSpec",
           "predictMissingBridges",
           "rankDiscoveries",
+          "BRIDGE_EQUATIONS",
           "auditCoverage",
           "CONFRONTATIONS",
           "listConfrontations",
@@ -23930,15 +23939,15 @@
   "statistics": {
     "totalTypeScriptFiles": 348,
     "totalModules": 11,
-    "totalLinesOfCode": 68759,
-    "totalExports": 2446,
+    "totalLinesOfCode": 68764,
+    "totalExports": 2447,
     "totalClasses": 58,
     "totalInterfaces": 358,
     "totalFunctions": 552,
     "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 606,
-    "totalReExports": 1229,
+    "totalReExports": 1230,
     "totalTypeOnlyImports": 483,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,

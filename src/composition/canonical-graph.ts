@@ -2,7 +2,7 @@
  * Canonical-only graph — project the standard-physics L-layer
  * (`CANONICAL_EQUATIONS`) into the composition-graph edge vocabulary so the
  * discovery/analysis funnel (`upt discover` / `candidates` / `map`) can run on
- * established textbook physics ALONE, with the speculative 44-bridge catalog
+ * established textbook physics ALONE, with the speculative bridge catalog
  * excluded.
  *
  * WHY this exists: `CATALOG_GRAPH` mixes the 8 established bridges with 36
@@ -36,7 +36,7 @@
  *     NaN evaluator; `retrodict` accepts only finite derivations, so it
  *     abstains cleanly rather than polluting the consistency check.
  *
- * The public counterpart to `CATALOG_GRAPH` (the 44-bridge graph): exported
+ * The public counterpart to `CATALOG_GRAPH` (the bridge-catalog graph): exported
  * from the package manifest and surfaced via the CLI's `--source=canonical`
  * flag on `discover` / `candidates` / `map`.
  *

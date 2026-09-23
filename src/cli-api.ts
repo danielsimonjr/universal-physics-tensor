@@ -54,6 +54,7 @@ export {
 export { parseDimensionSpec } from './dimensional/dimension-spec.js';
 export { predictMissingBridges } from './composition/bridge-prediction.js';
 export { rankDiscoveries } from './composition/discovery.js';
+export { BRIDGE_EQUATIONS } from './bridges/index.js';
 export { auditCoverage } from './bridges/confrontation-coverage.js';
 export {
   CONFRONTATIONS,

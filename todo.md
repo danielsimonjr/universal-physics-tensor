@@ -324,7 +324,7 @@ warning-silencing, not debug logging).
         - [x] `tools/create-dependency-graph`: an opt-in per-export API-surface report (signature, async, stability tag, root reachability) in its own module, with tests; existing outputs byte-identical without the flag.
         - [x] OVERVIEW.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
         - [ ] OVERVIEW.md to 0 STE findings, stateless.
-        - [ ] `src/cli/graphs.ts` labels the catalog source `catalog (44-bridge)`; the catalog holds 55 (user-visible CLI string; check the goldens).
+        - [x] `src/cli/graphs.ts` labels the catalog source `catalog (44-bridge)`; the catalog holds 55 (user-visible CLI string; check the goldens).
         - [ ] ARCHITECTURE.md to 0 STE findings, stateless.
         - [ ] COMPONENTS.md to 0 STE findings, stateless.
         - [ ] DEPENDENCY_GRAPH.md findings fixed at the SOURCE module doc comments, then regenerated.

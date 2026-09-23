@@ -74,7 +74,7 @@ also accepts `--json` for a machine-readable envelope instead of text — see
 ### Graph analysis & discovery
 
 8 of these 9 commands (all but `coverage`) operate over a **composition
-graph**. Most default to the 44-bridge catalog graph; `map` and `connectors`
+graph**. Most default to the bridge-catalog graph; `map` and `connectors`
 default to the combined catalog + canonical graph instead, since they ask
 pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 
@@ -167,7 +167,7 @@ the analysis runs over: `discover`, `candidates`, `map`, `explain`,
 
 | Value | Graph |
 |---|---|
-| `catalog` | The 44-bridge catalog graph (8 established + 36 speculative bridges). |
+| `catalog` | The bridge-catalog graph (`CATALOG_GRAPH`); its banner label states the catalog size. |
 | `canonical` | The standard-physics **L-layer alone** — every canonical equation as an `established` law edge, **with the speculative bridges excluded**. |
 | `both` | The bridges **plus** the canonical established-physics backbone. |
 

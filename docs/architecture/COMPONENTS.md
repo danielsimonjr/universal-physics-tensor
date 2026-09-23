@@ -792,7 +792,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 | Claim | Value | Source |
 |---|---|---|
 | totalSourceFiles | 845 | dependency-graph.json |
-| totalExports | 3003 | dependency-graph.json |
+| totalExports | 3004 | dependency-graph.json |
 | totalTypeOnlyImports | 875 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts

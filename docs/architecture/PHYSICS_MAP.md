@@ -652,7 +652,7 @@ flowchart LR
 
 ## The bridge catalog and the full map
 
-The 44-bridge catalog (`--source=catalog`, 41 edges → 23 components) and the
+The 55-bridge catalog (`--source=catalog`, 41 edges → 23 components) and the
 combined laws-plus-bridges graph (`--source=both`, 144 edges → 37 components, after
 the canonical L-layer grew to 103 laws) are larger and more disjointed — better
 viewed as rendered SVG than inline. Both the

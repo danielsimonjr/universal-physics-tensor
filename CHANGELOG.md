@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — the CLI said "44-bridge"; the catalog holds 55, and the label is now derived
+
+- **User-visible:** `upt discover`, `candidates` and `map` printed `[source: catalog (44-bridge)]`. The
+  label is now `catalog (${BRIDGE_EQUATIONS.length}-bridge)`, so it prints `55-bridge` today and
+  cannot go stale when bridges are added. `src/cli-api.ts` gains `BRIDGE_EQUATIONS` for it (the
+  CLI reaches internals only through that barrel). Four CLI goldens change by exactly that banner
+  line; `tests/cli/graphs.test.ts` asserts the derived label (it failed first against the old one).
+- **The same stale count elsewhere,** removed rather than updated where a comment does not need a
+  number: `coverage.ts`, `canonical-graph.ts` (2), `proposed-bridges.ts` (2), `bridges/index.ts`,
+  `src/bridges/README.md`, `cli/README.md` (whose table also claimed "8 established + 36
+  speculative"; today 19 / 33 / 3), and `PHYSICS_MAP.md` / `bridge-gradient-tutorial.md` (55).
+- The new barrel export moves the gated `totalExports` 3003 → 3004 in four Verification tables.
+
 ### Fixed (2026-09-23) — `OVERVIEW.md`: stale counts corrected, release history moved out
 
 A read-only full-claim audit (Opus, about 115 claims) found 11 false; the session re-checked each.
