@@ -1,7 +1,7 @@
 /**
  * THE PUBLIC BARREL MUST NOT REACH AN OPTIONAL PEER.
  *
- * `CLAUDE.md` states the contract: the `@danielsimonjr/mathts-*` family and
+ * `MEMORY.md` (Stack) states the contract: the `@danielsimonjr/mathts-*` family and
  * `@viz-js/viz` are OPTIONAL dependencies, and "everything must degrade
  * gracefully when a peer is absent". Until now nothing exercised that.
  *

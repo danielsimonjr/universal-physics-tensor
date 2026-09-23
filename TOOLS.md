@@ -4,11 +4,27 @@ The law is `AGENTS.md`. This file answers *what do I run it with* — and, more 
 each instrument misleads**, because most wrong answers in this repo came from a working tool
 pointed at the wrong thing.
 
+## Commands
+
+| Task | Command | Notes |
+|---|---|---|
+| Install | `bun install` | `--frozen-lockfile` in CI |
+| Build | `bun run build` | tsc, emits to `dist/` |
+| Test | `bun run test` | the full vitest suite; `pretest` runs `tsc` first. **Never bare `bun test`**: that is Bun's own runner, not vitest. The first run after a reboot pays a cold-start cost of minutes; do not quote that figure as the steady-state cost (it was once used to justify a scoped subset, and the directory the subset skipped is where a defect reached `master`) |
+| Scoped test | `bunx vitest run tests/path/to/file.test.ts` | or `-t "name pattern"`; skips the `tsc` pretest; the default for TDD cycles |
+| Long accuracy tests | `$env:GL4_LONG='1'; bunx vitest run …` (PowerShell) | GL4/Shapiro sweeps, `it.skip` otherwise; the nightly `long-tests` CI job runs them |
+| Smoke | `bun run smoke` | runs `test-example.js` against the built `dist/` (via Node) |
+| CLI | `node bin/upt.mjs <cmd>` (or `bun run upt --`) | needs `bun run build` first; reference in `cli/README.md` |
+| Dependency graph and doc counts | `bun run docs:deps` | regenerates `docs/architecture/`; the `docs-fresh` CI job fails when it was not run |
+| Bench | `bun run bench` / `bun run bench:ci` | vitest bench; baselines in `docs/architecture/benchmarks.md` |
+| Audit | `bun audit` | replaces `npm audit` (needs `bun.lock`) |
+| Plan-ledger audit | `bun run audit:plans` | audits `ACTIVE.md`; a release gate inside `validate` |
+| Publish | `npm publish --access public` | Mothership's, never this session's. **Do NOT pass `--ignore-scripts`**: `prepublishOnly` runs `npm run validate` (build, typecheck, test, audit:plans, package:check), and that is the packaging gate |
+
 ## Instruments
 
 | Tool | Use it for |
 |---|---|
-| `bun run test` | the real gate (vitest); see `CLAUDE.md` Commands |
 | `gh run list` / `gh run view <id> --log` | CI truth. The pre-push gate is **not** CI |
 | `git show --numstat <sha>` | proving a change is additive (0 deletions) rather than asserting it |
 | `git merge-base --is-ancestor <sha> master` | proving a commit is actually on the branch |

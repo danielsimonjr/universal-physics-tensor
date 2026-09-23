@@ -20,8 +20,9 @@ loads it. **This file holds what is still true next year. Nothing dated, nothing
 
 ## What this repo is
 
-A typed, machine-checkable representation of relations between physical models: relation type,
-side conditions, regime, error bound with horizon, witnesses and counterexamples.
+A TypeScript ESM library exploring unified physics through a rank-6 tensor (vision in `README.md`).
+Its atlas layer is a typed, machine-checkable representation of relations between physical models:
+relation type, side conditions, regime, error bound with horizon, witnesses and counterexamples.
 
 **What it offers is a method, and the discipline below is what makes it work rather than
 decorative.**

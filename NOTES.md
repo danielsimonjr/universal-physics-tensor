@@ -50,3 +50,27 @@ Those are different claims and merging them produces a false green.
 - **Sprint 0 closure is unverified.** The Phase 0 curation-cost log said on 2026-09-20 that Sprint
   0 was not closed: `docs-fresh` was red and the wrap checklist was incomplete. `docs-fresh` was
   green on every push checked on 2026-09-22; the wrap checklist has not been re-checked.
+
+### Measured facts about the tree (moved from `CLAUDE.md`; re-measure before quoting)
+
+- **Toolchain:** TypeScript `^7.0.2` (verified 2026-09-22). The full suite ran 4,659 tests at
+  `cbf2e40` (2026-09-22); it took about 58 s warm when measured on 2026-09-21.
+- **Bridge catalog** (measured 2026-09-21 from the built registries): 55 bridges, IDs 11–65, which
+  project to 41 composition-graph edges. 13 are AST-less (BE-51, 52, 55…65), and 17 have no graph
+  edge (BE-28, 29, 32, 35, 40, 44, 55…65). `upt map` finds 23 connected components: one anchored
+  cluster of 16, two small clusters, and 20 isolated bridges. Status distribution (re-tallied
+  2026-07-05): 19 established, 33 speculative, 3 highly speculative, 0 invalid.
+- **Axes:** `RegimeAttributes` carries six axes (scale, force, information, symmetry, topology,
+  statistics). `GATE_AXES` is scale and force; topology, symmetry and statistics are typed and
+  wired but ungated, for thin coverage.
+- **CLI:** the `upt` CLI (22 data-bearing commands + `help`/`version`).
+- **Atlas families:** oscillators 9 models, 5 bridges, 1 rejection; diffusion 8 models, 8 bridges;
+  waves 7 models, 7 bridges.
+- **Atlas import sites** (measured 2026-09-22): value imports at `bridges/index.ts:40`
+  (`deriveRegimeGroups`), `composition/compose.ts:46-47` (`composition-table`, `conventions`) and
+  `composition/graph-viz.ts:28` (`derive-evidence`); type-only imports from `atlas/types.ts` at
+  `bridges/index.ts:36`, `composition/compose.ts:48`, `composition/edge.ts:24`, `graph-viz.ts:24`
+  and `uncertainty.ts:25`.
+  `docs:deps` reports 0 circular dependencies.
+- **Dependabot PRs open against the lockfile problem** described in `MEMORY.md` (Stack): UPT #177–181.
+

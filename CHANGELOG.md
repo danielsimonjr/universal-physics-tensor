@@ -8,6 +8,24 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-22) — `CLAUDE.md` is a thin loader; each of its facts moved to one home
+
+- `CLAUDE.md` went from 20,983 bytes to a 742-byte loader that `@`-imports `AGENTS.md`,
+  `WORKFLOWS.md`, `TOOLS.md`, `MEMORY.md` and `NOTES.md`. Each fact was MOVED, not copied:
+  - the stack, source map, AST grammar, encoding patterns and invariants went to `MEMORY.md`;
+  - the commands table went to `TOOLS.md`;
+  - the release order, the TDD-from-a-plan gotchas and the review tier went to `WORKFLOWS.md`;
+  - every count and dated measurement went to `NOTES.md`.
+
+  A scan for facts stated in two files found five, and each now has one home.
+- **Stale statements found in the move and corrected, not carried over:**
+  - The atlas source-map row said nothing is re-exported from `src/index.ts`. The `atlas`
+    namespace has been exported since 07041cc.
+  - The import-site list missed a type-only import at `composition/compose.ts:48`; re-measured.
+  - The test-suite timing now names the test count it was measured at.
+- `tests/cli/command-count-prose.test.ts` read the CLI count from `CLAUDE.md`. It now reads
+  `NOTES.md`, and its negative control covers that file. A mutation to 23 failed both tests.
+
 ### Changed (2026-09-22) — the active ledger leaves `docs/planning/`; the plan audit can no longer pass on nothing
 
 - `docs/planning/ACTIVE.md` moved to the repository root as `ACTIVE.md`. It is an authorization and

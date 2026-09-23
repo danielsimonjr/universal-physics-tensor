@@ -313,7 +313,7 @@ warning-silencing, not debug logging).
       - [x] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own
         "never the answer" docstring. The atlas condition never reads them; an LLM or embedding condition fed
         `public/items.json` would see the key. Fix before any out-of-process condition runs: move both to the scorer half.
-      - [ ] `CLAUDE.md` is 21 KB and holds law, procedure and stateless facts that now have homes in `AGENTS.md`,
+      - [x] `CLAUDE.md` is 21 KB and holds law, procedure and stateless facts that now have homes in `AGENTS.md`,
         `WORKFLOWS.md`, `TOOLS.md` and `MEMORY.md`. Move each duplicated fact to its one home and leave `CLAUDE.md` a thin loader.
       - [x] Move `docs/planning/ACTIVE.md` (an authorization register, status by nature) out of `docs/planning/`; fix every inbound link in the same commit.
 
