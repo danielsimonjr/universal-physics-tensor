@@ -51,6 +51,7 @@
   deliberately not bumped (release-sized optional-dep sweep; zero hard-dep
   breakage risk). Revisit as a dedicated MathTS-alignment release, not a gap-fix
   drive-by.
+  - [x] Dependabot ignores `@danielsimonjr/mathts-*` until that release (PRs #178–181 closed by Mothership 2026-09-22).
 
 ## v0.44.3 released 2026-08-28
 

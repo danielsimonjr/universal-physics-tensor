@@ -8,6 +8,13 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-22) — Dependabot holds the optional mathts-* peers
+
+- `.github/dependabot.yml` ignores `@danielsimonjr/mathts-*`. The optional peers are held for a
+  dedicated MathTS-alignment release (`todo.md`), not merged as drive-by bumps. Mothership closed
+  Dependabot PRs #178–181 for that reason. The pattern matches all nine mathts packages in
+  `package.json`. Remove the entry when the alignment release lands.
+
 ### Fixed (2026-09-22) — the architecture-docs claims now have a gate, and the stale ones are corrected
 
 - **The architecture-docs claims had no gate that could fail.** The `docs-fresh` CI job regenerates
