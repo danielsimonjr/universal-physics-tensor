@@ -2,7 +2,7 @@
 
 | Directory | Holds | Who writes it |
 |---|---|---|
-| `public/items.json` | The FROZEN items | `scripts/atlas-benchmark-assemble.mjs`, from model output |
+| `public/items.json` | The FROZEN items, WITHOUT the answer | `scripts/atlas-benchmark-assemble.mjs`, from model output |
 | `scorer/labels.json` | The expected outcome per frozen item | The same script; no `src/` file may read it |
 | `contested/items.json` | Items the raters disputed, never scored | The same script, with `authorship: 'contested-draft'` |
 | `provenance/` | Every model call: exact prompt, reply, cost and the launch's isolation record; kappa and the freeze in `assembly.json` | `scripts/atlas-benchmark-models.mjs` |
@@ -17,6 +17,5 @@ Do not edit these files by hand. To rebuild: `node scripts/atlas-benchmark-model
 `bun run build && node scripts/atlas-benchmark-assemble.mjs`. A rebuild calls the model again and
 produces a DIFFERENT set, which is an amendment to the pre-registration.
 
-**Known defect:** `public/items.json` carries `kind` and `failureKind`, which are the answers. The
-atlas condition never reads them. They must move to the scorer half before any LLM or embedding
-condition reads the public file.
+The answer (`kind`, `failureKind`) lives ONLY in `scorer/labels.json`. The loader refuses a public
+or contested item that carries either field.

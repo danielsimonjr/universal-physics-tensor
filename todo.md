@@ -310,11 +310,12 @@ warning-silencing, not debug logging).
       - [x] Two independent model raters (separate isolated instances) and Cohen's kappa, reported as MODEL agreement.
       - [x] Freeze the set; the empty-set hash test must go RED before the note is amended.
       - [x] First run of the study success path on the non-empty set; fix what breaks.
-      - [ ] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own
+      - [x] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own
         "never the answer" docstring. The atlas condition never reads them; an LLM or embedding condition fed
         `public/items.json` would see the key. Fix before any out-of-process condition runs: move both to the scorer half.
       - [ ] `CLAUDE.md` is 21 KB and holds law, procedure and stateless facts that now have homes in `AGENTS.md`,
         `WORKFLOWS.md`, `TOOLS.md` and `MEMORY.md`. Move each duplicated fact to its one home and leave `CLAUDE.md` a thin loader.
+      - [ ] Move `docs/planning/ACTIVE.md` (an authorization register, status by nature) out of `docs/planning/`; fix every inbound link in the same commit.
 
 - [ ] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
       `docs/planning/ACTIVE.md` 2026-09-22; design note `docs/planning/Atlas-Phase-4-Design.md`.

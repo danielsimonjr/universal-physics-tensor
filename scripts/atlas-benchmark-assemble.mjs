@@ -28,6 +28,7 @@ const distImport = (...parts) => import(pathToFileURL(resolve(repoRoot, 'dist', 
 
 const { cohensKappa } = await distImport('atlas', 'benchmark', 'stats.js');
 const { validateItems } = await distImport('atlas', 'benchmark', 'loader.js');
+const { validateLabels } = await distImport('atlas', 'benchmark', 'study.js');
 const { findCrossSplitLeakage } = await distImport('atlas', 'benchmark', 'leakage.js');
 const { hashCanonical } = await distImport('composition', 'probe', 'serialize.js');
 const { FAILURE_KINDS, HELD_OUT_FAMILY } = await distImport('atlas', 'benchmark', 'types.js');
@@ -100,10 +101,9 @@ for (const it of authored) {
   const problem = enc === undefined ? 'no encoding' : exprProblem(enc.expr);
   if (problem !== null) reasons.push(`encoding malformed: ${problem}`);
 
+  // The public item never carries the answer; that goes to scorer/labels.json.
   const item = {
     id: it.id,
-    kind: it.kind,
-    ...(it.kind === 'invalid' ? { failureKind: it.failureKind } : {}),
     premises: it.premises,
     conclusion: it.conclusion,
     claimedRelation: it.claimedRelation,
@@ -125,7 +125,10 @@ for (const it of authored) {
   }
 }
 
-const frozenProblems = validateItems(frozen, true);
+const frozenProblems = [
+  ...validateItems(frozen, true),
+  ...validateLabels(frozen.map((x) => x.id), labels),
+];
 if (frozenProblems.length > 0) {
   throw new Error(`frozen set not admissible: ${frozenProblems.map((p) => `${p.id}: ${p.problem}`).join('; ')}`);
 }
@@ -149,10 +152,10 @@ const report = {
   nineCategoryOffScale: offScaleKind,
   raterAgreementWithAuthor: { A: agreeWithAuthor(raterA), B: agreeWithAuthor(raterB) },
   frozen: frozen.length,
-  frozenValid: count(frozen, (x) => x.kind === 'valid'),
-  frozenInvalid: count(frozen, (x) => x.kind === 'invalid'),
+  frozenValid: count(labels, (x) => x.kind === 'valid'),
+  frozenInvalid: count(labels, (x) => x.kind === 'invalid'),
   frozenHeldOut: count(frozen, (x) => x.split === 'held-out'),
-  frozenByFailureKind: Object.fromEntries(FAILURE_KINDS.map((k) => [k, count(frozen, (x) => x.failureKind === k)])),
+  frozenByFailureKind: Object.fromEntries(FAILURE_KINDS.map((k) => [k, count(labels, (x) => x.failureKind === k)])),
   contested: contested.length,
   contestedReasons: contested.map((c) => ({ id: c.id, reasons: c.contestedBecause })),
   crossSplitLeakage: leakage,

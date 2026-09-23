@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-22) — the public benchmark file no longer carries the answer
+
+- `BenchmarkItem` carried `kind` and `failureKind`, which are the answer, even though its own
+  docstring said "never the answer". The atlas condition never read them, but any LLM or embedding
+  condition fed `public/items.json` would have read the key. Both fields now live only in
+  `scorer/labels.json`. The loader refuses a public or contested item that carries either field.
+  The kind rules moved to a new `validateLabels`, which checks the answer key against the set:
+  one label per item, none for an unknown item, and a known failure kind exactly on invalid
+  labels. The assembly and study scripts run it, and the study exits 4 when the key does not fit.
+- The items, labels, freeze and every count are unchanged, and a rerun of the study produced a
+  byte-identical results file. Only the frozen-set hash moved, recorded in pre-registration
+  Amendment 3. The tests were written first and failed 5 of 5 before the fix.
+
 ### Changed (2026-09-22) — status moved out of the design documents; the repo gains its control files
 
 - **The Atlas planning documents now state design only.** MET/UNMET/OPEN markers, progress counts,

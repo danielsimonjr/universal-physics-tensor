@@ -42,10 +42,8 @@ so none of them may be frozen.
 ## 2. The item schema
 
 ```ts
-interface BenchmarkItem {
+interface BenchmarkItem {          // the PUBLIC half: no answer
   id: string;
-  kind: 'valid' | 'invalid';
-  failureKind?: FailureKind;        // REQUIRED iff kind === 'invalid'
   premises: string[];               // model descriptions, prose
   conclusion: string;
   claimedRelation: RelationType;
@@ -55,6 +53,12 @@ interface BenchmarkItem {
   renamedVariant?: string;          // id of the item this one renames
   authorship: 'independent' | 'contested-draft';
   source: string;                   // where the item came from (erratum, misconception, textbook)
+}
+
+interface ItemLabel {               // the SCORER half: the answer
+  itemId: string;
+  kind: 'valid' | 'invalid';
+  failureKind?: FailureKind;        // REQUIRED iff kind === 'invalid'
 }
 ```
 

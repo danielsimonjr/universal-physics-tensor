@@ -40,7 +40,6 @@ const div = (a: ExprNode, b: ExprNode): ExprNode => ({ kind: 'op', op: '/', args
 /** A synthetic item for harness tests. Never a benchmark item. */
 function item(over: Partial<BenchmarkItem> & Pick<BenchmarkItem, 'id'>): BenchmarkItem {
   return {
-    kind: 'valid',
     premises: ['synthetic premise'],
     conclusion: 'synthetic conclusion',
     claimedRelation: 'derivation',
@@ -153,17 +152,13 @@ describe('validateItems — the schema and the independence rule', () => {
     expect(validateItems([item({ id: 'i' })], false).map((p) => p.id)).toEqual(['i']);
   });
 
-  it('an invalid item must name a known failure kind; a valid one must not name any', () => {
-    const problems = validateItems(
-      [
-        item({ id: 'no-kind', kind: 'invalid' }),
-        item({ id: 'bad-kind', kind: 'invalid', failureKind: 'made-up' as never }),
-        item({ id: 'valid-with-kind', failureKind: 'domain-violation' }),
-        item({ id: 'ok', kind: 'invalid', failureKind: 'analogy-promoted' }),
-      ],
-      true,
-    );
-    expect(problems.map((p) => p.id)).toEqual(['no-kind', 'bad-kind', 'valid-with-kind']);
+  it('the PUBLIC half never carries the answer: an item with `kind` or `failureKind` is refused', () => {
+    const leaky = [
+      { ...item({ id: 'has-kind' }), kind: 'valid' },
+      { ...item({ id: 'has-failure' }), failureKind: 'domain-violation' },
+      item({ id: 'clean' }),
+    ] as unknown as BenchmarkItem[];
+    expect(validateItems(leaky, true).map((p) => p.id)).toEqual(['has-kind', 'has-failure']);
   });
 
   it('the held-out split is exactly the held-out family', () => {
@@ -188,6 +183,10 @@ describe('the committed fixture tree', () => {
     const contested = loadContestedDrafts(benchmarkDir);
     expect(frozen.length).toBeGreaterThan(0);
     expect(contested.length).toBeGreaterThan(0);
+    for (const x of [...frozen, ...contested]) {
+      expect(Object.keys(x)).not.toContain('kind');
+      expect(Object.keys(x)).not.toContain('failureKind');
+    }
     for (const item of frozen) expect(item.source).toMatch(/^model-authored \(claude-fable-5-1, atlas-blind\)/);
   });
 

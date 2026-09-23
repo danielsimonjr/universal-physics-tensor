@@ -17,7 +17,6 @@ const speed: ExprNode = { kind: 'op', op: '/', args: [sym('x', L), sym('t', T)] 
 /** A fully-specified item that every instrument can run on and clear. */
 const CLEAN: BenchmarkItem = {
   id: 'clean',
-  kind: 'valid',
   premises: ['p'],
   conclusion: 'c',
   claimedRelation: 'exact-equivalence',

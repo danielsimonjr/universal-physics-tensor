@@ -16,6 +16,7 @@
  * @internal
  */
 
+import { FAILURE_KINDS } from './types.js';
 import type { FailureKind } from './types.js';
 import { mcnemar, pairedDifferenceInterval, wilsonInterval } from './stats.js';
 import type { Interval, McNemarResult } from './stats.js';
@@ -33,6 +34,48 @@ export interface ItemLabel {
   readonly kind: 'valid' | 'invalid';
   /** For an invalid item: the failure kind a correct rejection names. */
   readonly failureKind?: FailureKind;
+}
+
+/** One reason an answer key does not fit its item set. @internal */
+export interface LabelProblem {
+  readonly id: string;
+  readonly problem: string;
+}
+
+const KNOWN_FAILURES = new Set<string>(FAILURE_KINDS);
+
+/**
+ * Check an answer key against the item ids it must cover: exactly one label per
+ * item, no label for an unknown item, a known failure kind on every invalid
+ * label and none on a valid one. Takes the key as an ARGUMENT, like everything
+ * here, because no `src/` file may read the scorer half.
+ *
+ * @param itemIds - the ids of the frozen items.
+ * @param labels - the answer key.
+ * @returns every problem found, labels first in key order, then missing labels
+ * in item order; empty means the key fits.
+ * @internal
+ */
+export function validateLabels(itemIds: readonly string[], labels: readonly ItemLabel[]): LabelProblem[] {
+  const problems: LabelProblem[] = [];
+  const ids = new Set(itemIds);
+  const seen = new Set<string>();
+  for (const l of labels) {
+    const p = (problem: string): void => {
+      problems.push({ id: l.itemId, problem });
+    };
+    if (seen.has(l.itemId)) p('duplicate label');
+    seen.add(l.itemId);
+    if (!ids.has(l.itemId)) p('label for an item not in the set');
+    if (l.kind === 'invalid') {
+      if (l.failureKind === undefined) p('an invalid label must name its failureKind');
+      else if (!KNOWN_FAILURES.has(l.failureKind)) p(`unknown failureKind '${l.failureKind}'`);
+    } else if (l.failureKind !== undefined) {
+      p('a valid label must not carry a failureKind');
+    }
+  }
+  for (const id of itemIds) if (!seen.has(id)) problems.push({ id, problem: 'no label' });
+  return problems;
 }
 
 /** A condition's metrics on the frozen set. @internal */

@@ -132,7 +132,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./types.js` | `FAILURE_KINDS, HELD_OUT_FAMILY` | Import |
+| `./types.js` | `HELD_OUT_FAMILY` | Import |
 | `./types.js` | `BenchmarkItem` | Import (type-only) |
 
 **Exports:**
@@ -175,13 +175,14 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
+| `./types.js` | `FAILURE_KINDS` | Import |
 | `./types.js` | `FailureKind` | Import (type-only) |
 | `./stats.js` | `mcnemar, pairedDifferenceInterval, wilsonInterval` | Import |
 | `./stats.js` | `Interval, McNemarResult` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `ConditionAnswer`, `ItemLabel`, `ConditionMetrics`, `PairedRejection`, `AblationRow`
-- Functions: `scoreCondition`, `pairedRejection`, `scoreAblation`
+- Interfaces: `ConditionAnswer`, `ItemLabel`, `LabelProblem`, `ConditionMetrics`, `PairedRejection`, `AblationRow`
+- Functions: `validateLabels`, `scoreCondition`, `pairedRejection`, `scoreAblation`
 
 ---
 
@@ -6126,12 +6127,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 348 |
 | Total Modules | 11 |
-| Total Lines of Code | 68589 |
-| Total Exports | 2445 |
+| Total Lines of Code | 68633 |
+| Total Exports | 2446 |
 | Total Re-exports | 1229 |
 | Total Classes | 58 |
-| Total Interfaces | 357 |
-| Total Functions | 551 |
+| Total Interfaces | 358 |
+| Total Functions | 552 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 483 |

@@ -3,7 +3,7 @@ metadata:
   version: 0.45.2
   totalFiles: 348
   totalModules: 11
-  totalExports: 2445
+  totalExports: 2446
 entryPoints:
   - file: src/index.ts
     type: main
@@ -143,7 +143,6 @@ modules:
       internalDependencies:
         - file: ./types.js
           imports:
-            - FAILURE_KINDS
             - HELD_OUT_FAMILY
         - file: ./types.js
           imports:
@@ -236,6 +235,9 @@ modules:
       internalDependencies:
         - file: ./types.js
           imports:
+            - FAILURE_KINDS
+        - file: ./types.js
+          imports:
             - FailureKind
           typeOnly: true
         - file: ./stats.js
@@ -249,16 +251,19 @@ modules:
             - McNemarResult
           typeOnly: true
       exports:
+        - validateLabels
         - scoreCondition
         - pairedRejection
         - scoreAblation
       interfaces:
         - ConditionAnswer
         - ItemLabel
+        - LabelProblem
         - ConditionMetrics
         - PairedRejection
         - AblationRow
       functions:
+        - validateLabels
         - scoreCondition
         - pairedRejection
         - scoreAblation
@@ -16718,11 +16723,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 348
   totalModules: 11
-  totalLinesOfCode: 68589
-  totalExports: 2445
+  totalLinesOfCode: 68633
+  totalExports: 2446
   totalClasses: 58
-  totalInterfaces: 357
-  totalFunctions: 551
+  totalInterfaces: 358
+  totalFunctions: 552
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 606

@@ -19,7 +19,7 @@
 
 import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
-import { FAILURE_KINDS, HELD_OUT_FAMILY } from './types.js';
+import { HELD_OUT_FAMILY } from './types.js';
 import type { BenchmarkItem } from './types.js';
 
 /** One reason an item set is not admissible. @internal */
@@ -27,8 +27,6 @@ export interface ItemProblem {
   readonly id: string;
   readonly problem: string;
 }
-
-const KNOWN_FAILURES = new Set<string>(FAILURE_KINDS);
 
 /**
  * Validate an item set against the schema and the rules that make it a benchmark.
@@ -54,11 +52,10 @@ export function validateItems(items: readonly BenchmarkItem[], frozen: boolean):
     if (item.authorship !== wanted) {
       p(`authorship '${item.authorship}' where the ${frozen ? 'frozen' : 'contested'} set requires '${wanted}'`);
     }
-    if (item.kind === 'invalid') {
-      if (item.failureKind === undefined) p('an invalid item must name its failureKind');
-      else if (!KNOWN_FAILURES.has(item.failureKind)) p(`unknown failureKind '${item.failureKind}'`);
-    } else if (item.failureKind !== undefined) {
-      p('a valid item must not carry a failureKind');
+    // The answer lives in the scorer half. A public item that carries it would
+    // hand the key to any condition that reads the public file.
+    if ('kind' in item || 'failureKind' in item) {
+      p('the public half carries the answer (kind/failureKind); it belongs in scorer/labels.json');
     }
     if ((item.family === HELD_OUT_FAMILY) !== (item.split === 'held-out')) {
       p(`the held-out split is exactly the '${HELD_OUT_FAMILY}' family; got family '${item.family}' in split '${item.split}'`);

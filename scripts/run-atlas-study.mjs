@@ -28,7 +28,7 @@ const distImport = (...parts) => import(pathToFileURL(resolve(repoRoot, 'dist', 
 
 const { loadFrozenItems } = await distImport('atlas', 'benchmark', 'loader.js');
 const { runAtlasCondition, ABLATION_CONFIGS } = await distImport('atlas', 'benchmark', 'run-atlas.js');
-const { scoreCondition, pairedRejection, scoreAblation } = await distImport('atlas', 'benchmark', 'study.js');
+const { scoreCondition, pairedRejection, scoreAblation, validateLabels } = await distImport('atlas', 'benchmark', 'study.js');
 
 const benchmarkDir = resolve(repoRoot, 'tests', 'fixtures', 'atlas', 'benchmark');
 const items = loadFrozenItems(benchmarkDir);
@@ -41,6 +41,11 @@ if (items.length === 0) {
 }
 
 const labels = JSON.parse(readFileSync(resolve(benchmarkDir, 'scorer', 'labels.json'), 'utf-8'));
+const labelProblems = validateLabels(items.map((i) => i.id), labels);
+if (labelProblems.length > 0) {
+  console.error(`run-atlas-study: the answer key does not fit the frozen set: ${labelProblems.map((p) => `${p.id}: ${p.problem}`).join('; ')}`);
+  process.exit(4);
+}
 const pkg = JSON.parse(readFileSync(resolve(repoRoot, 'package.json'), 'utf-8'));
 
 const conditions = { atlas: runAtlasCondition(items) };

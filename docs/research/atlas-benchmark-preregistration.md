@@ -143,3 +143,12 @@ thresholds, the held-out family and the criteria in §3–§7 do not change.
   conditions, and no out-of-process worker exists. Also, the public item schema carries `kind` and
   `failureKind` (the answer). This must move to the scorer half before any such condition reads
   `public/items.json`.
+
+**Amendment 3 (2026-09-22) — the answer leaves the public half.** The public item schema carried
+`kind` and `failureKind`, which are the answer. The atlas condition never read them, but any LLM
+or embedding condition fed `public/items.json` would have read the key. Both fields now live only
+in `scorer/labels.json`; the loader refuses a public item that carries either, and
+`validateLabels` checks the key against the set. The items, the labels, the freeze and every
+count are unchanged. A rerun of the study produced a byte-identical results file.
+
+- **Frozen set.** SHA-256 of the canonical JSON: `6ab7c2c32358ebbddfdc73cad118095fdf33f4770c07230f622febe2eeedc8d8`.

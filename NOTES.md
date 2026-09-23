@@ -47,9 +47,6 @@ Those are different claims and merging them produces a false green.
 
 - A **flaky test** has never been captured. A large number of green runs is evidence about those
   runs, not about the defect. It stays **OPEN** until captured failing, with its name and output.
-- The **public benchmark item schema carries the answer** (`kind`, `failureKind`). Harmless to the
-  atlas condition, which never reads them, and fatal to any LLM condition fed `public/items.json`.
-  Filed in `todo.md`.
 - **Sprint 0 closure is unverified.** The Phase 0 curation-cost log said on 2026-09-20 that Sprint
   0 was not closed: `docs-fresh` was red and the wrap checklist was incomplete. `docs-fresh` was
   green on every push checked on 2026-09-22; the wrap checklist has not been re-checked.

@@ -1,8 +1,6 @@
 [
  {
   "id": "mb-diffusion-1-09",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
   "premises": [
    "Fick's first law states that the diffusive flux of a solute is proportional to the negative concentration gradient, J = -D dc/dx, where D is the diffusion coefficient of the solute in the given solvent.",
    "Conservation of solute gives the continuity equation dc/dt + dJ/dx = 0."
@@ -125,8 +123,6 @@
  },
  {
   "id": "mb-diffusion-2-09",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
   "premises": [
    "A rigid sphere of radius a is suspended in an unbounded incompressible Newtonian fluid of shear viscosity eta at temperature T; the Reynolds number of its motion is negligible, so the surrounding flow is Stokes flow.",
    "The mobility mu is defined through the steady drift velocity under a constant applied force, v = mu F, and the Einstein relation D = mu k_B T holds."
@@ -261,8 +257,6 @@
  },
  {
   "id": "mb-waves-1-09",
-  "kind": "invalid",
-  "failureKind": "omitted-premise",
   "premises": [
    "A linear, homogeneous, time-invariant medium supports plane waves exp(i(kx - omega t)) with a dispersion relation omega = omega(k), and the group velocity is v_g = d omega/dk.",
    "A narrow-band wave packet centred at k_0 carries a time-averaged energy density <w> and a time-averaged energy flux <S>, and the energy transport velocity is defined by v_E = <S>/<w>.",
