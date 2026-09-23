@@ -3,18 +3,17 @@
 Authorized by the Sprint 6 entry in [`ACTIVE.md`](ACTIVE.md). Briefs:
 [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) §Sprint 6.
 
-## 0. What Phase 6 can and cannot do today
+## 0. What Phase 6 depends on
 
-The study (S6.1) and the ablation (S6.2) score the FROZEN benchmark set. That set is empty until
-independent authors exist (Phase 5 design note §0). **The study script's behaviour on the empty set
-was MEASURED: it exits 3 and writes nothing. Its behaviour on a NON-empty set has NEVER RUN.**
-`scoreCondition`, `pairedRejection` and `scoreAblation` are unit-tested on synthetic in-memory
-labels. The end-to-end path (load a real frozen set, score it, write the results file) has not
-been exercised, and "measured" must not be read as "exercised". The first run on real items is
-also that path's first test.
+The study (S6.1) and the ablation (S6.2) score the FROZEN benchmark set, so they are only as good
+as that set (Phase 5 design note §0). On an EMPTY set the study script exits 3 and writes nothing:
+an empty set is not a study. `scoreCondition`, `pairedRejection` and `scoreAblation` are
+unit-tested on synthetic in-memory labels; only a run on real items exercises the end-to-end path
+(load the frozen set, score it, write the results file), and "measured" must not be read as
+"exercised".
 
-S6.7 moves symbols onto the public API. That is an ADR-level decision, so the review is written
-and sent to Mothership, and nothing is applied.
+S6.7 moves symbols onto the public API. That is an ADR-level decision, and it belongs to
+Mothership ([`Atlas-API-Review.md`](Atlas-API-Review.md)).
 
 ## 1. Link prediction (S6.3) — the one result
 

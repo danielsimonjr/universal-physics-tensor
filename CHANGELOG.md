@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-22) — status moved out of the design documents; the repo gains its control files
+
+- **The Atlas planning documents now state design only.** MET/UNMET/OPEN markers, progress counts,
+  dates and "today" wording were removed from `Atlas-Phase-{0,4,5,6}-Design.md`,
+  `Atlas-API-Review.md`, `Atlas-Governance.md`, `Atlas-Phase-0-Curation-Cost.md` and
+  `Atlas-Roadmap-Implementation-Plan.md`. Each document keeps its intent, the criteria as
+  DEFINED, and the reasoning. The status moved to `NOTES.md`. The history was already in this
+  CHANGELOG, so it was deleted there rather than copied. The exit-criteria table in Phase 4 now
+  says how each criterion is CHECKED, not whether it is met.
+- **Three design statements had gone false, and nothing had flagged them:**
+  - Phase 4 still said 12 of the 18 witnesses lacked a negative control.
+  - Phase 6 still said the study path had never run.
+  - The API review still said no atlas symbol was `@public`.
+
+  That silent staleness is why status does not belong in a design document.
+- **New root files:** `AGENTS.md` (the law), `WORKFLOWS.md` (procedure), `TOOLS.md` (instruments,
+  and how each one misleads), `MEMORY.md` (stateless facts) and `NOTES.md` (dated state). Mothership
+  drafted them. They were corrected before commit:
+  - AGENTS.md said no agent may author a frozen item. That contradicts the owner's rule allowing
+    atlas-blind model authors.
+  - Status was routed to a `status.md` that is outside the repository.
+  - NOTES.md was already stale on kappa and on the study run.
+  - Several facts appeared in two or three of the files.
+- `CLAUDE.md` still duplicates facts that now have a home in those files. That move is filed in
+  `todo.md`.
+
 ### Added (2026-09-22) — the benchmark set exists: model-authored, model-rated, and run once
 
 - **125 frozen items and 3 contested**, written and rated by `claude-fable-5-1` instances

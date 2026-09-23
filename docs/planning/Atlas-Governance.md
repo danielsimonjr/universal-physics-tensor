@@ -62,9 +62,9 @@ TypeScript.
 
 - **Code:** MIT (`LICENSE`).
 - **Data** (`data/atlas/*.json`, `*.jsonld`, `qudt-resolution.json`, `witness-results.json`): in
-  the repository and covered by the same `LICENSE` today. **A separate data licence, such as a
-  Creative Commons licence for the exported atlas, is an owner decision and has not been made
-  here.** This note records the current state and does not choose one.
+  the repository, and covered by its `LICENSE` unless a separate data licence is chosen. **A
+  separate data licence, such as a Creative Commons licence for the exported atlas, is an owner
+  decision.** This note does not choose one.
 - **Benchmark items:** contributed into this repository under its licence unless the
   pre-registration note records otherwise by amendment.
 - **Formal references** point at external proof libraries under their own licences. UPT records

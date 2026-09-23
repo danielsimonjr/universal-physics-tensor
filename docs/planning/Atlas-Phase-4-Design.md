@@ -214,14 +214,11 @@ Four models: random walk, Fick, heat, free Schrödinger. Three bridges with thre
 | `ab-heat-diffusion` | exact-equivalence | WD2: FTCS heat solution in κ, ρ, c_p vs Fick with D = κ/(ρc_p); 4.48e-4 → 1.12e-4 for 80 → 160 cells (ratio 4.00). WD2s: CAS |
 | `ab-schrodinger-diffusion` | analytic-continuation | W5 (reused), WD3: residual of ∂τφ = (ħ/2m)∂²φ, 3.27e-3 → 2.03e-4 for h 0.1 → 0.025 (ratio 16.1). WD3b: ∫φ² decays |
 
-- **Every tolerance was set AFTER measurement** at three or more resolutions. **Intent: each numeric
-  witness has a NEGATIVE CONTROL. Status: MET 2026-09-22, for all 18 registered witnesses** (numeric
-  14/14, CAS 4/4). It was first stated as done while it was UNMET — only 5 numeric and 1 CAS had one —
-  and that claim is retracted in the CHANGELOG. The 12 missing controls are in
-  `tests/atlas/negative-controls.test.ts`. Each feeds the real runner one physically plausible wrong
-  hypothesis. Each is paired with a meta-check that the true spec checks, so the control can fail.
-  Numeric wrong hypotheses are REFUTED. CAS wrong dictionaries are UNRESOLVED (not simplified to zero),
-  not refuted, and earn no tag. The wrong heat dictionary D = κρ/c_p misses by 0.32 (650× the
+- **Every tolerance was set AFTER measurement** at three or more resolutions. **Every registered
+  witness has a NEGATIVE CONTROL.** A control feeds the real runner one physically plausible wrong
+  hypothesis, and is paired with a meta-check that the true spec checks, so the control can fail.
+  A numeric wrong hypothesis is REFUTED. A CAS wrong dictionary is UNRESOLVED (not simplified to
+  zero), not refuted, and earns no tag. The wrong heat dictionary D = κρ/c_p misses by 0.32 (650× the
   tolerance). The wrong Wick coefficient ħ/m leaves a residual above 0.1 however small h gets.
 - **A leak removed before it landed:** the first FTCS solver took its Dirichlet edge values from
   the Fick solution with D = κ/(ρc_p). That fed the claim under test into the side meant to be
@@ -255,23 +252,19 @@ The Klein–Gordon bound states `delta` as the EXACT phase error at the domain e
 term. The pendulum record's lesson carries over: a truncated series can sit below the error it
 claims to bound. The machine horizon is the π/2-drift time.
 
-**The "≥ 20 bridges" criterion is OPEN at 12, and it is NOT cut.** The scope rule allows a cut only
-when "measured curation cost makes 20 unreachable". The measured cost says the opposite:
-S4.4 took 18 minutes of wall-clock for three bridges with witnesses and tests (13:33–13:51), and
-S4.5 took about 20 minutes for four. The shortfall comes from SPECIFICATION: the plan's family
-briefs enumerate 5 + 3 + 4 = 12 bridges, and nothing names the other eight. Calling that a cost
-cut would be the silent conversion of an exit criterion into a description of what was finished,
-which the scope rule exists to prevent. **Sprint 4 is not declared complete until eight more
-bridges land.** "≥ 5 relation types" is MET: six (exact-equivalence, approximation,
-coarse-graining, analytic-continuation, restriction, derivation), pinned in
-`tests/atlas/families.test.ts`.
+**The "≥ 20 bridges" criterion is not cut.** The scope rule allows a cut only when "measured
+curation cost makes 20 unreachable", and the measured cost (below) does not. The plan's family
+briefs enumerate 5 + 3 + 4 = 12 bridges and name no others, so a shortfall against 20 comes from
+SPECIFICATION, not cost. Calling it a cost cut would silently convert an exit criterion into a
+description of what was finished, which the scope rule exists to prevent. The eight further
+bridges are the Sprint 4 closure below.
 
-**As built (S4.6) — ONE formal reference out of a target of five, and the honesty rule held.**
+**As built (S4.6) — formal references, and the honesty rule.**
 The search covered Physlib (`leanprover-community/physlib`, formerly PhysLean/HepLean) at
 `5ad56e24de155462acd8478458292347393d5908`, Lean `v4.34.0`. The method was the full tree listing
 (1,327 paths), grepped for every bridge's topic, and then a READ of each candidate file.
 **Axioms are MEASURED, not assumed.** I installed elan, fetched the Mathlib cache, and built the
-three candidate modules locally (14:18–14:31). `#print axioms` then reports `[propext,
+three candidate modules locally. `#print axioms` then reports `[propext,
 Classical.choice, Quot.sound]` for every statement below. A positive control, a deliberate
 `sorry`, prints `[sorryAx]`, so the probe can report a hole, and it reported none.
 
@@ -284,9 +277,8 @@ Classical.choice, Quot.sound]` for every statement below. A positive control, a 
 | `ab-chain-wave` | `TightBindingChain` is a QUANTUM tight-binding model, not a mass–spring chain | NO |
 | diffusion ×3, `ab-string-wave`, `ab-sound-speed`, `ab-klein-gordon-wave` | No heat, diffusion, acoustics, string or Klein–Gordon module. `FluidDynamics/Euler` defines the Euler equations but not their linearization. The `Wick*` files are Wick's THEOREM (QFT), not Wick rotation | NO |
 
-**Scope of the table above (corrected 2026-09-22).** It covers the 12 bridges that existed at
-S4.6. The 8 Sprint 4 closure bridges were not searched then; they have since been searched by keyword
-against the same tree, with no counterpart. The one near-miss, `NavierStokes.lean`, was read: it proves
+The table covers the twelve bridges searched at S4.6. The eight closure bridges were searched by
+keyword against the same tree, with no counterpart. The one near-miss, `NavierStokes.lean`, proves
 only conservative ↔ convective equivalence, nothing about drag on a sphere.
 
 **What the one reference certifies, and what it does not.** It certifies the bridge's
@@ -301,8 +293,7 @@ and the reference still names only the linearization statement.
 and pins the reference's content. `formally-proved` is derived for this one record and stored on
 none.
 
-**Sprint 4 closure: 20 bridges, criterion MET, with nothing cut.** Eight witnessed bridges were
-added (`diffusion/bridges-closure.ts`, `waves/bridges-closure.ts`, and new models `model-langevin`,
+**Sprint 4 closure.** Eight witnessed bridges were added (`diffusion/bridges-closure.ts`, `waves/bridges-closure.ts`, and new models `model-langevin`,
 `model-stokes-drag`, `model-telegraph`, `model-laplace-1d` and `model-stiff-string`):
 
 | Bridge | Relation | Witness (measured) |
@@ -321,23 +312,21 @@ each error function is monotone on its domain, so the edge value IS the supremum
 pilot keeps its five bridges: RLC → LC was considered and moved out to avoid re-scoping a
 delivered pilot, and the stiff-string limit replaced it.
 
-**ROADMAP Phase 4 exit criteria — the tally:**
+**ROADMAP Phase 4 exit criteria, and how each is checked:**
 
-| Criterion | State |
+| Criterion | How it is checked |
 |---|---|
-| ≥ 20 bridges across ≥ 5 relation types, each with a witness | **MET**: 20 bridges and 6 types (pinned in `families.test.ts`) |
-| ≥ 5 with a reviewed `formalRef` | **OPEN at 1.** Physlib has no further real counterpart (see the S4.6 table). Closing it needs formal proofs we would author OUT OF TREE, which means a new repository. That is outward-facing, so the decision was escalated to Mothership |
-| zero `formally-proved` without a `formalRef` | **MET by construction**: derived only, file allow-list lint |
-| curation cost per bridge by type, compared with Phase 0 | **Recorded below** |
+| ≥ 20 bridges across ≥ 5 relation types, each with a witness | pinned in `tests/atlas/families.test.ts` |
+| ≥ 5 with a reviewed `formalRef` | a real counterpart must exist in a formal library (the S4.6 table). Proofs authored OUT OF TREE would need a new repository, which is outward-facing and not an agent's decision |
+| zero `formally-proved` without a `formalRef` | by construction: the tag is derived only, and a file allow-list lint forbids setting it |
+| curation cost per bridge by type, compared with Phase 0 | measured below |
 
 **Curation cost, measured as wall-clock per batch (NOT per bridge; the same instrumentation gap
 Phase 0 reported):** S4.4 took 18 min for 3 bridges (coarse-graining, exact-equivalence,
 analytic-continuation). S4.5 took about 20 min for 4 (restriction, derivation ×2,
-approximation). The closure took 16 min for 8 (14:42–14:58: coarse-graining, derivation,
-approximation ×4, restriction ×2). Those batches average about 2–6 minutes per bridge, including witness design,
-measurement at three or more resolutions and tests (a negative control only where one exists —
-12 of the 18 registered witnesses lack one; see §4 and `todo.md`). **As in Phase 0,
+approximation). The closure took 16 min for 8 (coarse-graining, derivation, approximation ×4,
+restriction ×2). Those batches average about 2–6 minutes per bridge, including witness design,
+measurement at three or more resolutions and tests. **As in Phase 0,
 relation type did not visibly drive cost. Measurement discipline did:** each batch's slowest
 step was measuring a witness before writing its tolerance. The one tolerance written first
-(the S4.6 sanity lemma) failed. Per-bridge cost by type still requires per-bridge timing, and
-that remains open for Phase 5.
+(the S4.6 sanity lemma) failed. Per-bridge cost by type requires per-bridge timing.

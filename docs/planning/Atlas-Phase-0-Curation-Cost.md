@@ -4,8 +4,7 @@
 to curate **by relation type**, because that number gates Sprint 4 and Sprint 5 scope
 ([`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) §L0.2).
 
-**Status:** filled 2026-09-20 from the session record. Sprint 0 is **not closed** — master is
-CI-red on `docs-fresh` and the wrap checklist is incomplete.
+**Source:** the Sprint 0 session record.
 
 ---
 

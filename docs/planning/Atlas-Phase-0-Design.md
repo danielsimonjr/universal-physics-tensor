@@ -3,7 +3,7 @@
 **Executes:** [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md)
 Sprint 0, itself executing [`ROADMAP.md`](../../ROADMAP.md) Phase 0.
 **Baseline:** `universal-physics-tensor@0.45.2`, `master` at `58f1023`, suite ≈ 3,700 across ~353 files.
-**Status:** design note, revision 1 (2026-09-20). Authorized by the Sprint 0 line in
+Authorized by the Sprint 0 line in
 [`ACTIVE.md`](ACTIVE.md). Entry condition for Wave 1 is Adam returning GREEN, or a YELLOW whose
 items are resolved here.
 **Target:** v0.46.
@@ -322,7 +322,7 @@ src/canonical/entries/fluids-waves.ts:48       const SPRING_CONSTANT = dim(0, 1,
 ```
 
 **Not in the plan, found while checking: `SPRING_CONSTANT` is defined TWICE**, in `mechanics.ts`
-and again in `fluids-waves.ts`, with identical arguments. Harmless today because the values agree,
+and again in `fluids-waves.ts`, with identical arguments. Harmless while the values agree,
 but it is two sources of truth for one dimension and it is exactly the drift this workspace keeps
 producing. S0.1 redefines it once under `src/atlas/oscillators/dimensions.ts` and its test asserts
 agreement with **both** entry-file definitions, so a future divergence fails a test instead of
