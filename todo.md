@@ -328,8 +328,10 @@ warning-silencing, not debug logging).
         - [x] ARCHITECTURE.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
         - [x] ARCHITECTURE.md to 0 STE findings, stateless.
         - [x] Stale source comments found by the ARCHITECTURE audit: `src/dimensional/validator.ts:10-11` says special-function arguments are not yet checked (line ~653 checks them); `src/dimensional/metric.ts:35-39` says `'computed'` auto-differentiates the metric (lowering treats it as constant).
+        - [ ] COMPONENTS.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
         - [ ] COMPONENTS.md to 0 STE findings, stateless.
-        - [ ] DEPENDENCY_GRAPH.md findings fixed at the SOURCE module doc comments, then regenerated.
+        - [x] DEPENDENCY_GRAPH.md findings fixed at the SOURCE module doc comments, then regenerated.
+        - [ ] The 5 living docs (PHYSICS_MAP, benchmarks, bridge-gradient-tutorial, intelligent-index-tutorial, archive/README): full-claim audit, fact fix and STE pass each.
       - [x] Rename the `@internal` atlas `AdjudicationVerdict` (a bridge-membership verdict) so it no longer shares a name with the public composition `AdjudicationVerdict` (`duplicate-symbols.md`).
       - [x] `repo_map` files `tests/tools/plan-doc-audit.test.ts` in the `tools` zone because the path contains `tools/`; report to the `skills` repo owner.
 

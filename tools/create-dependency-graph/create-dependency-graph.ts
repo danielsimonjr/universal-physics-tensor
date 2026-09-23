@@ -1370,6 +1370,40 @@ function generateMermaidDiagram(modules: ModuleMap, files: ParsedFile[]): string
 /**
  * Generate Markdown output
  */
+/**
+ * An export list longer than this renders as a fenced `text` block under its label instead of an
+ * inline list of code spans. An identifier list is data, not prose: a long inline list reads as a
+ * run-on sentence to a prose checker and to a reader. Lists at or under the threshold keep the
+ * inline form.
+ */
+const LONG_EXPORT_LIST_THRESHOLD = 8;
+/** Target line width inside the fenced block. */
+const EXPORT_LIST_WRAP_WIDTH = 100;
+
+function renderExportList(lines: string[], label: string, names: readonly string[]): void {
+  if (names.length === 0) return;
+  if (names.length <= LONG_EXPORT_LIST_THRESHOLD) {
+    lines.push(`- ${label}: \`${names.join('`, `')}\``);
+    return;
+  }
+  lines.push(`- ${label}:`);
+  lines.push('');
+  lines.push('  ```text');
+  let row = '';
+  names.forEach((name, i) => {
+    const piece = i < names.length - 1 ? `${name},` : name;
+    if (row !== '' && row.length + 1 + piece.length > EXPORT_LIST_WRAP_WIDTH) {
+      lines.push(`  ${row}`);
+      row = piece;
+    } else {
+      row = row === '' ? piece : `${row} ${piece}`;
+    }
+  });
+  if (row !== '') lines.push(`  ${row}`);
+  lines.push('  ```');
+  lines.push('');
+}
+
 function generateMarkdown(files: ParsedFile[], modules: ModuleMap, stats: Statistics, circularDeps: CircularDependencyResult, matrix: DependencyMatrix): string {
   const lines: string[] = [];
   const projectName = packageJson.name || 'Project';
@@ -1473,24 +1507,12 @@ function generateMarkdown(files: ParsedFile[], modules: ModuleMap, stats: Statis
       // Exports
       if (file.exports.named.length > 0 || file.exports.default || file.exports.reExported.length > 0) {
         lines.push('**Exports:**');
-        if (file.exports.classes.length > 0) {
-          lines.push(`- Classes: \`${file.exports.classes.join('`, `')}\``);
-        }
-        if (file.exports.interfaces.length > 0) {
-          lines.push(`- Interfaces: \`${file.exports.interfaces.join('`, `')}\``);
-        }
-        if (file.exports.enums.length > 0) {
-          lines.push(`- Enums: \`${file.exports.enums.join('`, `')}\``);
-        }
-        if (file.exports.functions.length > 0) {
-          lines.push(`- Functions: \`${file.exports.functions.join('`, `')}\``);
-        }
-        if (file.exports.constants.length > 0) {
-          lines.push(`- Constants: \`${file.exports.constants.join('`, `')}\``);
-        }
-        if (file.exports.reExported.length > 0) {
-          lines.push(`- Re-exports: \`${file.exports.reExported.join('`, `')}\``);
-        }
+        renderExportList(lines, 'Classes', file.exports.classes);
+        renderExportList(lines, 'Interfaces', file.exports.interfaces);
+        renderExportList(lines, 'Enums', file.exports.enums);
+        renderExportList(lines, 'Functions', file.exports.functions);
+        renderExportList(lines, 'Constants', file.exports.constants);
+        renderExportList(lines, 'Re-exports', file.exports.reExported);
         if (file.exports.default) {
           lines.push(`- Default: \`${file.exports.default}\``);
         }

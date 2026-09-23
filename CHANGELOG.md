@@ -8,6 +8,21 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `create-dependency-graph`: long export lists render as fenced blocks
+
+- **Why.** `DEPENDENCY_GRAPH.md`'s 13 Simplified-Technical-English findings were not prose: they were
+  generated identifier lists (`- Re-exports: …`, up to 517 words) that read as run-on sentences.
+  An identifier list is data, so the generator now renders any export list longer than
+  `LONG_EXPORT_LIST_THRESHOLD` (8) names as a wrapped `text` fence under its label; shorter lists
+  keep the inline form. `ste_check` on the file: 13 → 0. (The plan had said these findings came
+  from source doc comments; they did not.)
+- **No data changed, proven.** A names-only extraction of `DEPENDENCY_GRAPH.md` before and after is
+  identical: 637 lists, 2,790 names, same order; 29 lists became fences. Positive controls: a name
+  altered inside a fenced list and inside an inline list are both detected. `dependency-graph.json`,
+  `.yaml` and `dependency-summary.compact.json` are byte-unchanged.
+- A generated-format change for `repo-tools depgraph` to adopt (Mothership's approval, carried into
+  that spec).
+
 ### Changed (2026-09-23) — `ARCHITECTURE.md` in Simplified Technical English, stateless
 
 - 44 STE findings fixed, prose only; `ste_check` reports 0. Long enumerations (the composition-layer
