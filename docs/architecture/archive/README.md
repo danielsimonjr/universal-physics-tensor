@@ -14,6 +14,6 @@ that.
 Live documents remain in `docs/architecture/`: ARCHITECTURE, OVERVIEW,
 COMPONENTS, API, DATAFLOW, DEPENDENCY_GRAPH (+ generated json/yaml),
 TEST_COVERAGE, benchmarks.md, the tutorials, BRIDGE-PHYSICS-AUDIT-v2
-(carries the standing contested-trio dispositions), and the
-current-release records (v0.8.0-catalog-adjudication, v0.9.0-baseline,
+(carries the standing contested-trio dispositions), and the older
+release records kept beside them (v0.8.0-catalog-adjudication, v0.9.0-baseline,
 v0.9.0-phase-1-vet, v0.9.0-tsc-tests-baseline.txt).

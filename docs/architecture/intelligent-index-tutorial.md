@@ -6,7 +6,7 @@
 > The drift gate treats a missing Verification section as a failure, so the opt-out is
 > stated here explicitly rather than left to be inferred from its absence.
 
-> v0.7 Proposal 1 deliverable. The `LabeledTensor` wrapper carries
+> The `LabeledTensor` wrapper carries
 > persistent physics-axis identity over the existing
 > `TensorEngine` einsum surface. Contractions match by identity,
 > not by string-equality coincidence.
@@ -14,7 +14,7 @@
 ## What problem does this solve?
 
 Two bridges in the catalog might both contract over "the quantum
-scale axis." Pre-v0.7.0, the AST-side label was a plain string like
+scale axis." On the AST side, an index label is a plain string like
 `'μ'` — bridge author A writes `'μ'`, bridge author B writes `'μ'`,
 and they contract by happy coincidence. If A renames to `'mu'`,
 the contraction silently breaks; if A and B *mean* different things
@@ -34,8 +34,8 @@ import {
   Axes,
   LabeledTensor,
   makeIndex,
-} from '@danielsimonjr/universal-physics-tensor';
-import { Float64ReferenceEngine } from '@danielsimonjr/universal-physics-tensor';
+} from 'universal-physics-tensor';
+import { Float64ReferenceEngine } from 'universal-physics-tensor';
 
 const engine = new Float64ReferenceEngine();
 
@@ -100,11 +100,11 @@ use `makeIndex` only when you genuinely want a fresh local index.
 disagree on `axis` (only possible via direct `makeIndex` mis-use
 or off-registry index construction), `contract` throws
 `AxisMismatchError` before calling `engine.einsum`. The error
-names both indices, both axes, both operand positions.
+names the shared index id and both axes.
 
 ### Bridge-level demo
 
-`src/bridges/perihelion-precession-labeled.ts` is the v0.7.0
+`src/bridges/perihelion-precession-labeled.ts` is the
 single-bridge demonstration. It adds an alternative entry point
 `evaluatePerihelionPrecessionLabeled(inputs, engine)` that wraps
 the three perihelion-advance quantities in a rank-1 `LabeledTensor`
@@ -125,16 +125,16 @@ The full design is in
   the existing `TensorSymbolNode.indices` or rewire
   `computeContraction`. AST and engine layers stay intact;
   `LabeledTensor` sits as the catalog-facing surface.
-- **Decision #2 (field set).** v0.7.0 ships only the §2.2 sketch
+- **Decision #2 (field set).** `UniversalIndex` has only the §2.2 sketch
   fields (`id`, `axis`, `name`, `tags?`, `limits?`, `notes?`).
-  `prime` and `arrow` (ITensor-style) are explicitly v0.8.0+.
+  `prime` and `arrow` (ITensor-style) are not implemented.
 - **Decision #3 (identity matching).** `contract` matches by
   `UniversalIndexId` equality only. Same `axis` + `name` with
   different `id`s = different physics axes.
 - **Decision #7 (runtime axis-mismatch).** Caught by
   `AxisMismatchError` at runtime; compile-time detection via
-  template literal types is v0.8.0+ research.
+  template literal types is not implemented.
 
-Non-goals for v0.7.0: bulk-migrating all 44 bridges, the
+Non-goals: bulk-migrating every catalog bridge, the
 `migrate-strings-to-indices` codemod, AST-level integration, and
 QN-aware sector storage (ITensor §8.2).

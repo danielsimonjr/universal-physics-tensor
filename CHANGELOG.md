@@ -8,6 +8,25 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — the two tutorials and the archive README corrected against the source
+
+A read-only audit (Opus) of the living docs; an Opus review (in-session, not human) ran every new
+example and FAILED two passages, both fixed.
+
+- **`bridge-gradient-tutorial.md`: the walkthrough did not run.** It called `bridgeGradient` with a
+  `MathTSEngine`, which throws `NumericalBackendError` on the plain-JS catalog evaluators (engine AD
+  traces only engine ops). The walkthrough now uses `bridgeGradientNumerical` (verified output:
+  value 6.17e-8 K, gradient `{ M_kg: -3.10e-38 }`), and the doc names all four gradient functions,
+  including the exact-AD `bridgeGradientAST` / `bridgeGradientASTById` (which need the
+  `mathts-autograd` and `mathts-tensor` peers). The package specifier was wrong in both tutorials
+  (`@danielsimonjr/universal-physics-tensor`; the package is `universal-physics-tensor`), and a
+  see-also path now points into `archive/`.
+- **`intelligent-index-tutorial.md`:** `AxisMismatchError` names the shared index id and both
+  axes, not operand positions; release-labelled plans ("v0.8.0+") are stated as present fact.
+- **`archive/README.md`:** the v0.8/v0.9 records beside the archive are older release records, not
+  the current release (the package is at 0.45.x). The audit also called the "v0.4.x through v0.7.x"
+  range false; the review showed it is true (v0.4.5 … v0.7.2), so it stays.
+
 ### Changed (2026-09-23) — `create-dependency-graph`: long export lists render as fenced blocks
 
 - **Why.** `DEPENDENCY_GRAPH.md`'s 13 Simplified-Technical-English findings were not prose: they were
