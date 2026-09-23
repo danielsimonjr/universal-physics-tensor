@@ -60,6 +60,8 @@ Those are different claims and merging them produces a false green.
 
 ### Measured facts about the tree (moved from `CLAUDE.md`; re-measure before quoting)
 
+- **Lines of code (whole repository):** 135,606, from `repo_map` `totalLinesOfCode`, measured
+  2026-09-23 at `67caf85`. Not gated; see `docs/architecture/OVERVIEW.md`.
 - **Toolchain:** TypeScript `^7.0.2` (verified 2026-09-22). The full suite ran 4,659 tests at
   `cbf2e40` (2026-09-22); it took about 58 s warm when measured on 2026-09-21.
 - **Bridge catalog** (measured 2026-09-21 from the built registries): 55 bridges, IDs 11–65, which

@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — the architecture-docs gate stops checking lines of code
+
+- `totalLinesOfCode` is no longer a gated claim in `docs/architecture/OVERVIEW.md` (Mothership,
+  option b). It changed on almost every edit and blocked two pushes in a row. A claim that fails
+  on every push trains readers to update it without reading it. The gate now holds only claims that
+  change when the STRUCTURE changes: files, exports, entry roots, orphans. The figure itself, with
+  its source and date, moved to `NOTES.md`, because a dated measurement does not belong in an
+  architecture doc (AGENTS.md rule 6).
+- Proven both ways with temporary edits, reverted afterwards. A non-exported code edit moved lines
+  of code from 135,606 to 135,609, and the gate PASSED with no docs touch-up. A new tracked source
+  file FAILED it (`totalSourceFiles` 843 → 844). A first probe used exported constants and failed on
+  `totalExports`; that change is structural, so the gate was right to fail it.
+
 ### Changed (2026-09-23) — the study results lead with the abstention finding; the gemma rerun is declined
 
 - `docs/research/atlas-study-results.md` now states, NEXT TO the criterion-2 verdict, that the atlas

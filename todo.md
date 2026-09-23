@@ -296,6 +296,7 @@ warning-silencing, not debug logging).
       - [ ] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
       - [x] `repo_map.py check . --docs docs/architecture` fails: hand-written counts in API, ARCHITECTURE, COMPONENTS, DATAFLOW, duplicate-symbols, FILE_INVENTORY and OVERVIEW are stale (e.g. 710 source files claimed, 842 actual), and COMPONENTS.md has no atlas section.
       - [x] Add the architecture-docs check (`repo_map.py check`) to CI under a name that matches its scope; prove it RED on master before fixing the docs.
+      - [x] Drop `totalLinesOfCode` from the gated Verification table (Mothership 2026-09-23, option b); prove the gate passes a code edit without a docs touch-up and still fails on a structural claim.
       - [ ] The architecture-docs gate runs in the pre-push hook only. CI cannot read `repo_map.py` (private `skills` repo) without a credential; the credential decision is with Mothership / the owner.
       - [ ] `docs/architecture/` still carries release versions, "Currently" counts and 691 Simplified-Technical-English findings (`ste_check.py`) that the skill forbids; the ungated prose needs a full one-writer pass.
       - [ ] Rename the `@internal` atlas `AdjudicationVerdict` (a bridge-membership verdict) so it no longer shares a name with the public composition `AdjudicationVerdict` (`duplicate-symbols.md`).

@@ -215,9 +215,13 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 | Claim | Value | Source |
 |---|---|---|
 | totalSourceFiles | 843 | dependency-graph.json |
-| totalLinesOfCode | 135606 | dependency-graph.json |
 | totalExports | 2990 | dependency-graph.json |
 | entryRoots | 5 | dependency-graph.json |
+
+**Lines of code are not a gated claim.** They change on almost every edit, so a gated figure
+would fail on every push and teach readers to update it without reading it. The current figure,
+with its source and the date it was measured, is in `NOTES.md`. The gate holds only claims that
+change when the STRUCTURE changes.
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
