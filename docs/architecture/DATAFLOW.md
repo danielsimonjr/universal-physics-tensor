@@ -251,7 +251,7 @@ Caller wraps computation in a closure
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Honest note**: `forwardGrad` / `reverseGrad` operate on user-supplied closures, not on `ExprNode` trees. Exact AD over a bridge's scalar RHS AST is a separate path: `bridgeGradientAST` (`src/diff/bridge-ast-gradient.ts`) lowers the AST through the optional `@danielsimonjr/mathts-autograd` peer. The `derivativeStrategy: 'computed'` default on `MetricTensorNode` lowers ∂g to zero in the AST evaluation path (`src/numerical/derivative-lowering.ts`), because a metric-tensor input carries constant values — it does not route through `forwardGrad` / `reverseGrad`.
+**Honest note**: `forwardGrad` / `reverseGrad` operate on user-supplied closures, not on `ExprNode` trees. Exact AD over a bridge's scalar RHS AST is a separate path: `bridgeGradientAST` (`src/diff/bridge-ast-gradient.ts`) lowers the AST through the optional `@danielsimonjr/mathts-autograd` peer. In the AST evaluation path, the `derivativeStrategy: 'computed'` default on `MetricTensorNode` lowers ∂g to zero (`src/numerical/derivative-lowering.ts`). The reason: a metric-tensor input carries constant values. This path does not route through `forwardGrad` / `reverseGrad`.
 
 ---
 
@@ -308,7 +308,7 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
 
 The catalog is a static array — no async, no computation. `dimensional_signature` is `null` for entries not yet encoded as ASTs; `string` (output of `format()`) for the entries with dimensional analysis in `src/bridges/equations/`.
 
-Two derived views sit beside the array: `adjudicateCatalog()` applies the bridge-membership criterion (with the `rejected.ts` negative catalog as overlay) and returns a per-entry `BridgeVerdict` report, and `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
+Two derived views sit beside the array. `adjudicateCatalog()` applies the bridge-membership criterion, with the `rejected.ts` negative catalog as overlay, and returns a per-entry `BridgeVerdict` report. `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
 
 ---
 
@@ -320,7 +320,7 @@ Two derived views sit beside the array: `adjudicateCatalog()` applies the bridge
 - `integrateGeodesic(inputs: GeodesicIntegratorInputs): GeodesicIntegratorResult` — fixed-step RK4.
 - `integrateGeodesicGL4(initialState: GL4State, options: GL4Options): readonly GL4Snapshot[]` — GL4 Gauss–Legendre 4th-order symplectic integrator.
 
-The RK4 path is traced below. The GL4 path does not take the RK4 shape: it works on the canonical state `GL4State` (x, p), with p the covariant momentum, and takes the inverse metric `gInverseFn` and its derivatives `dgInverseFn` instead of a Christoffel closure. Instead of the explicit 4-stage Butcher tableau, it solves the implicit 2-stage Gauss–Legendre system per step (Picard fixed-point iteration on the stage values), yielding a symplectic update for the geodesic Hamiltonian H = ½ g^{μν} p_μ p_ν. GL4 returns `GL4Snapshot` entries `{ tau, x, p, v? }`; it is the preferred path for long-time integration where energy drift matters. The `findPerihelion` finder consumes `(tau, x, p)` snapshots — GL4 output, not an RK4 trajectory, which carries positions only — locates the − to + sign change of dr/dτ = g^{rν} p_ν, fits a cubic Hermite polynomial on that bracket, and refines its root by bisection on the polynomial when the analytic root misses `tauTolerance`.
+The RK4 path is traced below. The GL4 path does not take the RK4 shape. GL4 works on the canonical state `GL4State` (x, p), with p the covariant momentum. GL4 takes the inverse metric `gInverseFn` and its derivatives `dgInverseFn` instead of a Christoffel closure. GL4 does not use the explicit 4-stage Butcher tableau. Per step, GL4 solves the implicit 2-stage Gauss–Legendre system by Picard fixed-point iteration on the stage values. The result is a symplectic update for the geodesic Hamiltonian H = ½ g^{μν} p_μ p_ν. GL4 returns `GL4Snapshot` entries `{ tau, x, p, v? }`. GL4 is the preferred path for long-time integration where energy drift matters. The `findPerihelion` finder consumes `(tau, x, p)` snapshots: GL4 output, not an RK4 trajectory, which carries positions only. The finder locates the − to + sign change of dr/dτ = g^{rν} p_ν and fits a cubic Hermite polynomial on that bracket. When the analytic root misses `tauTolerance`, the finder refines the root by bisection on the polynomial.
 
 ```
 Caller prepares Christoffel-symbol closure + initial conditions
@@ -379,7 +379,7 @@ Caller prepares Christoffel-symbol closure + initial conditions
    GeodesicIntegratorResult { xFinal, vFinal, trajectory }
 ```
 
-The integrator has no `TensorEngine` dependency. It accepts a plain JS closure for the Christoffel symbol, which the caller can build using `christoffel()` and then evaluate numerically, or supply analytically (e.g., the closed-form Schwarzschild Christoffel coefficients).
+The integrator has no `TensorEngine` dependency. The integrator accepts a plain JS closure for the Christoffel symbol. The caller can build the closure with `christoffel()` and evaluate it numerically. The caller can also supply the closure analytically (e.g., the closed-form Schwarzschild Christoffel coefficients).
 
 ---
 
@@ -426,7 +426,7 @@ Caller builds a curvature node (ricci(R), einstein(R,g,gI), …)
 └─────────────────────────────────────────────────────────────┘
 ```
 
-`computeKretschmann` is the standalone numerical path for the Kretschmann scalar (factored index-raising: four single-index raisings instead of the O(4⁸) naive contraction) — used for direct sample-point diagnostics without building a full AST node.
+`computeKretschmann` is the standalone numerical path for the Kretschmann scalar. It uses factored index-raising: four single-index raisings instead of the O(4⁸) naive contraction. Use it for direct sample-point diagnostics without a full AST node.
 
 ---
 
@@ -470,7 +470,7 @@ Caller supplies metric closures + stress-energy closure + point
    For Schwarzschild vacuum (T=0, Λ=0) it is the FD floor.
 ```
 
-The `verifyKillingEquation` flow is analogous: it finite-differences the metric to assemble exact Christoffels, then evaluates ∇_μ ξ_ν + ∇_ν ξ_μ at a point and reports the residual against a tolerance.
+The `verifyKillingEquation` flow is analogous. It finite-differences the metric to assemble exact Christoffels. It then evaluates ∇_μ ξ_ν + ∇_ν ξ_μ at a point and reports the residual against a tolerance.
 
 ---
 
@@ -647,7 +647,7 @@ Caller runs `upt confront` (all bridges) or `upt confront --bridge=be-37`
 
 ## Flow 11: Discovery Funnel + Epistemic Grounding (`upt discover`)
 
-**Purpose**: Hypothesize a cross-cluster quantity identification `a ≡ b` and vet it through an ordered falsifier stack, then annotate every survivor with an honest ledger of what was actually tested — so a physicist reading `promising` knows exactly how much weight the verdict bears.
+**Purpose**: Hypothesize a cross-cluster quantity identification `a ≡ b` and vet it through an ordered falsifier stack. Then annotate every survivor with an honest ledger of what was actually tested. A physicist who reads `promising` then knows exactly how much weight the verdict bears.
 
 **Entry point**: CLI `upt discover [--source=catalog|canonical|both] [--derive] [--max-orders] [--anchor] [--show-adjudicated] [--json]` (`src/cli/commands/discover.ts`).
 
@@ -825,12 +825,12 @@ upt path model-pendulum model-lc --at theta0=0.2 T0=1 t=10
 ```
 
 **Why the discriminated union rather than a nullable number.** A caller cannot read `.bound` off
-a no-claim, because a no-claim has no `.bound`. The refusal is enforced by the type rather than by
-a documented convention, which is what stops a downstream reader treating "no bound" as zero.
+a no-claim, because a no-claim has no `.bound`. The type enforces the refusal, not a documented
+convention. The type is what stops a downstream reader treating "no bound" as zero.
 
-**The composed number would often be unchanged, and that is the danger.** Composing with the
-identity is arithmetically a no-op, so a path mixing a normed approximation with an unnormed exact
-equivalence yields the RIGHT MAGNITUDE ATTACHED TO THE WRONG NORM. The gate exists because the
+**The composed number would often be unchanged. That the number is unchanged is the danger.** Composing
+with the identity is arithmetically a no-op. So a path mixing a normed approximation with an
+unnormed exact equivalence yields the RIGHT MAGNITUDE ATTACHED TO THE WRONG NORM. The gate exists because the
 error is invisible in the arithmetic.
 
 `upt regime <family> [--at group=value ...]` shares the regime machinery and reports each model as
@@ -873,7 +873,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 **`entryRoots` is 5.** The roots are `src/index.ts`, the subpath entries
 `src/numerical/mathts-engine.ts`, `src/atlas/index.ts` and `src/composition/probe/index.ts`, and
-`src/cli/main.ts`. The last is the interesting one: it is reached only through
-`bin/upt.mjs`, a launcher that loads `dist/cli/main.js` via a path assembled at runtime. A
+`src/cli/main.ts`. The last is the interesting one: only
+`bin/upt.mjs` reaches it. That launcher loads `dist/cli/main.js` via a path assembled at runtime. A
 static resolver cannot follow that path, so `repo_map` recovers `src/cli/main.ts` as a root from
 `bin/upt.mjs`.

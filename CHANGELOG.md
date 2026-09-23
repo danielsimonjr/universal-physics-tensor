@@ -8,6 +8,16 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `DATAFLOW.md` in Simplified Technical English, stateless
+
+- 14 STE findings fixed (10 long sentences, 3 ambiguous references, 1 passive), prose only.
+  `ste_check` reports 0 for the file. Tables, fences, diagrams, headings and the Verification
+  block are byte-identical to the fact-fix commit before it, and every technical token is
+  preserved, with no removals or additions.
+- A Fable panel review (in-session, not human) FAILED one of 10 changes. It had moved `bin/upt.mjs`
+  in front of the verb, so the appositive "a launcher that loads..." attached to `src/cli/main.ts`
+  and read as false. Fixed as two sentences; the re-review PASSED all 10.
+
 ### Fixed (2026-09-23) — `DATAFLOW.md` stale facts corrected against the source
 
 A fact-fix commit, kept separate from the Simplified Technical English pass so that each commit

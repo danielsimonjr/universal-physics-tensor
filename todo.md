@@ -310,7 +310,7 @@ warning-silencing, not debug logging).
         - [x] duplicate-symbols.md to 0 STE findings, stateless.
         - [x] DATAFLOW.md stale facts in diagrams and headings corrected against measurement (fact-fix commit, before the STE commit).
         - [ ] Stale source JSDoc found during the DATAFLOW fact fix: `src/numerical/gl4-integrator.ts` header says "types + Butcher constants only" and `GL4Options` "lands in Task 3"; the `findPerihelion` `@example` calls `integrateGeodesicGL4` with a signature that does not exist.
-        - [ ] DATAFLOW.md to 0 STE findings, stateless.
+        - [x] DATAFLOW.md to 0 STE findings, stateless.
         - [ ] API.md to 0 STE findings, stateless.
         - [ ] OVERVIEW.md to 0 STE findings, stateless.
         - [ ] ARCHITECTURE.md to 0 STE findings, stateless.
