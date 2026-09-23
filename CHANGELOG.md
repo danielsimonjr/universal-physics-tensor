@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `duplicate-symbols.md` in Simplified Technical English, stateless
+
+- 6 STE findings fixed (3 long sentences, 3 ambiguous references); `ste_check` reports 0 for the
+  file. Tables, headings and the Verification block are byte-identical, and every technical token
+  is preserved, with no removals or additions.
+- A Fable panel review (in-session, not human) PASSED all 7 changes, including "unusually clean"
+  to "unusually low" and the two-branch disjunction recast as two conditionals.
+
 ### Changed (2026-09-23) — `FILE_INVENTORY.md` in Simplified Technical English, stateless
 
 - 4 STE findings fixed; `ste_check` reports 0 for the file. Tables, headings and the Verification

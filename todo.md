@@ -307,7 +307,7 @@ warning-silencing, not debug logging).
       - [ ] `docs/architecture/` still carries release versions, "Currently" counts and 691 Simplified-Technical-English findings (`ste_check.py`) that the skill forbids; the ungated prose needs a full one-writer pass.
         - [x] Mark the 45 dated historical records with `<!-- ste:historical-record -->` (separate commit; never a canonical doc).
         - [x] FILE_INVENTORY.md to 0 STE findings, stateless.
-        - [ ] duplicate-symbols.md to 0 STE findings, stateless.
+        - [x] duplicate-symbols.md to 0 STE findings, stateless.
         - [ ] DATAFLOW.md to 0 STE findings, stateless.
         - [ ] API.md to 0 STE findings, stateless.
         - [ ] OVERVIEW.md to 0 STE findings, stateless.
