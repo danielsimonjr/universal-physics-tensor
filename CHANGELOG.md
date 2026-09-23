@@ -8,6 +8,42 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — `DATAFLOW.md` stale facts corrected against the source
+
+A fact-fix commit, kept separate from the Simplified Technical English pass so that each commit
+carries one kind of change. Every correction was measured against the current tree or `dist`:
+
+- **Flow 5 (geodesic integration) described an API that does not exist.** The RK4 input bundle
+  named `dτ` and `nSteps`; the real inputs are `tauStart`, `tauEnd`, `steps` and an optional
+  `domainMinRadius`, and `christoffelFn` returns a flat `Float64Array(64)`. The result is
+  `{ xFinal, vFinal, trajectory }`, with positions sampled about 100 times, not `nSteps + 1`
+  `{ x, v }` records. The GL4 path does not take the RK4 shape: it works on the canonical state
+  (x, p) with `gInverseFn` / `dgInverseFn` and returns `GL4Snapshot[]`. `findPerihelion` reads
+  `(tau, x, p)` snapshots, so an RK4 trajectory cannot feed it. "Energy-conserving" is dropped:
+  a symplectic method bounds energy drift, and the source never claims conservation.
+- **Flow 3:** "no symbolic-tree differentiation" was false since `bridgeGradientAST`
+  (`src/diff/bridge-ast-gradient.ts`); and `derivativeStrategy: 'computed'` lowers ∂g to zero,
+  not through finite differences (`src/numerical/derivative-lowering.ts`).
+- **Flow 4:** catalog ids run 11–65, not 11–54.
+- **Flow 10:** the confrontation registry holds 19 entries, not 9. The doc now points to
+  `listConfrontations()` instead of carrying a count that no gate holds.
+- **History moved here from the doc** (it had carried it as present fact):
+  - Enumeration over the 15-edge graph (v0.10.0): 6 valid, 4 registered, 2 novel. Over the
+    41-edge graph (v0.11): 11 compositions, 7 novel, 1 collision held at the gate. Re-measured
+    2026-09-23 on the 41-edge graph: 11 compositions, 4 registered, 7 novel, 1 requiring a
+    disposition — unchanged.
+  - The flow and gate labels: Flow 8 v0.8.0 → v0.11, Flow 9 v0.10.0, the alias gate v0.11
+    (Option D), the adjudication overlay v0.31 (Phase 1), consequence annotation v0.33
+    (Phase 4-Unit-A), the grounding ledger v0.37 (PI-instrument Phase 1), the BE-36 one-sided
+    caveat v0.40, the mechanism-proxy and propose→confront assessments 2026-07-04, the atlas path
+    query Sprint 2, the Kretschmann factored raising v0.11, RK4 v0.4.0, GL4 and `findPerihelion`
+    v0.5.0, the curvature validators v0.5.0 / v0.6.0.
+  - Before `repo_map` 0.4.2 the whole CLI was absent from the dependency graph and 28 live files
+    were reported as orphans, because `bin/upt.mjs` loads `dist/cli/main.js` by a path built at
+    runtime.
+- Found while measuring, filed in `todo.md`: stale JSDoc in `src/numerical/gl4-integrator.ts`
+  and the `findPerihelion` `@example`.
+
 ### Changed (2026-09-23) — `duplicate-symbols.md` in Simplified Technical English, stateless
 
 - 6 STE findings fixed (3 long sentences, 3 ambiguous references); `ste_check` reports 0 for the
