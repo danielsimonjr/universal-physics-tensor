@@ -31,10 +31,7 @@
 | Tier | Meaning | Version guarantee |
 |------|---------|-------------------|
 | `@public` | Stable surface — symbols whose behavioral contract has settled across at least one minor release | Breaking changes require a major-version bump |
-| `@public-new` | Added in the most recent minor release(s) — behavioral contract is settled but the wider design is still evolving | May be adjusted in a subsequent minor release with a CHANGELOG note |
 | `@internal` | Implementation detail — not re-exported from `src/index.ts` | May change at any time |
-
-`@public-new` is a rolling tier: it tracks the current minor-release frontier rather than a fixed version. The v0.4.0 connection layer, the v0.5.0 curvature layer, the v0.5.1 constants, the v0.6.0 Killing/Einstein-equation/curvature-invariant exports, the v0.7.x intelligent-index/regime and bridge-gradient exports, the v0.8.0 composition/membership/confrontation exports, and the v0.10.0–v0.11 enumeration/uncertainty/namespacing-gate/Klein-Gordon/BE-23 exports were each `@public-new` when they shipped and graduate to `@public` once a following minor release leaves their contracts unchanged.
 
 > **Coverage note**: the v0.7.x additions (`LabeledTensor`, `Cell`/regime registry, `bridgeGradient`, catalog adapter, BE-53/54 evaluators) are on the snapshot-tested public surface but are documented in their own tutorials (`intelligent-index-tutorial.md`, `bridge-gradient-tutorial.md`) rather than enumerated per-symbol here. The v0.8.0 additions are summarized in [§10](#composition--membership--confrontation-layer-v080); the v0.9.0 → v0.11 additions in [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011). The v0.12–v0.14 additions are likewise on the surface but deferred to the snapshot test + `CHANGELOG.md`: the `composeSymbolic`/Observable symbolic-composition layer (v0.12), the public geometrized-units adapters `toGeometrized`/`fromGeometrized`/`geometrizedFactor`/`NonGeometrizableDimensionError` (v0.14, G-9 increment 2), the `BridgeEquations` evaluator facade (v0.14), and the `LabeledTensor` `axisOrder`/`axisOf` + `mergeAxes`/`splitAxis` extension with its `AxisOrderError`/`AxisMergeError`/`AxisSplitError` (v0.14). The v0.28 → v0.40 discovery-hardening / PI-instrument program additions (adjudication ledger, consequence propagation, the unified confrontation registry, the epistemic-grounding ledger) are itemized in [§12](#discovery-adjudication-ledger-and-consequence-propagation-v031--v033), [§13](#real-data-confrontation-subsystem-v028--v040), and [§14](#epistemic-grounding-ledger-v037). `tests/api/public-surface.test.ts` remains the authoritative enumeration (217 must-be-present runtime entries + 116 type-only symbols; the full runtime surface snapshot pins 245).
 
@@ -77,12 +74,12 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
 const active = BRIDGE_EQUATIONS.filter(e => e.status !== 'invalid');
 ```
 
-### `evaluateGravitationalLensing(inputs)` — function `@public-new`
+### `evaluateGravitationalLensing(inputs)` — function
 
 Evaluates the gravitational lensing deflection angle (bridge equation BE-51, Schwarzschild weak-field approximation).
 
 **Kind**: async function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 ```typescript
 import { evaluateGravitationalLensing } from 'universal-physics-tensor';
@@ -95,12 +92,12 @@ const result = await evaluateGravitationalLensing({
 // result.deflectionAngle: deflection in radians
 ```
 
-### `evaluatePerihelionPrecession(inputs)` — function `@public-new`
+### `evaluatePerihelionPrecession(inputs)` — function
 
 Evaluates the general-relativistic perihelion precession per orbit (bridge equation BE-52).
 
 **Kind**: async function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 ```typescript
 import { evaluatePerihelionPrecession } from 'universal-physics-tensor';
@@ -120,7 +117,7 @@ const result = await evaluatePerihelionPrecession({
 Canonical flat CODATA 2018 / SI-defined physical constants — the single source of truth across the numerical, dimensional, and bridge layers (PC-1). Defined in `src/core/constants.ts`; each is a bare `number` in SI units.
 
 **Kind**: constants (`number`)
-**Stability**: `@public-new` (added v0.5.1)
+**Stability**: `@public` (added v0.5.1)
 
 ```typescript
 import { C_SI, G_SI, HBAR_SI, K_B_SI } from 'universal-physics-tensor';
@@ -331,12 +328,12 @@ Global active-engine management for the `evaluateNumerical()` default-engine pat
 **Kind**: functions
 **Stability**: `@public`
 
-### `hasAutogradSupport(engine)` — function `@public-new`
+### `hasAutogradSupport(engine)` — function
 
 Returns `true` iff the engine implements both `forwardGrad` and `reverseGrad`. Always check before invoking AD methods.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 ```typescript
 import { hasAutogradSupport, EngineCapabilityError } from 'universal-physics-tensor';
@@ -354,37 +351,37 @@ Thrown by `evaluateNumerical()` when the AST fails validation or the lowering pa
 **Kind**: error class
 **Stability**: `@public`
 
-### `EngineCapabilityError` — error class `@public-new`
+### `EngineCapabilityError` — error class
 
 Thrown when an AD method is invoked on an engine that does not implement it.
 
 **Kind**: error class
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `DuplicateCoordinateWarning` — warning class `@public-new`
+### `DuplicateCoordinateWarning` — warning class
 
 A non-fatal warning (not thrown) emitted when duplicate coordinate labels are detected. Appears in `NumericalResult.warnings`.
 
 **Kind**: warning class
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `evaluateBE37CovariantEikonalNumerical(inputs)` — function `@public-new`
+### `evaluateBE37CovariantEikonalNumerical(inputs)` — function
 
 Numerical evaluation of the covariant eikonal phase for bridge equation BE-37 (Shapiro delay).
 
 **Kind**: async function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 ---
 
 ## Connection Layer (v0.4.0)
 
-### `christoffel(gLower, gInverse, upper, lowerA, lowerB, xCoord)` — function `@public-new`
+### `christoffel(gLower, gInverse, upper, lowerA, lowerB, xCoord)` — function
 
 Builds the Christoffel symbol Γ^λ_μν as a composite `ExprNode` tree. Returns an AST node, not a number — it can be validated and passed to `evaluateNumerical()`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 ```typescript
 import { christoffel } from 'universal-physics-tensor';
@@ -401,12 +398,12 @@ const gamma = christoffel(
 // gamma is an ExprNode — pass to evaluateNumerical()
 ```
 
-### `integrateGeodesic(inputs)` — function `@public-new`
+### `integrateGeodesic(inputs)` — function
 
 RK4 integrator for the geodesic equation in an arbitrary Lorentzian manifold. No `TensorEngine` dependency.
 
 **Kind**: function (synchronous)
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 ```typescript
 import { integrateGeodesic } from 'universal-physics-tensor';
@@ -427,40 +424,40 @@ const result = integrateGeodesic({
 
 The v0.5.0 GR-foundations release added the curvature layer: composite `ExprNode` helpers for the Ricci/Einstein/Bianchi objects, the GL4 symplectic integrator, and the perihelion finder.
 
-### `ricci(R)` — function `@public-new`
+### `ricci(R)` — function
 
 Wraps a `RiemannTensorNode` and produces the contracted Ricci tensor R_μν = R^λ_{λμν} as a composite `ExprNode` (own validator + lowering arms — no AST rewrite).
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `einstein(R, g, gInverse)` — function `@public-new`
+### `einstein(R, g, gInverse)` — function
 
 Wraps a `RiemannTensorNode` plus a metric pair and produces the composite Einstein tensor G_μν = R_μν − ½ R g_μν as an `ExprNode`. Vacuum-Einstein scope.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `bianchiResidual(R)` — function `@public-new`
+### `bianchiResidual(R)` — function
 
 Returns `{ residual, evaluate, evaluateMax }` for the cyclic second-Bianchi-identity check ∇_{[λ} R_{μν]ρσ} = 0.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `integrateGeodesicGL4(...)` — function `@public-new`
+### `integrateGeodesicGL4(...)` — function
 
 The GL4 (Gauss–Legendre 4th-order) symplectic integrator for the geodesic equation — an energy-conserving alternative to the RK4 `integrateGeodesic` for long-time integration. Returns a `GL4State` trajectory; per-step snapshots are `GL4Snapshot`, options are `GL4Options`. Exported via `numerical/index`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `findPerihelion(...)` — function `@public-new`
+### `findPerihelion(...)` — function
 
 Bisection-based perihelion finder over a geodesic trajectory; returns a `PerihelionResult`. Options are `FindPerihelionOptions`. Exported via `numerical/index`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 ---
 
@@ -468,47 +465,47 @@ Bisection-based perihelion finder over a geodesic trajectory; returns a `Perihel
 
 The v0.6.0 release added Killing-vector machinery, the Einstein field-equation node + numerical residual, and the Kretschmann curvature invariant.
 
-### `verifyKillingEquation(...)` — function `@public-new`
+### `verifyKillingEquation(...)` — function
 
 Numerically checks the Killing equation ∇_μ ξ_ν + ∇_ν ξ_μ = 0 at a point, using a hybrid implementation (exact Christoffels + analytic metric derivatives). Options are `KillingEquationOptions`; the layout-agnostic Christoffel accessor type is `ChristoffelAccess`. Exported via `numerical/killing`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `evaluateConservedCharge(...)` — function `@public-new`
+### `evaluateConservedCharge(...)` — function
 
 Evaluates the conserved charge Q = ξ^μ p_μ along a geodesic. Exported via `numerical/killing`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `validateEinsteinFieldEquation(node)` — function `@public-new`
+### `validateEinsteinFieldEquation(node)` — function
 
 Structural validator for an `EinsteinFieldEquationNode` (the AST predicate for G_μν + Λ g_μν = (8πG/c⁴) T_μν). Checks free-index agreement, per-component dim equality [L⁻²], and symmetry agreement. Returns an `EinsteinFieldEquationValidationResult`. Exported via `dimensional/einstein-equation`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `evaluateEinsteinEquationResidual(input)` — function `@public-new`
+### `evaluateEinsteinEquationResidual(input)` — function
 
 Computes the scale-normalized max residual |G_μν + Λ g_μν − κ T_μν| / |g_μν| at a coordinate point. Accepts metric closures (`MetricClosure`) + a stress-energy closure (`EinsteinEquationResidualInput`, `Vec4`); returns a dimensionless relative residual. For Schwarzschild vacuum the residual is the finite-difference truncation floor (~1e-10 relative). Exported via `numerical/einstein-equation`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `validateKretschmannScalar(node)` — function `@public-new`
+### `validateKretschmannScalar(node)` — function
 
 Structural validator for a `KretschmannScalarNode` (K = R_{ρσμν} R^{ρσμν}; scalar, dim [L⁻⁴]). Returns a `KretschmannScalarValidationResult`. Exported via `dimensional/curvature-invariants`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
-### `computeKretschmann(...)` — function `@public-new`
+### `computeKretschmann(...)` — function
 
 Numerical contraction of the Kretschmann scalar — uses the v0.11 O-4 factored index-raising algorithm (4×4⁵, replacing the earlier O(4⁸) naive contraction), diagnostic/sample-point use only. Exported via `numerical/kretschmann`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 > The `WeylTensorNode` AST kind and the `CurvatureCompositeNode<K,S>` factory also ship in v0.6.0, but are `@internal` to the main package entry — the Weyl validator is not re-exported from `src/index.ts`. See `COMPONENTS.md §Curvature composite factory`.
 
@@ -516,7 +513,7 @@ Numerical contraction of the Kretschmann scalar — uses the v0.11 O-4 factored 
 
 ## Composition / Membership / Confrontation Layer (v0.8.0)
 
-The v0.8.0 release added the composition graph (`src/composition/`), the computable bridge-membership criterion + negative catalog (`src/bridges/membership.ts`, `src/bridges/rejected.ts`), and the GW170817 real-data confrontation. All symbols below are `@public-new` and re-exported from `src/index.ts`.
+The v0.8.0 release added the composition graph (`src/composition/`), the computable bridge-membership criterion + negative catalog (`src/bridges/membership.ts`, `src/bridges/rejected.ts`), and the GW170817 real-data confrontation. All symbols below are `@public` and re-exported from `src/index.ts`.
 
 ### Composition graph (`src/composition/`)
 
@@ -552,7 +549,7 @@ Type-only additions: `Quantity`, `RegimeAttributes`, `BridgeEdge`, `EdgeConfiden
 
 ## Phase C/D, Namespacing Gate, and v0.11 Additions (v0.9.0 → v0.11)
 
-Everything in this section is `@public-new` and re-exported from `src/index.ts` unless noted otherwise.
+Everything in this section is `@public` and re-exported from `src/index.ts` unless noted otherwise.
 
 ### Phase-D enumeration + uncertainty propagation (v0.10.0)
 
@@ -660,7 +657,7 @@ build the adjudication/consequence/grounding annotators' input via public API
 without reaching into `src/composition/discovery.js`.
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 Type-only: `VettedCandidate` — the funnel's per-candidate output shape
 (`dim`, `numericallyConsistent`, `magnitudeChecked`/`ordersApart`,
@@ -695,7 +692,7 @@ const annotated = annotateAdjudications(ranked);
 ```
 
 **Kind**: functions + constant
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 Type-only: `AdjudicationVerdict`, `CandidateAdjudication`, `AnnotatedCandidate`.
 
@@ -714,7 +711,7 @@ known physics), `novel-consequence` (valid, no canonical match), or
   proposal against the canonical registry (defaults to `CANONICAL_EQUATIONS`).
 
 **Kind**: functions
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 Type-only: `ConsequenceSignal` (`'entailed' | 'novel-consequence' | 'inconclusive'`),
 `ConsequenceEvidence`, `ConsequenceAnnotatedCandidate`.
@@ -746,7 +743,7 @@ v0.40.0: BE-11, 21, 23, 35, 36, 37, 48, 51, 52.
   `SigmaComponent[]` (root-sum-square).
 
 **Kind**: functions + discriminated-union type
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 Type-only: `ObservationProvenance` (citation/year/retrieved/note — mandatory
 on every observation record), `SigmaComponent`, `ObservationKind`
@@ -772,14 +769,14 @@ const be36 = runConfrontation(36); // ConfrontationOutcome | undefined
   id is not registered.
 
 **Kind**: functions + constant
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 Type-only: `ConfrontationEntry` (`bridgeId`, `title`, `kind`, `run()`).
 
 ### Per-bridge confrontations
 
 Each wraps a bridge's own evaluator/formula against an independently-sourced
-observation. All are `@public-new` and individually re-exported from
+observation. All are `@public` and individually re-exported from
 `src/index.ts` (in addition to being reachable via the unified registry
 above).
 
@@ -803,7 +800,7 @@ documented in [§10](#composition--membership--confrontation-layer-v080) and
 [§11](#phase-cd-namespacing-gate-and-v011-additions-v090--v011).
 
 Each of the other seven confrontation functions' own result type is also
-`@public-new` and exported: `BE52ConfrontationResult`/`PerihelionObservation`,
+`@public` and exported: `BE52ConfrontationResult`/`PerihelionObservation`,
 `BE37ConfrontationResult`/`CassiniObservation`,
 `BE51ConfrontationResult`/`VLBIDeflectionObservation`,
 `BE48ConfrontationResult`/`CollapseBoundObservation`,
@@ -835,7 +832,7 @@ const ranking = decidingMeasurement(52); // Elasticity[], descending by |E_i|
 ```
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 Type-only: `Elasticity` (`{ input: string; elasticity: number }`).
 
@@ -870,7 +867,7 @@ const grounding = describeGrounding(candidate);
 ```
 
 **Kind**: function
-**Stability**: `@public-new`
+**Stability**: `@public`
 
 Type-only: `CandidateGrounding`.
 
@@ -926,32 +923,32 @@ The following are type-only symbols erased at runtime. They appear in `src/index
 | `BridgeIssueSeverity` | `bridges/index` | v0.3.0 | Known-issue severity |
 | `BridgeIssueFixable` | `bridges/index` | v0.3.0 | Known-issue fixability |
 | `KnownIssue` | `bridges/index` | v0.3.0 | Single known-issue entry |
-| `GravitationalLensingInputs` | `bridges/index` | v0.4.0 `@public-new` | Input type for `evaluateGravitationalLensing` |
-| `GravitationalLensingResult` | `bridges/index` | v0.4.0 `@public-new` | Result type for `evaluateGravitationalLensing` |
-| `PerihelionPrecessionInputs` | `bridges/index` | v0.4.0 `@public-new` | Input type for `evaluatePerihelionPrecession` |
-| `PerihelionPrecessionResult` | `bridges/index` | v0.4.0 `@public-new` | Result type for `evaluatePerihelionPrecession` |
-| `GeodesicIntegratorInputs` | `numerical/geodesic-integrator` | v0.4.0 `@public-new` | Input bundle for `integrateGeodesic` |
-| `GeodesicIntegratorResult` | `numerical/geodesic-integrator` | v0.4.0 `@public-new` | Return type of `integrateGeodesic` |
-| `CovariantDerivativeNode` | `dimensional/validator` | v0.4.0 `@public-new` | AST node for ∇_μ |
-| `ForwardGradResult` | `numerical/tensor-engine` | v0.4.0 `@public-new` | Return type of `engine.forwardGrad()` |
-| `ReverseGradResult` | `numerical/tensor-engine` | v0.4.0 `@public-new` | Return type of `engine.reverseGrad()` |
-| `GL4State` | `numerical/index` | v0.5.0 `@public-new` | GL4 integrator trajectory state |
-| `GL4Snapshot` | `numerical/index` | v0.5.0 `@public-new` | Per-step GL4 snapshot |
-| `GL4Options` | `numerical/index` | v0.5.0 `@public-new` | GL4 integrator options |
-| `PerihelionResult` | `numerical/index` | v0.5.0 `@public-new` | Return type of `findPerihelion` |
-| `FindPerihelionOptions` | `numerical/index` | v0.5.0 `@public-new` | Options for `findPerihelion` |
-| `RicciTensorNode` | `dimensional/validator` | v0.5.0 `@public-new` | AST node for R_μν (via `ricci`) |
-| `EinsteinTensorNode` | `dimensional/validator` | v0.5.0 `@public-new` | AST node for G_μν (via `einstein`) |
-| `BianchiResidualNode` | `dimensional/validator` | v0.5.0 `@public-new` | AST node for the Bianchi residual |
-| `KillingEquationOptions` | `numerical/killing` | v0.6.0 `@public-new` | Options for `verifyKillingEquation` |
-| `ChristoffelAccess` | `numerical/killing` | v0.6.0 `@public-new` | Layout-agnostic Christoffel accessor |
-| `EinsteinEquationResidualInput` | `numerical/einstein-equation` | v0.6.0 `@public-new` | Input bundle for `evaluateEinsteinEquationResidual` |
-| `MetricClosure` | `numerical/einstein-equation` | v0.6.0 `@public-new` | Metric-closure callback type |
-| `Vec4` | `numerical/einstein-equation` | v0.6.0 `@public-new` | 4-vector coordinate tuple |
-| `EinsteinFieldEquationNode` | `dimensional/einstein-equation` | v0.6.0 `@public-new` | AST node for the Einstein field equation |
-| `EinsteinFieldEquationValidationResult` | `dimensional/einstein-equation` | v0.6.0 `@public-new` | Return type of `validateEinsteinFieldEquation` |
-| `KretschmannScalarNode` | `dimensional/curvature-invariants` | v0.6.0 `@public-new` | AST node for the Kretschmann scalar |
-| `KretschmannScalarValidationResult` | `dimensional/curvature-invariants` | v0.6.0 `@public-new` | Return type of `validateKretschmannScalar` |
+| `GravitationalLensingInputs` | `bridges/index` | v0.4.0 | Input type for `evaluateGravitationalLensing` |
+| `GravitationalLensingResult` | `bridges/index` | v0.4.0 | Result type for `evaluateGravitationalLensing` |
+| `PerihelionPrecessionInputs` | `bridges/index` | v0.4.0 | Input type for `evaluatePerihelionPrecession` |
+| `PerihelionPrecessionResult` | `bridges/index` | v0.4.0 | Result type for `evaluatePerihelionPrecession` |
+| `GeodesicIntegratorInputs` | `numerical/geodesic-integrator` | v0.4.0 | Input bundle for `integrateGeodesic` |
+| `GeodesicIntegratorResult` | `numerical/geodesic-integrator` | v0.4.0 | Return type of `integrateGeodesic` |
+| `CovariantDerivativeNode` | `dimensional/validator` | v0.4.0 | AST node for ∇_μ |
+| `ForwardGradResult` | `numerical/tensor-engine` | v0.4.0 | Return type of `engine.forwardGrad()` |
+| `ReverseGradResult` | `numerical/tensor-engine` | v0.4.0 | Return type of `engine.reverseGrad()` |
+| `GL4State` | `numerical/index` | v0.5.0 | GL4 integrator trajectory state |
+| `GL4Snapshot` | `numerical/index` | v0.5.0 | Per-step GL4 snapshot |
+| `GL4Options` | `numerical/index` | v0.5.0 | GL4 integrator options |
+| `PerihelionResult` | `numerical/index` | v0.5.0 | Return type of `findPerihelion` |
+| `FindPerihelionOptions` | `numerical/index` | v0.5.0 | Options for `findPerihelion` |
+| `RicciTensorNode` | `dimensional/validator` | v0.5.0 | AST node for R_μν (via `ricci`) |
+| `EinsteinTensorNode` | `dimensional/validator` | v0.5.0 | AST node for G_μν (via `einstein`) |
+| `BianchiResidualNode` | `dimensional/validator` | v0.5.0 | AST node for the Bianchi residual |
+| `KillingEquationOptions` | `numerical/killing` | v0.6.0 | Options for `verifyKillingEquation` |
+| `ChristoffelAccess` | `numerical/killing` | v0.6.0 | Layout-agnostic Christoffel accessor |
+| `EinsteinEquationResidualInput` | `numerical/einstein-equation` | v0.6.0 | Input bundle for `evaluateEinsteinEquationResidual` |
+| `MetricClosure` | `numerical/einstein-equation` | v0.6.0 | Metric-closure callback type |
+| `Vec4` | `numerical/einstein-equation` | v0.6.0 | 4-vector coordinate tuple |
+| `EinsteinFieldEquationNode` | `dimensional/einstein-equation` | v0.6.0 | AST node for the Einstein field equation |
+| `EinsteinFieldEquationValidationResult` | `dimensional/einstein-equation` | v0.6.0 | Return type of `validateEinsteinFieldEquation` |
+| `KretschmannScalarNode` | `dimensional/curvature-invariants` | v0.6.0 | AST node for the Kretschmann scalar |
+| `KretschmannScalarValidationResult` | `dimensional/curvature-invariants` | v0.6.0 | Return type of `validateKretschmannScalar` |
 | `TensorConfig` / `TensorIndices` | `core/types` | v0.1.0 | Core tensor metadata types |
 | `PhysicalLaw` / `BridgeEquation` / `EmergentPhenomenon` | `core/types` | v0.1.0 | High-level physics ontology types |
 | `PhysicalScale` / `Force` / `Symmetry` / `InformationMeasure` | `core/types` | v0.1.0 | High-level physics ontology types |

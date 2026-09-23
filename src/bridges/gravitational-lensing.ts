@@ -28,6 +28,11 @@
 // Dimension objects from src/dimensional/constants.ts.
 import { C_SI as c_SI, G_SI } from '../core/constants.js';
 
+/**
+ * Inputs to `evaluateGravitationalLensing` (BE-51).
+ *
+ * @public
+ */
 export interface GravitationalLensingInputs {
   /** Lensing mass in kilograms. */
   readonly M_kg: number;
@@ -35,6 +40,11 @@ export interface GravitationalLensingInputs {
   readonly b_m: number;
 }
 
+/**
+ * Result of `evaluateGravitationalLensing` (BE-51).
+ *
+ * @public
+ */
 export interface GravitationalLensingResult {
   /** Deflection angle in radians: α = 4GM/(bc²). */
   readonly alpha_rad: number;

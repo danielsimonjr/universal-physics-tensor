@@ -39,6 +39,8 @@ import { freshLabel } from './fresh-label.js';
  * @param lowerA   First free lower index label μ.
  * @param lowerB   Second free lower index label ν.
  * @param xCoord   Coordinate tensor x^α — used as the wrt argument for pderiv.
+ *
+ * @public
  */
 export function christoffel(
   gLower: MetricTensorNode,

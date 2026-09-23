@@ -8,6 +8,26 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### ⚠ Stability promise tightened (2026-09-23) — no `@public-new` tier; those symbols are `@public`
+
+**What changes for a consumer.** `docs/architecture/API.md` labelled about 60 exports `@public-new`,
+a tier it described as "may be adjusted in a subsequent minor release". Those exports are now
+documented as `@public`: **a breaking change to any of them requires a major-version bump.** This
+tightens the promise; no code changed behaviour, and no consumer can break from it.
+
+- **Why.** The source never carried the tier: `@public-new` appears 0 times in `src/` and
+  `git log -S'@public-new' -- src` is empty, while 528 doc blocks say `@public`. The doc had
+  published a looser contract than the code declares, and nothing enforced it. The
+  `@public-new` row of the tier table and its "rolling tier" paragraph are removed.
+- **Source aligned in the same commit.** 12 of those exports had no stability tag at all:
+  `christoffel`, `validateKretschmannScalar`, and the types `CovariantDerivativeNode`,
+  `RicciTensorNode`, `EinsteinTensorNode`, `BianchiResidualNode`, `KretschmannScalarNode`,
+  `EinsteinFieldEquationNode`, `GravitationalLensingInputs`, `GravitationalLensingResult`,
+  `PerihelionPrecessionInputs`, `PerihelionPrecessionResult`. Each now carries `@public`; the 10
+  types also gain a one-line summary. The code-docs ratchet falls 167 → 157.
+- **Who decided.** An ADR-level call made by Mothership, the lead, under the user's delegation
+  (option (a) of three). No independent human reviewed it.
+
 ### Changed (2026-09-23) — `DATAFLOW.md` in Simplified Technical English, stateless
 
 - 14 STE findings fixed (10 long sentences, 3 ambiguous references, 1 passive), prose only.
