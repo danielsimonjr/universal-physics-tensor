@@ -209,6 +209,9 @@ export const BRIDGE_TELEGRAPH_DIFFUSION: AtlasBridge = {
     },
     parameterRange: 'ε = τDq² ≤ 0.05',
     limitCharacter: 'singular',
+    // A slow-mode decay-rate error. The horizon says that error accumulates,
+    // so time is not listed.
+    uniformity: ['slow-mode decay rate of one Fourier mode, for ε = τDq² ≤ 0.05'],
   }),
   regime: regime(
     [
@@ -278,6 +281,8 @@ export const BRIDGE_TELEGRAPH_WAVE: AtlasBridge = {
     },
     parameterRange: 'ε = τDq² ≥ 25',
     limitCharacter: 'regular',
+    // An oscillation-frequency error. The record says it is not uniform in time.
+    uniformity: ['oscillation frequency of one Fourier mode, for ε = τDq² ≥ 25'],
   }),
   regime: regime(
     [

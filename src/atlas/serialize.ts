@@ -95,8 +95,10 @@ const serializeRegime = (regime: Regime): JsonValue => {
 };
 
 /**
- * `horizonHolds` is deliberately absent: a predicate is not data, and a
- * serialized function would be a claim no reader could check.
+ * `horizonHolds` and `deltaAt` are deliberately absent: a predicate is not
+ * data, and a serialized function would be a claim no reader could check.
+ * `uniformity` IS data. `null` is the not-yet-analysed state and must be
+ * present in the artifact, not dropped.
  */
 const serializeBound = (bound: ApproximationBound): JsonValue => ({
   K: zeroSafe(bound.K),
@@ -106,6 +108,7 @@ const serializeBound = (bound: ApproximationBound): JsonValue => ({
   horizon: bound.horizon,
   ...(bound.parameterRange === undefined ? {} : { parameterRange: bound.parameterRange }),
   limitCharacter: bound.limitCharacter,
+  uniformity: bound.uniformity === null ? null : [...bound.uniformity],
 });
 
 /**

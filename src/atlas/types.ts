@@ -183,6 +183,17 @@ export interface ApproximationBound {
   /** `'θ0 ≤ 0.5 rad'`. */
   readonly parameterRange?: string;
   readonly limitCharacter: LimitCharacter;
+  /**
+   * What the error is uniform in.
+   *
+   * `null` means NOT YET ANALYSED. That is a legitimate recorded state:
+   * `makeApproximation` accepts it, and the check lives at use (`boundPath`),
+   * not at construction. An empty array means the same thing — a universal
+   * over nothing must not count as analysed. A non-empty array names the
+   * scopes the error is uniform in. A variable a side condition says the
+   * error is NOT uniform in is not listed.
+   */
+  readonly uniformity: readonly string[] | null;
 }
 
 /** A named check that supports a record, and the test file that runs it. @public */

@@ -52,7 +52,7 @@ consistently.
 
 | Symbols | Why |
 |---|---|
-| Everything under `benchmark/` (runner, baselines, stats, study, schema) | The frozen set is EMPTY and the study's success path has NEVER RUN. A public benchmark API with no benchmark would overclaim |
+| Everything under `benchmark/` (runner, baselines, stats, study, schema) | The benchmark surface is experimental, `runLinkPrediction`'s hypothesis was not supported, and promoting the harness would freeze it |
 | `runLinkPrediction` | Its one result did NOT support the hypothesis it tests |
 | Witness runners, `WITNESS_REGISTRY`, `runWitnessRegistry`, `artifactPassingWitnessIds` | Coupled to `data/atlas/witness-results.json`, which is not shipped (fails test 3) |
 | Per-family constants: `BRIDGE_*`, `*_MODELS`, `*_BRIDGES`, the dimension constants | Content, not API. `ATLAS_FAMILIES` is the stable handle. Individual record names would turn every correction into a breaking change |
@@ -85,12 +85,10 @@ The reasons:
 **Named root exports**, the alternative, are simpler to import. They trade namespace hygiene for
 that and would claim the generic names at the root.
 
-## 4. Decision needed
+## 4. The decision in §6 was applied
 
-1. Promote Tier 1: yes or no.
-2. Shape: namespace (`atlas.*`, recommended) or named root exports.
-3. Close the §0 barrel gap, which is `@internal` hygiene and not a promotion, in the same change
-   or separately.
+§6 is the decision in force: an additive `atlas` namespace, Tier 1 only, and `src/atlas/public.ts`
+is the only public list. Tier 2 stays deferred under §2.
 
 ## 5. Adversarial review ("Adam", Gemini 2.5 Pro) and dispositions
 

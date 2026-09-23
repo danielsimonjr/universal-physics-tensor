@@ -795,7 +795,10 @@
         "domain": "ε = τDq² ≤ 0.05",
         "horizon": "τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; machine form 5τ < t < 0.1/(δ D q²)",
         "parameterRange": "ε = τDq² ≤ 0.05",
-        "limitCharacter": "singular"
+        "limitCharacter": "singular",
+        "uniformity": [
+          "slow-mode decay rate of one Fourier mode, for ε = τDq² ≤ 0.05"
+        ]
       },
       "regime": {
         "family": "diffusion",
@@ -875,7 +878,10 @@
         "domain": "ε = τDq² ≥ 25",
         "horizon": "t ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)",
         "parameterRange": "ε = τDq² ≥ 25",
-        "limitCharacter": "regular"
+        "limitCharacter": "regular",
+        "uniformity": [
+          "oscillation frequency of one Fourier mode, for ε = τDq² ≥ 25"
+        ]
       },
       "regime": {
         "family": "diffusion",

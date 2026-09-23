@@ -88,6 +88,8 @@ export const BRIDGE_KG_SCHRODINGER: AtlasBridge = {
     },
     parameterRange: 'x = ck/ω₀ ≤ 0.1',
     limitCharacter: 'regular',
+    // A frequency error. The record says it is not uniform in time.
+    uniformity: ['kinetic frequency of one mode, for x = ck/ω₀ ≤ 0.1'],
   }),
   regime: regime(
     [
@@ -191,6 +193,8 @@ export const BRIDGE_STIFF_STRING: AtlasBridge = {
     },
     parameterRange: 'β = EIk²/F ≤ 0.01',
     limitCharacter: 'regular',
+    // A phase-velocity error. The record says it is not uniform in time.
+    uniformity: ['phase velocity of one Fourier mode, for β = EIk²/F ≤ 0.01'],
   }),
   regime: regime(
     [

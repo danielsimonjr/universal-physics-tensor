@@ -9,7 +9,7 @@ nothing validates prose and the next reader cannot tell.
 
 ---
 
-## As of 2026-09-22 (evening)
+## As of 2026-09-23
 
 ### Phase exit criteria — kept separate from "tasks landed"
 
@@ -39,6 +39,18 @@ Those are different claims and merging them produces a false green.
 - **Practical value (Phase 5 criterion 5)** is defined as human time and error rate. It is **not
   converted** to a model measurement and stays unmet. Curation cost is recorded as **model cost**
   only: USD 19.34 for the set, about USD 0.15 per authored item.
+
+### Separate from the criteria above
+
+- **Uniformity.** `ApproximationBound.uniformity` is required (`readonly string[] | null`).
+  `boundPath` returns `uniformity-unanalysed` and no number when any bound on the path has
+  `null` or `[]`. Construction does not throw. `propagateUncertainty` does not implement this
+  gate.
+- **Still not startable here:** the other four reviewed `formalRef`s; an independent physicist
+  review; per-bridge person-hours (the logs are per agent / per batch); embeddings (no worker);
+  a separate data licence (owner decision).
+- **Composition table** remains 56 silent cells. Widening was not done.
+- **`8 → 12`** direction is unresolved. The poster records it as one approximation, `d-8-to-12`.
 
 ### Results
 

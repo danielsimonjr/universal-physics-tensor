@@ -37,6 +37,8 @@ the repo invariant wins and the deviation is recorded in §3 below.
 
 ## 1. Where UPT stands against the proposal
 
+This inventory is the 2026-09-20 baseline, from before `src/atlas/` landed. Later phase state is in [`NOTES.md`](NOTES.md).
+
 UPT already has the dimension layer, the firewall, the L-layer, and quantitative
 confrontation; it lacks relation types, regimes, hyperedges, models, and formal references.
 The inventory, so no phase rebuilds what exists:
@@ -260,11 +262,11 @@ conventions record, and the composition table, without replacing any existing ty
 - `RelationType` union (eight members) and per-type required-content interfaces. Adds an
   optional `relation?: RelationContract` to `BridgeEdge`; existing 41 edges stay `undefined`.
 - `EvidenceTag` union and `evidenceTags?: ReadonlySet<EvidenceTag>` beside (never instead of)
-  `EdgeConfidence` / `BridgeEquationStatus`. A derived-tag rule maps existing surfaces
-  truthfully: a passing `dimensional-signature-catalog.test.ts` pin ⇒ `dimension-checked`; a
-  `CONFRONTATIONS` entry ⇒ `empirically-supported` with the confrontation's rigor tier as the
-  regime note; a `RejectedBridgeAdjudication` ⇒ `contradicted` with the counterexample linked.
-  Nothing else is inferred.
+  `EdgeConfidence` / `BridgeEquationStatus`. Tags come only from artifacts on the record
+  (`src/atlas/derive-evidence.ts`). `dimension-checked` needs a witness of kind `dimensional`,
+  which `Witness` does not have, so it does not fire. `empirically-supported`, `reviewed`, and
+  `unresolved` are in the union and are not emitted. `contradicted` comes from an unresolved
+  counterexample, and a `not-a-bridge` verdict does not force it.
 - `Conventions` record (heat/work sign, metric signature, Fourier normalization, unit system,
   capacitor sign) on `CanonicalEquation` and `AtlasBridge`; a convention-mismatch check that
   fires on composition and on `upt recover`.
@@ -282,8 +284,9 @@ conventions record, and the composition table, without replacing any existing ty
   derivation: transport only for statements written entirely in preserved structure";
   "exact ∘ approximation needs `K` for the exact map"), and "limit ∘ quantization is never
   the identity" is a statement about the composite, not that it is undefined. The matrix
-  returns `'no-composite-claim'` for all of these until Phase 2 supplies the edge data, and
-  the table's test is a test of that conservative reading, not of "every row of §4.2".
+  returns `'no-composite-claim'` for all of these. Phase 2 did not widen the table. `norm`
+  already existed as a mandatory string. Widening remains a reviewed act, and the table's
+  test is a test of that conservative reading, not of "every row of §4.2".
 - Reconciliation of the discovery plan §3 `ScientificRelationRecord` sketch with this overlay
   into one type, recorded in the design note, so Product B and the atlas share it.
 
@@ -302,11 +305,13 @@ query, and make path error a computed bound.
 - `Regime` as inequalities on named dimensionless groups, per model family, each group
   traceable to the family's dimension matrix. `ValidityDomain.predicate` remains for edges
   that have not been re-expressed; a `regime?: Regime` field is added beside it.
-- Uniformity fields on approximation edges: norm, domain, time horizon, parameter range,
-  limit character (`regular | singular | unknown`). Admission rejects an approximation bound
-  without a horizon.
-- `(K, δ)` on approximation edges; `propagateUncertainty` extended so a path returns a computed
-  bound and refuses a chain with a `K`-less edge in the middle.
+- `ApproximationBound.uniformity` is required (`readonly string[] | null`). `boundPath`
+  returns `uniformity-unanalysed` and no number when any bound on the path has `null` or
+  `[]`. Construction does not throw. `norm` is a mandatory string; it was not added here as
+  an optional field. Admission rejects an approximation bound without a horizon.
+- `(K, δ)` on approximation edges. A path bound is `boundPath`, not `propagateUncertainty`.
+  `propagateUncertainty` does not implement the uniformity gate. The composition table was
+  not widened.
 - Regime overlap analysis per family: uncovered regions, overlaps where two models disagree.
   Reported via `upt regime <family> [--at group=value …]` and `upt path <from> <to>` (new flat
   verbs, `--json` envelope, exit 2 on unknown flags).
@@ -491,13 +496,13 @@ in every output.
 
 | Phase | Status | Pointer |
 |---|---|---|
-| 0 — Oscillator pilot | delivered; one exit criterion open | [`ACTIVE.md`](ACTIVE.md) Sprint 0 — nine models, five bridges, one rejection. Its box is held open deliberately: per-bridge curation cost is still unmeasured, and that measurement is what Phase 4 and Phase 5 scope is cut against |
-| 1 — Relation contracts overlay | shipped | [`ACTIVE.md`](ACTIVE.md) Sprint 1 — additive overlay; relation and evidence fields land as `undefined` / `not-yet-audited` rather than fabricated |
-| 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
-| 3 — Hyperedges, models, poster index | shipped | [`ACTIVE.md`](ACTIVE.md) Sprint 3 — `Model`, `Statement`, `Derivation`, multicategory composition, the sixteen poster entries with their hidden nodes, and `upt map --source=poster` |
-| 4 — Verification workflow, checked bridges | delivered; one exit criterion open | [`ACTIVE.md`](ACTIVE.md) Sprint 4 — 20 bridges across 6 relation types (MET); ≥ 5 reviewed `formalRef` is OPEN at 1 of 5 |
-| 5 — Invalid-bridge benchmark | harness delivered; κ criterion open | [`ACTIVE.md`](ACTIVE.md) Sprint 5 — pre-registration registered, held-out family fixed; the frozen item set and κ need independent human authors and raters |
-| 6 — Study and scoped release | in progress | [`ACTIVE.md`](ACTIVE.md) Sprint 6 — promoted 2026-09-22; the study refuses to run on the empty frozen set |
+| 0 — Oscillator pilot | code delivered | Physicist review and per-bridge curation cost still open. [`NOTES.md`](NOTES.md) |
+| 1 — Relation contracts overlay | overlay shipped | Source spot-check of citations still open. [`NOTES.md`](NOTES.md) |
+| 2 — Regimes and error-carrying paths | shipped | Uniformity gate on `boundPath` (reason `uniformity-unanalysed`). The table was not widened. [`NOTES.md`](NOTES.md) |
+| 3 — Hyperedges, models, poster index | shipped | `8 → 12` is one approximation (`d-8-to-12`) and its direction is unresolved. [`NOTES.md`](NOTES.md) |
+| 4 — Verification workflow, checked bridges | 20 bridges / 6 types delivered | Reviewed `formalRef` is 1 of 5 and per-bridge cost was not measured. [`NOTES.md`](NOTES.md) |
+| 5 — Invalid-bridge benchmark | harness and model-authored frozen set exist | Human κ was not the rating that was done. [`NOTES.md`](NOTES.md) |
+| 6 — Study and scoped release | study has run on the non-empty set | Criterion 2 (local LLM) is NOT MET. The empty-set refusal still exists for an empty set. [`NOTES.md`](NOTES.md), [`docs/research/atlas-study-results.md`](docs/research/atlas-study-results.md) |
 
 > **This table is updated at the END of every sprint, and the risk register above is why.** Its own
 > last row names the failure — *"this document drifts like the old `CLAUDE.md` release section

@@ -38,7 +38,8 @@ const TEST_FILE = 'tests/atlas/oscillators-limits.test.ts';
  * the mandatory-horizon rule of `ApproximationBound` has something that FAILS
  * rather than a comment asking for compliance. `horizonHolds` is mandatory by
  * the type; the prose `horizon` is the field a caller can satisfy with `''`,
- * so it is the one checked at run time.
+ * so it is the one checked at run time. `uniformity: null` is accepted: not
+ * yet analysed is a real state, and the refusal lives in `boundPath`.
  *
  * @throws MissingHorizonError if `horizon` is empty or whitespace.
  * @internal
@@ -191,6 +192,9 @@ export const AB_PENDULUM_LINEAR: AtlasBridge = {
     },
     parameterRange: 'θ0 ≤ 0.5 rad',
     limitCharacter: 'regular',
+    // A period error. The record says it is not uniform in time, so time is
+    // not listed.
+    uniformity: ['one period, for θ0 in the stated domain'],
   }),
   regime: PENDULUM_REGIME,
   counterexamples: [
@@ -295,6 +299,10 @@ export const AB_DAMPED_MASSLESS: AtlasBridge = {
     },
     parameterRange: 'm k / b² < 1/4, |v0| ≤ 5; with b = k = 1 this is m < 1/4',
     limitCharacter: 'singular',
+    uniformity: [
+      't ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1',
+      'm k / b² < 1/4, |v0| ≤ 5',
+    ],
   }),
   regime: DAMPED_REGIME,
   counterexamples: [

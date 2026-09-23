@@ -7,10 +7,10 @@ Authorized by the Sprint 6 entry in [`ACTIVE.md`](../../ACTIVE.md). Briefs:
 
 The study (S6.1) and the ablation (S6.2) score the FROZEN benchmark set, so they are only as good
 as that set (Phase 5 design note §0). On an EMPTY set the study script exits 3 and writes nothing:
-an empty set is not a study. `scoreCondition`, `pairedRejection` and `scoreAblation` are
-unit-tested on synthetic in-memory labels; only a run on real items exercises the end-to-end path
-(load the frozen set, score it, write the results file), and "measured" must not be read as
-"exercised".
+an empty set is not a study. A non-empty set is scored, including local LLM answer files when they
+cover the set. `scoreCondition`, `pairedRejection` and `scoreAblation` are unit-tested on
+synthetic in-memory labels; the end-to-end path loads the frozen set, scores it, and writes the
+results file.
 
 S6.7 moves symbols onto the public API. That is an ADR-level decision, and it belongs to
 Mothership ([`Atlas-API-Review.md`](Atlas-API-Review.md)).
@@ -84,5 +84,5 @@ source record found in the output.
   only it. All three now use `ATLAS_FAMILIES`. `upt path` reads the family off its endpoints and
   refuses a cross-family pair with that reason. Routes stay inside one family, which is stated,
   not hidden.
-- The CLI now has 22 data-bearing commands; `CLAUDE.md` and `cli/README.md` are updated, and the
-  count gate holds them to the registry.
+- The CLI's data-bearing command count lives in `NOTES.md`. `cli/README.md` lists the commands,
+  and the count gate holds them to the registry.

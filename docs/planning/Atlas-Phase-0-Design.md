@@ -16,9 +16,12 @@ decision, the curation-cost log, and the witness table with its numeric expectat
 
 ## 1. Module layout
 
-Everything lands under `src/atlas/`, reachable only through the `universal-physics-tensor/atlas`
-subpath, and **every symbol is `@internal`**. Nothing is re-exported from `src/index.ts` before
-Phase 6.
+Everything lands under `src/atlas/`. The Phase 0 pilot adds no root export: the symbols it
+introduces are `@internal`, and it re-exports nothing from `src/index.ts`. The
+`universal-physics-tensor/atlas` subpath stays the internal surface. Phase 6's API review
+([`Atlas-API-Review.md`](Atlas-API-Review.md)) promotes Tier 1 as the `atlas` namespace from
+`src/atlas/public.ts`, re-exported from `src/index.ts`. That namespace is the later public
+surface.
 
 ```
 src/atlas/
@@ -33,7 +36,7 @@ src/atlas/
     bridges-limits.ts           ab-pendulum-linear, ab-damped-massless
     bridges-coarse.ts           ab-chain-wave
     rejections.ts               ax-cubic-spring-lc
-    family.ts                   assembly (W3 brief)
+    index.ts                    assembly (the plan's name is family.ts; the tree uses index.ts)
   witnesses/
     quantum-support.ts          chirpedGaussianUncertaintyProduct, wickRotatedSchrodingerCoefficients
 tests/atlas/                    _ode.ts + one test file per brief
@@ -49,9 +52,9 @@ data/schemas/atlas-record.v0.json   draft-07, DOCUMENTATION only (no validator i
    reports.
 2. Nothing under `src/` may reference `fixtures/atlas` together with `scorer`. The existing
    `tests/composition/probe/import-graph.test.ts` guard is extended, not copied loosely.
-3. A `@public` tag anywhere under `src/atlas/` fails
-   `tests/api/public-tag-vs-index-invariant.test.ts` unless the symbol is reachable from the
-   `./atlas` subpath. Nothing atlas-side is public in Phase 0.
+3. The pilot adds no `@public` tag and no root export. A `@public` atlas symbol is Tier 1 in
+   [`Atlas-API-Review.md`](Atlas-API-Review.md): the `atlas` namespace from `src/atlas/public.ts`,
+   re-exported from `src/index.ts`. That namespace does not violate the pilot's boundary.
 
 ---
 
@@ -130,8 +133,9 @@ the isometry assumption explicitly.
 **Decision, fixed here so no later sprint has to litigate it.** Every type in `src/atlas/types.ts`
 is a Phase 0 pilot type. If Phase 1's relation-contract work disagrees with any of them, the
 Phase 0 type is **replaced, not adapted**. There is no migration obligation, no deprecation
-window, and no back-compat shim, because nothing atlas-side is public before Phase 6 and the only
-consumers are Phase 0's own tests.
+window, and no back-compat shim, because the pilot adds no public root export and the only
+consumers are Phase 0's own tests. What Phase 6 puts on `src/index.ts` is the Tier 1 `atlas`
+namespace in [`Atlas-API-Review.md`](Atlas-API-Review.md).
 
 The point of the pilot is to **measure what these types cost to curate** (§5), not to ship them.
 A type that survives Phase 1 survives on merit, not on the cost of changing it.

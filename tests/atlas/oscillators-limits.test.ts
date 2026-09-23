@@ -236,6 +236,8 @@ describe('both bridges carry a mandatory horizon', () => {
       horizon: '   ',
       horizonHolds: () => true,
       limitCharacter: 'regular',
+      // Null is accepted: the refusal is the empty horizon, not uniformity.
+      uniformity: null,
     };
     expect(() => makeApproximation(empty)).toThrow(MissingHorizonError);
   });
