@@ -10,6 +10,7 @@ from v0.1.0 onward.
 
 - Fixed: atlas design notes and ROADMAP.md stated rules the code no longer follows (not-a-bridge forces contradicted; types-only ablation accepts unchecked items; no LLM runner; empty frozen set; Phase 2 adds optional norm and puts path bounds in propagateUncertainty).
 - Added: `ApproximationBound.uniformity`; `boundPath` refuses an unanalysed bound (`uniformity-unanalysed`) before it computes a number.
+- Regenerated `docs:deps`. The uniformity edit moved `totalLinesOfCode` from 68633 to 68703 in the four generated architecture artifacts. `docs-fresh` diffs those files.
 
 ### Verified (2026-09-23) — a fresh environment reproduces every published artifact byte for byte
 
