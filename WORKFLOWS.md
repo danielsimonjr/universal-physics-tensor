@@ -66,6 +66,15 @@ count of the old file.
 - **Review tier:** design, plan and physics-correctness checks go to the Adam+Eve adversarial pair.
   The model mapping and invocation conventions live in `todo.md` §Conventions.
 
+## Adding or changing a Lean `formalRef`
+
+1. Add the theorem to `formal/physlib/AxiomProbe.lean`.
+2. Run `bun run atlas:formal-gate -- --physlib <checkout> --write-captured` (setup in
+   `formal/physlib/README.md`).
+3. The gate must PASS, and `captured/HoleProbe.out` must still report `sorryAx`. Record the
+   measured axioms in the `formalRef`.
+4. Commit the probe, the captured output and the record together.
+
 ## Release (Mothership's; recorded so the order is never re-derived)
 
 1. Bump `package.json`.

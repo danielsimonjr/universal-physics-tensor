@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 438,
+    "totalTestFiles": 439,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -482,7 +482,8 @@
       "tests/atlas/regime-admission.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/graphs.test.ts",
-      "tests/cli/recover-conventions.test.ts"
+      "tests/cli/recover-conventions.test.ts",
+      "tests/tools/formalref-axiom-gate.test.ts"
     ],
     "src/atlas/index.ts": [
       "tests/atlas/barrel-completeness.test.ts"
@@ -10325,6 +10326,9 @@
       "src/core/regimes-builtins.ts"
     ],
     "tests/tools/api-surface.test.ts": [],
+    "tests/tools/formalref-axiom-gate.test.ts": [
+      "src/atlas/families.ts"
+    ],
     "tests/tools/plan-doc-audit.test.ts": []
   }
 }

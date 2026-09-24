@@ -236,7 +236,8 @@ export const AB_PENDULUM_LINEAR: AtlasBridge = {
   // constant mgℓ, hence ω0² = g/ℓ. It does NOT certify `bound.delta`: Physlib's
   // period results concern `periodFormula`, which its own TODO has not yet tied
   // to the motion. Axioms measured with `#print axioms` on a local build at
-  // this commit (positive control: a `sorry` prints `sorryAx`; none here).
+  // this commit (positive control: a `sorry` prints `sorryAx`; none here). The probes and
+  // their gate: `formal/physlib/`, `tools/formalref-axiom-gate/`.
   // Fidelity is earned in tests/atlas/formal-sanity.test.ts.
   formalRef: {
     system: 'lean4-physlib',

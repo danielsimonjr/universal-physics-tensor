@@ -8,6 +8,34 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-23) — the Physlib axiom probes and the formalRef axiom gate
+
+The one reviewed `formalRef` (`ab-pendulum-linear`) was checked with two Lean files that no repository
+held: `AxiomProbe.lean` (`#print axioms` over six Physlib theorems) and `HoleProbe.lean`, the positive
+control (a deliberate `sorry`). They sat untracked in a `%TEMP%` checkout, so a clone at the pinned
+commit could not restore them and the control could not be run again. EVO custody found and rescued
+them. They are now in `formal/physlib/`, byte-identical to the originals (SHA-256 checked), with the
+Lean output captured at the pin.
+
+- **The gate** (`tools/formalref-axiom-gate/gate.ts`, `bun run atlas:formal-gate -- --physlib
+  <checkout>`) checks the pin first, then runs both probes and fails when the control does not report
+  `sorryAx`, when a probed theorem is missing or depends on `sorryAx`, when a `lean4-physlib`
+  formalRef is not probed or records axioms other than the measured ones, or when there is nothing to
+  check. Lean exits 0 for a `sorry` proof, so the gate reads the printed axioms, never the exit code.
+  It needs Lean and a built Physlib checkout, so it does not run in CI; `formal/physlib/README.md`
+  gives the setup.
+- **Live proof at the pinned checkout:** the committed probes PASS (exit 0); AxiomProbe with an added
+  `sorry` theorem FAILS ("'gateHole' depends on sorryAx", exit 1); HoleProbe with its `sorry` replaced
+  by `rfl` FAILS ("positive control failed", exit 1).
+- **In CI:** 19 tests run the gate's judgement on the captured output. Mutants that remove the
+  `sorryAx` check or the control check each turn exactly one test red. Eight tests added after the
+  review fail against the first version of the gate.
+- **Corrected after review:** the gate did not check the Physlib pin, so a moved checkout would have
+  passed; names containing `'` were misread; an empty probe or reference list passed. All three now
+  fail. `captured/**` is LF in the working tree.
+- **Disclosed limit:** the control's `sorry` is in the probe file, so it does not show that the gate
+  detects a hole inside an imported module. Filed in `todo.md`.
+
 ### Fixed (2026-09-23) — the captured flaky worker test, and five tests in the same race class
 
 `coverage-backfill.test.ts` "reports worker stderr on nonzero exit" failed the pre-push gate once:

@@ -8,6 +8,7 @@ its own subdirectory.
 |---|---|
 | `create-dependency-graph/` | Scans `src/` and writes dependency-graph docs to `docs/architecture/`. Run via `npm run docs:deps`. One dep (`js-yaml`). |
 | `plan-doc-audit/` | Audits `docs/planning/` checkboxes against shipped `src/` symbols (stub-aware). Run via `npm run audit:plans` (dry-run) or `-- --apply`. Zero deps. |
+| `formalref-axiom-gate/` | Re-measures the axioms of every `lean4-physlib` formalRef with the probes in `formal/physlib/`, including a positive control. Run via `bun run atlas:formal-gate -- --physlib <checkout>`. Needs Lean; zero npm deps. |
 | `chunking-for-files/` | Splits large markdown/JSON/TypeScript files into editable chunks and merges them back. Zero deps. |
 | `compress-for-context/` | Compresses files (JSON/YAML/MD/CSV/code/etc.) to fit LLM context windows; reversible. Zero deps. |
 

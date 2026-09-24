@@ -22,6 +22,8 @@ docs/architecture/** text eol=lf
 data/** text eol=lf
 docs/research/atlas-study-results.md text eol=lf
 tests/fixtures/atlas/benchmark/** text eol=lf
+# Written by `bun run atlas:formal-gate -- --write-captured`, which emits LF.
+formal/physlib/captured/** text eol=lf
 
 # Binary-ish: never touch these.
 *.png binary

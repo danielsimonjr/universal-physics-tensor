@@ -1,0 +1,14 @@
+'ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ClassicalMechanics.SimplePendulum.toHarmonicOscillator_ω' depends on axioms: [propext, Classical.choice, Quot.sound]
+'ClassicalMechanics.SimplePendulum.norm_equationOfMotion_residual_le' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ClassicalMechanics.SimplePendulum.strictMonoOn_periodFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ClassicalMechanics.SimplePendulum.smallAnglePeriod_le_periodFormula' depends on axioms: [propext,
+ Classical.choice,
+ Quot.sound]
+'ClassicalMechanics.planeWave_waveEquation' depends on axioms: [propext, Classical.choice, Quot.sound]
