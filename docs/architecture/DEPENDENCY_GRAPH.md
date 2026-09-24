@@ -1480,7 +1480,7 @@ The codebase is organized into the following modules:
 | `./equations/be-32-quantum-reference-frame.js` | `evaluateQRFOverlap` | Import |
 | `./equations/be-33-hertz-millis.js` | `evaluateHertzMillis` | Import |
 | `./equations/be-34-kibble-zurek.js` | `evaluateKibbleZurek` | Import |
-| `./equations/be-35-conformal-bootstrap.js` | `evaluateCrossingResidual` | Import |
+| `./equations/be-35-conformal-bootstrap.js` | `evaluateCrossingEquation, evaluateCrossingResidual` | Import |
 | `./equations/be-36-gw-speed-bound.js` | `evaluateGWSpeedRatio` | Import |
 | `./equations/be-37-shapiro-delay.js` | `evaluateShapiroDelay` | Import |
 | `./equations/be-38-mond.js` | `evaluateMONDForce` | Import |
@@ -2030,7 +2030,7 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/bridges/equations/be-35-conformal-bootstrap.ts` - Bridge Equation 35 — Conformal Bootstrap (crossing-symmetry residual).
+### `src/bridges/equations/be-35-conformal-bootstrap.ts` - Bridge Equation 35 — Conformal Bootstrap (the crossing equation).
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -2040,8 +2040,8 @@ The codebase is organized into the following modules:
 | `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Functions: `evaluateCrossingResidual`
-- Constants: `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`, `BE35_CROSSING_RESIDUAL_RHS`
+- Functions: `evaluateCrossingEquation`, `evaluateCrossingResidual`
+- Constants: `BE35_CROSSING_EQUATION_RHS`, `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`, `BE35_CROSSING_RESIDUAL_RHS`
 
 ---
 
@@ -2511,7 +2511,7 @@ The codebase is organized into the following modules:
 | `./equations/be-32-quantum-reference-frame.js` | `BE32_QRF_OVERLAP_RHS` | Import |
 | `./equations/be-33-hertz-millis.js` | `BE33_HERTZ_MILLIS_RHS` | Import |
 | `./equations/be-34-kibble-zurek.js` | `KIBBLE_ZUREK_RHS` | Import |
-| `./equations/be-35-conformal-bootstrap.js` | `BE35_CROSSING_RESIDUAL_RHS` | Import |
+| `./equations/be-35-conformal-bootstrap.js` | `BE35_CROSSING_EQUATION_RHS` | Import |
 | `./equations/be-36-gw-speed-bound.js` | `BE36_GW_SPEED_RATIO_RHS` | Import |
 | `./equations/be-37-shapiro-delay.js` | `BE37_SHAPIRO_DELAY_RHS` | Import |
 | `./equations/be-38-mond.js` | `BE38_MOND_FORCE_RHS` | Import |
@@ -6555,12 +6555,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 348 |
 | Total Modules | 11 |
-| Total Lines of Code | 68942 |
-| Total Exports | 2450 |
+| Total Lines of Code | 69016 |
+| Total Exports | 2452 |
 | Total Re-exports | 1232 |
 | Total Classes | 58 |
 | Total Interfaces | 360 |
-| Total Functions | 553 |
+| Total Functions | 554 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 483 |

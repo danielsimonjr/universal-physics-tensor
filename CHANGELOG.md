@@ -8,6 +8,36 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-24) — BE-35 encodes the crossing equation, not a single-block residual (census finding F1)
+
+BE-35's encoded relation was `R = C²·[g_block(u,v) − g_block(v,u)]`. That form has no `v^Δφ` / `u^Δφ`
+prefactors and is written for ONE conformal block. Neither is crossing symmetric. Its stated check,
+"identically zero at the crossing-symmetric point u = v = 1/4", holds for ANY function at u = v, so it
+tested nothing.
+
+- **Added:** `BE35_CROSSING_EQUATION_RHS` and `evaluateCrossingEquation`
+  (`BridgeEquations.crossingEquation`) compute `v^Δφ·g(u,v) − u^Δφ·g(v,u)`. This is the crossing
+  equation for four identical scalars (Rattazzi et al. 2008, eq. 4.3), with `g` the full reduced
+  four-point function `1 + Σ λ_O² g_O` (their eq. 4.4). The equation is now the RHS registered for
+  BE-35. The dimension is unchanged (`[1]`).
+- **Test instrument:** the generalized free field `g = 1 + u^Δ + (u/v)^Δ` satisfies the equation
+  exactly at every point off `u = v`. Dropping one term breaks it (a control that fails). A mutation
+  that removes the prefactors, which is the F1 defect, fails the test. A test that passed
+  vacuously (`undefined === undefined` before the evaluator existed) was hardened.
+- **Deprecated, not removed:** `evaluateCrossingResidual` and its ASTs stay, because
+  `BridgeEquations.crossingResidual` is public API. Removal is filed for a release.
+- **Updated to match:** the BE-35 `encoded_form`, a `known_issues` entry, and a correction in the
+  history `notes`. `docs/specification/Part-II.md` gains the AST pointer and a
+  "Corrected on 2026-09-24" block. That block also records that the spec's own sum rule is not the
+  encoded relation: in Rattazzi et al. (eq. 4.5), `F` is a normalised crossing combination of one
+  block, not a block.
+- **Review:** Adam (OpenAI) and Eve (Gemini) marked all 9 physics claims correct. Eve also noted that
+  the `x1 ↔ x2` constraint (eq. 4.2) is not encoded; per Rattazzi et al. §4 it holds automatically for
+  an even-spin expansion, and the module's scope notes now say so.
+- **Code-docs:** two input types had no summary line (one new, one preexisting). Both are fixed, and
+  the ratchet baseline drops from 155 to 154. A preexisting unused import in the BE-35 test is
+  removed.
+
 ### Added (2026-09-24) — criterion 3 step 1: the blind-labeler inputs, frozen
 
 Pre-registration criterion 3 (recall@10, typed structural search against embeddings) was not run:

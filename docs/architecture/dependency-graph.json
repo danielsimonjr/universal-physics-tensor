@@ -4,7 +4,7 @@
     "version": "0.45.2",
     "totalFiles": 348,
     "totalModules": 11,
-    "totalExports": 2450
+    "totalExports": 2452
   },
   "entryPoints": [
     {
@@ -4669,6 +4669,7 @@
           {
             "file": "./equations/be-35-conformal-bootstrap.js",
             "imports": [
+              "evaluateCrossingEquation",
               "evaluateCrossingResidual"
             ]
           },
@@ -6617,7 +6618,7 @@
         ]
       },
       "src/bridges/equations/be-35-conformal-bootstrap.ts": {
-        "description": "Bridge Equation 35 — Conformal Bootstrap (crossing-symmetry residual).",
+        "description": "Bridge Equation 35 — Conformal Bootstrap (the crossing equation).",
         "externalDependencies": [],
         "nodeDependencies": [],
         "internalDependencies": [
@@ -6645,15 +6646,19 @@
           }
         ],
         "exports": [
+          "BE35_CROSSING_EQUATION_RHS",
           "BE35_FORWARD_BLOCK",
           "BE35_CROSSED_BLOCK",
           "BE35_CROSSING_RESIDUAL_RHS",
+          "evaluateCrossingEquation",
           "evaluateCrossingResidual"
         ],
         "functions": [
+          "evaluateCrossingEquation",
           "evaluateCrossingResidual"
         ],
         "constants": [
+          "BE35_CROSSING_EQUATION_RHS",
           "BE35_FORWARD_BLOCK",
           "BE35_CROSSED_BLOCK",
           "BE35_CROSSING_RESIDUAL_RHS"
@@ -8369,7 +8374,7 @@
           {
             "file": "./equations/be-35-conformal-bootstrap.js",
             "imports": [
-              "BE35_CROSSING_RESIDUAL_RHS"
+              "BE35_CROSSING_EQUATION_RHS"
             ]
           },
           {
@@ -23955,14 +23960,14 @@
   "statistics": {
     "totalTypeScriptFiles": 348,
     "totalModules": 11,
-    "totalLinesOfCode": 68942,
-    "totalExports": 2450,
+    "totalLinesOfCode": 69016,
+    "totalExports": 2452,
     "totalClasses": 58,
     "totalInterfaces": 360,
-    "totalFunctions": 553,
+    "totalFunctions": 554,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 606,
+    "totalConstants": 607,
     "totalReExports": 1232,
     "totalTypeOnlyImports": 483,
     "runtimeCircularDeps": 0,

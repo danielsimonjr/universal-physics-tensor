@@ -43,7 +43,7 @@ import { BE31_CAUSAL_SET_BD_RHS } from './equations/be-31-causal-set-bd.js';
 import { BE32_QRF_OVERLAP_RHS } from './equations/be-32-quantum-reference-frame.js';
 import { BE33_HERTZ_MILLIS_RHS } from './equations/be-33-hertz-millis.js';
 import { KIBBLE_ZUREK_RHS } from './equations/be-34-kibble-zurek.js';
-import { BE35_CROSSING_RESIDUAL_RHS } from './equations/be-35-conformal-bootstrap.js';
+import { BE35_CROSSING_EQUATION_RHS } from './equations/be-35-conformal-bootstrap.js';
 import { BE36_GW_SPEED_RATIO_RHS } from './equations/be-36-gw-speed-bound.js';
 import { BE37_SHAPIRO_DELAY_RHS } from './equations/be-37-shapiro-delay.js';
 import { BE38_MOND_FORCE_RHS } from './equations/be-38-mond.js';
@@ -92,7 +92,7 @@ export const BRIDGE_RHS_BY_ID: ReadonlyMap<number, ExprNode> = new Map<number, E
   [32, BE32_QRF_OVERLAP_RHS],
   [33, BE33_HERTZ_MILLIS_RHS],
   [34, KIBBLE_ZUREK_RHS],
-  [35, BE35_CROSSING_RESIDUAL_RHS],
+  [35, BE35_CROSSING_EQUATION_RHS],
   [36, BE36_GW_SPEED_RATIO_RHS],
   [37, BE37_SHAPIRO_DELAY_RHS],
   [38, BE38_MOND_FORCE_RHS],

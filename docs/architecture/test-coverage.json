@@ -1386,6 +1386,7 @@
     "src/bridges/bridge-equations.ts": [
       "tests/api/atlas-public-closure.test.ts",
       "tests/api/public-surface.test.ts",
+      "tests/bridges/be-35-encoding.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
@@ -1810,6 +1811,7 @@
       "tests/tensor.test.ts"
     ],
     "src/bridges/rhs-registry.ts": [
+      "tests/bridges/be-35-encoding.test.ts",
       "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/canonical/linkage.test.ts",
@@ -3951,7 +3953,6 @@
       "tests/bridges/be-25-encoding.test.ts",
       "tests/bridges/be-26-encoding.test.ts",
       "tests/bridges/be-34-encoding.test.ts",
-      "tests/bridges/be-35-encoding.test.ts",
       "tests/bridges/be-37-shapiro-encoding.test.ts",
       "tests/bridges/be-40-encoding.test.ts",
       "tests/bridges/be-41-encoding.test.ts",
@@ -6233,9 +6234,10 @@
     ],
     "tests/bridges/be-35-encoding.test.ts": [
       "src/bridges/equations/be-35-conformal-bootstrap.ts",
+      "src/bridges/rhs-registry.ts",
+      "src/bridges/bridge-equations.ts",
       "src/dimensional/validator.ts",
       "src/dimensional/ast-types.ts",
-      "src/dimensional/algebra.ts",
       "src/dimensional/types.ts"
     ],
     "tests/bridges/be-36-encoding.test.ts": [

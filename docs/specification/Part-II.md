@@ -268,6 +268,8 @@ where:
 
 **Bridge Equation 35: Conformal Bootstrap - Physical Operator Equation**
 
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-35-conformal-bootstrap.ts`](../../src/bridges/equations/be-35-conformal-bootstrap.ts)
+
 - **Status**: Established. The conformal bootstrap crossing-symmetry equation is well established in CFT and has produced rigorous bounds on critical exponents for the 3D Ising model and other theories (Rattazzi-Rychkov-Tonni-Vichi 2008, arXiv:0807.0004; Poland-Rychkov-Vichi 2018 review arXiv:1805.04405).
 - **Context**: Constrains possible conformal field theories
 - **Mathematical Formulation**:
@@ -278,6 +280,8 @@ with crossing symmetry constraints:
 <img src="https://i.upmath.me/svg/%5Csum_%7B%5CDelta%2C%5Cell%7D%20%5Cleft(C_%7B12%7D%5EO%20C_%7B34%7D%5EO%20-%20C_%7B13%7D%5EO%20C_%7B24%7D%5EO%5Cright)%20F_%7B%5CDelta%2C%5Cell%7D(u%2Cv)%20%3D%200" alt="\sum_{\Delta,\ell} \left(C_{12}^O C_{34}^O - C_{13}^O C_{24}^O\right) F_{\Delta,\ell}(u,v) = 0" />
 
 where <img src="https://i.upmath.me/svg/u%2C%20v" alt="u, v" /> are cross-ratios and <img src="https://i.upmath.me/svg/F_%7B%5CDelta%2C%5Cell%7D" alt="F_{\Delta,\ell}" /> are conformal blocks.
+
+> **Corrected on 2026-09-24:** The encoded relation is the crossing equation for four identical scalars of dimension Δφ, `v^Δφ g(u, v) = u^Δφ g(v, u)` (Rattazzi-Rychkov-Tonni-Vichi 2008, eq. 4.3, which writes Δφ as `d`), where `g(u, v) = 1 + Σ_{O∈φ×φ} λ_O² g_O(u, v)` is the full reduced four-point function: the unit operator plus the conformal blocks (their eq. 4.4). The earlier encoding `C² [g_block(u, v) − g_block(v, u)]` had no prefactors and was written for one block. Neither is crossing symmetric, and its check at `u = v = 1/4` holds for any function. The sum rule above is not the encoded relation. In Rattazzi et al. the sum rule reads `1 = Σ p_{Δ,l} F_{d,Δ,l}` with `p_{Δ,l} = λ_O²` and `F_{d,Δ,l} ≡ (v^d g_{Δ,l}(u, v) − u^d g_{Δ,l}(v, u)) / (u^d − v^d)` (their eq. 4.5). There, F is a crossing combination of one block, not a conformal block.
 
 ### Category K: Modified Theories and Extensions
 
