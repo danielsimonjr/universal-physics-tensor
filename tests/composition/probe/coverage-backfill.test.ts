@@ -2,6 +2,7 @@
  * Extra branch coverage for Product B modules.
  */
 import { describe, it, expect } from 'vitest';
+import { EventEmitter } from 'node:events';
 import { writeFileSync, mkdtempSync } from 'node:fs';
 import { tmpdir } from 'node:os';
 import { join, dirname } from 'node:path';
@@ -52,7 +53,8 @@ import {
   estimateScaleExponent,
   probeConservation,
 } from '../../../src/composition/probe/structure.js';
-import { runBackendWorker } from '../../../src/composition/probe/backend-protocol.js';
+import { runBackendWorker, type WorkerLauncher } from '../../../src/composition/probe/backend-protocol.js';
+import { REAL_WORKER_HANG_GUARD_MS } from './worker-hang-guard.js';
 import { canTransition } from '../../../src/composition/probe/candidate-store.js';
 import { compareToCorpus } from '../../../src/composition/probe/corpus.js';
 import { BRIDGE_RHS_BY_ID } from '../../../src/bridges/rhs-registry.js';
@@ -200,9 +202,9 @@ describe('pipeline extra gates', () => {
         process.execPath,
         join(here, '../../fixtures/discovery-workers/malformed-worker.mjs'),
       ],
-      budget: { ...DEFAULT_SEARCH_BUDGET, maxWallClockMs: 3000 },
+      budget: { ...DEFAULT_SEARCH_BUDGET, maxWallClockMs: REAL_WORKER_HANG_GUARD_MS },
     });
-    expect(r.wording.join(' ')).toMatch(/backend abstained/);
+    expect(r.wording.join(' ')).toMatch(/backend abstained: malformed NDJSON/);
   });
 
   it('ingests echo-worker candidates', async () => {
@@ -216,7 +218,7 @@ describe('pipeline extra gates', () => {
     );
     const r = await runProbeSearch(problem, {
       backendArgv: [process.execPath, join(here, '../../fixtures/discovery-workers/echo-worker.mjs')],
-      budget: { ...DEFAULT_SEARCH_BUDGET, maxWallClockMs: 3000 },
+      budget: { ...DEFAULT_SEARCH_BUDGET, maxWallClockMs: REAL_WORKER_HANG_GUARD_MS },
     });
     expect(r.candidates.some((c) => c.status === 'rejected')).toBe(true);
     expect(r.candidates.some((c) => c.status === 'heldout-supported' || c.status === 'expert-review-required')).toBe(false);
@@ -251,7 +253,7 @@ describe('pipeline extra gates', () => {
         process.execPath,
         join(here, '../../fixtures/discovery-workers/invalid-worker.mjs'),
       ],
-      budget: { ...DEFAULT_SEARCH_BUDGET, maxWallClockMs: 3000 },
+      budget: { ...DEFAULT_SEARCH_BUDGET, maxWallClockMs: REAL_WORKER_HANG_GUARD_MS },
     });
     expect(r.rejections.length + r.candidates.filter((c) => c.status === 'rejected').length).toBeGreaterThan(
       0,
@@ -452,16 +454,56 @@ describe('structure abstentions', () => {
   });
 });
 
-describe('backend nonzero exit + store illegal transition', () => {
-  it('reports worker stderr on nonzero exit', async () => {
-    const r = await runBackendWorker([process.execPath, '-e', 'process.exit(2)'], {
-      problemId: 'fg',
-      budgetMs: 1000,
-      variables: [],
-      target: 'y',
+/**
+ * A fake worker launcher for the failure paths. Once the harness closes stdin, the fake process
+ * either exits (after optional stderr) or fails to start, on a microtask. A microtask runs before
+ * any timer, so the result cannot depend on process start-up time or on the wall clock. A real
+ * `node` child here once lost a race against its 1000 ms budget on a loaded host.
+ */
+function fakeWorker(outcome: { exitCode: number; stderr?: string } | { spawnError: string }) {
+  const calls: Array<{ command: string; args: readonly string[] }> = [];
+  const launch: WorkerLauncher = (command, args) => {
+    calls.push({ command, args });
+    const child = Object.assign(new EventEmitter(), {
+      stdout: new EventEmitter(),
+      stderr: new EventEmitter(),
+      kill: () => true,
+      stdin: {
+        write: () => true,
+        end: () => {
+          queueMicrotask(() => {
+            if ('spawnError' in outcome) {
+              child.emit('error', new Error(outcome.spawnError));
+              return;
+            }
+            if (outcome.stderr) child.stderr.emit('data', Buffer.from(outcome.stderr));
+            child.emit('close', outcome.exitCode, null);
+          });
+        },
+      },
     });
-    expect(r.ok).toBe(false);
-    expect(r.error).toMatch(/exited 2/);
+    return child;
+  };
+  return { launch, calls };
+}
+
+describe('backend nonzero exit + store illegal transition', () => {
+  const request = { problemId: 'fg', budgetMs: 1000, variables: [], target: 'y' };
+  it('reports worker stderr on nonzero exit', async () => {
+    const worker = fakeWorker({ exitCode: 2, stderr: 'boom\n' });
+    const r = await runBackendWorker(['fake-worker', '--flag'], request, { spawn: worker.launch });
+    expect(r).toEqual({ ok: false, candidates: [], error: 'boom' });
+    expect(worker.calls).toEqual([{ command: 'fake-worker', args: ['--flag'] }]);
+  });
+  it('reports the exit code when a failing worker writes no stderr', async () => {
+    const worker = fakeWorker({ exitCode: 2 });
+    const r = await runBackendWorker(['fake-worker'], request, { spawn: worker.launch });
+    expect(r).toEqual({ ok: false, candidates: [], error: 'worker exited 2' });
+  });
+  it('reports the launch error when the worker cannot start', async () => {
+    const worker = fakeWorker({ spawnError: 'spawn fake-worker ENOENT' });
+    const r = await runBackendWorker(['fake-worker'], request, { spawn: worker.launch });
+    expect(r).toEqual({ ok: false, candidates: [], error: 'spawn fake-worker ENOENT' });
   });
   it('rejects illegal transitions', () => {
     expect(canTransition('generated', 'heldout-supported')).toBe(false);

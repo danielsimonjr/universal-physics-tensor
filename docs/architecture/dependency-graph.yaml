@@ -9645,6 +9645,7 @@ modules:
         - BackendRequest
         - BackendCandidate
         - BackendResponse
+        - WorkerProcess
       functions:
         - runBackendWorker
     src/composition/probe/candidate-store.ts:
@@ -16741,10 +16742,10 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 348
   totalModules: 11
-  totalLinesOfCode: 68831
+  totalLinesOfCode: 68859
   totalExports: 2450
   totalClasses: 58
-  totalInterfaces: 359
+  totalInterfaces: 360
   totalFunctions: 553
   totalTypeGuards: 4
   totalEnums: 0

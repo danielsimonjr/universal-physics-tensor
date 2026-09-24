@@ -4082,7 +4082,7 @@ The codebase is organized into the following modules:
 | `../../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
 
 **Exports:**
-- Interfaces: `BackendRequest`, `BackendCandidate`, `BackendResponse`
+- Interfaces: `BackendRequest`, `BackendCandidate`, `BackendResponse`, `WorkerProcess`
 - Functions: `runBackendWorker`
 
 ---
@@ -6555,11 +6555,11 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 348 |
 | Total Modules | 11 |
-| Total Lines of Code | 68831 |
+| Total Lines of Code | 68859 |
 | Total Exports | 2450 |
 | Total Re-exports | 1232 |
 | Total Classes | 58 |
-| Total Interfaces | 359 |
+| Total Interfaces | 360 |
 | Total Functions | 553 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |

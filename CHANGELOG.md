@@ -8,6 +8,41 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — the captured flaky worker test, and five tests in the same race class
+
+`coverage-backfill.test.ts` "reports worker stderr on nonzero exit" failed the pre-push gate once:
+`expected 'worker timed out after 1000ms' to match /exited 2/`. Root cause: `runBackendWorker` arms
+its timeout when the launcher returns, so the worker's own start-up counts against the budget.
+Measured: `spawn()` returns in about 10 ms and the child then needs about 60 ms idle to boot and exit,
+but a bare `node -e` spawn took 843–4307 ms on the loaded host. The test raced a 1000 ms budget
+against that start-up. The product semantics (the budget includes start-up) are unchanged and are
+now stated in the JSDoc.
+
+- **Root fix, no number changed:** `runBackendWorker` takes an internal launcher seam, `opts.spawn`.
+  The test now drives a fake worker that exits on a microtask after stdin closes, so neither
+  start-up time nor the clock can decide the result. Two new tests cover the no-stderr exit and the
+  launch-error path, which no test covered before.
+- **Proof:** a `--require` preload that makes only the `node -e "process.exit(2)"` child sleep
+  1500 ms turns the OLD test RED with the exact captured message; the NEW tests pass under the same
+  preload. A mutant that drops stderr from the exit mapping turns the new stderr test RED.
+- **Same race, five siblings:** the real-worker tests in `backend.test.ts` (echo, rich, malformed;
+  5000 ms) and the pipeline tests in `coverage-backfill.test.ts` (echo, invalid; 3000 ms) raced the
+  same start-up. They test real NDJSON over real pipes, which a fake cannot, and the protocol has no
+  start-up signal, so they now use one shared hang guard, `REAL_WORKER_HANG_GUARD_MS` (30 s, below
+  vitest's 60 s), in `tests/composition/probe/worker-hang-guard.ts`, which names the variance
+  source. Proof: under a preload that delays only those worker scripts by 5.5 s (control: the echo
+  worker took 7016 ms under it, 858 ms without), HEAD's versions fail 5 of 5 and the new versions
+  pass 5 of 5. This is a deliberate widening for real-process tests only; the timeout test keeps
+  200 ms, which load cannot break. The two scoped files run in 2.19 s, unchanged.
+- **No Node types in the declarations:** the launcher is typed by local `WorkerProcess` /
+  `WorkerLauncher` interfaces, so no `.d.ts` in `dist` imports a `node:` module.
+- **Counts:** the new test module and the two exported types move the whole-repository figures to
+  847 files and 3011 exports (50 without an importer); the Verification tables are updated. The
+  `src/` figures from `docs:deps` are unchanged (348 files, 2450 exports).
+- **Instrument note:** the first sibling proof passed HEAD's tests because a shell heredoc turned the
+  preload's `[\\/]` into `[\/]`, so the gate never matched a Windows path. It was rewritten with a
+  file tool and given a positive control before the proof was trusted.
+
 ### Changed (2026-09-23) — `COMPONENTS.md` in Simplified Technical English
 
 `COMPONENTS.md` is rewritten to STE, prose only, on top of its fact fix. `ste_check` reports 0

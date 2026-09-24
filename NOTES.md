@@ -76,8 +76,11 @@ Those are different claims and merging them produces a false green.
   store illegal transition > reports worker stderr on nonzero exit`, `AssertionError: expected 'worker
   timed out after 1000ms' to match /exited 2/` (line 464). The test gives `runBackendWorker` a
   1000 ms budget to spawn `node -e "process.exit(2)"`; the budget includes process start-up, and a bare
-  spawn of that command measured 843–4307 ms on the loaded host at the time. It is a wall-clock race by
-  design. Whether it is the flaky test seen before is unknown. **OPEN** until the race is removed.
+  spawn of that command measured 843–4307 ms on the loaded host at the time. It was a wall-clock race by
+  design. Whether it is the flaky test seen before is unknown. **Race removed** in the item-1 fix (see
+  `CHANGELOG.md`): the test now drives a fake worker with no clock; five real-worker siblings in the
+  same race class use a named 30 s hang guard. A real-process test can still lose to a start-up
+  longer than that guard.
 - **Sprint 0 closure is unverified.** The Phase 0 curation-cost log said on 2026-09-20 that Sprint
   0 was not closed: `docs-fresh` was red and the wrap checklist was incomplete. `docs-fresh` was
   green on every push checked on 2026-09-22; the wrap checklist has not been re-checked.
