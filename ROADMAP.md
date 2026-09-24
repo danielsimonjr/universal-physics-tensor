@@ -320,7 +320,7 @@ query, and make path error a computed bound.
 
 **Exit criteria.** The oscillator family's regime space renders from the CLI; the pendulum
 bridge's horizon is enforced (a query past `16T₀/θ₀²` returns the bound as invalid); the GR
-evidence spine's three classic tests are re-expressible as regime inequalities on
+evidence spine's three tests (perihelion, light deflection, Shapiro delay) are re-expressible as regime inequalities on
 `r_s/r` and `v/c` without changing their confrontation numbers.
 
 ### Phase 3 — Hyperedges, models, and the poster as a typed index (target: v0.51–v0.52)

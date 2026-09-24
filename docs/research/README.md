@@ -13,7 +13,7 @@ adjudication/calibration notes that close out the discovery pipeline
   **null-result catalog** (132 → 7 promising · 0 contradictory · 90 falsified;
   0/8 ever genuine, each promising verdict now carrying its grounding ledger of
   passed-vs-gap falsifiers), the **evidence spine** (9 real-data confrontations;
-  all three classic GR tests within 1σ — Mercury 0.26σ, Shapiro 0.91σ, lensing
+  three GR tests within 1σ — Mercury 0.26σ, Shapiro 0.91σ, lensing
   0.67σ — plus the QGP nearly saturating the KSS bound, the 3D-Ising bootstrap ν
   at 0.015σ, and parameter-free collisional decoherence within ~15%), and the
   **frontier** (11 truly-unconnected isolated bridges) — plus the honest ceilings

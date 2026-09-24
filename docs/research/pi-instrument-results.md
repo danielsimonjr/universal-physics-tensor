@@ -65,6 +65,10 @@ distribution header, because the spine is a hierarchy, not 19 equal confirmation
 | BE-36 | GW speed vs GW170817 bound | encoded bound not excluded — **one-sided** (+side only) |
 | BE-48 | GRW collapse rate vs LISA-Pathfinder bound (Carlesso 2016) | not excluded (GRW≠CSL caveat recorded) |
 
+> **Correction (2026-09-24):** the sentence below calls Shapiro delay one of the three classic
+> tests. It is the fourth. Perihelion and light deflection are two of the three; the third,
+> gravitational redshift, is not in the evidence spine. The original sentence is kept as written.
+
 The **three classic tests of general relativity** — Mercury perihelion, Shapiro
 delay, light deflection — are now all reproduced within 1σ, each computed from
 the bridge's *own* formula against an independent measurement, not a textbook

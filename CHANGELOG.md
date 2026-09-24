@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-24) — "three classic tests" named the wrong three; the `'rank-3-lower'` tag explained
+
+- **Physics wording.** The GR evidence spine is perihelion (BE-52), light deflection (BE-51) and
+  Shapiro delay (BE-37). Four documents called these "the three classic tests of general
+  relativity". The classic three are perihelion, light deflection and gravitational redshift;
+  Shapiro delay is the fourth, and redshift is not in the spine. Fixed in the Phase 2 exit criterion
+  (`ROADMAP.md`, wording only; the criterion's tests are unchanged), `OVERVIEW.md` and
+  `docs/research/README.md`. The dated `docs/research/pi-instrument-results.md` keeps its original
+  sentence under a visible correction note.
+- **`'rank-3-lower'`.** The tag on the `@public` `CURVATURE_KIND_REGISTRY` entry for the Bianchi
+  residual is not renamed (public surface). Its doc comment now says what it means: B_{λμνρσ} has
+  five lower indices, and the "3" counts the cyclic terms over (λ, μ, ν).
+
 ### Added (2026-09-24) — a second control for the formalRef gate: a hole inside an imported module
 
 `HoleProbe.lean` has its `sorry` in the probe file, so it showed only that the gate sees a hole in
