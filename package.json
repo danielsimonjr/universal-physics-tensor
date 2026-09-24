@@ -57,6 +57,7 @@
     "atlas:quote-check": "bun tools/citation-quote-check/check.ts",
     "atlas:c3-export": "bun tools/criterion3-export/export.ts",
     "atlas:c3-labels": "bun tools/criterion3-study/labels.ts",
+    "atlas:c3-run": "bun tools/criterion3-study/run.ts",
     "catalog:json": "npm run build && node scripts/emit-catalog-json.mjs",
     "atlas:json": "npm run build && node scripts/emit-atlas-json.mjs",
     "atlas:witness-results": "npm run build && node scripts/emit-witness-results.mjs",

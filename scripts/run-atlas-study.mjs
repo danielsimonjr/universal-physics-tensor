@@ -182,5 +182,9 @@ const lines = [
   ),
   '',
 ];
+// Criterion 3 (pre-registration Amendment 8) is scored by `tools/criterion3-study/run.ts`, which
+// writes its own section. It is included here as written, so that this file holds every criterion.
+const criterion3 = resolve(repoRoot, 'docs', 'research', 'criterion3', 'results-interim.md');
+if (existsSync(criterion3)) lines.push(readFileSync(criterion3, 'utf8').trimEnd(), '');
 writeFileSync(resolve(repoRoot, 'docs', 'research', 'atlas-study-results.md'), lines.join('\n'));
 console.log(`run-atlas-study: scored ${items.length} items over ${metrics.length} condition(s)`);

@@ -31,8 +31,16 @@ Those are different claims and merging them produces a false green.
   **Criterion 2 (atlas vs the best LOCAL LLM, Amendment 4): NOT MET.** qwen3.8:27b rejected 51/61
   invalid items against the atlas's 6/61; the interval for the difference is −73.8%
   [−82.7%, −58.7%]. The atlas made 1 wrong accept against 9–13 for the models, by abstaining on
-  116/125. Criterion 3 was not run: there is no reference corpus. gemma4:26b returned empty answers
+  116/125. gemma4:26b returned empty answers
   on 64/125 items under the frozen 8,192-token context.
+- **Criterion 3 (recall@10, typed structural search vs embeddings): INTERIM, no verdict** (as of
+  2026-09-24; pre-registration Amendment 8). The in-process conditions ran on PRIMARY (n = 50, MODEL
+  labels): text retrieval 34/50 = 68.0% [54.2%, 79.2%]; symbol matching and typed structural search
+  both 12/50 = 24.0% [14.3%, 37.4%], and 0/30 on the in-distribution families. The typed structural
+  tier never fired (0 of 11,125 key equalities): 123/125 queries are `lhs − rhs` residuals and the
+  corpus stores right-hand sides. Every expression-condition hit is fluid statics, sharing only `g`
+  (one hit is an id tie-break). The embedding condition waits for LLMBench
+  (`docs/research/atlas-study-results.md`).
 - **Baseline construction (from that run):** a reasoning model needs a context that holds its
   reasoning AND its answer. With `num_ctx` 8192, gemma4:26b's reasoning filled the context on 64/125
   items and left the answer empty. Size the context per model before freezing a baseline config.

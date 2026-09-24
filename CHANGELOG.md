@@ -8,6 +8,42 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — criterion 3 step 4: the in-process retrieval conditions, INTERIM
+
+Amendment 8 (`d99dcc9`) was committed, and its CI run was green (36028162207, 16:36Z), before any
+condition ran. The three in-process conditions then ran on the frozen inputs. There is no criterion
+verdict yet: criterion 3 compares typed structural search with EMBEDDINGS, and the embedding condition
+waits for LLMBench.
+
+- **New `tools/criterion3-study/run.ts` (`bun run atlas:c3-run -- --write`).** It refuses to run unless
+  every file hash and pinned code blob in Amendment 8 matches the tree; a tampered `truth.json` was
+  refused. It counts the hits directly AND through `recallAtK`, and throws if they disagree. It records
+  each query's first-correct rank. `scripts/run-atlas-study.mjs` now includes the criterion 3 section in
+  `docs/research/atlas-study-results.md`, and the regenerated criterion 2 and ablation output is
+  byte-identical to the committed file.
+- **PRIMARY (n = 50), recall@10:**
+  - text retrieval 34/50 = 68.0% [54.2%, 79.2%];
+  - symbol matching 12/50 = 24.0% [14.3%, 37.4%];
+  - typed structural search 12/50 = 24.0% [14.3%, 37.4%].
+
+  In-distribution families (n = 30): text 66.7%, and both expression conditions 0/30. Fluid statics,
+  held out (n = 20): text 70.0%, both expression conditions 60.0%.
+- **SECONDARY (n = 64):** text 71.9%; symbol matching and typed structural search both 23.4%.
+- **Instrument facts, computed by the runner:**
+  - the typed structural tier NEVER fired (0 of 11,125 key equalities), so typed search reduces to its
+    symbol tie-break, which is why it equals symbol matching;
+  - 123/125 queries are `lhs − rhs` residuals, while a canonical `scalarAst` is one target's right-hand
+    side, so their normal forms cannot be equal;
+  - symbol names follow different conventions (physics notation against descriptive names);
+  - 17 of 50 truth queries have no correct reference with an expression;
+  - all 12 expression-condition hits are fluid statics. 11 of them rest on the one shared name `g`,
+    and 1 is an id tie-break.
+
+  The pinned conditions are not changed after the results. A corrected structural condition would need
+  its own amendment, and would be exploratory.
+- NOTES.md and the ROADMAP §7 Phase 6 row record the interim state. `TOOLS.md` records the lesson: a
+  tier that never fires hides behind its tie-break.
+
 ### Added (2026-09-24) — criterion 3 step 3: pre-registration Amendment 8 freezes the labels and the scoring
 
 Criterion 3 must be frozen before any condition runs. Mothership returned the two blind labelers'

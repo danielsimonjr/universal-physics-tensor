@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 445,
+    "totalTestFiles": 446,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -390,7 +390,8 @@
       "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-model-set.test.ts",
       "tests/atlas/benchmark-stats.test.ts",
-      "tests/atlas/link-prediction.test.ts"
+      "tests/atlas/link-prediction.test.ts",
+      "tests/tools/criterion3-run.test.ts"
     ],
     "src/atlas/benchmark/study.ts": [
       "tests/atlas/barrel-completeness.test.ts",
@@ -10375,6 +10376,9 @@
       "src/canonical/canonical-equation.ts"
     ],
     "tests/tools/criterion3-labels.test.ts": [],
+    "tests/tools/criterion3-run.test.ts": [
+      "src/atlas/benchmark/stats.ts"
+    ],
     "tests/tools/formalref-axiom-gate.test.ts": [
       "src/atlas/families.ts"
     ],

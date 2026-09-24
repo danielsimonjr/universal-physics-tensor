@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 345 |
-| Total Test Files | 445 |
+| Total Test Files | 446 |
 | Source Files with Tests | 344 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -39,7 +39,7 @@ The following 1 source files are not directly imported by any test file:
 | `benchmark/leakage.ts` | `barrel-completeness.test.ts`, `benchmark.test.ts` |
 | `benchmark/loader.ts` | `benchmark-model-set.test.ts`, `benchmark-preregistration.test.ts`, `benchmark.test.ts` |
 | `benchmark/run-atlas.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-run-atlas.test.ts` |
-| `benchmark/stats.ts` | `barrel-completeness.test.ts`, `benchmark-model-set.test.ts`, `benchmark-stats.test.ts`, `link-prediction.test.ts` |
+| `benchmark/stats.ts` | `barrel-completeness.test.ts`, `benchmark-model-set.test.ts`, `benchmark-stats.test.ts`, `link-prediction.test.ts`, `criterion3-run.test.ts` |
 | `benchmark/study.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-study.test.ts` |
 | `benchmark/types.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-preregistration.test.ts`, `benchmark-run-atlas.test.ts`, `benchmark.test.ts` |
 | `atlas/composition-table.ts` | `barrel-completeness.test.ts`, `composition-table.test.ts`, `path-bound.test.ts` |
@@ -825,6 +825,7 @@ The following 1 source files are not directly imported by any test file:
 | `tools/citation-quote-check.test.ts` | 0 files |
 | `tools/criterion3-export.test.ts` | 2 files |
 | `tools/criterion3-labels.test.ts` | 0 files |
+| `tools/criterion3-run.test.ts` | 1 files |
 | `tools/formalref-axiom-gate.test.ts` | 1 files |
 | `tools/plan-doc-audit.test.ts` | 0 files |
 | `tools/untracked-gate-inputs.test.ts` | 0 files |
