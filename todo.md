@@ -304,7 +304,7 @@ warning-silencing, not debug logging).
       - [x] Add the architecture-docs check (`repo_map.py check`) to CI under a name that matches its scope; prove it RED on master before fixing the docs.
       - [x] Drop `totalLinesOfCode` from the gated Verification table (Mothership 2026-09-23, option b); prove the gate passes a code edit without a docs touch-up and still fails on a structural claim.
       - [ ] The architecture-docs gate runs in the pre-push hook only. CI cannot read `repo_map.py` (private `skills` repo) without a credential; the credential decision is with Mothership / the owner.
-      - [ ] `docs/architecture/` still carries release versions, "Currently" counts and 691 Simplified-Technical-English findings (`ste_check.py`) that the skill forbids; the ungated prose needs a full one-writer pass.
+      - [x] `docs/architecture/` still carries release versions, "Currently" counts and 691 Simplified-Technical-English findings (`ste_check.py`) that the skill forbids; the ungated prose needs a full one-writer pass.
         - [x] Mark the 45 dated historical records with `<!-- ste:historical-record -->` (separate commit; never a canonical doc).
         - [x] FILE_INVENTORY.md to 0 STE findings, stateless.
         - [x] duplicate-symbols.md to 0 STE findings, stateless.
