@@ -374,7 +374,7 @@ warning-silencing, not debug logging).
       - [x] Criterion 3 EXPLORATORY corrected structural condition (Mothership ruling 2026-09-24 (b)): normalise both sides to residual form (query lhs − rhs as stored; canonical target − scalarAst) in the code, TDD RED first; no symbol-alias map (the naming gap is a stated limitation); Amendment 9 (POST HOC, EXPLORATORY, pins the corrected code, same truth sets and pool, reported beside the criterion and never substituted) committed and CI green BEFORE the condition runs; then run on PRIMARY and SECONDARY and add it to atlas-study-results under INTERIM, separated.
       - [ ] After the criterion 3 study closes: switch the product's typed structural search (`rankByStructure` callers) to the residual-form canonical corpus, so user claims in residual form can match. Blocked while the Amendment 8 pins are live.
       - [x] Census finding F2: BE-48's `name` ("CSL extension", verbatim spec heading) and `context` ("GRW / CSL mass-amplified") credit the linear law λ_0 (m/m_0) to CSL; Bassi & Ghirardi 2003 give it for GRW/QMSL (§6.4) and a different CSL rate (§8.3). `notes` carry the same framing as history.
-      - [ ] Triage the stale open rows outside the atlas roadmap (lines 654, 658, 830-844, 943, 985 and the optional rows); tick parents whose children are all done, box only.
+      - [x] Triage the stale open rows outside the atlas roadmap (lines 654, 658, 830-844, 943, 985 and the optional rows); tick parents whose children are all done, box only.
       - [x] Found by the COMPONENTS.md review: `src/numerical/lowering.ts:395-396` holds an orphaned doc comment ("Lower a validated ExprNode to an EngineTensor. @internal") that documents `DeferredEvaluatorEntry` instead of `lowerNode`. It describes `lowerNode` (line 447), which has no doc comment and so no `@internal` tag; move the comment back onto `lowerNode`.
       - [x] Found by the COMPONENTS.md review: `src/composition/bridge-prediction.ts:190` writes two raw NUL bytes inside template literals as a pair-key separator, so grep prints 'Binary file … matches' instead of the matching lines, and ripgrep skips the file. Write the separator as an escape (`\u0000`).
       - [x] Flaky test CAPTURED (2026-09-23, pre-push gate for `e1b7bea`): `coverage-backfill.test.ts` "reports worker stderr on nonzero exit" gives `runBackendWorker` a 1000 ms budget that includes spawning `node`; a bare spawn measured 843–4307 ms on the loaded host, so the timeout fires first. The exit-path siblings in `backend.test.ts` use 5000 ms and race the same clock. Remove the race (a timeout far above spawn cost on exit-path tests, or a timeout that starts after spawn), then prove it RED under load and GREEN after. Details in `NOTES.md`.
@@ -401,7 +401,7 @@ warning-silencing, not debug logging).
       - [x] Run the local LLM baselines (qwen3.8:27b, gemma4:26b, gpt-oss:20b) on the frozen public items; score atlas vs the pre-registered best baseline.
       - [x] gemma4:26b returned an EMPTY answer on 64/125 items under the frozen `num_ctx` 8192 (its reasoning filled the context). Decide with Mothership whether a clearly-labelled secondary run with a larger context is worth an amendment; the primary result stands as run.
       - [x] Fix the code-docs M3 at `src/bridges/equations/_be-helpers.ts` (`validateBEDimensions` documents `equationLabel`; the parameter is `_equationLabel`) and lower the ratchet baseline.
-      - [ ] Criterion 3 (recall@10 vs embeddings) cannot run on the set as built: it needs a reference corpus and atlas-blind correct-reference labels. Design the task first.
+      - [x] Criterion 3 (recall@10 vs embeddings) cannot run on the set as built: it needs a reference corpus and atlas-blind correct-reference labels. Design the task first.
       - [x] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own
         "never the answer" docstring. The atlas condition never reads them; an LLM or embedding condition fed
         `public/items.json` would see the key. Fix before any out-of-process condition runs: move both to the scorer half.
@@ -978,7 +978,7 @@ warning-silencing, not debug logging).
             Capstone: `docs/research/v0.33.0-discovery-hardening-results.md`
             §"Program status — complete". The discipline (design→vet→Task-0)
             prevented 4 low-value/unsound features while keeping integrity.
-      - [ ] **P10 (parallel) — collaboration surface.**
+      - [x] **P10 (parallel) — collaboration surface.**
             - [x] **Honest research note — DONE 2026-07-03** (PE-authored):
                   `docs/research/v0.33.0-discovery-hardening-results.md` — the
                   consolidated Phase 1–4 results (0/8 genuine, contradictory=0,
@@ -1020,7 +1020,7 @@ warning-silencing, not debug logging).
             diagnosis task groups tracked in the next entry (dead-exports
             group closed there).
 
-- [ ] **DGT diagnosis 2026-07-02 (pre-v0.32.0 release; regenerated at HEAD
+- [x] **DGT diagnosis 2026-07-02 (pre-v0.32.0 release; regenerated at HEAD
       `846796d`+fix: 224 files / 1491 exports / cycles 0+0 / coverage 88.4% /
       0 unused files / 8 flagged exports).** Structure is healthy (no cycles;
       hubs — `dimensional/types.ts` o:110, `index.ts` i:117,
@@ -1406,7 +1406,7 @@ warning-silencing, not debug logging).
             physical kind (`M`/`mass`, `T`/`temperature`, Newton's `m_1`/`m_2`) —
             canonical-only `discover`/`map` surface these as candidates/separate
             nodes. Unify the governing names in `src/canonical/entries/*` if desired.
-      - [ ] (follow-up, optional) `docs/architecture/COMPONENTS.md` header is stale
+      - [x] (follow-up, optional) `docs/architecture/COMPONENTS.md` header is stale
             at v0.10.0 (pre-existing, beyond this change); only the file/export
             counts were refreshed here. Full refresh is a separate doc task.
 

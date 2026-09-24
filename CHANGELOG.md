@@ -8,6 +8,35 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-24) — triage of the stale open `todo.md` rows outside the atlas roadmap
+
+The triage row named lines 654, 658, 830-844, 943 and 985. Rows inserted since then moved them by
++38, to 692, 696, 868-882, 981 and 1023, plus the optional rows 1405, 1409 and 1450. Each was
+checked against evidence. A row was ticked, box only, when the evidence showed it done.
+
+- **Ticked:**
+  - **P10, collaboration surface.** Its three deliverables shipped: the research note, the catalog
+    artifact v2 and the issue templates.
+  - **DGT diagnosis 2026-07-02.** Its four actionable gaps are closed. The watch items are notes,
+    not tasks.
+  - **The COMPONENTS.md stale-header follow-up.** The header no longer names v0.10.0, and a design
+    doc carries no version.
+  - **The criterion 3 "design the task first" row (Sprint 5).** The task was designed and frozen by
+    Amendment 8, and its in-process conditions ran.
+- **Kept open, with the reason:**
+  - **Phase 5 frontier (692):** an open research program.
+  - **The 2026-07-04 "NEXT" block (696):** BE-21 is confronted, but BE-53 is not.
+  - **be-16 and be-38 (868, 878):** no confrontation exists; one is data-pending and one is
+    contingent.
+  - **be-23 (873):** the aggregate is confronted, but the per-material table upgrade is not done.
+  - **be-12 (882):** a recorded design-time deferral, not unfinished work.
+  - **Canonical name unification (1405):** still valid. It is the naming gap that criterion 3
+    exposed, and it must wait: changing canonical entries now would break the frozen study's
+    registry check.
+  - **Symbolic forms (1450):** future work.
+  - **The optional mathts peers (50):** all its children are done, but the row itself asks for a
+    future alignment release.
+
 ### Fixed (2026-09-24) — BE-48 credits the linear law to GRW, not CSL (F2); the BE-35 spec sum rule follows Rattazzi et al.
 
 - **BE-48 (census finding F2).** The name said "(CSL extension)" and the context said "GRW / CSL",
