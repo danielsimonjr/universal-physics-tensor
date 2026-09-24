@@ -8,6 +8,31 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-24) — citation census: all 15 `// source:` comments checked against their sources
+
+Mothership ordered the other 9 comments checked, with every overclaimed attribution fixed. The sample
+had found 5 of 6 overclaiming. Four model passes with source access (Opus) and a final reading by the
+author checked all 15 until no overclaim remained (`docs/research/phase-1-citation-check.md`).
+
+- **Every pass found the same defect in the previous pass's rewrites:** a paraphrase that added a word
+  the source did not use. Pass 2 found 5, pass 3 found 4 (2 in the sample's own fixes), pass 4 found 1
+  (in text that pass 3 had proposed). The loop converged once each comment quoted its source verbatim,
+  with a page or equation, and labelled the rest as this repository's.
+- **Fixed comments:** BE-11, BE-21, BE-35, BE-37, BE-48, BE-51, BE-52, BE-55 (both), BE-58 (both),
+  BE-59 (both). BE-35's overlay counterexample now quotes the registry reason verbatim, pinned by the
+  new `tests/bridges/overlay-registry-quote.test.ts` (RED before the fix). BE-35's transformation now
+  states the crossing relation with its prefactors.
+- **`references[]`:** BE-48 (the linear law is GRW/QMSL, review §6.4, not CSL), BE-51 (Einstein writes
+  2α/Δ), BE-52 (Carroll eq. 7.56 is the apsidal frequency). BE-48's `known_issues` sentence and the
+  BE-48 edge mirror in `catalog-tranche.ts` follow.
+- **Access is disclosed in the comments:** BE-11 (snippets only), BE-55 TKNN (abstract only), BE-59
+  Josephson 1962 (paywalled, not read).
+- **Result:** 0 overclaims remain; 13 checked; BE-11 on snippets only; C6 disclosed as unverifiable.
+  Whether that meets the Phase 1 criterion is Mothership's ruling (ROADMAP §7).
+- **Two findings filed, not fixed:** F1 (BE-35's encoded residual lacks the crossing prefactors) and F2
+  (BE-48's name and context credit the linear law to CSL).
+- No number, unit system or relation type changed. `data/bridge-catalog.json` is regenerated.
+
 ### Fixed (2026-09-24) — citation comments that credited sources with the repository's own claims
 
 An Opus agent with source access checked a seeded random sample of 6 of the 15 `// source:` comments
@@ -18,8 +43,10 @@ or classification as the source's statement.
 - **Fixed:** BE-11 (the "not a limit" label is ours; the book frames a weak-coupling limit), BE-21
   (KSS state the SI value themselves and call the bound a conjecture), BE-52 (Einstein 1915 used
   successive approximation, not the Schwarzschild solution; Carroll now cited as the lecture notes'
-  eq. 7.56 that was actually read), BE-55 (σ_xy = Ce²/h has the same form in Gaussian units; the SI
-  part is the values in ohms), BE-58 (Nyquist states no units; the SI reading is ours).
+  eq. 7.56 that was actually read; ~~its added gloss "states the result"~~ RETRACTED by the census: eq.
+  7.56 is the apsidal frequency ω_a, not Δφ per orbit), BE-55 (σ_xy = Ce²/h has the same form in Gaussian units; the SI
+  part is the values in ohms), BE-58 (~~Nyquist states no units~~ RETRACTED by the census: he states
+  frequency in "cycles per second", p. 112; the SI reading is ours).
 - **Outside the sample:** BE-51 cited p. 844, which is the field-equations paper; the deflection is
   announced on p. 831. Corrected, and an unverified Carroll section number removed.
 - **Stand:** BE-59, whose paper is paywalled (consistent with Josephson's Nobel Lecture); the BE-21

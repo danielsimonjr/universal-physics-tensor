@@ -220,7 +220,8 @@ export const be48Edge: BridgeEdge = {
     type: 'derivation',
     transformation:
       'single-nucleon GRW localization rate lambda_0 at reference mass m_0 -> ' +
-      'composite-mass rate lambda_GRW(m) = lambda_0 (m/m_0) by CSL amplification',
+      'composite-mass rate lambda_GRW(m) = lambda_0 (m/m_0) by the GRW (QMSL) ' +
+      'centre-of-mass amplification lambda_macro = N lambda_micro',
   },
 };
 
