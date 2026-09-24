@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-23) — `COMPONENTS.md` in Simplified Technical English
+
+`COMPONENTS.md` is rewritten to STE, prose only, on top of its fact fix. `ste_check` reports 0
+findings (it had 76). `verify_rewrite.py` exits 0: every table row, code fence (including the module
+diagram) and heading is byte-identical, and the technical tokens are unchanged. Long enumerations
+became bullet lists. An in-session Sonnet review (not human) compared every changed sentence and
+FAILED two; both are fixed.
+
+- **Corrected after review:** the candidate funnel again says the 36 same-kind candidates are a subset
+  of the 98 that touch the anchored core (the rewrite had made them two independent counts). The
+  rewrite had added "directly" to "No module in `src/` calls `propagateUncertainty`", which implied an
+  indirect caller that does not exist; the word is removed.
+
 ### Fixed (2026-09-23) — `COMPONENTS.md`: false claims corrected, release history moved out
 
 A read-only Opus audit reported about 230 claims checked, 38 false and 9 that it could not check
