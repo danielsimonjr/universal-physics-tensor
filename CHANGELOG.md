@@ -8,6 +8,16 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — the Phase 0 model-persona review, recorded with its findings
+
+A Fable model instance, instructed as an independent, skeptical physicist (approved by Mothership),
+reviewed the Phase 0 pilot through the `CONTRIBUTING.md` review brief. It confirmed the physics of all
+six claims, recomputing every number, and found eight defects (D1-D8) and five qualifications. The
+review is recorded in `docs/research/phase-0-model-persona-review.md`, labelled "model-persona review
+(Fable), not a human physicist"; each finding has an open todo row and a disposition that is filled in
+as it lands. It does not satisfy the "independent physicist" criterion; Mothership ruled that the
+criterion is closed by amendment once every finding has a disposition.
+
 ### Changed (2026-09-24) — three exit criteria AMENDED under the owner's delegation (Amendment 6)
 
 Mothership made three decisions on 2026-09-23 under the owner's delegation, because each criterion
