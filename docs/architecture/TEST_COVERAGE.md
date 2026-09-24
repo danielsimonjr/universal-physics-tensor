@@ -55,7 +55,7 @@ The following 1 source files are not directly imported by any test file:
 | `diffusion/numerics.ts` | `closure.test.ts`, `diffusion.test.ts`, `negative-controls.test.ts` |
 | `atlas/error-algebra.ts` | `barrel-completeness.test.ts`, `error-algebra.test.ts`, `path-bound.test.ts` |
 | `atlas/export.ts` | `barrel-completeness.test.ts`, `export.test.ts` |
-| `atlas/families.ts` | `atlas-json.test.ts`, `barrel-completeness.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `regime-admission.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `formalref-axiom-gate.test.ts` |
+| `atlas/families.ts` | `atlas-json.test.ts`, `barrel-completeness.test.ts`, `benchmark.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `formalref-axiom-gate.test.ts` |
 | `atlas/index.ts` | `barrel-completeness.test.ts` |
 | `atlas/link-prediction.ts` | `barrel-completeness.test.ts`, `link-prediction.test.ts` |
 | `atlas/model.ts` | `applicability.test.ts`, `barrel-completeness.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
@@ -422,7 +422,7 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/models.test.ts` | 5 files |
 | `atlas/negative-controls.test.ts` | 13 files |
 | `atlas/ode-helper.test.ts` | 1 files |
-| `atlas/oscillators-coarse.test.ts` | 7 files |
+| `atlas/oscillators-coarse.test.ts` | 8 files |
 | `atlas/oscillators-exact.test.ts` | 1 files |
 | `atlas/oscillators-limits.test.ts` | 2 files |
 | `atlas/overlay-types.test.ts` | 4 files |

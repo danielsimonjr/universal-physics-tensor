@@ -21,7 +21,7 @@ export const ATLAS_REJECTIONS: readonly AtlasRejection[] = [
   {
     id: 'ax-cubic-spring-lc',
     claimed: 'exact-equivalence',
-    premises: ['model-cubic-spring', 'model-lc'],
+    premises: ['model-cubic-spring'],
     conclusion: 'model-lc',
     reason:
       'The cubic spring retains one dimensionless group, β x0² / k, that measures ' +

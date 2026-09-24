@@ -90,17 +90,20 @@ export function pendulumPeriodErrorAt(params: Readonly<Record<string, number>>):
 /**
  * The position-offset bound of `ab-damped-massless` at a point:
  * `2 (1 + |v0|) m / b`, the formula this record's docstring has always
- * carried.
+ * carried. It is a bound ONLY at the witness normalisation `b = k = x0 = 1`:
+ * the leading offset is `(m/b)(v0 + k x0/b)`, and the formula has no `k` or
+ * `x0` in it. At `m = 1e-3, b = 1, k = 100` (inside `m k/b² < 1/4`) the true
+ * error is more than 20 times the formula.
  *
- * @returns `Infinity` unless `m`, `b` and `v0` are all finite and `b ≠ 0` — a
- *   missing `v0` would otherwise silently return the smaller `v0 = 0` bound.
+ * @returns `Infinity` unless `m`, `b`, `k`, `x0` and `v0` are all finite and
+ *   `b = k = x0 = 1` — a missing parameter would otherwise silently return a
+ *   bound for a normalisation the caller did not ask about.
  * @internal
  */
 export function dampedOffsetBoundAt(params: Readonly<Record<string, number>>): number {
-  const { m, b, v0 } = params;
-  if (!Number.isFinite(m) || !Number.isFinite(b) || !Number.isFinite(v0) || b === 0) {
-    return Infinity;
-  }
+  const { m, b, k, x0, v0 } = params;
+  if (![m, b, k, x0, v0].every(Number.isFinite)) return Infinity;
+  if (b !== 1 || k !== 1 || x0 !== 1) return Infinity;
   return (2 * (1 + Math.abs(v0)) * m) / b;
 }
 
@@ -288,7 +291,7 @@ export const AB_DAMPED_MASSLESS: AtlasBridge = {
     // the same formula frozen at the ONE fixture mass `m = 1e-3` — true error
     // there is 5.96e-3, but at m = 0.24 it is 5.19e-1, forty times the
     // declared bound.
-    delta: dampedOffsetBoundAt({ m: 0.25, b: 1, v0: 5 }),
+    delta: dampedOffsetBoundAt({ m: 0.25, b: 1, k: 1, x0: 1, v0: 5 }),
     deltaAt: dampedOffsetBoundAt,
     norm: 'sup |x − x_reduced| for t ≥ 5 m/b',
     domain: 't ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1',

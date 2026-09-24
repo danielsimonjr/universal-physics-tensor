@@ -512,10 +512,10 @@
         "model-spring"
       ],
       "conclusion": "model-lc",
-      "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+      "transformation": "u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_LC t / ω_s)",
       "inverse": "x = x0 u, t = τ/ω0",
       "preserves": [
-        "natural frequency",
+        "the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)",
         "energy up to scale",
         "phase portrait"
       ],
@@ -571,7 +571,7 @@
           "id": "W1b",
           "kind": "numeric",
           "test": "tests/atlas/oscillators-exact.test.ts",
-          "tolerance": "round-trip within 1e-12"
+          "tolerance": "inverse-mapped trajectory solves m x″ + k x = 0 within 1e-8; a 1% wrong ω0 fails"
         },
         {
           "id": "W2b",
@@ -599,10 +599,10 @@
         "model-damped-spring"
       ],
       "conclusion": "model-rlc",
-      "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+      "transformation": "u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_RLC t / ω_mech)",
       "inverse": "x = x0 u, t = τ/ω0",
       "preserves": [
-        "natural frequency",
+        "the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)",
         "damping ratio",
         "phase portrait"
       ],
@@ -949,8 +949,7 @@
       "id": "ax-cubic-spring-lc",
       "claimedRelation": "exact-equivalence",
       "premises": [
-        "model-cubic-spring",
-        "model-lc"
+        "model-cubic-spring"
       ],
       "conclusion": "model-lc",
       "reason": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity. The LC variable set is dimensionally independent and has no group to match it, so no change of variables can make the two models exactly equivalent. A nonlinear oscillator cannot be an exact image of a linear one.",

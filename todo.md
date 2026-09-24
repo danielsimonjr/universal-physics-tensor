@@ -340,15 +340,15 @@ warning-silencing, not debug logging).
       - [x] Shapiro delay is the FOURTH classic GR test, not one of three: fix the Phase 2 exit-criterion wording in `ROADMAP.md`, `OVERVIEW.md` and `docs/research/README.md`, add a correction note to the dated `docs/research/pi-instrument-results.md`, and document what the public `'rank-3-lower'` tag means (Mothership 2026-09-23).
       - [x] Record the owner-delegated amendments (Mothership, 2026-09-23): curation cost per bridge NOT MEASURED, model cost reported as model cost (Phase 0, Phase 4, C6); kappa reported is MODEL agreement, human kappa NOT MEASURED; C5 human time NOT MEASURED. Write them as ROADMAP section 7 updates and pre-registration Amendment 6. No threshold, item or hash change.
       - [ ] Phase 0 review of the five pilot contracts through the CONTRIBUTING.md review surface by a Fable physicist persona (approved by Mothership), recorded as "model-persona review (Fable), not a human physicist".
-        - [ ] Phase 0 persona finding D1: `ab-spring-lc` / `ab-spring-rlc` `preserves: natural frequency` is false as written; state the spring→LC map. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding D2: `dampedOffsetBoundAt` ignores `k` and `x0`; violated 22x at `k = 100` inside the declared regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D1: `ab-spring-lc` / `ab-spring-rlc` `preserves: natural frequency` is false as written; state the spring→LC map. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D2: `dampedOffsetBoundAt` ignores `k` and `x0`; violated 22x at `k = 100` inside the declared regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [ ] Phase 0 persona finding D3: the cubic-spring rejection reason overreaches W3; add an isochrony (period-vs-amplitude) witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding D4: `error-algebra.ts` header writes `f̃(x)` for `f̃(x̃)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D4: `error-algebra.ts` header writes `f̃(x)` for `f̃(x̃)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [ ] Phase 0 persona finding D5: chain→wave `preserves: 'linearity'` has no witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding D6: the cubic-spring rejection lists `model-lc` as both premise and conclusion. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding D7: Phase 0 design note states a stale composite bound `(1, θ0²/16)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D6: the cubic-spring rejection lists `model-lc` as both premise and conclusion. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D7: Phase 0 design note states a stale composite bound `(1, θ0²/16)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [ ] Phase 0 persona finding D8: the pendulum `horizonHolds` uses the series where the exact period function exists. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding Q-a: W1b tests `x0·u/x0 = u` and cannot fail. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-a: W1b tests `x0·u/x0 = u` and cannot fail. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [ ] Phase 0 persona finding Q-b: W9 compares two formulas and never integrates the chain. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [ ] Phase 0 persona finding Q-c: the pendulum bound `K = 1` is declared, not derived. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [ ] Phase 0 persona finding Q-d: the damped-massless domain is the overdamped set, not the asymptotic regime. Disposition in `docs/research/phase-0-model-persona-review.md`.

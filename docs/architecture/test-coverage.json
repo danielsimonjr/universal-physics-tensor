@@ -479,6 +479,7 @@
       "tests/atlas/families.test.ts",
       "tests/atlas/formal-sanity.test.ts",
       "tests/atlas/link-prediction.test.ts",
+      "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/graphs.test.ts",
@@ -5872,6 +5873,7 @@
       "src/numerical/null-ray-integrator.ts"
     ],
     "tests/atlas/oscillators-coarse.test.ts": [
+      "src/atlas/families.ts",
       "src/dimensional/ast-builders.ts",
       "src/dimensional/buckingham.ts",
       "src/dimensional/types.ts",

@@ -8,6 +8,25 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-24) — Phase 0 persona findings D1, D2, D4, D6, D7 and Q-a
+
+- **D2, a wrong number from a bound function.** `dampedOffsetBoundAt` returned `2(1+|v0|)m/b` for
+  any `b` and ignored `k` and `x0`; at `m = 1e-3, b = 1, k = 100`, inside the declared regime, the
+  true error is more than 20× that value. It now refuses (`Infinity`) outside `b = k = x0 = 1`, the
+  only normalisation the record declares, and requires `k` and `x0` like `v0`.
+- **D1.** `ab-spring-lc` and `ab-damped-rlc` claimed to preserve the "natural frequency"; the map
+  rescales time (W1a: ω_s = 2, ω_LC = 2√2). They now preserve it in units of ω0, and the
+  `transformation` states the composed map.
+- **D6.** The cubic-spring rejection listed `model-lc` as a premise and as the conclusion; a new
+  invariant over every family forbids that.
+- **Q-a.** W1b checked `x0·u/x0 = u` and could not fail. It now compares the inverse-mapped
+  trajectory with an independent integration of the dimensioned spring, with a 1%-wrong-ω0
+  negative control.
+- **D4, D7.** The error-algebra header now writes `f̃(x̃)`; the design note's composite bound is the
+  pendulum bridge's `(1, δ)`, not the series `θ0²/16`.
+- `data/atlas/*.json` regenerated (`bun run atlas:json`). Dispositions are in
+  `docs/research/phase-0-model-persona-review.md`.
+
 ### Added (2026-09-24) — the Phase 0 model-persona review, recorded with its findings
 
 A Fable model instance, instructed as an independent, skeptical physicist (approved by Mothership),

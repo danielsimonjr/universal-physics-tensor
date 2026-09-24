@@ -4,6 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
+import { ATLAS_FAMILIES } from '../../src/atlas/families.js';
 
 import { dim } from '../../src/dimensional/ast-builders.js';
 import { buckinghamPi } from '../../src/dimensional/buckingham.js';
@@ -119,8 +120,22 @@ describe('W3 — Buckingham survival, ax-cubic-spring-lc', () => {
     const rejection = ATLAS_REJECTIONS.find((r) => r.id === 'ax-cubic-spring-lc');
     expect(rejection).toBeDefined();
     expect(rejection?.claimed).toBe('exact-equivalence');
-    expect(rejection?.premises).toEqual(['model-cubic-spring', 'model-lc']);
+    // The claimed relation runs cubic spring → LC; LC is the conclusion, not also a premise (D6).
+    expect(rejection?.premises).toEqual(['model-cubic-spring']);
+    expect(rejection?.conclusion).toBe('model-lc');
     expect(rejection?.survivingGroup).toBe('β x0² / k');
     expect(rejection?.witnesses.map((w) => w.id)).toContain('W3');
+  });
+});
+
+describe('rejections — the conclusion is not also a premise (persona finding D6)', () => {
+  const rejections = ATLAS_FAMILIES.flatMap((f) => f.rejections);
+
+  it('the atlas has at least one rejection to check', () => {
+    expect(rejections.length).toBeGreaterThan(0);
+  });
+
+  it.each(rejections.map((r) => [r.id, r] as const))('%s lists its conclusion only as the conclusion', (_id, r) => {
+    expect(r.premises).not.toContain(r.conclusion);
   });
 });

@@ -111,11 +111,12 @@ resolve is a test failure, not a warning.
 | `ab-pendulum-linear` | `approximation` | `['model-pendulum']` | `model-spring` |
 | `ab-damped-massless` | `approximation` (singular) | `['model-damped-spring']` | `model-first-order` |
 | `ab-chain-wave` | `coarse-graining` | `['model-chain']` | `model-wave-1d` |
-| `ax-cubic-spring-lc` | **rejection**, claimed `exact-equivalence` | `['model-cubic-spring', 'model-lc']` | — |
+| `ax-cubic-spring-lc` | **rejection**, claimed `exact-equivalence` | `['model-cubic-spring']` | `model-lc` |
 
 **Composition.** Exact equivalences are treated as bidirectional by the path finder, so the
 two-hop path `model-pendulum → model-spring → model-lc` exists. It composes as
-`approximation ∘ exact-equivalence = approximation` with bound `(1, θ0²/16)`. An exact edge
+`approximation ∘ exact-equivalence = approximation` with the pendulum bridge's bound `(1, δ)`, where
+`δ` is the exact period error at the θ0 = 0.5 edge, not the series `θ0²/16`. An exact edge
 contributes the identity bound **in the norms these Phase 0 bridges state**, so the composite's
 norm is the approximation edge's, and `IDENTITY_BOUND` needs no norm reconciliation step here.
 
