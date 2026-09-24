@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-24) — Sprint 4 and Sprint 5 tracker rows closed by amendment; a gate observation
+
+- **Ticked, titles unchanged, with Mothership's OK.** Each row has a child line that names its
+  amendment:
+  - Sprint 5, by Amendment 6: κ amended;
+  - Sprint 4, by Amendment 10: the formalRef exit criterion is deferred by the owner.
+- **`NOTES.md` records an observation, not a cause.** The pre-push gate did not run for the `cd4f0d5`
+  push, because `core.hooksPath` was set to the absolute `.git\hooks`. A plugin review worktree was
+  created at 14:02, but the mechanism is unproven. The setting is restored, and the stale worktree
+  and its merged branch are removed.
+
 ### Changed (2026-09-24) — the owner DEFERS the Phase 4 reviewed-`formalRef` criterion and the citation work
 
 Mothership relayed the owner's words verbatim (15:02 CDT): "I feel that UPT is burning a lot of tokens for a long time on citations we can resolve another time. We're not trying to turn this project in a paper right now. It's mainly an exploration project."

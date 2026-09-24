@@ -93,6 +93,13 @@ Those are different claims and merging them produces a false green.
 
 ### Open defects and unknowns
 
+- **The pre-push gate did not run for the `cd4f0d5` push (2026-09-24).** `core.hooksPath` was found
+  set to the absolute `.git\hooks`, which holds only sample hooks. The repo's `prepare` script sets
+  `.githooks`. `.git/config` was last written at 14:02:16. At 14:02 a security-guidance plugin review
+  created a worktree (`agent-a98a8f4aee09f8ec6`). **The mechanism is unproven:** other repos with
+  Claude-created worktrees still read `.githooks`, and Mothership is investigating. The setting is
+  restored. The checks that CI does not run passed on `cd4f0d5`: `repo_map` exit 0, and code-docs
+  154, equal to the baseline. The stale worktree and its merged branch were removed.
 - A **flaky test WAS captured failing** on 2026-09-23 19:50, in the pre-push gate for `e1b7bea`
   (a docs-only commit): `tests/composition/probe/coverage-backfill.test.ts > backend nonzero exit +
   store illegal transition > reports worker stderr on nonzero exit`, `AssertionError: expected 'worker

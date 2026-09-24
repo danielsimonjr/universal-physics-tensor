@@ -382,7 +382,7 @@ warning-silencing, not debug logging).
       - [x] Found by the living-docs review: the header comment of `bench/be37-eikonal.bench.ts` (lines 10–14) still describes the BE-37 stub that `src/` replaced with a GL4 integration.
       - [x] Found by the COMPONENTS.md audit, source comments that contradict the code: `ast-types.ts:139` (`RicciTensorNode` "first two slots are contracted", but `ricci()` computes R^λ_{μλν}); `einstein-equation.ts:136` example uses kind `'stress-energy-tensor'` (real kind `'stress-energy'`); `curvature-composite.ts:31` says Bianchi is "rank-5 lower" (its registry says `'rank-3-lower'`); `klein-gordon.ts:102` imports a subpath `package.json` does not export; `BridgeEquationEntry.id` documented as "11-50".
 
-- [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
+- [x] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
       2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,
       leakage checks (renamed variants keyed by dimension; held-out family corrected to FLUID STATICS).
       **S5.2** — atlas condition runner (accept only when every instrument ran and cleared).
@@ -409,8 +409,9 @@ warning-silencing, not debug logging).
       - [x] `CLAUDE.md` is 21 KB and holds law, procedure and stateless facts that now have homes in `AGENTS.md`,
         `WORKFLOWS.md`, `TOOLS.md` and `MEMORY.md`. Move each duplicated fact to its one home and leave `CLAUDE.md` a thin loader.
       - [x] Move `docs/planning/ACTIVE.md` (an authorization register, status by nature) out of `docs/planning/`; fix every inbound link in the same commit.
+      - Closed by pre-registration Amendment 6 (2026-09-23): κ amended. The reported κ is MODEL agreement; human κ is NOT MEASURED.
 
-- [ ] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
+- [x] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
       `docs/planning/ACTIVE.md` 2026-09-22; design note `docs/planning/Atlas-Phase-4-Design.md`.
       Eighteen tasks assigned to this lane: **S4.1–S4.6, S5.1–S5.5, S6.1–S6.7.**
       **Done so far: S4.1** — `src/atlas/applicability.ts`, the applicability checker (dimensions,
@@ -438,6 +439,7 @@ warning-silencing, not debug logging).
       "lives only in `CHANGELOG.md`, `ROADMAP.md` and the architecture docs". **It is in 22
       files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,
       never the list.
+      - Closed by pre-registration Amendment 10 (2026-09-24): the formalRef exit criterion is deferred by the owner, at 1 of 5.
 
 - [x] **Atlas Phase 0 — two exit criteria OPEN; the code is done.** Shipped 2026-09-20 on
       `master`: `src/atlas/` (nine models, five typed bridges, one rejection, fifteen witnesses),
