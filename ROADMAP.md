@@ -503,12 +503,12 @@ agent's time is not a reviewer's time. The owner amended this criterion; it is n
 
 | Phase | Status | Pointer |
 |---|---|---|
-| 0 — Oscillator pilot | code delivered | Physicist review and per-bridge curation cost still open. [`NOTES.md`](NOTES.md) |
+| 0 — Oscillator pilot | code delivered | Physicist review still open. Per-bridge curation cost AMENDED to NOT MEASURED (Mothership under the owner's delegation, 2026-09-23). [`NOTES.md`](NOTES.md) |
 | 1 — Relation contracts overlay | overlay shipped | Source spot-check of citations still open. [`NOTES.md`](NOTES.md) |
 | 2 — Regimes and error-carrying paths | shipped | Uniformity gate on `boundPath` (reason `uniformity-unanalysed`). The table was not widened. [`NOTES.md`](NOTES.md) |
 | 3 — Hyperedges, models, poster index | shipped | `8 → 12` is one approximation (`d-8-to-12`) and its direction is unresolved. [`NOTES.md`](NOTES.md) |
-| 4 — Verification workflow, checked bridges | 20 bridges / 6 types delivered | Reviewed `formalRef` is 1 of 5 and per-bridge cost was not measured. [`NOTES.md`](NOTES.md) |
-| 5 — Invalid-bridge benchmark | harness and model-authored frozen set exist | Human κ was not the rating that was done. [`NOTES.md`](NOTES.md) |
+| 4 — Verification workflow, checked bridges | 20 bridges / 6 types delivered | Reviewed `formalRef` is 1 of 5 (open; the proofs need PhysJS). Per-bridge cost AMENDED to NOT MEASURED; model cost is reported. [`NOTES.md`](NOTES.md) |
+| 5 — Invalid-bridge benchmark | harness and model-authored frozen set exist | κ AMENDED: the reported κ is MODEL agreement (0.984 / 0.978); human κ NOT MEASURED. Criteria 5 and 6 AMENDED to NOT MEASURED / model cost. All three in pre-registration Amendment 6. [`NOTES.md`](NOTES.md) |
 | 6 — Study and scoped release | study has run on the non-empty set | Criterion 2 (local LLM) is NOT MET. The empty-set refusal still exists for an empty set. [`NOTES.md`](NOTES.md), [`docs/research/atlas-study-results.md`](docs/research/atlas-study-results.md) |
 
 > **This table is updated at the END of every sprint, and the risk register above is why.** Its own

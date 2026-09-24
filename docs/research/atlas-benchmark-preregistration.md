@@ -178,3 +178,22 @@ decision, no hosted frontier model is run as an LLM baseline, and no money is sp
 a deliberate decision, not an omission. Criterion 2 stands as run in Amendment 4, against local
 models. Its result (NOT MET) and its stated limit, that local models are weaker baselines than a
 frontier model, are unchanged. No threshold, item, rater or hash changes.
+
+**Amendment 6 (2026-09-23) — three criteria AMENDED by Mothership under the owner's delegation.**
+The owner delegated these three decisions to Mothership, and Mothership made them on 2026-09-23.
+Each criterion as written needs people that this study does not have.
+
+- **Kappa (§2, the ROADMAP Phase 5 exit criterion).** The reported kappa is MODEL agreement:
+  **0.984** valid/invalid and **0.978** over the nine categories, between two isolated instances of
+  one model (Amendment 2). It is labelled exactly so wherever it is reported. Human kappa is NOT
+  MEASURED, because there are no independent human raters. The rater role is not filled with model
+  personas: two personas of one model family are not independent raters. The two rows of §2 stay
+  "TO BE NAMED", and that is the honest state.
+- **Criterion 5 (practical value).** NOT MEASURED. There are no human participants, and a model's
+  time is not a user's time. This matches the owner's amendment of reviewer time in Phase 6.
+- **Criterion 6 (curation cost).** Person-hours per admitted bridge are NOT MEASURED: the work was
+  dispatched per agent, and there are no human curators. The reported cost is the MODEL cost from
+  Amendment 2, USD 19.34 for the set (about USD 0.15 per authored item), labelled as model cost. The
+  same amendment applies to the per-bridge curation-cost exit criteria of ROADMAP Phases 0 and 4.
+
+No threshold, item, rater assignment or hash changes. The results already reported are unchanged.

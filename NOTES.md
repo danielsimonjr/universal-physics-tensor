@@ -39,9 +39,11 @@ Those are different claims and merging them produces a false green.
 - **Owner decisions (2026-09-23):** exported atlas data is CC BY 4.0 (`LICENSE-DATA`) and the code
   stays MIT; one maintainer across all families, by choice; no hosted frontier-LLM run (Amendment
   5); reviewer time is not measured, because there are no independent human reviewers.
-- **Practical value (Phase 5 criterion 5)** is defined as human time and error rate. It is **not
-  converted** to a model measurement and stays unmet. Curation cost is recorded as **model cost**
-  only: USD 19.34 for the set, about USD 0.15 per authored item.
+- **Amended 2026-09-23 by Mothership under the owner's delegation** (pre-registration Amendment 6,
+  ROADMAP §7): the reported κ is MODEL agreement and human κ is NOT MEASURED; criterion 5 (practical
+  value, human time and error rate) is NOT MEASURED; per-bridge curation cost (Phases 0 and 4,
+  criterion 6) is NOT MEASURED, and the reported cost is the MODEL cost, USD 19.34 for the set, about
+  USD 0.15 per authored item. These are amendments, not met criteria.
 
 ### Separate from the criteria above
 

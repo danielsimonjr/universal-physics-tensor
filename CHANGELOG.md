@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-24) — three exit criteria AMENDED under the owner's delegation (Amendment 6)
+
+Mothership made three decisions on 2026-09-23 under the owner's delegation, because each criterion
+as written needs people the study does not have. They are recorded as pre-registration Amendment 6,
+in the ROADMAP §7 status rows for Phases 0, 4 and 5, and in `NOTES.md`. No threshold, item, rater
+assignment or hash changes; the frozen-set hash test still passes.
+
+- **κ:** the reported κ is MODEL agreement (0.984 / 0.978, two instances of one model). Human κ is
+  NOT MEASURED. The rater role is not filled with personas: two personas of one model family are not
+  independent raters.
+- **Criterion 5, practical value:** NOT MEASURED (no human participants).
+- **Curation cost per bridge (Phases 0 and 4, criterion 6):** NOT MEASURED; the MODEL cost,
+  USD 19.34 for the set, is the reported cost and is labelled as such.
+- **Closed by amendment, not done:** the Sprint 5 row that asked for independent human authors and
+  two named κ raters. No human authored or rated an item.
+
 ### Fixed (2026-09-24) — "three classic tests" named the wrong three; the `'rank-3-lower'` tag explained
 
 - **Physics wording.** The GR evidence spine is perihelion (BE-52), light deflection (BE-51) and
