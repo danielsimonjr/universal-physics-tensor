@@ -71,7 +71,8 @@ count of the old file.
 1. Add the theorem to `formal/physlib/AxiomProbe.lean`.
 2. Run `bun run atlas:formal-gate -- --physlib <checkout> --write-captured` (setup in
    `formal/physlib/README.md`).
-3. The gate must PASS, and `captured/HoleProbe.out` must still report `sorryAx`. Record the
+3. The gate must PASS, and both `captured/HoleProbe.out` and `captured/ImportedHoleProbe.out` must
+   still report `sorryAx`. Record the
    measured axioms in the `formalRef`.
 4. Commit the probe, the captured output and the record together.
 

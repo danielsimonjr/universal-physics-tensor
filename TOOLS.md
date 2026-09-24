@@ -19,7 +19,7 @@ pointed at the wrong thing.
 | Bench | `bun run bench` / `bun run bench:ci` | vitest bench; baselines in `docs/architecture/benchmarks.md` |
 | Audit | `bun audit` | replaces `npm audit` (needs `bun.lock`) |
 | Plan-ledger audit | `bun run audit:plans` | audits `ACTIVE.md`; a release gate inside `validate` |
-| formalRef axiom gate | `bun run atlas:formal-gate -- --physlib <checkout>` | re-measures `#print axioms` for every `lean4-physlib` formalRef; needs Lean and a built Physlib checkout (`formal/physlib/README.md`), so it is NOT in CI. **Lean exits 0 for a `sorry` proof**; the gate reads the printed axioms, and fails if the `HoleProbe` control does not report `sorryAx` |
+| formalRef axiom gate | `bun run atlas:formal-gate -- --physlib <checkout>` | re-measures `#print axioms` for every `lean4-physlib` formalRef; needs Lean and a built Physlib checkout (`formal/physlib/README.md`), so it is NOT in CI. **Lean exits 0 for a `sorry` proof**; the gate reads the printed axioms, and fails if either control (`HoleProbe`, `ImportedHoleProbe`) does not report `sorryAx` |
 | Publish | `npm publish --access public` | Mothership's, never this session's. **Do NOT pass `--ignore-scripts`**: `prepublishOnly` runs `npm run validate` (build, typecheck, test, audit:plans, package:check), and that is the packaging gate |
 
 ## Instruments

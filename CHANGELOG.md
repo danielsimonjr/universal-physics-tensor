@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — a second control for the formalRef gate: a hole inside an imported module
+
+`HoleProbe.lean` has its `sorry` in the probe file, so it showed only that the gate sees a hole in
+the file it runs. Every probed Physlib theorem is reached through an import of a compiled module.
+
+- **The control.** `formal/physlib/UptImportedHole.lean` is a `module` file with `@[expose] public
+  section`, the form of every Physlib file, and proves `(1 : Nat) = 2` with `sorry`. The gate
+  compiles it into the checkout's build directory; the compiler writes the same set of files as for
+  a Physlib module (`.olean`, `.olean.private`, `.olean.server`, `.ilean`, `.ir`).
+  `ImportedHoleProbe.lean` imports it, and the gate fails unless `#print axioms` reports `sorryAx`.
+- **What it shows, from the Lean source** (`Lean/Util/CollectAxioms.lean`): for an imported theorem,
+  `#print axioms` reads an axiom list that Lean stores in the `.olean` when it writes the file; it
+  does not walk the proof. The control shows that the stored list carries `sorryAx` for a hole. It
+  does not check how the Physlib `.olean` files were built.
+- **A failed compile fails the gate.** The gate deletes the module's old output first and requires
+  exit 0 and a written `.olean`, so the control cannot pass on an `.olean` left by an earlier run.
+- **Proof.** CI: 25 tests on the captured output, including the new control, an import error, and
+  the compile check (`compileProblem`). A mutant that disables the new check turns exactly its test
+  red. Live at the pinned checkout: the imported module proven by `rfl` (statement `(1 : Nat) = 1`)
+  FAILS the control; a module that does not compile FAILS with the compiler's message although a
+  good `.olean` from an earlier run was present; the committed probes PASS.
+- **Corrected in review:** the first version was not a `module` file, ignored the compile's exit
+  status (a stale `.olean` would have passed), and its README named the wrong limit (`lean -o`
+  against `lake build`; `lake build` runs `lean -o` too). `TOOLS.md` and `WORKFLOWS.md` now name both
+  controls.
+
 ### Fixed (2026-09-24) — untracked files can no longer reach a gate or a generated doc
 
 An untracked `tests/tmp/differential.test.ts` failed the pre-push typecheck, and `bun run

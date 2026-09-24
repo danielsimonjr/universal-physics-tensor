@@ -15,6 +15,7 @@ import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
   checkPin,
+  compileProblem,
   judgeAxiomGate,
   lean4PhyslibReferences,
   parseAxiomReport,
@@ -28,6 +29,7 @@ const read = (p: string) => readFileSync(resolve(root, p), 'utf-8');
 const probeSource = read('formal/physlib/AxiomProbe.lean');
 const probeOutput = read('formal/physlib/captured/AxiomProbe.out');
 const holeOutput = read('formal/physlib/captured/HoleProbe.out');
+const importedHoleOutput = read('formal/physlib/captured/ImportedHoleProbe.out');
 const references = lean4PhyslibReferences(ATLAS_FAMILIES);
 
 describe('formalRef axiom gate — parsing', () => {
@@ -43,6 +45,10 @@ describe('formalRef axiom gate — parsing', () => {
 
   it('reads the positive control as depending on sorryAx', () => {
     expect(parseAxiomReport(holeOutput).get('holeProbe')).toEqual(['sorryAx']);
+  });
+
+  it('reads the imported-module control as depending on sorryAx', () => {
+    expect(parseAxiomReport(importedHoleOutput).get('uptImportedHole')).toEqual(['sorryAx']);
   });
 
   it("reads names that contain an apostrophe whole", () => {
@@ -75,7 +81,7 @@ describe('formalRef axiom gate — parsing', () => {
 
 describe('formalRef axiom gate — judgement', () => {
   it('passes on the output captured at the pinned commit', () => {
-    expect(judgeAxiomGate({ probeSource, probeOutput, holeOutput, references })).toEqual({
+    expect(judgeAxiomGate({ probeSource, probeOutput, holeOutput, importedHoleOutput, references })).toEqual({
       ok: true,
       problems: [],
     });
@@ -87,48 +93,62 @@ describe('formalRef axiom gate — judgement', () => {
       "'ClassicalMechanics.SimplePendulum.toHarmonicOscillator_ω' depends on axioms: [sorryAx, propext,",
     );
     expect(holed).not.toBe(probeOutput);
-    const verdict = judgeAxiomGate({ probeSource, probeOutput: holed, holeOutput, references });
+    const verdict = judgeAxiomGate({ probeSource, probeOutput: holed, holeOutput, importedHoleOutput, references });
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join('\n')).toMatch(/toHarmonicOscillator_ω.*sorryAx/);
   });
 
   it('fails when the positive control does not report sorryAx', () => {
     const blind = "'holeProbe' depends on axioms: [propext]\n";
-    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput: blind, references });
+    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput: blind, importedHoleOutput, references });
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join('\n')).toMatch(/positive control/);
   });
 
+  it('fails when the imported-module control does not report sorryAx', () => {
+    const proven = "'uptImportedHole' does not depend on any axioms\n";
+    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, importedHoleOutput: proven, references });
+    expect(verdict.ok).toBe(false);
+    expect(verdict.problems.join('\n')).toMatch(/imported-module control failed/);
+  });
+
+  it('fails when the imported-module control reports nothing (for example an import error)', () => {
+    const broken = "ImportedHoleProbe.lean:1:0: error: unknown module prefix 'UptImportedHole'\n";
+    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, importedHoleOutput: broken, references });
+    expect(verdict.ok).toBe(false);
+    expect(verdict.problems.join('\n')).toMatch(/imported-module control failed/);
+  });
+
   it('fails when a probed theorem is missing from the output', () => {
     const truncated = probeOutput.split("'ClassicalMechanics.planeWave_waveEquation'")[0]!;
-    const verdict = judgeAxiomGate({ probeSource, probeOutput: truncated, holeOutput, references });
+    const verdict = judgeAxiomGate({ probeSource, probeOutput: truncated, holeOutput, importedHoleOutput, references });
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join('\n')).toMatch(/planeWave_waveEquation.*not reported/);
   });
 
   it('fails when a recorded axiom list drifts from the measurement', () => {
     const drifted = references.map((r) => ({ ...r, axioms: ['propext'] }));
-    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, references: drifted });
+    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, importedHoleOutput, references: drifted });
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join('\n')).toMatch(/records axioms/);
   });
 
   it('fails when a formalRef names a theorem the probe does not print', () => {
     const unprobed = [{ statement: 'ClassicalMechanics.NotProbed', axioms: [] as string[], version: '' }];
-    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, references: unprobed });
+    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, importedHoleOutput, references: unprobed });
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join('\n')).toMatch(/NotProbed.*not probed/);
   });
 
   it('fails when a formalRef statement does not start with a Lean name', () => {
     const wordy = [{ statement: 'theorem Foo.bar', axioms: [] as string[], version: '' }];
-    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, references: wordy });
+    const verdict = judgeAxiomGate({ probeSource, probeOutput, holeOutput, importedHoleOutput, references: wordy });
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join('\n')).toMatch(/must start with a Lean theorem name/);
   });
 
   it('cannot pass by checking nothing: no probed theorem, no reference', () => {
-    const empty = judgeAxiomGate({ probeSource: '', probeOutput: '', holeOutput, references: [] });
+    const empty = judgeAxiomGate({ probeSource: '', probeOutput: '', holeOutput, importedHoleOutput, references: [] });
     expect(empty.ok).toBe(false);
     expect(empty.problems.join('\n')).toMatch(/prints no theorem/);
     expect(empty.problems.join('\n')).toMatch(/no lean4-physlib formalRef/);
@@ -136,9 +156,24 @@ describe('formalRef axiom gate — judgement', () => {
 
   it('fails when a #print axioms line does not parse as a theorem', () => {
     const odd = `${probeSource}\n#print axioms\n`;
-    const verdict = judgeAxiomGate({ probeSource: odd, probeOutput, holeOutput, references });
+    const verdict = judgeAxiomGate({ probeSource: odd, probeOutput, holeOutput, importedHoleOutput, references });
     expect(verdict.ok).toBe(false);
     expect(verdict.problems.join('\n')).toMatch(/'#print axioms' lines but/);
+  });
+});
+
+describe('formalRef axiom gate — compiling the imported-hole module', () => {
+  it('accepts a compile that exited 0 and wrote the .olean', () => {
+    expect(compileProblem({ status: 0, oleanWritten: true, output: 'warning: declaration uses sorry' })).toBeNull();
+  });
+
+  it('rejects a failed compile, and names the exit code and the compiler output', () => {
+    const problem = compileProblem({ status: 1, oleanWritten: false, output: 'error: unexpected token' });
+    expect(problem).toMatch(/could not be compiled \(exit 1, \.olean not written\): error: unexpected token/);
+  });
+
+  it('rejects a compile that exited 0 but wrote no .olean', () => {
+    expect(compileProblem({ status: 0, oleanWritten: false, output: '' })).toMatch(/\.olean not written/);
   });
 });
 
