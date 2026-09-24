@@ -603,6 +603,11 @@
           "upt:id": "W9",
           "upt:kind": "numeric",
           "upt:test": "tests/atlas/oscillators-coarse.test.ts"
+        },
+        {
+          "upt:id": "W9b",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-coarse.test.ts"
         }
       ]
     },

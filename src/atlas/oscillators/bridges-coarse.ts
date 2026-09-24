@@ -122,6 +122,14 @@ export const BRIDGE_CHAIN_WAVE: AtlasBridge = {
       test: 'tests/atlas/oscillators-coarse.test.ts',
       tolerance: 'relative dispersion error matches (qa)²/24 within 0.5% of itself',
     },
+    {
+      id: 'W9b',
+      kind: 'numeric',
+      test: 'tests/atlas/oscillators-coarse.test.ts',
+      tolerance:
+        'ring of 64 masses integrated: ω matches the lattice dispersion within 1e-9 and the coarse error ' +
+        '(qa)²/24 within 1%; superposition within 1e-10 (linearity); a 10% wrong κ and a cubic on-site force each fail',
+    },
   ],
   // The monatomic-chain dispersion omega(q) = 2 sqrt(kappa/m) |sin(qa/2)| and its
   // long-wavelength continuum limit are standard solid-state results. Work and topic are

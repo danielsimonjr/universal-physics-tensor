@@ -342,17 +342,17 @@ warning-silencing, not debug logging).
       - [ ] Phase 0 review of the five pilot contracts through the CONTRIBUTING.md review surface by a Fable physicist persona (approved by Mothership), recorded as "model-persona review (Fable), not a human physicist".
         - [x] Phase 0 persona finding D1: `ab-spring-lc` / `ab-spring-rlc` `preserves: natural frequency` is false as written; state the spring→LC map. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [x] Phase 0 persona finding D2: `dampedOffsetBoundAt` ignores `k` and `x0`; violated 22x at `k = 100` inside the declared regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding D3: the cubic-spring rejection reason overreaches W3; add an isochrony (period-vs-amplitude) witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D3: the cubic-spring rejection reason overreaches W3; add an isochrony (period-vs-amplitude) witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [x] Phase 0 persona finding D4: `error-algebra.ts` header writes `f̃(x)` for `f̃(x̃)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding D5: chain→wave `preserves: 'linearity'` has no witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D5: chain→wave `preserves: 'linearity'` has no witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [x] Phase 0 persona finding D6: the cubic-spring rejection lists `model-lc` as both premise and conclusion. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [x] Phase 0 persona finding D7: Phase 0 design note states a stale composite bound `(1, θ0²/16)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding D8: the pendulum `horizonHolds` uses the series where the exact period function exists. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D8: the pendulum `horizonHolds` uses the series where the exact period function exists. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [x] Phase 0 persona finding Q-a: W1b tests `x0·u/x0 = u` and cannot fail. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding Q-b: W9 compares two formulas and never integrates the chain. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding Q-c: the pendulum bound `K = 1` is declared, not derived. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding Q-d: the damped-massless domain is the overdamped set, not the asymptotic regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
-        - [ ] Phase 0 persona finding Q-e: the pendulum horizon uses the π/2-drift time, a quarter of the full-lap time. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-b: W9 compares two formulas and never integrates the chain. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-c: the pendulum bound `K = 1` is declared, not derived. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-d: the damped-massless domain is the overdamped set, not the asymptotic regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-e: the pendulum horizon uses the π/2-drift time, a quarter of the full-lap time. Disposition in `docs/research/phase-0-model-persona-review.md`.
       - [ ] Phase 1 citation spot-check of a random sample of `// source:` citations against the CITED SOURCES by an Opus agent with the papers (approved by Mothership), recorded as "model check with source access".
       - [ ] Triage the stale open rows outside the atlas roadmap (lines 654, 658, 830-844, 943, 985 and the optional rows); tick parents whose children are all done, box only.
       - [x] Found by the COMPONENTS.md review: `src/numerical/lowering.ts:395-396` holds an orphaned doc comment ("Lower a validated ExprNode to an EngineTensor. @internal") that documents `DeferredEvaluatorEntry` instead of `lowerNode`. It describes `lowerNode` (line 447), which has no doc comment and so no `@internal` tag; move the comment back onto `lowerNode`.

@@ -474,6 +474,7 @@
       "tests/atlas/atlas-json.test.ts",
       "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark.test.ts",
+      "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/export.test.ts",
       "tests/atlas/families.test.ts",
@@ -551,6 +552,7 @@
     ],
     "src/atlas/path-bound.ts": [
       "tests/atlas/barrel-completeness.test.ts",
+      "tests/atlas/bound-machine-form.test.ts",
       "tests/atlas/path-bound.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
@@ -5690,6 +5692,8 @@
       "src/atlas/oscillators/bridges-limits.ts",
       "src/atlas/oscillators/bridges-coarse.ts",
       "src/atlas/regime.ts",
+      "src/atlas/families.ts",
+      "src/atlas/path-bound.ts",
       "src/atlas/types.ts"
     ],
     "tests/atlas/closure.test.ts": [

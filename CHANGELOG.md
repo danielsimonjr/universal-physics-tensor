@@ -8,6 +8,23 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — Phase 0 persona findings D3, D5 and Q-b fixed with new witnesses; D8, Q-c, Q-d, Q-e stand
+
+- **W3b (isochrony) for the cubic-spring rejection.** The linear period is 2π at every amplitude;
+  the cubic spring's is not (6.22514 / 6.06066 / 5.51685 at A = 0.5 / 1 / 2, β x0²/k = 0.1). A
+  change of variables that rescales time by a constant scales every period alike, so no such change
+  makes the two exactly equivalent. The rejection's reason now says the surviving group is necessary,
+  not sufficient.
+- **W9b (the chain integrated) for chain→wave.** W9 compared two formulas; W9b integrates the chain
+  on a ring of 64 masses. The measured ω matches the lattice dispersion within 1e-9, the coarse error
+  matches (qa)²/24 within 1%, and superposition holds within 1e-10, which witnesses `linearity`. A
+  10% wrong κ and a cubic on-site force each fail it.
+- **Findings that stand, each with a test.** D8: the series horizon `4T0/θ0²` is shorter than the
+  exact π/2-drift time at every θ0 ≤ 0.5, so it is conservative. Q-c: over 170 ordered model pairs
+  no `findPath` route composes two bounded approximations, so no declared `K = 1` touches a composed
+  δ; a guard test fails when one does. Q-d and Q-e stand as documented in the review record.
+- Every finding of the review now has a disposition. `W3b` and `W9b` join the closed witness list.
+
 ### Fixed (2026-09-24) — Phase 0 persona findings D1, D2, D4, D6, D7 and Q-a
 
 - **D2, a wrong number from a bound function.** `dampedOffsetBoundAt` returned `2(1+|v0|)m/b` for
