@@ -8,6 +8,25 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-24) — citation comments that credited sources with the repository's own claims
+
+An Opus agent with source access checked a seeded random sample of 6 of the 15 `// source:` comments
+against the cited sources (`docs/research/phase-1-citation-check.md`). None was fully supported: 5
+were partial and 1 unverifiable. Each partial one stated the repository's own derivation, convention
+or classification as the source's statement.
+
+- **Fixed:** BE-11 (the "not a limit" label is ours; the book frames a weak-coupling limit), BE-21
+  (KSS state the SI value themselves and call the bound a conjecture), BE-52 (Einstein 1915 used
+  successive approximation, not the Schwarzschild solution; Carroll now cited as the lecture notes'
+  eq. 7.56 that was actually read), BE-55 (σ_xy = Ce²/h has the same form in Gaussian units; the SI
+  part is the values in ohms), BE-58 (Nyquist states no units; the SI reading is ours).
+- **Outside the sample:** BE-51 cited p. 844, which is the field-equations paper; the deflection is
+  announced on p. 831. Corrected, and an unverified Carroll section number removed.
+- **Stand:** BE-59, whose paper is paywalled (consistent with Josephson's Nobel Lecture); the BE-21
+  name, which is verbatim spec text.
+- No record changes a number, unit system or relation type. `data/bridge-catalog.json` is regenerated
+  for the `references[]` changes. Checking the 9 unsampled comments is filed for Mothership.
+
 ### Changed (2026-09-24) — Phase 0 physicist review closed by amendment (Amendment 7)
 
 Mothership ruled, under the owner's delegation, that a model-persona review does not satisfy

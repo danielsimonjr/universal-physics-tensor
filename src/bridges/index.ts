@@ -534,12 +534,15 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `see source | status_text: Established (Lindblad form). Auxiliary coupling-dependent rate corrected 2026-05-04 (R0 audit, branch fix/be-11-decoherence-coupling) from the broken Arrhenius-in-coupling form γ_k(T,λ) = γ_0 exp(-λ/λ_thermal) — which was exponentially *decreasing* in coupling, physically backwards — to the Caldeira-Leggett weak-coupling form γ_k(λ) = γ_0 (λ/λ_0)². The Lindblad master equation itself is unchanged and remains established literature.`,
   // -- Atlas Phase 1 overlay --
-  // source: Breuer & Petruccione, "The Theory of Open Quantum Systems" (OUP) -
-  // the Born-Markov derivation of the Markovian master equation. The reduced
-  // dynamics is obtained by TRACING OUT the environment, which is a
-  // coarse-graining, not a limit and not an equivalence. Cited by work and
-  // topic: the section numbers already in this row's references[] were not
-  // re-verified against an edition in hand, so they are not re-asserted here.
+  // source: Breuer & Petruccione, "The Theory of Open Quantum Systems" (OUP 2002) -
+  // the Born-Markov derivation of the Markovian master equation: the reduced
+  // density matrix is the partial trace over the environment (p. 116), under
+  // the condition that the bath correlation time is small compared to the
+  // relaxation time (p. 136), which the book calls a weak-coupling condition
+  // and derives under "Weak-coupling Limit". The type 'coarse-graining' is
+  // THIS repository's classification of the partial trace; the book frames the
+  // derivation as a limit. Cited by work and topic: the section numbers in this
+  // row's references[] were not re-verified against an edition in hand.
   relation: {
     type: 'coarse-graining',
     transformation:
@@ -998,10 +1001,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'Einstein-gravity dual: eta from the graviton absorption cross-section, ' +
       's from the horizon area',
   },
-  // source: Kovtun, Son & Starinets 2005 state the bound as eta/s >= 1/(4 pi)
-  // in units hbar = k_B = 1. This row's saturating value 6.078e-13 K.s is the
-  // same statement in SI, so the unit system is load-bearing for the NUMBER
-  // rather than decorative.
+  // source: Kovtun, Son & Starinets 2005, eq. (1): eta/s = hbar/(4 pi k_B)
+  // ~ 6.08e-13 K s, stated with hbar and k_B restored, for theories with
+  // gravity duals; they CONJECTURE ("We speculate") that it is a lower bound
+  // for relativistic QFTs at finite temperature and zero chemical potential.
+  // This row's saturating value 6.078e-13 K.s is that SI value, so the unit
+  // system is load-bearing for the NUMBER rather than decorative.
   conventions: { unitSystem: 'SI' },
 },
 {
@@ -2219,8 +2224,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [],
   references: [
     `Dyson, Eddington & Davidson 1920 Phil. Trans. R. Soc. A 220:291 (original 1919 eclipse expedition)`,
-    `Einstein 1915 Preuss. Akad. Wiss. 844 (GR prediction of 4GM/(Rc²) deflection)`,
-    `Carroll 2004 Spacetime and Geometry §8.5 (standard GR textbook derivation)`,
+    `Einstein 1915 Preuss. Akad. Wiss. 831 (GR prediction of 4GM/(Rc²) deflection, announced in the perihelion paper)`,
+    `Carroll 2004 Spacetime and Geometry (standard GR textbook derivation; section not verified)`,
     `Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)`,
   ],
   dependencies: [],
@@ -2228,10 +2233,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Added 2026-05-15 (v0.4.0 Task 15 [U]): Eddington 1919 gravitational lensing bridge. evaluateGravitationalLensing({M_kg, b_m}) → {alpha_rad, alpha_arcsec, M_kg, b_m} in src/bridges/gravitational-lensing.ts. Solar grazing validation: α ≈ 8.49×10⁻⁶ rad ≈ 1.75 arcsec. Domain: b > 0; weak-field: b >> r_Schwarzschild = 2GM/c². Geodesic cross-validation (null RK4, 200k steps) passes to ±1e-4 relative error. First bridge beyond the original 40-bridge spec catalog.`,
   // -- Atlas Phase 1 overlay --
-  // source: Einstein 1915 Preuss. Akad. Wiss. 844, and Carroll, "Spacetime and
-  // Geometry", the weak-field light-deflection derivation - alpha = 4GM/(b c^2)
-  // is DERIVED from null geodesics of the Schwarzschild metric at first order
-  // in GM/(b c^2). Work and topic are cited rather than a section number: the
+  // source: Einstein 1915 Preuss. Akad. Wiss. 831 (the perihelion paper, which
+  // announces the doubled deflection; pp. 844-847 are the field-equations
+  // paper), and Carroll, "Spacetime and Geometry", the weak-field
+  // light-deflection derivation - alpha = 4GM/(b c^2) follows from null
+  // geodesics of the Schwarzschild metric at first order in GM/(b c^2), the
+  // textbook route; Einstein 1915 worked by successive approximation. Work and topic are cited rather than a section number: the
   // number in this row's references[] was not re-verified against an edition in
   // hand. NOT typed 'approximation' - see BE-37: no Lipschitz K / delta /
   // machine horizon is sourced for the post-Newtonian truncation, and the type
@@ -2261,7 +2268,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [
     `Einstein 1915 Preuss. Akad. Wiss. 831 (GR prediction of perihelion advance)`,
     `Le Verrier 1859 (original anomalous Mercury precession observation, 43"/century)`,
-    `Carroll 2004 Spacetime and Geometry §7.4 (standard GR textbook derivation)`,
+    `Carroll, Lecture Notes on General Relativity (gr-qc/9712019), eq. (7.56) (states the result)`,
     `Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)`,
   ],
   dependencies: [],
@@ -2269,12 +2276,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Added 2026-05-15 (v0.4.0 Task 16a [U]): Einstein 1915 perihelion precession bridge (closed-form only; geodesic cross-validation deferred to sub-task 16b). evaluatePerihelionPrecession({M_kg, a_m, e, T_yr}) → {dphi_rad_per_orbit, dphi_arcsec_per_orbit, dphi_arcsec_per_century, M_kg, a_m, e} in src/bridges/perihelion-precession.ts. Mercury validation: ~43.0 arcsec/century within 0.5 arcsec. Domain: 0 ≤ e < 1, a > 0, T > 0 (bound elliptical orbits only). Second bridge beyond the original 40-bridge spec catalog.`,
   // -- Atlas Phase 1 overlay --
-  // source: Einstein 1915 Preuss. Akad. Wiss. 831, and Carroll, "Spacetime and
-  // Geometry", the perihelion-precession derivation - Delta phi =
-  // 6 pi GM/(a(1-e^2) c^2) is DERIVED from the Schwarzschild orbit equation at
-  // first post-Newtonian order. Work and topic cited rather than a section
-  // number, for the BE-51 reason. NOT typed 'approximation', for the BE-37
-  // reason.
+  // source: Einstein 1915 Preuss. Akad. Wiss. 831-839, eqs. (13)-(14):
+  // epsilon = 3 pi alpha/(a(1-e^2)), obtained by SUCCESSIVE APPROXIMATION of
+  // his field equations (Schwarzschild's exact solution came in 1916); with
+  // alpha = 2GM/c^2 this is Delta phi = 6 pi GM/(a(1-e^2) c^2). The
+  // transformation below describes the standard textbook route through the
+  // Schwarzschild orbit equation, not Einstein's. Carroll's lecture notes
+  // (gr-qc/9712019, eq. 7.56) quote the result and refer to Weinberg for the
+  // derivation. NOT typed 'approximation', for the BE-37 reason.
   relation: {
     type: 'derivation',
     transformation:
@@ -2381,8 +2390,10 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'transverse conductance sigma_xy = C e^2/h, C the TKNN/Chern integer',
   },
   // source: von Klitzing, Dorda & Pepper 1980 Phys. Rev. Lett. 45:494 report the
-  // quantized Hall RESISTANCE in SI ohms; sigma_xy = C e^2/h and R_K = h/e^2 are
-  // SI statements and do not carry over unchanged to Gaussian units.
+  // quantized Hall RESISTANCE in SI ohms, as R_H = alpha^-1 mu0 c / 2i (eq. 4).
+  // sigma_xy = C e^2/h itself has the same form in Gaussian units; what is SI
+  // here is this row's values in ohms and siemens, so the unit system is
+  // load-bearing for the numbers.
   conventions: { unitSystem: 'SI' },
 },
 {
@@ -2463,8 +2474,11 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'resistor R in thermal equilibrium at T -> one-sided voltage-noise PSD ' +
       'S_V = 4 k_B T R, in the classical limit h f << k_B T',
   },
-  // source: Nyquist 1928 - the result is stated for SI electrical quantities
-  // (R in ohms, S_V in V^2/Hz). NOTE: the LOAD-BEARING convention here is the
+  // source: Nyquist 1928, eq. (1): E^2 d nu = 4 R k T d nu. The paper states NO
+  // units; reading it in SI (R in ohms, S_V in V^2/Hz) is this repository's
+  // choice. Its frequencies run over positive values (it integrates from 0 to
+  // infinity), consistent with a one-sided spectrum, though it does not
+  // discuss the choice. NOTE: the LOAD-BEARING convention here is the
   // one-sided-vs-two-sided PSD choice, which is what makes the prefactor 4
   // rather than 2. 'Conventions' has no field for it, so it is recorded in
   // 'transformation' above and reported as an overlay gap rather than forced

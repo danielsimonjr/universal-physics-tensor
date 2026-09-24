@@ -1454,8 +1454,8 @@
       "known_issues": [],
       "references": [
         "Dyson, Eddington & Davidson 1920 Phil. Trans. R. Soc. A 220:291 (original 1919 eclipse expedition)",
-        "Einstein 1915 Preuss. Akad. Wiss. 844 (GR prediction of 4GM/(Rc²) deflection)",
-        "Carroll 2004 Spacetime and Geometry §8.5 (standard GR textbook derivation)",
+        "Einstein 1915 Preuss. Akad. Wiss. 831 (GR prediction of 4GM/(Rc²) deflection, announced in the perihelion paper)",
+        "Carroll 2004 Spacetime and Geometry (standard GR textbook derivation; section not verified)",
         "Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)"
       ],
       "dependencies": [],
@@ -1516,7 +1516,7 @@
       "references": [
         "Einstein 1915 Preuss. Akad. Wiss. 831 (GR prediction of perihelion advance)",
         "Le Verrier 1859 (original anomalous Mercury precession observation, 43\"/century)",
-        "Carroll 2004 Spacetime and Geometry §7.4 (standard GR textbook derivation)",
+        "Carroll, Lecture Notes on General Relativity (gr-qc/9712019), eq. (7.56) (states the result)",
         "Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)"
       ],
       "dependencies": [],
