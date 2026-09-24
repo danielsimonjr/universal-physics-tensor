@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — residual form for canonical entries; Amendment 9 registers an EXPLORATORY condition
+
+The criterion 3 in-process run found that typed structural search never matched on structure. It had
+0 key equalities in 11,125 pairs, because a claim is stored as `lhs − rhs` and a canonical entry as one
+target's right-hand side. Mothership ruled that this is a product defect to fix in code, and that the
+corrected condition may run only as EXPLORATORY and POST HOC, registered before it runs.
+
+- **Fixed in code: `canonicalResidual` (`src/canonical/residual.ts`)** returns `target − scalarAst`, the
+  form a claim is compared in. It was test-first: a residual claim `F − m·a` first fails to key-match
+  `CE-newton-second-law`, then matches in residual form. A control (`F − m·v`) still does not match,
+  and all 89 canonical residuals pass the dimension validator. The product's typed search switches to
+  it after the study closes (filed in `todo.md`), because the Amendment 8 pins are live until then.
+  No symbol-alias map was added: the naming gap is a stated limitation.
+- **`tools/criterion3-study/residual-corpus.ts`** puts the frozen corpus in residual form. It refuses
+  to run unless each frozen expression equals the registry's `scalarAst`, so the targets come from
+  the same registry. All 89 match.
+- **Amendment 9** (`docs/research/atlas-benchmark-preregistration.md`) registers the corrected
+  condition as POST HOC and EXPLORATORY. It keeps the same truth sets, pool and metric, and pins the
+  two files above by git blob id. The criterion verdict stays on the conditions as pinned in
+  Amendment 8, and the corrected result is reported beside it, never in its place.
+- **`run.ts` reads each amendment's own section (`amendmentSection`).** Before, it read from
+  "Amendment 8" to the end of the file, so Amendment 9's pins would have been taken as Amendment 8's.
+  The exploratory condition runs only when Amendment 9 is present, its pins match, and its commit and
+  CI are given. Before Amendment 9, the refactored runner reproduced the committed Amendment 8 results
+  byte for byte.
+
 ### Added (2026-09-24) — criterion 3 step 4: the in-process retrieval conditions, INTERIM
 
 Amendment 8 (`d99dcc9`) was committed, and its CI run was green (36028162207, 16:36Z), before any

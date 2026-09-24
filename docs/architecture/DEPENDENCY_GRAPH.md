@@ -38,7 +38,7 @@ The codebase is organized into the following modules:
 
 - **atlas**: 54 files
 - **bridges**: 89 files
-- **canonical**: 17 files
+- **canonical**: 18 files
 - **cli**: 31 files
 - **root**: 1 file
 - **composition**: 71 files
@@ -2808,6 +2808,19 @@ The codebase is organized into the following modules:
 **Exports:**
 - Functions: `canonicalById`, `canonicalByDomain`, `canonicalByTarget`, `partneredBridgeIds`, `bridgesWithoutCanonicalPartner`
 - Constants: `CANONICAL_EQUATIONS`, `CANONICAL_BY_ID`
+
+---
+
+### `src/canonical/residual.ts` - Residual form of a canonical equation: `target − scalarAst`.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
+| `./canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+
+**Exports:**
+- Functions: `canonicalResidual`
 
 ---
 
@@ -6453,7 +6466,7 @@ graph TD
         N14[_l1-build]
         N15[atomic]
         N16[condensed-matter]
-        N17[...12 more]
+        N17[...13 more]
     end
 
     subgraph Cli
@@ -6553,17 +6566,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 348 |
+| Total TypeScript Files | 349 |
 | Total Modules | 11 |
-| Total Lines of Code | 69016 |
-| Total Exports | 2452 |
+| Total Lines of Code | 69050 |
+| Total Exports | 2453 |
 | Total Re-exports | 1232 |
 | Total Classes | 58 |
 | Total Interfaces | 360 |
-| Total Functions | 554 |
+| Total Functions | 555 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 483 |
+| Type-only Imports | 485 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

@@ -283,3 +283,35 @@ back-quoted hash in this note as the item-set hash. The item-set hash does not c
 | truth.json | 06756dd14cc7f663d592749ac3e5777ccecbfac7f7dd647c696adf052b1b274e |
 
 No threshold, item or rater assignment changes.
+
+**Amendment 9 (2026-09-24) — criterion 3: an EXPLORATORY, POST HOC structural condition on residual
+forms. Its result is reported BESIDE the criterion and never replaces it.** The in-process results
+under Amendment 8 showed that typed structural search never matched on structure: the keys were equal
+in 0 of 11,125 query × record pairs. A claim is stored as a residual, `lhs − rhs`, while a canonical
+entry stores the right-hand side of one target. This amendment is written AFTER those results were
+seen, so its condition is post hoc and exploratory.
+
+- **The criterion verdict stays on the conditions as pinned in Amendment 8**, with typed structural
+  search as built. That the pinned typed search never fired is the honest result about the system.
+  This amendment changes no truth set, pool, metric or pinned code.
+- **The corrected condition puts both sides in residual form.** A claim keeps its stored `lhs − rhs`.
+  A canonical entry becomes `target − scalarAst` (`canonicalResidual`). The target comes from the
+  registry, after a check that each frozen corpus expression equals the registry's `scalarAst`. The
+  ranker is `rankByStructure` as pinned: the structural key with dimension renaming first, then
+  symbol overlap.
+- **No symbol-alias map.** Query notation (`k_B`) and canonical names (`boltzmann-constant`) still
+  differ in the symbol-overlap tier. The naming gap is a stated limitation: an alias map would be a
+  knob fitted to these results.
+- **Same truth sets and same scoring.** The truth sets are PRIMARY (n = 50) and SECONDARY (n = 64).
+  The pool is PRIMARY, all families. The metric is recall at depth 10 with Wilson 95% intervals, per
+  family, with fluid statics separately.
+- **Pinned code**, which the runner checks together with the Amendment 8 pins:
+  `src/canonical/residual.ts` 7bd5c44ce8095bcf53f675a79f320a22ab1305ad,
+  `tools/criterion3-study/residual-corpus.ts` d09b255a9e439bd57736692dafe632a7217397f0.
+- **Order.** The corrected condition runs only after this amendment is committed and its CI is green.
+  Its result goes under INTERIM in a section of its own, labelled EXPLORATORY and POST HOC.
+- **The residual mismatch is also a product defect,** because user claims arrive in residual form too.
+  `canonicalResidual` is the fix in code. The product's typed structural search switches to it after
+  the study closes, because the Amendment 8 pins are live until then.
+
+No threshold, item, rater assignment, truth set or hash changes.

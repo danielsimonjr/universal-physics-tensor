@@ -65,9 +65,9 @@ Numbers extracted from `docs/architecture/DEPENDENCY_GRAPH.md` Summary Statistic
 
 | Metric | Value |
 |--------|-------|
-| Source files | 348 TypeScript files under `src/` (862 across the whole repository, including tests and tooling) |
+| Source files | 349 TypeScript files under `src/` (866 across the whole repository, including tests and tooling) |
 | Modules | 11 (`atlas`, `bridges`, `canonical`, `cli`, `composition`, `core`, `diff`, `dimensional`, `entry`, `numerical`, `root`) |
-| Total exports | 2452 (1232 re-exports) |
+| Total exports | 2453 (1232 re-exports) |
 | Bridge catalog entries | 55 (IDs 11–65) |
 | Per-bridge evaluator modules | see `bridge-coverage-audit.md` |
 | Composition-graph edges | 41 `BridgeEdge` constants (9 calibration + 6 catalog-tranche + 26 catalog-full), assembled once as the public `CATALOG_GRAPH` |
@@ -389,13 +389,13 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 862 | dependency-graph.json |
-| totalExports | 3084 | dependency-graph.json |
+| totalSourceFiles | 866 | dependency-graph.json |
+| totalExports | 3088 | dependency-graph.json |
 | runtimeCircularDeps | 0 | dependency-graph.json |
 | typeOnlyCircularDeps | 0 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`npm run docs:deps`): 348 files, 2452 exports, 1232 of them re-exports. 862 and 348 do not
+(`npm run docs:deps`): 349 files, 2453 exports, 1232 of them re-exports. 866 and 349 do not
 contradict each other; they answer different questions. Every figure states its scope.

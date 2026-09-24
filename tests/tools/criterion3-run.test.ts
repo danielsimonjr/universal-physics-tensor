@@ -12,6 +12,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import {
+  amendmentSection,
   CONDITIONS,
   diagnostics,
   frozenHashes,
@@ -19,6 +20,7 @@ import {
   IN_DISTRIBUTION,
   pinnedBlobs,
   POOLED,
+  renderExploratory,
   renderResults,
   scoreConditions,
   type Ranker,
@@ -27,7 +29,8 @@ import { wilsonInterval } from '../../src/atlas/benchmark/stats.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const note = readFileSync(resolve(root, 'docs/research/atlas-benchmark-preregistration.md'), 'utf-8');
-const amendment = note.slice(note.indexOf('**Amendment 8'));
+// Only Amendment 8's own text: a later amendment's pins or hashes must not be read as its.
+const amendment = amendmentSection(note, 8);
 
 // A synthetic corpus of 12 records; the "answer" ranker puts the record named in the query text first.
 const corpus = Array.from({ length: 12 }, (_, i) => ({ id: `CE-${String(i).padStart(2, '0')}`, text: `record ${i}` }));
@@ -142,6 +145,50 @@ describe('criterion 3 runner — the pins it enforces', () => {
     const md = renderResults([['PRIMARY', [ans!]]], { amendmentCommit: 'x', amendmentCi: 'y' });
     expect(md).toContain('INTERIM');
     expect(md).toContain('no criterion verdict');
+    expect(md).not.toMatch(/\bMET\b/);
+  });
+});
+
+describe('criterion 3 runner — Amendment 9 (EXPLORATORY) support', () => {
+  const synthetic = [
+    '**Amendment 8 (x) — first.** pins `src/a.ts` ' + 'a'.repeat(40),
+    '**Amendment 9 (y) — second.** pins `src/canonical/residual.ts` ' + 'b'.repeat(40) + ' and `tools/x/y.ts` ' + 'c'.repeat(40),
+  ].join('\n\n');
+
+  it('reads one amendment only: a later amendment\'s pins never leak into an earlier one', () => {
+    expect([...pinnedBlobs(amendmentSection(synthetic, 8)).keys()]).toEqual(['src/a.ts']);
+    expect([...pinnedBlobs(amendmentSection(synthetic, 9)).keys()].sort()).toEqual(['src/canonical/residual.ts', 'tools/x/y.ts']);
+    expect(amendmentSection(synthetic, 10)).toBe('');
+  });
+
+  it('counts the hits a structural key match placed, separately from symbol and tie-break hits', () => {
+    const sym = (name: string) => ({ kind: 'symbol', name, dim: { L: 1, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 } }) as never;
+    const c = [
+      { id: 'CE-k', text: 'k', expr: sym('a') },
+      { id: 'CE-t', text: 't' },
+    ];
+    const q = new Map([
+      ['q-1', { text: 'x', expr: sym('a') }],
+      ['q-2', { text: 'y', expr: sym('b') }],
+    ]);
+    const result = { condition: 'residual', groups: [], firstCorrectRank: { 'q-1': 1, 'q-2': 2 } };
+    const a = hitAnatomy(result, c, q, { 'q-1': ['CE-k'], 'q-2': ['CE-t'] }, 10, (e) => JSON.stringify(e));
+    expect(a.keyMatchedHits).toEqual(['q-1']);
+    expect(a.zeroOverlapHits).toEqual(['q-2']);
+  });
+
+  it('renders the exploratory section as POST HOC and EXPLORATORY, never as the criterion', () => {
+    const g = { group: 'all families', n: 2, hits: 1, recall: 0.5, lower: 0.1, upper: 0.9 };
+    const r = (condition: string) => ({ condition, groups: [g], firstCorrectRank: {} });
+    const md = renderExploratory(
+      [['PRIMARY', r('typed structural search'), r('typed structural search, residual form')]],
+      { keyEqualities: 3, keyPairs: 10, residualQueries: 0, queries: 0, truthWithExpr: 0, truthSharingSymbol: 0, truthQueries: 0 },
+      { condition: 'x', hits: 1, sharedNames: [], zeroOverlapHits: [], keyMatchedHits: ['q-1'] },
+      { amendmentCommit: 'c', amendmentCi: 'ci' },
+    );
+    expect(md).toContain('EXPLORATORY and POST HOC');
+    expect(md).toContain('NOT the criterion');
+    expect(md).toContain('(as pinned)');
     expect(md).not.toMatch(/\bMET\b/);
   });
 });

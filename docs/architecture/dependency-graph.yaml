@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.45.2
-  totalFiles: 348
+  totalFiles: 349
   totalModules: 11
-  totalExports: 2452
+  totalExports: 2453
 entryPoints:
   - file: src/index.ts
     type: main
@@ -6305,6 +6305,23 @@ modules:
       constants:
         - CANONICAL_EQUATIONS
         - CANONICAL_BY_ID
+    src/canonical/residual.ts:
+      description: "Residual form of a canonical equation: `target − scalarAst`."
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+      exports:
+        - canonicalResidual
+      functions:
+        - canonicalResidual
     src/canonical/seed-l-layer.ts:
       description: Seed the canonical-equation registry into the tensor's L-layer (Π = L + B + E)
       externalDependencies: []
@@ -16539,6 +16556,7 @@ dependencyGraph:
         - src/canonical/linkage.ts
         - src/canonical/normal-form.ts
         - src/canonical/registry.ts
+        - src/canonical/residual.ts
         - src/canonical/seed-l-layer.ts
     - name: Cli
       files:
@@ -16745,18 +16763,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 348
+  totalTypeScriptFiles: 349
   totalModules: 11
-  totalLinesOfCode: 69016
-  totalExports: 2452
+  totalLinesOfCode: 69050
+  totalExports: 2453
   totalClasses: 58
   totalInterfaces: 360
-  totalFunctions: 554
+  totalFunctions: 555
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 607
   totalReExports: 1232
-  totalTypeOnlyImports: 483
+  totalTypeOnlyImports: 485
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 1

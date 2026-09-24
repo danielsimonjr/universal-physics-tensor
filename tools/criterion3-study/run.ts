@@ -35,6 +35,8 @@ import {
 } from '../../src/atlas/benchmark/baselines.js';
 import { leakageKey } from '../../src/atlas/benchmark/leakage.js';
 import { wilsonInterval } from '../../src/atlas/benchmark/stats.js';
+import { CANONICAL_EQUATIONS } from '../../src/canonical/registry.js';
+import { residualCorpus } from './residual-corpus.js';
 
 /** A ranking function of the pre-registered in-process conditions. */
 export type Ranker = (query: RetrievalQuery, corpus: readonly CorpusRecord[]) => Ranking;
@@ -190,32 +192,54 @@ export interface HitAnatomy {
   readonly zeroOverlapHits: readonly string[];
 }
 
-/** Analyse the top-k hits of one condition. */
+/**
+ * Analyse the top-k hits of one condition. With `key`, also count the hits whose query key equals the
+ * key of a correct reference: the hits the STRUCTURAL tier placed.
+ */
 export function hitAnatomy(
   result: ConditionResult,
   corpus: readonly CorpusRecord[],
   queries: ReadonlyMap<string, RetrievalQuery>,
   truth: Readonly<Record<string, readonly string[]>>,
   k = 10,
-): HitAnatomy {
+  key?: (expr: NonNullable<RetrievalQuery['expr']>) => string,
+): HitAnatomy & { readonly keyMatchedHits?: readonly string[] } {
   const byId = new Map(corpus.map((r) => [r.id, r]));
   const shared = new Set<string>();
   const zero: string[] = [];
+  const keyed: string[] = [];
   let hits = 0;
   for (const [q, rank] of Object.entries(result.firstCorrectRank).sort()) {
     if (!(rank <= k)) continue;
     hits++;
-    const qs = symbolNames(queries.get(q)?.expr);
+    const qe = queries.get(q)?.expr;
+    const qs = symbolNames(qe);
     const names = (truth[q] ?? []).flatMap((id) => [...symbolNames(byId.get(id)?.expr)].filter((s) => qs.has(s)));
     if (names.length === 0) zero.push(q);
     for (const n of names) shared.add(n);
+    if (key && qe !== undefined) {
+      const qk = key(qe);
+      if ((truth[q] ?? []).some((id) => byId.get(id)?.expr !== undefined && key(byId.get(id)!.expr!) === qk)) keyed.push(q);
+    }
   }
-  return { condition: result.condition, hits, sharedNames: [...shared].sort(), zeroOverlapHits: zero };
+  const base = { condition: result.condition, hits, sharedNames: [...shared].sort(), zeroOverlapHits: zero };
+  return key ? { ...base, keyMatchedHits: keyed } : base;
 }
 
-/** The pinned code blobs Amendment 8 records: `path` → git blob id. */
+/**
+ * The text of Amendment `n` in the pre-registration note: from its heading to the next amendment's,
+ * or to the end. A later amendment's pins must never be read as an earlier one's. Empty when absent.
+ */
+export function amendmentSection(note: string, n: number): string {
+  const start = note.indexOf(`**Amendment ${n} `);
+  if (start < 0) return '';
+  const next = note.indexOf(`**Amendment ${n + 1} `, start);
+  return next < 0 ? note.slice(start) : note.slice(start, next);
+}
+
+/** The pinned code blobs an amendment records: `path` → git blob id, for paths under `src/` or `tools/`. */
 export function pinnedBlobs(amendment: string): Map<string, string> {
-  return new Map([...amendment.matchAll(/`(src\/[\w/.-]+\.ts)` ([0-9a-f]{40})/g)].map((m) => [m[1]!, m[2]!]));
+  return new Map([...amendment.matchAll(/`((?:src|tools)\/[\w/.-]+\.ts)` ([0-9a-f]{40})/g)].map((m) => [m[1]!, m[2]!]));
 }
 
 /** The frozen file hashes Amendment 8 records: file → SHA-256. */
@@ -278,6 +302,51 @@ export function renderResults(
   return lines.join('\n');
 }
 
+/**
+ * The EXPLORATORY section (Amendment 9), separate from the pinned results: the corrected condition
+ * beside the pinned typed search, then its computed instrument facts.
+ */
+export function renderExploratory(
+  sets: readonly (readonly [string, ConditionResult, ConditionResult])[],
+  diag: Diagnostics,
+  anatomy: HitAnatomy & { readonly keyMatchedHits?: readonly string[] },
+  context: { readonly amendmentCommit: string; readonly amendmentCi: string },
+): string {
+  const lines = [
+    '## Criterion 3 — EXPLORATORY, post hoc: typed structural search on residual forms (pre-registration Amendment 9)',
+    '',
+    '**EXPLORATORY and POST HOC. This is NOT the criterion, and it never replaces it.** Amendment 9 registered',
+    'this condition after the in-process results above were seen. The criterion verdict stays on the',
+    'conditions as pinned in Amendment 8. The corrected condition compares each claim, as stored',
+    '(`lhs − rhs`), with each canonical entry in residual form (`target − scalarAst`). The structural key',
+    `and the scoring are unchanged. It ran after Amendment 9 was committed (\`${context.amendmentCommit}\`)`,
+    `and its CI run was green (${context.amendmentCi}). Same truth sets, same pool, same metric.`,
+    '',
+  ];
+  for (const [set, pinned, corrected] of sets) {
+    lines.push(`### ${set}`, '', `| Group | n | ${pinned.condition} (as pinned) | ${corrected.condition} (EXPLORATORY) |`, '|---|---|---|---|');
+    for (let g = 0; g < pinned.groups.length; g++) {
+      const a = pinned.groups[g]!;
+      const b = corrected.groups[g]!;
+      lines.push(`| ${a.group} | ${a.n} | ${a.hits}/${a.n} = ${pct(a.recall)} [${pct(a.lower)}, ${pct(a.upper)}] | ${b.hits}/${b.n} = ${pct(b.recall)} [${pct(b.lower)}, ${pct(b.upper)}] |`);
+    }
+    lines.push('');
+  }
+  const keyed = anatomy.keyMatchedHits ?? [];
+  lines.push(
+    '### Instrument facts for the EXPLORATORY condition (computed by the runner; PRIMARY)',
+    '',
+    `- **Structural keys now match in ${diag.keyEqualities} of the ${diag.keyPairs} query × record pairs** (0 as pinned).`,
+    `- **Of its ${anatomy.hits} hits, ${keyed.length} were placed by a structural key match** (${keyed.join(', ') || 'none'}); the rest came from the symbol-overlap tie-break.`,
+    `- ${anatomy.zeroOverlapHits.length} hit(s) (${anatomy.zeroOverlapHits.join(', ') || 'none'}) share no symbol name with a correct reference and match no key: they reach the top 10 only through the id tie-break.`,
+    '- **Stated limitation:** no symbol-alias map was added. Query notation (`k_B`, `rho_0`) and canonical names',
+    '  (`boltzmann-constant`, `density`) still differ in the symbol-overlap tier. An alias map would be a knob',
+    '  fitted to these results.',
+    '',
+  );
+  return lines.join('\n');
+}
+
 // ---------------------------------------------------------------- I/O (the command line)
 
 function git(root: string, args: readonly string[]): string {
@@ -290,7 +359,7 @@ function main(argv: readonly string[]): number {
   const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
   const dir = join(root, 'docs/research/criterion3');
   const note = readFileSync(join(root, 'docs/research/atlas-benchmark-preregistration.md'), 'utf8');
-  const amendment = note.slice(note.indexOf('**Amendment 8'));
+  const amendment = amendmentSection(note, 8);
 
   const problems: string[] = [];
   const blobs = pinnedBlobs(amendment);
@@ -340,6 +409,57 @@ function main(argv: readonly string[]): number {
     diag,
     anatomy,
   );
+  // EXPLORATORY (Amendment 9): runs only when Amendment 9 is registered and its pins match.
+  let exploratory: Record<string, unknown> | undefined;
+  let mdExploratory = '';
+  const a9 = amendmentSection(note, 9);
+  if (a9) {
+    const arg = (name: string) => {
+      const i = argv.indexOf(name);
+      return i >= 0 ? argv[i + 1] : undefined;
+    };
+    const a9Commit = arg('--amendment9-commit');
+    const a9Ci = arg('--amendment9-ci');
+    const pins9 = pinnedBlobs(a9);
+    const p9: string[] = [];
+    if (!a9Commit || !a9Ci) p9.push('Amendment 9 is registered: pass --amendment9-commit <sha> and --amendment9-ci "<run, result, time>"');
+    if (pins9.size !== 2) p9.push(`expected 2 pinned code blobs in Amendment 9, found ${pins9.size}`);
+    for (const [path, id] of pins9) {
+      const now = git(root, ['hash-object', path]);
+      if (now !== id) p9.push(`${path}: blob ${now} is not the pinned ${id}`);
+    }
+    if (p9.length > 0) {
+      console.error(`refusing to run the EXPLORATORY condition: the tree does not match Amendment 9\n${p9.join('\n')}`);
+      return 1;
+    }
+    const residual = residualCorpus(corpus, new Map(CANONICAL_EQUATIONS.map((e) => [e.id, e])));
+    const corrected: [string, Ranker][] = [['typed structural search, residual form', rankByStructure]];
+    const cPrimary = scoreConditions(residual, queries, truth.primary, familyOf, heldOut, corrected)[0]!;
+    const cSecondary = scoreConditions(residual, queries, truth.secondary, familyOf, heldOut, corrected)[0]!;
+    const pinnedTyped = (rs: readonly ConditionResult[]) => rs.find((r) => r.condition === 'typed structural search')!;
+    const diag9 = diagnostics(residual, queries, truth.primary, leakageKey);
+    const anatomy9 = hitAnatomy(cPrimary, residual, queries, truth.primary, 10, leakageKey);
+    const context9 = { amendmentCommit: a9Commit!, amendmentCi: a9Ci! };
+    mdExploratory = renderExploratory(
+      [
+        ['PRIMARY (n = 50)', pinnedTyped(primary), cPrimary],
+        ['SECONDARY (n = 64)', pinnedTyped(secondary), cSecondary],
+      ],
+      diag9,
+      anatomy9,
+      context9,
+    );
+    exploratory = {
+      amendment: 9,
+      postHoc: true,
+      context: context9,
+      pinnedBlobs: Object.fromEntries(pins9),
+      diagnostics: diag9,
+      hitAnatomy: anatomy9,
+      results: { primary: cPrimary, secondary: cSecondary },
+    };
+  }
+
   const json = {
     amendment: 8,
     interim: true,
@@ -350,11 +470,13 @@ function main(argv: readonly string[]): number {
     diagnostics: diag,
     hitAnatomy: anatomy,
     results: { primary, secondary },
+    ...(exploratory ? { exploratory } : {}),
   };
-  process.stdout.write(`${md}\n`);
+  const all = mdExploratory ? `${md}\n${mdExploratory}` : md;
+  process.stdout.write(`${all}\n`);
   if (argv.includes('--write')) {
     writeFileSync(join(dir, 'results-interim.json'), `${JSON.stringify(json, (_k, v) => (v === Number.POSITIVE_INFINITY ? 'none' : v), 2)}\n`);
-    writeFileSync(join(dir, 'results-interim.md'), `${md}\n`);
+    writeFileSync(join(dir, 'results-interim.md'), `${all}\n`);
   }
   return 0;
 }

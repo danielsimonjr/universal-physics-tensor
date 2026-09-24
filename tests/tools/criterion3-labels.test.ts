@@ -14,6 +14,7 @@ import { readFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { deriveTruth, jaccard, type LabelerFile } from '../../tools/criterion3-study/labels.js';
+import { amendmentSection } from '../../tools/criterion3-study/run.js';
 
 const root = resolve(dirname(fileURLToPath(import.meta.url)), '../..');
 const dir = resolve(root, 'docs/research/criterion3');
@@ -23,7 +24,8 @@ const readJson = (p: string) => JSON.parse(readText(p));
 const rawSha = (p: string) => createHash('sha256').update(readFileSync(resolve(dir, p))).digest('hex');
 
 const note = readFileSync(resolve(root, 'docs/research/atlas-benchmark-preregistration.md'), 'utf-8');
-const amendment = note.slice(note.indexOf('**Amendment 8'));
+// Only Amendment 8's own text: a later amendment's pins or hashes must not be read as its.
+const amendment = amendmentSection(note, 8);
 const table = new Map([...amendment.matchAll(/^\| ([\w./-]+\.json) \| ([0-9a-f]{64}) \|$/gm)].map((m) => [m[1]!, m[2]!]));
 
 const a = readJson('labels/labeler-A.json') as LabelerFile;
