@@ -8,6 +8,17 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Deprecated (2026-09-24) — `BridgeEquations.crossingResidual` is physically WRONG; removal in 0.47.0
+
+- `BridgeEquations.crossingResidual` (`evaluateCrossingResidual`) and its ASTs (`BE35_CROSSING_RESIDUAL_RHS`,
+  `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`) do not state crossing symmetry. They have no
+  `v^Δφ` / `u^Δφ` prefactors and describe one conformal block. A zero from them is not evidence of
+  crossing, so the evaluator tests nothing. Use `BridgeEquations.crossingEquation`.
+- They stay, deprecated, in the next release (0.46.0) to give consumers one release of notice. **They
+  are removed in the release after it (0.47.0).** If the next release is numbered differently, they
+  are removed in the release that follows it. (Mothership's ruling, 2026-09-24; UPT is 0.x, so a
+  minor release may break.)
+
 ### Fixed (2026-09-24) — BE-35 encodes the crossing equation, not a single-block residual (census finding F1)
 
 BE-35's encoded relation was `R = C²·[g_block(u,v) − g_block(v,u)]`. That form has no `v^Δφ` / `u^Δφ`
