@@ -433,6 +433,7 @@ warning-silencing, not debug logging).
         holds no further real counterpart (S4.6 table in the Phase 4 design note). Closing it needs
         proofs authored OUT OF TREE, meaning a new repository, which is outward-facing: escalated to
         Mothership.
+        - deferred - owner 2026-09-24 15:02 (pre-registration Amendment 10; the PhysJS proofs with it).
       **Standing trap for anyone picking this up:** the plan says the canonical-equation count
       "lives only in `CHANGELOG.md`, `ROADMAP.md` and the architecture docs". **It is in 22
       files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,

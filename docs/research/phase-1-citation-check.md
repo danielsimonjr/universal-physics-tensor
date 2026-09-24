@@ -171,7 +171,7 @@ matches its source**, except the BE-11 spans, which are declared snippet-only.
 | BOT-WALL | 1 | BE-55 von Klitzing eq. 4. APS serves the open-access PDF behind a bot check, and automation stops there. |
 | UNREAD | 1 | BE-59 Josephson 1962 (C6), paywalled. The comment says so. |
 
-**For the owner to check in a browser:**
+**For the owner to check in a browser (deferred - owner 2026-09-24 15:02):**
 
 1. von Klitzing, Dorda & Pepper 1980, Phys. Rev. Lett. 45:494: is eq. (4) R_H = α⁻¹μ₀c/2i?
 2. Shapiro 1964, Phys. Rev. Lett. 13:789, p. 789: is the displayed delay equation labelled (1)?

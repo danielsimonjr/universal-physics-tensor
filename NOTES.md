@@ -17,9 +17,11 @@ Those are different claims and merging them produces a false green.
 
 - **Phase 4.** ≥ 20 bridges across ≥ 5 relation types: **met**, 20 bridges and 6 types.
   Zero `formally-proved` without a `formalRef`: **met by construction**. ≥ 5 bridges with a
-  reviewed `formalRef`: **1 of 5**. The one counterpart is in Physlib (`ab-pendulum-linear`).
-  Physlib has no further real counterpart, so the rest need proofs authored out of tree, in the
-  `PhysJS` repo, which is **held by the owner**. Not startable from here.
+  reviewed `formalRef`: **1 of 5, DEFERRED by the owner on 2026-09-24** (pre-registration
+  Amendment 10); it no longer blocks DONE. The one counterpart is in Physlib
+  (`ab-pendulum-linear`). No further checked counterpart exists in Physlib, Mathlib or the other
+  systems searched (`docs/research/phase-4-formalref-scoping.md`). The PhysJS proofs are deferred
+  with it.
 - **Phase 5.** The frozen set is **no longer empty**: 125 frozen and 3 contested items, all
   MODEL-authored and MODEL-rated (`claude-fable-5-1`, pre-registration Amendment 2). Model-rater
   kappa: **0.984** valid/invalid, **0.978** nine-category. That is agreement between two
@@ -70,8 +72,7 @@ Those are different claims and merging them produces a false green.
   credential, no publish, no copy of the private `skills` tooling. The gate stays in the pre-push hook.
   The architecture docs are updated by hand from the data of this repository's own
   `tools/create-dependency-graph`, until `repo-tools` replaces that tool.
-- **Still not startable here:** the other four reviewed `formalRef`s; an independent physicist
-  review; per-bridge person-hours (the logs are per agent / per batch); embeddings (no worker);
+- **Still not startable here:** an independent physicist review; per-bridge person-hours (the logs are per agent / per batch); embeddings (no worker);
   a separate data licence (owner decision).
 - **Standing physicist-review surfaces** (moved from `docs/architecture/OVERVIEW.md` on 2026-09-23;
   not re-checked then): the CONTRIBUTING.md tasks; the contested BE-44/46/50 adjudications; the

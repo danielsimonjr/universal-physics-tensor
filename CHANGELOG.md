@@ -8,6 +8,24 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-24) — the owner DEFERS the Phase 4 reviewed-`formalRef` criterion and the citation work
+
+Mothership relayed the owner's words verbatim (15:02 CDT): "I feel that UPT is burning a lot of tokens for a long time on citations we can resolve another time. We're not trying to turn this project in a paper right now. It's mainly an exploration project."
+
+- **Pre-registration Amendment 10** records the criterion "≥ 5 bridges with a reviewed
+  `formalRef`" as DEFERRED at 1 of 5. It is not met and not closed. It no longer blocks DONE. The
+  PhysJS proofs are deferred with it.
+- **Marked "deferred - owner 2026-09-24 15:02":**
+  - the criterion's `todo.md` row, with a child line, so the row title is unchanged;
+  - the two browser checks in `docs/research/phase-1-citation-check.md` (von Klitzing 1980 eq. 4;
+    Shapiro 1964 eq. 1).
+- **Updated to match:** the ROADMAP §7 Phase 4 row and `NOTES.md`.
+- **Nothing was deleted.** No other open citation or provenance row exists in `todo.md`. The Zenodo
+  DOI row is publication work, so it stays open and unworked.
+- **Criterion 3 is NOT deferred.** Its task, finding the established relation that a claim restates
+  or misuses, is the vetting that the project exists for. The embedding condition still waits for
+  LLMBench.
+
 ### Added (2026-09-24) — Phase 4 formalRef scoping report
 
 `docs/research/phase-4-formalref-scoping.md` answers Mothership's five questions about the Phase 4

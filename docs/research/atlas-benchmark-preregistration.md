@@ -315,3 +315,20 @@ seen, so its condition is post hoc and exploratory.
   the study closes, because the Amendment 8 pins are live until then.
 
 No threshold, item, rater assignment, truth set or hash changes.
+
+**Amendment 10 (2026-09-24) — the owner DEFERS the Phase 4 reviewed-`formalRef` criterion.**
+This amendment records a ROADMAP Phase 4 exit criterion here, beside Amendments 6 and 7, so that every
+amended criterion is in one log. The criterion "≥ 5 bridges with a reviewed `formalRef`" stands at 1
+of 5 (`ab-pendulum-linear`). Mothership relayed the owner's words verbatim (2026-09-24, 15:02 CDT):
+"I feel that UPT is burning a lot of tokens for a long time on citations we can resolve another time. We're not trying to turn this project in a paper right now. It's mainly an exploration project."
+
+- **The criterion is DEFERRED, not met and not closed.** It no longer blocks DONE. Reports give
+  it as "1 of 5, deferred".
+- **The PhysJS proofs are deferred with it.**
+- **The evidence is `docs/research/phase-4-formalref-scoping.md`.** No further checked counterpart
+  exists in Physlib, Mathlib or the other systems searched. This absence is the expected result. The
+  report's "Owner decision" section gives one reason for each set. The catalog bridge equations are
+  the owner's own work. The 20 atlas bridges are textbook relations that formal libraries do not
+  cover.
+
+No threshold, item, rater assignment or hash changes.
