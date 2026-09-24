@@ -197,3 +197,13 @@ Each criterion as written needs people that this study does not have.
   same amendment applies to the per-bridge curation-cost exit criteria of ROADMAP Phases 0 and 4.
 
 No threshold, item, rater assignment or hash changes. The results already reported are unchanged.
+
+**Amendment 7 (2026-09-24) — the Phase 0 independent-physicist review is AMENDED by Mothership under
+the owner's delegation.** This amendment records a ROADMAP Phase 0 exit criterion here, beside
+Amendment 6, so that every amended criterion is in one log. Independent human physicist review is
+NOT MEASURED: there is no human reviewer. A model-persona review (Fable) was run on 2026-09-24
+through the `CONTRIBUTING.md` review brief. It confirmed the physics of all six claims and returned
+13 findings (8 defects, 5 qualifications); 9 are fixed with tests and 4 stand with evidence. Each
+finding and its disposition is in `docs/research/phase-0-model-persona-review.md`. The persona review
+is labelled as a model's work everywhere it is cited, and the criterion is closed by amendment, not
+met. No threshold, item, rater assignment or hash changes.

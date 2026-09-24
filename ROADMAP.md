@@ -503,7 +503,7 @@ agent's time is not a reviewer's time. The owner amended this criterion; it is n
 
 | Phase | Status | Pointer |
 |---|---|---|
-| 0 — Oscillator pilot | code delivered | Physicist review still open. Per-bridge curation cost AMENDED to NOT MEASURED (Mothership under the owner's delegation, 2026-09-23). [`NOTES.md`](NOTES.md) |
+| 0 — Oscillator pilot | code delivered; exit criteria closed by amendment | Independent human physicist review NOT MEASURED (no human reviewer); a model-persona review (Fable) was run on 2026-09-24, 13 findings, each with its disposition in [`docs/research/phase-0-model-persona-review.md`](docs/research/phase-0-model-persona-review.md) (pre-registration Amendment 7). Per-bridge curation cost AMENDED to NOT MEASURED (Amendment 6). [`NOTES.md`](NOTES.md) |
 | 1 — Relation contracts overlay | overlay shipped | Source spot-check of citations still open. [`NOTES.md`](NOTES.md) |
 | 2 — Regimes and error-carrying paths | shipped | Uniformity gate on `boundPath` (reason `uniformity-unanalysed`). The table was not widened. [`NOTES.md`](NOTES.md) |
 | 3 — Hyperedges, models, poster index | shipped | `8 → 12` is one approximation (`d-8-to-12`) and its direction is unresolved. [`NOTES.md`](NOTES.md) |

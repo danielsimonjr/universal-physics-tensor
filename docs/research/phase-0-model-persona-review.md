@@ -3,8 +3,8 @@
 **Reviewer:** a model instance (`claude-fable-5-1`) instructed to act as an independent, skeptical
 mathematical physicist. **It is not a human physicist, and this review does not satisfy the
 Phase 0 exit criterion "reviewed by an independent physicist".** Mothership approved the run and
-ruled that the criterion is to be closed by amendment, never recorded as met (pre-registration
-Amendment 7, written once every finding below has its disposition).
+ruled that the criterion is closed by amendment, never recorded as met (pre-registration
+Amendment 7). Every finding below has its disposition: 9 fixed with tests, 4 stand with evidence.
 
 **Date:** 2026-09-24. **Scope:** the review brief in `CONTRIBUTING.md` item 0 — five typed relations
 between oscillator models, one rejection, and the `(K, δ)` composition law — plus the question for

@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-24) — Phase 0 physicist review closed by amendment (Amendment 7)
+
+Mothership ruled, under the owner's delegation, that a model-persona review does not satisfy
+"reviewed by an independent physicist". The criterion is recorded as NOT MEASURED (no human reviewer)
+in pre-registration Amendment 7, ROADMAP §7 and `NOTES.md`, with a pointer to the Fable review and its
+13 dispositions. The Phase 0 todo row and the review row are ticked as **closed by amendment, not
+met**: with Amendment 6 (curation cost), both of Phase 0's open criteria are now amended. No threshold,
+item, rater assignment or hash changes.
+
 ### Added (2026-09-24) — Phase 0 persona findings D3, D5 and Q-b fixed with new witnesses; D8, Q-c, Q-d, Q-e stand
 
 - **W3b (isochrony) for the cubic-spring rejection.** The linear period is 2π at every amplitude;

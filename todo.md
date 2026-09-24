@@ -339,7 +339,7 @@ warning-silencing, not debug logging).
       - [x] Found by the formalRef-gate review: `formal/physlib/HoleProbe.lean` puts its `sorry` in the probe file, so the control shows the gate detects a hole in the file it runs, not a hole inside an imported prebuilt module (where every probed theorem lives). Add a second control that compiles a small module with a `sorry` and imports it, then prove the gate goes red on it.
       - [x] Shapiro delay is the FOURTH classic GR test, not one of three: fix the Phase 2 exit-criterion wording in `ROADMAP.md`, `OVERVIEW.md` and `docs/research/README.md`, add a correction note to the dated `docs/research/pi-instrument-results.md`, and document what the public `'rank-3-lower'` tag means (Mothership 2026-09-23).
       - [x] Record the owner-delegated amendments (Mothership, 2026-09-23): curation cost per bridge NOT MEASURED, model cost reported as model cost (Phase 0, Phase 4, C6); kappa reported is MODEL agreement, human kappa NOT MEASURED; C5 human time NOT MEASURED. Write them as ROADMAP section 7 updates and pre-registration Amendment 6. No threshold, item or hash change.
-      - [ ] Phase 0 review of the five pilot contracts through the CONTRIBUTING.md review surface by a Fable physicist persona (approved by Mothership), recorded as "model-persona review (Fable), not a human physicist".
+      - [x] Phase 0 review of the five pilot contracts through the CONTRIBUTING.md review surface by a Fable physicist persona (approved by Mothership), recorded as "model-persona review (Fable), not a human physicist".
         - [x] Phase 0 persona finding D1: `ab-spring-lc` / `ab-spring-rlc` `preserves: natural frequency` is false as written; state the spring→LC map. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [x] Phase 0 persona finding D2: `dampedOffsetBoundAt` ignores `k` and `x0`; violated 22x at `k = 100` inside the declared regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
         - [x] Phase 0 persona finding D3: the cubic-spring rejection reason overreaches W3; add an isochrony (period-vs-amplitude) witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
@@ -417,7 +417,7 @@ warning-silencing, not debug logging).
       files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,
       never the list.
 
-- [ ] **Atlas Phase 0 — two exit criteria OPEN; the code is done.** Shipped 2026-09-20 on
+- [x] **Atlas Phase 0 — two exit criteria OPEN; the code is done.** Shipped 2026-09-20 on
       `master`: `src/atlas/` (nine models, five typed bridges, one rejection, fifteen witnesses),
       126 atlas tests inside 384 files / 3,959 tests exit 0, deterministic JSON under
       `data/atlas/`, nothing on `src/index.ts`. **What is NOT done, and neither is code:**

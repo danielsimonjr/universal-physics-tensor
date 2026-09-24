@@ -44,6 +44,9 @@ Those are different claims and merging them produces a false green.
   value, human time and error rate) is NOT MEASURED; per-bridge curation cost (Phases 0 and 4,
   criterion 6) is NOT MEASURED, and the reported cost is the MODEL cost, USD 19.34 for the set, about
   USD 0.15 per authored item. These are amendments, not met criteria.
+- **Phase 0 independent physicist review: AMENDED 2026-09-24** (pre-registration Amendment 7). NOT
+  MEASURED (no human reviewer). A model-persona review (Fable) returned 13 findings; 9 are fixed with
+  tests and 4 stand with evidence (`docs/research/phase-0-model-persona-review.md`).
 
 ### Separate from the criteria above
 
