@@ -49,6 +49,10 @@ Those are different claims and merging them produces a false green.
   `boundPath` returns `uniformity-unanalysed` and no number when any bound on the path has
   `null` or `[]`. Construction does not throw. `propagateUncertainty` does not implement this
   gate.
+- **Architecture-docs gate in CI: decided, not pending** (owner, relayed by Mothership 2026-09-23). No
+  credential, no publish, no copy of the private `skills` tooling. The gate stays in the pre-push hook.
+  The architecture docs are updated by hand from the data of this repository's own
+  `tools/create-dependency-graph`, until `repo-tools` replaces that tool.
 - **Still not startable here:** the other four reviewed `formalRef`s; an independent physicist
   review; per-bridge person-hours (the logs are per agent / per batch); embeddings (no worker);
   a separate data licence (owner decision).

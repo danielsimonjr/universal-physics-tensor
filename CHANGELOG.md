@@ -8,6 +8,14 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Decided (2026-09-23) — no CI credential for the architecture-docs gate
+
+The owner decided, relayed by Mothership: no credential, no publish, and no copy of the private
+`skills` tooling into this repository. The architecture-docs gate (`repo_map.py check`) therefore
+stays in the pre-push hook only, and the architecture docs are updated by hand from the data of
+`tools/create-dependency-graph` until `repo-tools` replaces that tool. The todo row that waited on
+this decision is closed; the decision is recorded in `NOTES.md`.
+
 ### Fixed (2026-09-23) — generated test-coverage docs recorded an untracked file
 
 The previous commit's `docs:deps` run recorded an UNTRACKED file, `tests/tmp/differential.test.ts`,
