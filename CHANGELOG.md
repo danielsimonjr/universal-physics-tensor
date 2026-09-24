@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — Phase 4 formalRef scoping report
+
+`docs/research/phase-4-formalref-scoping.md` answers Mothership's five questions about the Phase 4
+criterion "≥ 5 with a reviewed `formalRef`", which stands at 1. It is a report, with no code change.
+
+- **The one reference** is `ab-pendulum-linear` → Physlib `linearizedEquationOfMotion_iff`, fidelity
+  `sanity-lemmas`.
+- **"The proofs need PhysJS" agrees with the ROADMAP definition.** No library holds a statement to
+  point at, so new proofs are necessary, and PhysJS is the out-of-tree place for them. PhysJS is an
+  empty, private scaffold, held by the owner. A private proof cannot be checked by readers of the
+  public package, and the axiom gate checks only `lean4-physlib` references.
+- **Per bridge, no exact counterpart exists outside the one recorded.** The search covered Physlib
+  (`5ad56e24` and HEAD `1c81053a`), Mathlib (`bd6c1abe`, and `5ed29652` as Physlib pins it), and, by
+  a read-only subagent, Coq/Coquelicot, Isabelle, HOL Light, HOL4 and Mizar. One weaker counterpart
+  exists, for `ab-walk-diffusion`: the fixed-time central limit theorem (Mathlib, Isabelle, HOL
+  Light). Its Mathlib axioms were measured against the pinned checkout, with a `sorry` control.
+  d'Alembert exists only in the converse direction (Physlib; Coquelicot, partly `Admitted`).
+- **Candidates for new proofs:** five dispersion-limit bridges have closed-form error functions, so
+  short lemmas could certify `bound.delta` exactly. The costs are estimates, not measurements.
+- **The report opens with the owner's decision:** the criterion is deferred (the next entry). The
+  missing counterparts are the expected result, for two reasons on two sets:
+  - the catalog bridge equations are the owner's own work, so no external source is expected;
+  - the 20 atlas bridges are textbook relations, but formal libraries hold almost no physics PDEs.
+- **`TOOLS.md`:** GitHub code search can miss a quoted phrase that exists. A positive control caught
+  it, so the report used identifier searches only.
+
 ### Changed (2026-09-24) — triage of the stale open `todo.md` rows outside the atlas roadmap
 
 The triage row named lines 654, 658, 830-844, 943 and 985. Rows inserted since then moved them by

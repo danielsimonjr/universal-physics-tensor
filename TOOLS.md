@@ -64,3 +64,7 @@ pointed at the wrong thing.
 - **A local model is right where it must QUOTE and wrong where it must CHOOSE.** Constrained
   fields (labels, enums) are its least reliable output. Require a verbatim quote beside every
   claim, and treat a fabricated quote as a failure of the triage, not as a finding.
+- **GitHub code search can miss a QUOTED phrase that exists.** `gh search code '"wave equation"'`
+  found no file in Physlib, but Physlib has `WaveEquation/Basic.lean`. The identifier searches
+  `WaveEquation` and `planeWave_waveEquation` found the file. Search by identifier, and run a
+  known-positive query before you report an absence.
