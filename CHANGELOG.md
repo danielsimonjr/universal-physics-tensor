@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-24) — BE-48 credits the linear law to GRW, not CSL (F2); the BE-35 spec sum rule follows Rattazzi et al.
+
+- **BE-48 (census finding F2).** The name said "(CSL extension)" and the context said "GRW / CSL",
+  crediting the linear mass law `λ_0 (m/m_0)` to CSL. Bassi & Ghirardi 2003 derive it for GRW/QMSL,
+  as the centre-of-mass amplification `λ_macro = N λ_micro` (§6.4). They give CSL a different
+  macroscopic rate, `γ D_0 n_out` (§8.3).
+  - The name is now "GRW mass-amplified localization rate", and the context credits §6.4 and states
+    the CSL rate from §8.3.
+  - The module docstring stops crediting Ghirardi, Pearle & Rimini 1990 with "rate λ ∝ m/m_0".
+    Pearle 1989 is marked not seen, as in `references[]`.
+  - A correction is appended to the history `notes`, and the spec BE-48 section gains a
+    "Corrected on 2026-09-24" block.
+  - The name was not verbatim spec text: the spec heading is "Objective Collapse Equation (GRW
+    extension)". `docs/architecture/bridge-coverage-audit.md` is a dated historical snapshot and
+    keeps its old wording.
+- **BE-35 spec sum rule (Mothership's ruling).** The spec showed `Σ (C12 C34 − C13 C24) F = 0` and
+  called F "conformal blocks". That is not Rattazzi et al.'s form. The section now gives their
+  eq. 4.4 (g = 1 + Σ λ_O² g_O), their eq. 4.3 (the crossing equation BE-35 encodes), and their eq.
+  4.5, the sum rule `1 = Σ p F` with `p = λ_O² > 0` and `F = (v^Δφ g(u,v) − u^Δφ g(v,u)) / (u^Δφ − v^Δφ)`.
+  F is a crossing combination of one block. The BE-35 correction block now records the rewrite.
+- No number, unit system or relation type changed. `data/bridge-catalog.json` is regenerated.
+
 ### Added (2026-09-24) — criterion 3 EXPLORATORY result: residual-form structural search (Amendment 9)
 
 The corrected condition ran after Amendment 9 (`dbd4e95`) was committed and its CI run was green

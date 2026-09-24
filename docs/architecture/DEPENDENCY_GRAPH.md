@@ -2250,7 +2250,7 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/bridges/equations/be-48-grw-localization.ts` - Bridge Equation 48 — GRW mass-amplified localization rate
+### `src/bridges/equations/be-48-grw-localization.ts` - Bridge Equation 48 — GRW mass-amplified localization rate (post Wave Y
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -6568,7 +6568,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 349 |
 | Total Modules | 11 |
-| Total Lines of Code | 69050 |
+| Total Lines of Code | 69051 |
 | Total Exports | 2453 |
 | Total Re-exports | 1232 |
 | Total Classes | 58 |

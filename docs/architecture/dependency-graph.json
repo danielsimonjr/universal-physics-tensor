@@ -7390,7 +7390,7 @@
         ]
       },
       "src/bridges/equations/be-48-grw-localization.ts": {
-        "description": "Bridge Equation 48 — GRW mass-amplified localization rate",
+        "description": "Bridge Equation 48 — GRW mass-amplified localization rate (post Wave Y",
         "externalDependencies": [],
         "nodeDependencies": [],
         "internalDependencies": [
@@ -23988,7 +23988,7 @@
   "statistics": {
     "totalTypeScriptFiles": 349,
     "totalModules": 11,
-    "totalLinesOfCode": 69050,
+    "totalLinesOfCode": 69051,
     "totalExports": 2453,
     "totalClasses": 58,
     "totalInterfaces": 360,
