@@ -8,6 +8,31 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-24) — untracked files can no longer reach a gate or a generated doc
+
+An untracked `tests/tmp/differential.test.ts` failed the pre-push typecheck, and `bun run
+docs:deps` recorded it in the committed test-coverage docs. Both read the working tree, not the
+commit. Two root fixes:
+
+- **The generator reads the git index.** `tools/create-dependency-graph/tracked-files.ts` lists
+  `git ls-files`, and the generator's two directory walkers keep only those files. It fails loudly
+  outside a git work tree rather than fall back to the disk. A new file is included once staged
+  (`git add` or `git add -N`); `TOOLS.md` says so. Live proof: with a stray
+  `tests/tmp/stray.test.ts` present, `docs:deps` changed no generated file; before the fix the same
+  kind of stray moved the test-file count from 440 to 441.
+- **The pre-push gates judge exactly HEAD.** The hook now refuses (1) a push whose commit is not
+  HEAD, and (2) a working tree that differs from HEAD in any way (`tools/gate-inputs/gate-inputs.ts`,
+  the whole tree, gitignored files excepted). It then builds before the typecheck, because
+  `tsconfig.tests.json` reads types from the gitignored `dist/`, which CI builds first.
+- **Tests:** 16 on throwaway git repositories. Planted strays under `tools/`, `data/`, `bin/`,
+  `docs/specification/`, `formal/`, `scripts/`, the root, and an edited `NOTES.md` must each be
+  named. A mutant that restricts the check to the first path list tried (src, tests, bench, tools,
+  scripts) fails 7 of them.
+- **Corrected in review:** the first version gated a hand-kept list of paths, and its test compared
+  the list with a copy of itself, so it could not fail; the tests read `data/`, `bin/`, `docs/`,
+  `formal/` and `NOTES.md` too. The review also found the stale-`dist/` typecheck and that "the
+  pushed commit" was really HEAD.
+
 ### Decided (2026-09-23) — no CI credential for the architecture-docs gate
 
 The owner decided, relayed by Mothership: no credential, no publish, and no copy of the private

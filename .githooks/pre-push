@@ -25,6 +25,37 @@
 
 set -e
 
+# The gates below read the working tree (tsc compiles tests/**, vitest runs every test file on
+# disk, and tests read data/, bin/, docs/ and more), so they must see exactly the commit being
+# pushed. An untracked stray test once failed the typecheck, and an unpushed edit could pass it.
+# First: the commit being pushed must be HEAD (git passes "<local ref> <local sha> <remote ref>
+# <remote sha>" lines on stdin; an all-zero local sha is a branch deletion).
+echo "pre-push gate: the pushed commit is HEAD"
+head_sha=$(git rev-parse HEAD)
+while read -r local_ref local_sha remote_ref remote_sha; do
+  case "$local_sha" in
+    0000000000000000000000000000000000000000) ;;
+    "$head_sha") ;;
+    *)
+      echo "PRE-PUSH GATE REFUSED: pushing $local_ref ($local_sha), but HEAD is $head_sha."
+      echo "The gates read the working tree, so they can only vouch for HEAD. Check it out first."
+      exit 1
+      ;;
+  esac
+done
+# Second: the working tree must equal HEAD.
+echo "pre-push gate: the working tree equals HEAD"
+if ! bun tools/gate-inputs/gate-inputs.ts; then
+  exit 1
+fi
+# Third: build, because tsconfig.tests.json reads types from the gitignored dist/. Without this the
+# typecheck judges whatever dist/ the last build left. CI builds before it typechecks.
+echo "pre-push gate: build"
+if ! bun run build; then
+  echo "PRE-PUSH GATE FAILED: build."
+  exit 1
+fi
+
 echo "pre-push gate: typecheck"
 if ! bun run typecheck; then
   echo ""

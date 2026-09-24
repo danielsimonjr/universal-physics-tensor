@@ -19,6 +19,7 @@
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dump as dumpYaml } from 'js-yaml';
 import { basename, dirname, join, relative, resolve as resolvePathAbs } from 'path';
+import { isTracked, trackedFiles } from './tracked-files.js';
 import {
   buildApiSurfaceReport,
   createTsResolver,
@@ -200,6 +201,8 @@ function getProjectRoot(): string {
 
 const ROOT_DIR = getProjectRoot();
 const SRC_DIR = join(ROOT_DIR, 'src');
+// The git index, not the disk: an untracked scratch file must not enter the committed docs.
+const TRACKED = trackedFiles(ROOT_DIR);
 const OUTPUT_DIR = join(ROOT_DIR, 'docs', 'architecture');
 
 // Read package.json for version and name
@@ -235,7 +238,7 @@ function getAllTsFiles(dir: string, files: string[] = []): string[] {
 
     if (stat.isDirectory()) {
       getAllTsFiles(fullPath, files);
-    } else if (entry.endsWith('.ts') && !entry.endsWith('.test.ts') && !entry.endsWith('.spec.ts')) {
+    } else if (entry.endsWith('.ts') && !entry.endsWith('.test.ts') && !entry.endsWith('.spec.ts') && isTracked(TRACKED, fullPath)) {
       files.push(fullPath);
     }
   }
@@ -268,7 +271,7 @@ function getAllTestFiles(dir: string, files: string[] = []): string[] {
 
     if (stat.isDirectory()) {
       getAllTestFiles(fullPath, files);
-    } else if (entry.endsWith('.test.ts') || entry.endsWith('.spec.ts')) {
+    } else if ((entry.endsWith('.test.ts') || entry.endsWith('.spec.ts')) && isTracked(TRACKED, fullPath)) {
       files.push(fullPath);
     }
   }

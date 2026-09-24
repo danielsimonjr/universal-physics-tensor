@@ -33,6 +33,9 @@ pointed at the wrong thing.
 
 ## How they lie
 
+- **`bun run docs:deps` reads tracked files only.** A new file is left out of the generated docs
+  until it is staged (`git add` or `git add -N`). This is deliberate: an untracked scratch file once
+  entered the committed coverage docs. The pre-push hook refuses while the tree differs from HEAD.
 - **A pipeline returns the LAST command's exit code.** `cmd | tail` reports `tail`. A run with
   failures can report exit 0.
 - **An exit code is not an outcome.** `npm view` prints `E404` to STDOUT *and exits 0*.
