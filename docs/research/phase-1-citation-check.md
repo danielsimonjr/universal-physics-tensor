@@ -128,3 +128,75 @@ type depended on any changed text.
   `todo.md`.
 - **F2.** BE-48's `name` (verbatim spec heading) and `context` still credit the linear law to CSL.
   Filed in `todo.md`.
+
+## Mechanical quote check
+
+**Ruling (Mothership, 2026-09-24), recorded verbatim:** "BE-11 (snippet access): COUNTS AS CHECKED for
+its attributed statements - each matched verbatim source text at a named page (116, 136, 146). Record
+it as 'checked on search-snippet access, not full text' by name." And: "one final pass of a DIFFERENT
+KIND ... for every quoted span, an exact string match against the downloaded source text (normalise
+whitespace and hyphenation only), and every page / equation number confirmed. No re-judging of
+wording. Where the source is snippet-only (BE-11) or unread (C6), mark it as such rather than
+matching." And: "If every quote matches: record Phase 1 'zero fabricated assumptions' as MET, with
+BE-11 (snippet access) and C6 (unverifiable, paywalled) disclosed by name."
+
+**Method.** `bun run atlas:quote-check -- --sources <dir> --write` (`tools/citation-quote-check/`).
+`docs/research/phase-1-citation-claims.json` lists every quoted span and locator of the 15 comments
+as a claim, with the source URL and the SHA-256 of each downloaded file. The output is
+`docs/research/phase-1-citation-quote-check.out.md`. The check runs these tests:
+
+- **Span:** an exact string match. The match ignores whitespace and joins or keeps a line-end
+  hyphen. It also maps Unicode compatibility forms and typographic quotes to their plain characters,
+  which changes the encoding and not the wording.
+- **Label:** an equation number `(N)` must be the last token of its line. The label must not follow
+  "Eq.", "Gl." or "equation". The label must be within a few lines of an anchor from that equation.
+- **Page:** a claimed printed page must show its number in the running head of that page.
+- **Section:** a span must lie between the body heading of its section and the next heading.
+- **Negative control:** each span, each label anchor and each order span is tried again with its
+  longest word reversed. That mutation must not match.
+- **Tools:** xpdf `pdftotext` (default and raw modes) and `tesseract` OCR of the listed page images
+  extract the text.
+- **CI:** the CI test checks the matcher and the grading logic. It checks that every token of the
+  comments has a claim. It also checks that the output was produced from the current manifest and
+  the current checker code.
+
+**Result:** PASS. 43 checks MATCH, and all 44 controls held. **Every quoted span in the 15 comments
+matches its source**, except the BE-11 spans, which are declared snippet-only.
+
+| Grade | Count | Claims |
+|---|---|---|
+| MATCH | 43 | every other quote, page, equation and section locator |
+| SNIPPET-ONLY | 6 | BE-11: the p. 146 quote, the pages 116, 136 and 146, and the source. The book title (Crossref), its section 3.3.1 heading, and "p. 136 lies in section 3.3.1" (table of contents: 130 to 137) are MATCH. |
+| REFERENCED | 2 | BE-37 eq. (1). No extraction reads Shapiro's printed label (OCR reads "a)"). The paper's own text on p. 789 says "The right-hand side of Eq. (1)". |
+| BOT-WALL | 1 | BE-55 von Klitzing eq. 4. APS serves the open-access PDF behind a bot check, and automation stops there. |
+| UNREAD | 1 | BE-59 Josephson 1962 (C6), paywalled. The comment says so. |
+
+**For the owner to check in a browser:**
+
+1. von Klitzing, Dorda & Pepper 1980, Phys. Rev. Lett. 45:494: is eq. (4) R_H = α⁻¹μ₀c/2i?
+2. Shapiro 1964, Phys. Rev. Lett. 13:789, p. 789: is the displayed delay equation labelled (1)?
+
+**Limits of the method.**
+
+- The author chose the label anchors and the section headings after reading the sources.
+  They show that a label sits beside that text, and that a quote lies in that section. They do not
+  show that a paraphrase is right, because judging wording was out of scope for this pass.
+- A printed page number is the PDF page plus a declared offset. The legible running head confirms it
+  on every claimed page.
+- p. 847 has no legible running head (OCR reads 84'). The end of the range pp. 844-847 therefore
+  rests on the Wikisource record.
+- A model code review of the tool found 6 defects before the recorded run, and all 6 are fixed. The
+  most serious let a REFERENCED grade ignore the claimed page.
+
+### Outcome
+
+**Phase 1 "zero fabricated assumptions": MET**, by Mothership's ruling, because every quote matches.
+The following are disclosed by name:
+
+- **BE-11:** checked on search-snippet access, not full text.
+- **C6 (Josephson 1962):** unverifiable, because the paper is paywalled.
+- **Two equation numbers that are not confirmed by machine:**
+  - von Klitzing eq. 4: publisher bot wall.
+  - Shapiro's printed label (1): not machine-readable.
+
+  Both are on the owner's list above.

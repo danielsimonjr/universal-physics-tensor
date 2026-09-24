@@ -76,6 +76,16 @@ count of the old file.
    measured axioms in the `formalRef`.
 4. Commit the probe, the captured output and the record together.
 
+## Adding or changing a `// source:` comment in `src/bridges/index.ts`
+
+1. Quote the source verbatim and give the page or equation. Label everything else as this
+   repository's.
+2. Add a claim for every new quoted span or locator to `docs/research/phase-1-citation-claims.json`.
+   The completeness test in `tests/tools/citation-quote-check.test.ts` fails until you do.
+3. Download any new source and pin its SHA-256 in the manifest.
+4. Run `bun run atlas:quote-check -- --sources <dir> --write`. The result must be PASS.
+5. Commit the comment, the manifest and `docs/research/phase-1-citation-quote-check.out.md` together.
+
 ## Release (Mothership's; recorded so the order is never re-derived)
 
 1. Bump `package.json`.

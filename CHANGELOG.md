@@ -8,6 +8,37 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — mechanical citation quote check; Phase 1 "zero fabricated assumptions" MET
+
+Mothership ruled that the citation census alone could not support MET. Most final texts carried one
+OK from one judgement pass, and pass 2 had approved three texts that pass 3 rejected. The ruling asked
+for a pass of a different kind: exact string matches, with no re-judging of wording.
+
+- **New tool `tools/citation-quote-check/` (`bun run atlas:quote-check`).** It checks every quoted
+  span and every page, equation or section locator in `docs/research/phase-1-citation-claims.json`
+  against the downloaded sources, which are pinned by SHA-256. It uses pdftotext and tesseract. An
+  equation label counts only as the last token of its line, not after "Eq." or "Gl.", and near an
+  anchor from that equation. Extraction found a bibliography "(4)" and a line-final "Eq. (1)", and
+  either would otherwise have passed as a label. A claimed page must show its printed number. Every
+  span, label anchor and order span has a negative control: the longest word reversed must not match.
+- **CI:** `tests/tools/citation-quote-check.test.ts` checks the matcher and the grading logic. It
+  checks that every quote and locator of the 15 comments has a claim, with a paired input that must
+  fail. It checks that the captured output came from the current manifest AND the current checker
+  code. Mutation tests confirmed that the tests catch removal of the "Eq." exclusion, a label counted
+  anywhere in its line, and a REFERENCED fallback that ignores the page.
+- **A model code review found 6 defects before the recorded run.** All are fixed. The most serious
+  let a REFERENCED grade ignore the claimed page. The others were no control for order checks, an
+  English-only reference exclusion, a double decode of HTML entities, no unit tests for the grading,
+  and a captured output that CI could not tie to the code.
+- **Result: PASS.** 43 MATCH, 6 SNIPPET-ONLY (BE-11), 2 REFERENCED (Shapiro's unreadable label (1)),
+  1 BOT-WALL (von Klitzing eq. 4, behind the APS bot check), 1 UNREAD (C6). All 44 controls held.
+  Every quoted span matches.
+- **Phase 1 "zero fabricated assumptions" is recorded MET** by Mothership's ruling (ROADMAP §7,
+  `docs/research/phase-1-citation-check.md`). BE-11 (snippet access), C6, and the two unconfirmed
+  equation numbers are disclosed by name. The owner has a two-item browser list.
+- `TOOLS.md` and `WORKFLOWS.md` state how to run the check and what to do when a `// source:` comment
+  changes.
+
 ### Fixed (2026-09-24) — citation census: all 15 `// source:` comments checked against their sources
 
 Mothership ordered the other 9 comments checked, with every overclaimed attribution fixed. The sample
