@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 441,
+    "totalTestFiles": 440,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -3746,8 +3746,7 @@
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
       "tests/numerical/weyl-kerr-schild.test.ts",
       "tests/numerical/weyl-schwarzschild.test.ts",
-      "tests/tensor.test.ts",
-      "tests/tmp/differential.test.ts"
+      "tests/tensor.test.ts"
     ],
     "src/core/flux-rules.ts": [
       "tests/api/atlas-public-closure.test.ts",
@@ -4953,8 +4952,7 @@
       "tests/fixtures/confrontation-golden.test.ts",
       "tests/numerical/non-finite-propagation.test.ts",
       "tests/numerical/schwarzschild-radial-geodesic.test.ts",
-      "tests/tensor.test.ts",
-      "tests/tmp/differential.test.ts"
+      "tests/tensor.test.ts"
     ],
     "src/numerical/geometrized.ts": [
       "tests/api/atlas-public-closure.test.ts",
@@ -5001,8 +4999,7 @@
       "tests/numerical/metric-inverse.test.ts",
       "tests/numerical/perihelion-finder-roundtrip.test.ts",
       "tests/numerical/riemann-tensor-lowering.test.ts",
-      "tests/tensor.test.ts",
-      "tests/tmp/differential.test.ts"
+      "tests/tensor.test.ts"
     ],
     "src/numerical/grid-field.ts": [
       "tests/api/atlas-public-closure.test.ts",
@@ -10328,11 +10325,6 @@
       "src/bridges/rejected.ts",
       "src/core/regime-rule-install.ts",
       "src/core/regimes-builtins.ts"
-    ],
-    "tests/tmp/differential.test.ts": [
-      "src/numerical/geodesic-integrator.ts",
-      "src/numerical/gl4-integrator.ts",
-      "src/core/constants.ts"
     ],
     "tests/tools/api-surface.test.ts": [],
     "tests/tools/formalref-axiom-gate.test.ts": [

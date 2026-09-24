@@ -8,6 +8,16 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — generated test-coverage docs recorded an untracked file
+
+The previous commit's `docs:deps` run recorded an UNTRACKED file, `tests/tmp/differential.test.ts`,
+in `test-coverage.json` (4 entries) and in `TEST_COVERAGE.md` (441 test files; the tracked tree has
+440). The file is a differential check for the merged PR #133; no session on this machine wrote it.
+It also broke the pre-push typecheck (TS2554), which is how it was found. It is moved, not deleted,
+to `%TEMP%\upt-stray-tests-tmp-20260923\` (SHA-256 prefix `5891139a`), and the docs are regenerated
+from the tracked tree. The root cause, that the generator and the test typecheck read untracked
+files, is filed in `todo.md`.
+
 ### Fixed (2026-09-23) — source defects found by the architecture-docs audits
 
 Each item was re-checked against the source before the edit. An in-session Sonnet review (not
