@@ -41,6 +41,10 @@ Those are different claims and merging them produces a false green.
   corpus stores right-hand sides. Every expression-condition hit is fluid statics, sharing only `g`
   (one hit is an id tie-break). The embedding condition waits for LLMBench
   (`docs/research/atlas-study-results.md`).
+  EXPLORATORY, post hoc (Amendment 9): with the corpus in residual form, `target − scalarAst`, typed
+  structural search is still 12/50 = 24.0% on PRIMARY and 0/30 in-distribution. The keys now match in
+  4 of 11,125 pairs, and all 4 are correct references. The remaining misses are real formula
+  differences, not a representation mismatch. It never replaces the criterion.
 - **Baseline construction (from that run):** a reasoning model needs a context that holds its
   reasoning AND its answer. With `num_ctx` 8192, gemma4:26b's reasoning filled the context on 64/125
   items and left the answer empty. Size the context per model before freezing a baseline config.

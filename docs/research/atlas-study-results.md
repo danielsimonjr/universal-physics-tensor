@@ -76,3 +76,43 @@ blobs that Amendment 8 pins, so a rerun scores the same inputs with the same ran
 - **What the typed structural search hits rest on.** Its 12 hits share the symbol name(s) `g` with a correct reference. 1 hit(s) (q-043) share no name and reach the top 10 only through the id tie-break.
 - These are facts about the pre-registered conditions as pinned. The conditions are not changed after the
   results; a corrected structural condition would need its own amendment and would be exploratory.
+
+## Criterion 3 — EXPLORATORY, post hoc: typed structural search on residual forms (pre-registration Amendment 9)
+
+**EXPLORATORY and POST HOC. This is NOT the criterion, and it never replaces it.** Amendment 9 registered
+this condition after the in-process results above were seen. The criterion verdict stays on the
+conditions as pinned in Amendment 8. The corrected condition compares each claim, as stored
+(`lhs − rhs`), with each canonical entry in residual form (`target − scalarAst`). The structural key
+and the scoring are unchanged. It ran after Amendment 9 was committed (`dbd4e95`)
+and its CI run was green (run 36035392889, success, 2026-09-24T17:38:41Z). Same truth sets, same pool, same metric.
+
+### PRIMARY (n = 50)
+
+| Group | n | typed structural search (as pinned) | typed structural search, residual form (EXPLORATORY) |
+|---|---|---|---|
+| all families | 50 | 12/50 = 24.0% [14.3%, 37.4%] | 12/50 = 24.0% [14.3%, 37.4%] |
+| in-distribution families | 30 | 0/30 = 0.0% [0.0%, 11.4%] | 0/30 = 0.0% [0.0%, 11.4%] |
+| diffusion | 6 | 0/6 = 0.0% [0.0%, 39.0%] | 0/6 = 0.0% [0.0%, 39.0%] |
+| oscillators | 12 | 0/12 = 0.0% [0.0%, 24.2%] | 0/12 = 0.0% [0.0%, 24.2%] |
+| waves | 12 | 0/12 = 0.0% [0.0%, 24.2%] | 0/12 = 0.0% [0.0%, 24.2%] |
+| fluid-statics (held out) | 20 | 12/20 = 60.0% [38.7%, 78.1%] | 12/20 = 60.0% [38.7%, 78.1%] |
+
+### SECONDARY (n = 64)
+
+| Group | n | typed structural search (as pinned) | typed structural search, residual form (EXPLORATORY) |
+|---|---|---|---|
+| all families | 64 | 15/64 = 23.4% [14.7%, 35.1%] | 14/64 = 21.9% [13.5%, 33.4%] |
+| in-distribution families | 34 | 0/34 = 0.0% [0.0%, 10.2%] | 0/34 = 0.0% [0.0%, 10.2%] |
+| diffusion | 7 | 0/7 = 0.0% [0.0%, 35.4%] | 0/7 = 0.0% [0.0%, 35.4%] |
+| oscillators | 13 | 0/13 = 0.0% [0.0%, 22.8%] | 0/13 = 0.0% [0.0%, 22.8%] |
+| waves | 14 | 0/14 = 0.0% [0.0%, 21.5%] | 0/14 = 0.0% [0.0%, 21.5%] |
+| fluid-statics (held out) | 30 | 15/30 = 50.0% [33.2%, 66.8%] | 14/30 = 46.7% [30.2%, 63.9%] |
+
+### Instrument facts for the EXPLORATORY condition (computed by the runner; PRIMARY)
+
+- **Structural keys now match in 4 of the 11125 query × record pairs** (0 as pinned).
+- **Of its 12 hits, 4 were placed by a structural key match** (q-072, q-082, q-105, q-107); the rest came from the symbol-overlap tie-break.
+- 1 hit(s) (q-043) share no symbol name with a correct reference and match no key: they reach the top 10 only through the id tie-break.
+- **Stated limitation:** no symbol-alias map was added. Query notation (`k_B`, `rho_0`) and canonical names
+  (`boltzmann-constant`, `density`) still differ in the symbol-overlap tier. An alias map would be a knob
+  fitted to these results.

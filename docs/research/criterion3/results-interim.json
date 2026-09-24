@@ -729,5 +729,268 @@
         }
       }
     ]
+  },
+  "exploratory": {
+    "amendment": 9,
+    "postHoc": true,
+    "context": {
+      "amendmentCommit": "dbd4e95",
+      "amendmentCi": "run 36035392889, success, 2026-09-24T17:38:41Z"
+    },
+    "pinnedBlobs": {
+      "src/canonical/residual.ts": "7bd5c44ce8095bcf53f675a79f320a22ab1305ad",
+      "tools/criterion3-study/residual-corpus.ts": "d09b255a9e439bd57736692dafe632a7217397f0"
+    },
+    "diagnostics": {
+      "keyEqualities": 4,
+      "keyPairs": 11125,
+      "residualQueries": 123,
+      "queries": 125,
+      "truthWithExpr": 33,
+      "truthSharingSymbol": 11,
+      "truthQueries": 50
+    },
+    "hitAnatomy": {
+      "condition": "typed structural search, residual form",
+      "hits": 12,
+      "sharedNames": [
+        "g"
+      ],
+      "zeroOverlapHits": [
+        "q-043"
+      ],
+      "keyMatchedHits": [
+        "q-072",
+        "q-082",
+        "q-105",
+        "q-107"
+      ]
+    },
+    "results": {
+      "primary": {
+        "condition": "typed structural search, residual form",
+        "groups": [
+          {
+            "group": "all families",
+            "n": 50,
+            "hits": 12,
+            "recall": 0.24,
+            "lower": 0.1429739139699173,
+            "upper": 0.3741268375794292
+          },
+          {
+            "group": "in-distribution families",
+            "n": 30,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.11351339317396876
+          },
+          {
+            "group": "diffusion",
+            "n": 6,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.39033428790216534
+          },
+          {
+            "group": "oscillators",
+            "n": 12,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.24249400665524085
+          },
+          {
+            "group": "waves",
+            "n": 12,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.24249400665524085
+          },
+          {
+            "group": "fluid-statics (held out)",
+            "n": 20,
+            "hits": 12,
+            "recall": 0.6,
+            "lower": 0.38658150076225317,
+            "upper": 0.7811934676271829
+          }
+        ],
+        "firstCorrectRank": {
+          "q-008": 98,
+          "q-010": 90,
+          "q-012": 59,
+          "q-013": 105,
+          "q-016": 99,
+          "q-018": 92,
+          "q-023": 7,
+          "q-027": 46,
+          "q-029": 107,
+          "q-030": 100,
+          "q-032": 93,
+          "q-033": 57,
+          "q-035": 98,
+          "q-041": 81,
+          "q-042": 90,
+          "q-043": 8,
+          "q-045": 105,
+          "q-047": 81,
+          "q-049": 42,
+          "q-051": 98,
+          "q-055": 70,
+          "q-057": 97,
+          "q-060": 99,
+          "q-063": 1,
+          "q-064": 99,
+          "q-065": 44,
+          "q-066": 57,
+          "q-070": 99,
+          "q-071": 99,
+          "q-072": 1,
+          "q-073": 100,
+          "q-075": 98,
+          "q-082": 1,
+          "q-086": 15,
+          "q-088": 90,
+          "q-089": 7,
+          "q-090": 2,
+          "q-091": 42,
+          "q-099": 7,
+          "q-102": 98,
+          "q-103": 91,
+          "q-105": 1,
+          "q-107": 1,
+          "q-109": 98,
+          "q-111": 42,
+          "q-113": 69,
+          "q-115": 92,
+          "q-122": 1,
+          "q-123": 83,
+          "q-124": 7
+        }
+      },
+      "secondary": {
+        "condition": "typed structural search, residual form",
+        "groups": [
+          {
+            "group": "all families",
+            "n": 64,
+            "hits": 14,
+            "recall": 0.21875,
+            "lower": 0.13502319406719474,
+            "upper": 0.3343278395662582
+          },
+          {
+            "group": "in-distribution families",
+            "n": 34,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.10151455415332376
+          },
+          {
+            "group": "diffusion",
+            "n": 7,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.3543304350666875
+          },
+          {
+            "group": "oscillators",
+            "n": 13,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.22809537235419838
+          },
+          {
+            "group": "waves",
+            "n": 14,
+            "hits": 0,
+            "recall": 0,
+            "lower": 0,
+            "upper": 0.2153108027376358
+          },
+          {
+            "group": "fluid-statics (held out)",
+            "n": 30,
+            "hits": 14,
+            "recall": 0.4666666666666667,
+            "lower": 0.3023238890769976,
+            "upper": 0.638577003801267
+          }
+        ],
+        "firstCorrectRank": {
+          "q-005": 43,
+          "q-006": 45,
+          "q-007": 42,
+          "q-008": 98,
+          "q-009": 7,
+          "q-010": 90,
+          "q-012": 59,
+          "q-013": 105,
+          "q-014": 11,
+          "q-015": 43,
+          "q-016": 99,
+          "q-018": 92,
+          "q-021": 62,
+          "q-023": 7,
+          "q-027": 46,
+          "q-029": 107,
+          "q-030": 100,
+          "q-032": 93,
+          "q-033": 57,
+          "q-035": 98,
+          "q-041": 81,
+          "q-042": 90,
+          "q-043": 8,
+          "q-045": 105,
+          "q-046": 99,
+          "q-047": 81,
+          "q-049": 42,
+          "q-051": 98,
+          "q-054": 47,
+          "q-055": 70,
+          "q-057": 97,
+          "q-060": 99,
+          "q-063": 1,
+          "q-064": 99,
+          "q-065": 44,
+          "q-066": 57,
+          "q-070": 99,
+          "q-071": 99,
+          "q-072": 1,
+          "q-073": 100,
+          "q-075": 98,
+          "q-076": 90,
+          "q-082": 1,
+          "q-086": 15,
+          "q-088": 90,
+          "q-089": 7,
+          "q-090": 2,
+          "q-091": 42,
+          "q-094": 9,
+          "q-096": 45,
+          "q-099": 7,
+          "q-101": 18,
+          "q-102": 98,
+          "q-103": 91,
+          "q-105": 1,
+          "q-107": 1,
+          "q-109": 98,
+          "q-111": 42,
+          "q-113": 69,
+          "q-115": 92,
+          "q-117": 98,
+          "q-122": 1,
+          "q-123": 83,
+          "q-124": 7
+        }
+      }
+    }
   }
 }
