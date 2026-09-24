@@ -6140,9 +6140,9 @@ The codebase is organized into the following modules:
 **External Dependencies:**
 | Package | Import |
 |---------|--------|
-| `universal-physics-tensor/numerical/klein-gordon` | `evaluateKGDispersionResidual` |
+| `universal-physics-tensor` | `evaluateKGDispersionResidual` |
 | `universal-physics-tensor` | `C_SI` |
-| `universal-physics-tensor/numerical/klein-gordon` | `verifyKleinGordonPlaneWave` |
+| `universal-physics-tensor` | `verifyKleinGordonPlaneWave` |
 
 **Internal Dependencies:**
 | File | Imports | Type |
@@ -6555,7 +6555,7 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 348 |
 | Total Modules | 11 |
-| Total Lines of Code | 68860 |
+| Total Lines of Code | 68862 |
 | Total Exports | 2450 |
 | Total Re-exports | 1232 |
 | Total Classes | 58 |

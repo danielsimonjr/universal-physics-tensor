@@ -15918,13 +15918,13 @@ modules:
     src/numerical/klein-gordon.ts:
       description: Klein-Gordon dispersion-relation numerical evaluator (G-7 debt closure).
       externalDependencies:
-        - package: universal-physics-tensor/numerical/klein-gordon
+        - package: universal-physics-tensor
           imports:
             - evaluateKGDispersionResidual
         - package: universal-physics-tensor
           imports:
             - C_SI
-        - package: universal-physics-tensor/numerical/klein-gordon
+        - package: universal-physics-tensor
           imports:
             - verifyKleinGordonPlaneWave
       nodeDependencies: []
@@ -16742,7 +16742,7 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 348
   totalModules: 11
-  totalLinesOfCode: 68860
+  totalLinesOfCode: 68862
   totalExports: 2450
   totalClasses: 58
   totalInterfaces: 360

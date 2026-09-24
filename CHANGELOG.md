@@ -8,6 +8,43 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed (2026-09-23) — source defects found by the architecture-docs audits
+
+Each item was re-checked against the source before the edit. An in-session Sonnet review (not
+human) confirmed all of them against the source and the built package.
+
+- **Raw NUL bytes in `src/composition/bridge-prediction.ts`.** The pair-key separator in `pairKey`
+  was two raw NUL bytes, present since the commit that created the file (`fcefdf3`). They are now
+  written as `\u0000`, the same character at run time. The raw bytes had two effects that no test
+  saw: grep printed "Binary file … matches" instead of the matching lines, and the `code-docs` gate
+  reported the file UNPARSED, so none of its exported symbols was ever checked. The file now parses
+  with 0 findings. A scan of all 1402 tracked text files found no other raw NUL, and the new test
+  `tests/internal/no-raw-nul.test.ts` (RED on the old tree, naming exactly this file) keeps it so.
+- **`src/numerical/lowering.ts`.** The doc comment for `lowerNode` ("Lower a validated ExprNode…
+  @internal") sat about 50 lines above the function, detached from it. It is now on `lowerNode`.
+- **`src/dimensional/ast-types.ts`.** `RicciTensorNode.riemann` said the "first two slots" are
+  contracted; `ricci()` contracts the upper index with the second lower index,
+  R_μν = R^λ_{μλν}.
+- **`src/dimensional/einstein-equation.ts`.** The example's stress-energy node used kind
+  `'stress-energy-tensor'`, a field `fluidType` that does not exist, and no `symbol`; it now matches
+  `StressEnergyTensorNode`.
+- **`src/numerical/klein-gordon.ts`.** Two examples imported
+  `universal-physics-tensor/numerical/klein-gordon`, which `package.json` does not export; both
+  functions are root exports.
+- **`src/bridges/index.ts`.** The module doc said 44 entries, 42 of them in
+  `EXPECTED_DIMENSION_BY_BRIDGE`, and `BridgeEquationEntry.id` said 11-50. Measured: 55 entries (IDs
+  11-65), all with a `dimensional_signature`; 53 in `EXPECTED_DIMENSION_BY_BRIDGE` (all but BE-51,
+  52); 42 with an AST (11-50, 53, 54).
+- **`bench/be37-eikonal.bench.ts`.** The header called the covariant evaluator a stub; it now
+  integrates with `integrateGeodesicGL4`.
+- **`code-docs` ratchet 157 -> 155.** Exactly two findings went away (the UNPARSED file and
+  `lowerNode`'s missing doc comment) and none appeared, compared file by file against HEAD.
+- **Withdrawn, not changed:** the filed claim that `curvature-composite.ts:31` ("rank-5 lower" for
+  the Bianchi residual) contradicts the registry. The comment is correct. The registry's tag
+  `'rank-3-lower'` is the misleading part, and lines 55-57 of the same file already say so. The tag
+  is on the `@public` `CURVATURE_KIND_REGISTRY`, so renaming it is a public-surface change; it is
+  reported to Mothership, not made here.
+
 ### Added (2026-09-23) — the Physlib axiom probes and the formalRef axiom gate
 
 The one reviewed `formalRef` (`ab-pendulum-linear`) was checked with two Lean files that no repository

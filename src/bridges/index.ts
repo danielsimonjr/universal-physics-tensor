@@ -12,11 +12,12 @@
  * Source-of-truth files: docs/specification/Part-{I-VI}.md
  *
  * Honest-claude: fields not explicitly stated in the spec are null (not guessed).
- * - dimensional_signature is populated for all 44 entries at HEAD; 42 of them
- *   (IDs 11-50, 53, 54) are also registered in `EXPECTED_DIMENSION_BY_BRIDGE`
- *   (`src/dimensional/bridge-check.ts`) with AST encodings under
- *   `src/bridges/equations/` — BE-51/52 are closed-form evaluator bridges
- *   without AST encodings. Populated values are exactly what
+ * - dimensional_signature is populated for all 55 entries. 53 of them (all
+ *   except BE-51 and BE-52) are registered in `EXPECTED_DIMENSION_BY_BRIDGE`
+ *   (`src/dimensional/bridge-check.ts`); 42 (IDs 11-50, 53, 54) also have AST
+ *   encodings under `src/bridges/equations/`. BE-51/52 are closed-form evaluator
+ *   bridges, and BE-55-65 have evaluator modules in `src/bridges/`; none of
+ *   them has an AST encoding. Populated values are exactly what
  *   `format()` produces for the inferred Dimension shape; never free-form prose.
  * - known_issues are extracted ONLY from explicit issue-markers in the spec
  *   ("**Known issue:**", "**Additional known issue:**", "**Bound violation:**",
@@ -176,7 +177,7 @@ export interface KnownIssue {
  * deleting it would erase the record that the claim was made and refuted.
  */
 export interface BridgeEquationEntry {
-  /** Equation number, 11-50. */
+  /** Equation number, 11-65. */
   id: number;
   /** Verbatim heading text from the spec. */
   name: string;

@@ -135,7 +135,7 @@ export type RiemannTensorNode = CurvatureCompositeNode<'riemann-tensor', {
  * @public
  */
 export type RicciTensorNode = CurvatureCompositeNode<'ricci-tensor', {
-  /** The Riemann tensor whose first two slots are contracted. */
+  /** The Riemann tensor, contracted on its upper index and its second lower index: R_μν = R^λ_{μλν}. */
   readonly riemann: RiemannTensorNode;
 }>;
 

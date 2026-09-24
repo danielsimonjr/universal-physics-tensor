@@ -126,19 +126,19 @@ function einsteinFreeIndexLabels(lhs: EinsteinTensorNode): [string, string] {
  *   StressEnergyTensorNode,
  * } from 'universal-physics-tensor';
  *
- * // Minimal vacuum EFE node (G_μν = κ T_μν with T = perfect-fluid)
+ * // Minimal EFE node (G_μν = κ T_μν, Λ = 0)
  * const efeNode: EinsteinFieldEquationNode = {
  *   kind: 'einstein-equation',
  *   lhs: { ... } as EinsteinTensorNode,    // G_μν from einstein()
  *   cosmological: null,                     // Λ = 0
  *   metric: { kind: 'metric-tensor', ... },
  *   rhs: {
- *     kind: 'stress-energy-tensor',
+ *     kind: 'stress-energy',
+ *     symbol: 'T',
  *     indices: [
  *       { label: 'mu', variance: 'lower' },
  *       { label: 'nu', variance: 'lower' },
  *     ],
- *     fluidType: 'perfect-fluid',
  *     symmetry: 'symmetric',
  *     componentDim: { L: -1, M: 1, T: -2, I: 0, Theta: 0, N: 0, J: 0 },
  *   },

@@ -392,8 +392,6 @@ function lowerCurvature(
   }
 }
 
-/** Lower a validated ExprNode to an EngineTensor.
- *  @internal — cross-module/test use only; not part of the consumer surface. */
 /**
  * S-9 (v0.9.0): deferred-evaluator registry — the single source of
  * truth for AST kinds whose numerical evaluation lives in a dedicated
@@ -444,6 +442,8 @@ function isDeferredNodeKind(kind: string): kind is DeferredNodeKind {
   return Object.prototype.hasOwnProperty.call(DEFERRED_EVALUATOR_REGISTRY, kind);
 }
 
+/** Lower a validated ExprNode to an EngineTensor.
+ *  @internal — cross-module/test use only; not part of the consumer surface. */
 export function lowerNode(
   node: ExprNode,
   inputs: NumericalInputs,

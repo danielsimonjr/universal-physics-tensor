@@ -6,12 +6,11 @@
  *     is the ACTUAL RK4 Shapiro-delay evaluator (4096-step RK4, hardcoded solar
  *     grazing scenario, no inputs — scenario is internal).
  *   - `evaluateBE37CovariantEikonalNumerical` in src/numerical/be37-covariant-eikonal.ts
- *     is the v0.4.0 STRUCTURAL PREVIEW: returns eikonalResidual=0 by construction,
- *     shapiroDelaySec=0 stub. No numerical integration is performed. Benching it
- *     measures only async wrapper + domain-guard overhead (not RK4 cost).
- *   - Both are benched here: the RK4 one is the primary baseline; the structural
- *     preview is benched separately so v0.5.0 can detect when the stub is replaced
- *     with real geodesic integration.
+ *     integrates the null geodesic with `integrateGeodesicGL4` and returns the eikonal
+ *     residual and the Shapiro delay. When the precondition above was verified it was a
+ *     structural preview (eikonalResidual=0 by construction, shapiroDelaySec=0), and the
+ *     timings recorded for it in docs/architecture/benchmarks.md describe that stub.
+ *   - Both are benched here: the RK4 one is the primary baseline.
  *
  * F11 BENCH TIMEOUT: historically raised to 30 000 ms via `benchmarkTimeout` in
  *   bench()'s third argument. Vitest 4 removed that option (tinybench `time` /
