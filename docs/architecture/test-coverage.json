@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 443,
+    "totalTestFiles": 444,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -1837,7 +1837,8 @@
       "tests/composition/canonical-graph-information-axis.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
-      "tests/tensor.test.ts"
+      "tests/tensor.test.ts",
+      "tests/tools/criterion3-export.test.ts"
     ],
     "src/canonical/dimensional-fields.ts": [
       "tests/canonical/dimensional-fields.test.ts"
@@ -1923,7 +1924,8 @@
       "tests/composition/consequence.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
-      "tests/tensor.test.ts"
+      "tests/tensor.test.ts",
+      "tests/tools/criterion3-export.test.ts"
     ],
     "src/canonical/seed-l-layer.ts": [
       "tests/api/atlas-public-closure.test.ts",
@@ -10366,6 +10368,10 @@
     ],
     "tests/tools/api-surface.test.ts": [],
     "tests/tools/citation-quote-check.test.ts": [],
+    "tests/tools/criterion3-export.test.ts": [
+      "src/canonical/registry.ts",
+      "src/canonical/canonical-equation.ts"
+    ],
     "tests/tools/formalref-axiom-gate.test.ts": [
       "src/atlas/families.ts"
     ],

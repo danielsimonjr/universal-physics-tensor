@@ -24,6 +24,11 @@ docs/research/atlas-study-results.md text eol=lf
 tests/fixtures/atlas/benchmark/** text eol=lf
 # Written by `bun run atlas:formal-gate -- --write-captured`, which emits LF.
 formal/physlib/captured/** text eol=lf
+# Written by `bun run atlas:c3-export` and `bun run atlas:quote-check -- --write`, which emit LF. The
+# criterion 3 files are frozen by the SHA-256 of their LF bytes, so a CRLF checkout would make a plain
+# sha256sum disagree with the pre-registered hash.
+docs/research/criterion3/** text eol=lf
+docs/research/phase-1-citation-quote-check.out.md text eol=lf
 
 # Binary-ish: never touch these.
 *.png binary

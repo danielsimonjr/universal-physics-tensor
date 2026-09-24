@@ -10,6 +10,7 @@ its own subdirectory.
 | `plan-doc-audit/` | Audits `docs/planning/` checkboxes against shipped `src/` symbols (stub-aware). Run via `npm run audit:plans` (dry-run) or `-- --apply`. Zero deps. |
 | `formalref-axiom-gate/` | Re-measures the axioms of every `lean4-physlib` formalRef with the probes in `formal/physlib/`, including a positive control. Run via `bun run atlas:formal-gate -- --physlib <checkout>`. Needs Lean; zero npm deps. |
 | `citation-quote-check/` | Matches every quoted span and locator of the `// source:` comments in `src/bridges/index.ts` against downloaded source texts, with a negative control per check. Run via `bun run atlas:quote-check -- --sources <dir> [--write]`. Needs pdftotext, pdftoppm and tesseract; zero npm deps. |
+| `criterion3-export/` | Exports the blind-labeler inputs for pre-registration criterion 3 (`docs/research/criterion3/`): the canonical corpus and the frozen items with opaque ids, a leakage report with a control, and the SHA-256 freeze. Run via `bun run atlas:c3-export [-- --copy <dir>]`. Zero npm deps. |
 | `chunking-for-files/` | Splits large markdown/JSON/TypeScript files into editable chunks and merges them back. Zero deps. |
 | `compress-for-context/` | Compresses files (JSON/YAML/MD/CSV/code/etc.) to fit LLM context windows; reversible. Zero deps. |
 

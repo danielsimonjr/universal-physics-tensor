@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 345 |
-| Total Test Files | 443 |
+| Total Test Files | 444 |
 | Source Files with Tests | 344 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -174,7 +174,7 @@ The following 1 source files are not directly imported by any test file:
 | `bridges/rejected.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `coverage.test.ts`, `derive-evidence.test.ts`, `bridge-equations-facade.test.ts`, `membership.test.ts`, `overlay-registry-quote.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `catalog-full.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `bridges/rhs-registry.ts` | `descriptor-consistency.test.ts`, `dimensional-signature-catalog.test.ts`, `linkage.test.ts`, `coverage-backfill.test.ts`, `bridge-ast-gradient-byid.test.ts` |
 | `bridges/sensitivity.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `sensitivity.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
-| `canonical/canonical-equation.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
+| `canonical/canonical-equation.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts`, `criterion3-export.test.ts` |
 | `canonical/dimensional-fields.ts` | `dimensional-fields.test.ts` |
 | `entries/_l1-build.ts` | `helper-coverage.test.ts` |
 | `entries/atomic.ts` | `atomic.test.ts` |
@@ -189,7 +189,7 @@ The following 1 source files are not directly imported by any test file:
 | `entries/thermo-nuclear-cosmo.ts` | `thermo-nuclear-cosmo.test.ts` |
 | `canonical/linkage.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `linkage.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `canonical/normal-form.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `normal-form.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
-| `canonical/registry.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `association.test.ts`, `audited-catalog.test.ts`, `closure.test.ts`, `diffusion.test.ts`, `model.test.ts`, `models.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `canonical-count-prose.test.ts`, `invariants.test.ts`, `linkage.test.ts`, `nonmonomial.test.ts`, `numeric-prefactor.test.ts`, `registry.test.ts`, `relativity.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `consequence.test.ts`, `proposed-bridges.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
+| `canonical/registry.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `association.test.ts`, `audited-catalog.test.ts`, `closure.test.ts`, `diffusion.test.ts`, `model.test.ts`, `models.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `canonical-count-prose.test.ts`, `invariants.test.ts`, `linkage.test.ts`, `nonmonomial.test.ts`, `numeric-prefactor.test.ts`, `registry.test.ts`, `relativity.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `canonical-graph-information-axis.test.ts`, `canonical-graph.test.ts`, `consequence.test.ts`, `proposed-bridges.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts`, `criterion3-export.test.ts` |
 | `canonical/seed-l-layer.ts` | `atlas-public-closure.test.ts`, `public-surface.test.ts`, `bridge-equations-facade.test.ts`, `public-api-stability.test.ts`, `seed-l-layer.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `confrontation-golden.test.ts`, `tensor.test.ts` |
 | `src/cli-api.ts` | `graphs.test.ts`, `recover-conventions.test.ts` |
 | `cli/args.ts` | `args.test.ts`, `main-dispatch.test.ts` |
@@ -823,6 +823,7 @@ The following 1 source files are not directly imported by any test file:
 | `tests/tensor.test.ts` | 127 files |
 | `tools/api-surface.test.ts` | 0 files |
 | `tools/citation-quote-check.test.ts` | 0 files |
+| `tools/criterion3-export.test.ts` | 2 files |
 | `tools/formalref-axiom-gate.test.ts` | 1 files |
 | `tools/plan-doc-audit.test.ts` | 0 files |
 | `tools/untracked-gate-inputs.test.ts` | 0 files |

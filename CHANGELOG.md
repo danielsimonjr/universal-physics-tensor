@@ -8,6 +8,40 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — criterion 3 step 1: the blind-labeler inputs, frozen
+
+Pre-registration criterion 3 (recall@10, typed structural search against embeddings) was not run:
+the set had no reference corpus and no atlas-blind label per item. Mothership's design
+(`Dropbox/_fleet/specs/2026-09-24-upt-criterion3-design.md`) supplies both. Step 1 builds the two
+inputs that two blind model labelers receive. The labelers work outside this repository, because
+this session has read `src/atlas/` and must not label.
+
+- **New tool `tools/criterion3-export/` (`bun run atlas:c3-export`).** It writes
+  `docs/research/criterion3/`:
+  - `corpus.json`: the 107 canonical L-layer entries, pinned at `c144150`. The text is the name,
+    domain and assumptions; `expr` is the `scalarAst`, present for 89 entries. It leaves out
+    `partnerBridges`, `restatesBridge` and `model`.
+  - `queries.json`: the 125 frozen items. The text is the premises and the conclusion; `expr` is the
+    item's `expr`. It leaves out the verdict and answer fields.
+  - `leakage-report.md` and `freeze.json`, with the SHA-256 of each file.
+- **The item ids and the file order carried the verdict.** In 7 of the 8 authoring batches, items
+  01-08 are valid and the rest invalid. So the queries get opaque ids `q-001`… in the order of
+  SHA-256(seed + item id). `queries-key.json` maps the ids back to the items. It stays in the
+  repository and is not given to the labelers.
+- **Leakage:** 0 hits for atlas bridge, model or rejection ids, `BE-` ids and item ids. A control
+  string found all 6 planted tokens. There are 10 verdict-word hits, all in query texts ("valid
+  for ...", "independent of ...", "rotating-wave approximation"). The report lists each one for
+  review.
+- **The export refuses a tree whose inputs differ from HEAD,** so the recorded pin is true. The
+  frozen files are LF in the working tree (`.gitattributes`), so a plain `sha256sum` agrees with the
+  freeze.
+- **Tests:** `tests/tools/criterion3-export.test.ts` covers the exclusions, the opaque ids and
+  order, the scanner (including inputs it must flag), and the frozen files against their hashes and
+  a fresh export. Four mutations (atlas fields put back into the corpus text, real item ids kept, a
+  case-insensitive `BE` pattern, one byte of the frozen corpus changed) each fail the tests.
+- Copied to `Dropbox/_fleet/c3/` for Mothership (the key is not copied). No labels, conditions or
+  amendment: those are steps 2-5.
+
 ### Added (2026-09-24) — mechanical citation quote check; Phase 1 "zero fabricated assumptions" MET
 
 Mothership ruled that the citation census alone could not support MET. Most final texts carried one
