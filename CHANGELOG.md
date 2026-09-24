@@ -8,6 +8,42 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — criterion 3 step 3: pre-registration Amendment 8 freezes the labels and the scoring
+
+Criterion 3 must be frozen before any condition runs. Mothership returned the two blind labelers'
+files, and this commit records them. No retrieval condition has run.
+
+- **Amendment 8** (`docs/research/atlas-benchmark-preregistration.md`) registers:
+  - the task, the corpus (107 entries at `c144150`), the 125 queries with opaque ids, and MODEL labels
+    from two blind `claude-opus-5-5` labelers whose tool calls Mothership audited;
+  - agreement: exact 99/125 = 0.792, mean Jaccard 0.847 (0.748 without the both-"none" queries);
+  - PRIMARY truth: the 50 exact-agreement non-empty queries;
+  - SECONDARY truth: PRIMARY plus the 14 partial overlaps, with the truth their intersection
+    (n = 64). Excluded: 26 contested and 49 both-"none";
+  - the in-process conditions, pinned by git blob ids of the ranking and scoring code;
+  - the embedding rule (local model, frozen vectors, registered in a later amendment);
+  - scoring (recall@10, Wilson 95%, per family, fluid statics separately), and the criterion's pool:
+    PRIMARY over all families.
+- **Disclosures in the amendment:**
+  - the power at n = 50 is about ±0.109, wider than the design's ±0.07;
+  - 49 of 125 claims have no registry counterpart (19 of them diffusion);
+  - fluid statics, the held-out family, is 20 of the 50 PRIMARY queries;
+  - the 3 "valid" hits are all valid items;
+  - the opaque ids and seeded order.
+- **Frozen under `docs/research/criterion3/`:** the three label files byte for byte and the derived
+  `truth.json`, with the SHA-256 of all seven files in the amendment. The labeler files arrive with
+  CRLF line ends and their hash is of those bytes. `.gitattributes` therefore stores them with no
+  line-end conversion, and the test hashes raw bytes.
+- **New `tools/criterion3-study/labels.ts` (`bun run atlas:c3-labels`)** derives the truth sets.
+  `tests/tools/criterion3-labels.test.ts`:
+  - binds every amendment hash to its file;
+  - re-derives `truth.json` and the counts;
+  - checks that PRIMARY equals Mothership's agreed labels, and that SECONDARY uses the
+    intersection;
+  - fails on a missing label, an unknown id, or a changed label.
+
+  A changed truth file and a changed amendment hash each fail it.
+
 ### Deprecated (2026-09-24) — `BridgeEquations.crossingResidual` is physically WRONG; removal in 0.47.0
 
 - `BridgeEquations.crossingResidual` (`evaluateCrossingResidual`) and its ASTs (`BE35_CROSSING_RESIDUAL_RHS`,

@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 345 |
-| Total Test Files | 444 |
+| Total Test Files | 445 |
 | Source Files with Tests | 344 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -824,6 +824,7 @@ The following 1 source files are not directly imported by any test file:
 | `tools/api-surface.test.ts` | 0 files |
 | `tools/citation-quote-check.test.ts` | 0 files |
 | `tools/criterion3-export.test.ts` | 2 files |
+| `tools/criterion3-labels.test.ts` | 0 files |
 | `tools/formalref-axiom-gate.test.ts` | 1 files |
 | `tools/plan-doc-audit.test.ts` | 0 files |
 | `tools/untracked-gate-inputs.test.ts` | 0 files |

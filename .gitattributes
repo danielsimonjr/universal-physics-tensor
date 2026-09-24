@@ -28,6 +28,9 @@ formal/physlib/captured/** text eol=lf
 # criterion 3 files are frozen by the SHA-256 of their LF bytes, so a CRLF checkout would make a plain
 # sha256sum disagree with the pre-registered hash.
 docs/research/criterion3/** text eol=lf
+# The labeler files arrive with CRLF line ends, and their pre-registered SHA-256 is of those exact bytes.
+# Git must store them byte for byte, so no line-end conversion applies (this later rule wins).
+docs/research/criterion3/labels/** -text
 docs/research/phase-1-citation-quote-check.out.md text eol=lf
 
 # Binary-ish: never touch these.

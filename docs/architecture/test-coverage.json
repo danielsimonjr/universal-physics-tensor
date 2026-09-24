@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 345,
-    "totalTestFiles": 444,
+    "totalTestFiles": 445,
     "testedCount": 344,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -10374,6 +10374,7 @@
       "src/canonical/registry.ts",
       "src/canonical/canonical-equation.ts"
     ],
+    "tests/tools/criterion3-labels.test.ts": [],
     "tests/tools/formalref-axiom-gate.test.ts": [
       "src/atlas/families.ts"
     ],

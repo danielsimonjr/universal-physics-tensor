@@ -1,0 +1,465 @@
+{
+  "primary": {
+    "q-008": [
+      "CE-stokes-einstein"
+    ],
+    "q-010": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-012": [
+      "CE-lorentz-factor",
+      "CE-string-wave-speed"
+    ],
+    "q-013": [
+      "CE-wave-speed"
+    ],
+    "q-016": [
+      "CE-string-wave-speed",
+      "CE-wave-speed"
+    ],
+    "q-018": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-023": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-027": [
+      "CE-inductor-energy",
+      "CE-kinetic-energy"
+    ],
+    "q-029": [
+      "CE-work"
+    ],
+    "q-030": [
+      "CE-thermal-diffusivity"
+    ],
+    "q-032": [
+      "CE-sound-speed"
+    ],
+    "q-033": [
+      "CE-lc-resonance"
+    ],
+    "q-035": [
+      "CE-string-wave-speed"
+    ],
+    "q-041": [
+      "CE-pressure-definition"
+    ],
+    "q-042": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-043": [
+      "CE-buoyant-force",
+      "CE-density-definition"
+    ],
+    "q-045": [
+      "CE-wave-speed"
+    ],
+    "q-047": [
+      "CE-pressure-definition",
+      "CE-torque"
+    ],
+    "q-049": [
+      "CE-hydrostatic-pressure",
+      "CE-pressure-definition"
+    ],
+    "q-051": [
+      "CE-stokes-einstein"
+    ],
+    "q-055": [
+      "CE-pendulum-period"
+    ],
+    "q-057": [
+      "CE-stokes-einstein"
+    ],
+    "q-060": [
+      "CE-string-wave-speed"
+    ],
+    "q-063": [
+      "CE-buoyant-force"
+    ],
+    "q-064": [
+      "CE-string-wave-speed"
+    ],
+    "q-065": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-066": [
+      "CE-lc-resonance"
+    ],
+    "q-070": [
+      "CE-string-wave-speed"
+    ],
+    "q-071": [
+      "CE-string-wave-speed"
+    ],
+    "q-072": [
+      "CE-buoyant-force",
+      "CE-hydrostatic-pressure"
+    ],
+    "q-073": [
+      "CE-thermal-diffusivity"
+    ],
+    "q-075": [
+      "CE-stokes-einstein"
+    ],
+    "q-082": [
+      "CE-buoyant-force",
+      "CE-hydrostatic-pressure"
+    ],
+    "q-086": [
+      "CE-boltzmann-factor"
+    ],
+    "q-088": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-089": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-090": [
+      "CE-centripetal-force",
+      "CE-hydrostatic-pressure"
+    ],
+    "q-091": [
+      "CE-hydrostatic-pressure",
+      "CE-ideal-gas"
+    ],
+    "q-099": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-102": [
+      "CE-string-wave-speed"
+    ],
+    "q-103": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-105": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-107": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-109": [
+      "CE-string-wave-speed"
+    ],
+    "q-111": [
+      "CE-hydrostatic-pressure",
+      "CE-ideal-gas"
+    ],
+    "q-113": [
+      "CE-oscillator-energy"
+    ],
+    "q-115": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-122": [
+      "CE-buoyant-force",
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-123": [
+      "CE-rc-time-constant"
+    ],
+    "q-124": [
+      "CE-centripetal-force",
+      "CE-hydrostatic-pressure"
+    ]
+  },
+  "secondary": {
+    "q-005": [
+      "CE-ideal-gas"
+    ],
+    "q-006": [
+      "CE-ideal-gas"
+    ],
+    "q-007": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-008": [
+      "CE-stokes-einstein"
+    ],
+    "q-009": [
+      "CE-ideal-gas"
+    ],
+    "q-010": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-012": [
+      "CE-lorentz-factor",
+      "CE-string-wave-speed"
+    ],
+    "q-013": [
+      "CE-wave-speed"
+    ],
+    "q-014": [
+      "CE-ideal-gas"
+    ],
+    "q-015": [
+      "CE-ideal-gas"
+    ],
+    "q-016": [
+      "CE-string-wave-speed",
+      "CE-wave-speed"
+    ],
+    "q-018": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-021": [
+      "CE-mass-energy"
+    ],
+    "q-023": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-027": [
+      "CE-inductor-energy",
+      "CE-kinetic-energy"
+    ],
+    "q-029": [
+      "CE-work"
+    ],
+    "q-030": [
+      "CE-thermal-diffusivity"
+    ],
+    "q-032": [
+      "CE-sound-speed"
+    ],
+    "q-033": [
+      "CE-lc-resonance"
+    ],
+    "q-035": [
+      "CE-string-wave-speed"
+    ],
+    "q-041": [
+      "CE-pressure-definition"
+    ],
+    "q-042": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-043": [
+      "CE-buoyant-force",
+      "CE-density-definition"
+    ],
+    "q-045": [
+      "CE-wave-speed"
+    ],
+    "q-046": [
+      "CE-string-wave-speed"
+    ],
+    "q-047": [
+      "CE-pressure-definition",
+      "CE-torque"
+    ],
+    "q-049": [
+      "CE-hydrostatic-pressure",
+      "CE-pressure-definition"
+    ],
+    "q-051": [
+      "CE-stokes-einstein"
+    ],
+    "q-054": [
+      "CE-ideal-gas"
+    ],
+    "q-055": [
+      "CE-pendulum-period"
+    ],
+    "q-057": [
+      "CE-stokes-einstein"
+    ],
+    "q-060": [
+      "CE-string-wave-speed"
+    ],
+    "q-063": [
+      "CE-buoyant-force"
+    ],
+    "q-064": [
+      "CE-string-wave-speed"
+    ],
+    "q-065": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-066": [
+      "CE-lc-resonance"
+    ],
+    "q-070": [
+      "CE-string-wave-speed"
+    ],
+    "q-071": [
+      "CE-string-wave-speed"
+    ],
+    "q-072": [
+      "CE-buoyant-force",
+      "CE-hydrostatic-pressure"
+    ],
+    "q-073": [
+      "CE-thermal-diffusivity"
+    ],
+    "q-075": [
+      "CE-stokes-einstein"
+    ],
+    "q-076": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-082": [
+      "CE-buoyant-force",
+      "CE-hydrostatic-pressure"
+    ],
+    "q-086": [
+      "CE-boltzmann-factor"
+    ],
+    "q-088": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-089": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-090": [
+      "CE-centripetal-force",
+      "CE-hydrostatic-pressure"
+    ],
+    "q-091": [
+      "CE-hydrostatic-pressure",
+      "CE-ideal-gas"
+    ],
+    "q-094": [
+      "CE-ideal-gas"
+    ],
+    "q-096": [
+      "CE-ideal-gas"
+    ],
+    "q-099": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-101": [
+      "CE-boltzmann-factor",
+      "CE-kinetic-pressure"
+    ],
+    "q-102": [
+      "CE-string-wave-speed"
+    ],
+    "q-103": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-105": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-107": [
+      "CE-hydrostatic-pressure"
+    ],
+    "q-109": [
+      "CE-string-wave-speed"
+    ],
+    "q-111": [
+      "CE-hydrostatic-pressure",
+      "CE-ideal-gas"
+    ],
+    "q-113": [
+      "CE-oscillator-energy"
+    ],
+    "q-115": [
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-117": [
+      "CE-stokes-einstein"
+    ],
+    "q-122": [
+      "CE-buoyant-force",
+      "CE-simple-harmonic-frequency"
+    ],
+    "q-123": [
+      "CE-rc-time-constant"
+    ],
+    "q-124": [
+      "CE-centripetal-force",
+      "CE-hydrostatic-pressure"
+    ]
+  },
+  "excluded": {
+    "bothNone": [
+      "q-001",
+      "q-002",
+      "q-003",
+      "q-004",
+      "q-011",
+      "q-017",
+      "q-019",
+      "q-020",
+      "q-022",
+      "q-025",
+      "q-028",
+      "q-031",
+      "q-034",
+      "q-037",
+      "q-038",
+      "q-039",
+      "q-040",
+      "q-044",
+      "q-048",
+      "q-050",
+      "q-052",
+      "q-056",
+      "q-058",
+      "q-061",
+      "q-067",
+      "q-068",
+      "q-069",
+      "q-077",
+      "q-078",
+      "q-079",
+      "q-081",
+      "q-083",
+      "q-084",
+      "q-085",
+      "q-087",
+      "q-093",
+      "q-095",
+      "q-098",
+      "q-100",
+      "q-108",
+      "q-110",
+      "q-112",
+      "q-114",
+      "q-116",
+      "q-118",
+      "q-119",
+      "q-120",
+      "q-121",
+      "q-125"
+    ],
+    "oneNone": [
+      "q-024",
+      "q-026",
+      "q-036",
+      "q-053",
+      "q-059",
+      "q-062",
+      "q-074",
+      "q-080",
+      "q-092",
+      "q-097",
+      "q-104",
+      "q-106"
+    ],
+    "partialOverlap": [
+      "q-005",
+      "q-006",
+      "q-007",
+      "q-009",
+      "q-014",
+      "q-015",
+      "q-021",
+      "q-046",
+      "q-054",
+      "q-076",
+      "q-094",
+      "q-096",
+      "q-101",
+      "q-117"
+    ]
+  },
+  "agreement": {
+    "queries": 125,
+    "exactSet": 99,
+    "exactSetRate": 0.792,
+    "meanJaccard": 0.8466666666666667,
+    "meanJaccardExcludingBothNone": 0.7478070175438597
+  }
+}

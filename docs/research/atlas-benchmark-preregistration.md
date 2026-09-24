@@ -207,3 +207,79 @@ through the `CONTRIBUTING.md` review brief. It confirmed the physics of all six 
 finding and its disposition is in `docs/research/phase-0-model-persona-review.md`. The persona review
 is labelled as a model's work everywhere it is cited, and the criterion is closed by amendment, not
 met. No threshold, item, rater assignment or hash changes.
+
+**Amendment 8 (2026-09-24) — criterion 3 is RUN on a model-labelled reference corpus. Its inputs,
+labels and scoring are frozen here, before any condition runs.** Amendment 4 did not run criterion 3:
+the set had no reference corpus and no atlas-blind correct-reference label per item. Mothership's
+design (`Dropbox/_fleet/specs/2026-09-24-upt-criterion3-design.md`) supplies both. This amendment is
+committed, and its CI run is green, before any retrieval condition runs.
+
+- **The task.** Given a claim from the benchmark, find the standard-physics relation that the claim
+  restates or misuses.
+- **Corpus.** The 107 canonical L-layer entries (`src/canonical/entries/`) at commit
+  c144150a39283e88144d218952283ac6aa224341. A record's text is the name, the domain and the
+  assumptions. Its expression is the `scalarAst`, present for 89 entries. The fields that name atlas
+  bridges or models are left out. The corpus is the canonical registry, not the atlas, so the atlas
+  does not search itself.
+- **Queries.** The 125 frozen items. A query's text is the premises, then the conclusion. Its
+  expression is the item's `expr`. The verdict and answer fields are left out. **The item ids and the
+  file order carried the verdict**: in 7 of the 8 authoring batches, items 01-08 are valid. So each
+  query has an opaque id, `q-001` to `q-125`, in the order of SHA-256(`upt-criterion3-2026-09-24` +
+  item id). The key back to the items stays in this repository and was not given to the labelers.
+- **Labels are MODEL labels, not human labels.** Two blind `claude-opus-5-5` labelers ran on the ZBOOK
+  outside this repository. Their only inputs were the two files above, and Mothership audited every
+  tool call they made for blindness. Each labeler listed, per query, the corpus ids that the claim
+  restates or misuses, or "none".
+- **Agreement.** Exact-set agreement is 99/125 = 0.792 (50 non-empty, 49 both "none"). The mean
+  Jaccard index is 0.847, and 0.748 without the both-"none" queries. In 14 queries the two sets
+  overlap but differ. In 12 queries one labeler said "none".
+- **Truth.** PRIMARY: the 50 queries where both labelers gave the same non-empty set; the truth is
+  that set. SECONDARY, a pre-registered sensitivity analysis: PRIMARY plus the 14 partial overlaps,
+  with the truth equal to the INTERSECTION of the two sets (n = 64). Excluded: the 26 contested
+  queries (the 14 partial overlaps, from PRIMARY only, and the 12 one-"none") and the 49 both-"none".
+- **Where the truth falls.** PRIMARY: fluid statics 20, oscillators 12, waves 12, diffusion 6.
+  SECONDARY: fluid statics 30, oscillators 13, waves 14, diffusion 7. Fluid statics is the held-out
+  family (§3), and fluid statics makes up 40% of PRIMARY.
+- **Coverage is a finding in its own right.** 49 of the 125 claims have no registry counterpart that
+  either labeler could name. 19 of those 49 are diffusion items.
+- **Conditions.** The three in-process conditions of §5 run as built: text retrieval
+  (`rankByTextOverlap`), symbol matching (`rankBySymbolOverlap`) and typed structural search
+  (`rankByStructure`), with `recallAtK` and `wilsonInterval`. These git blob ids pin the ranking and scoring
+  code. The runner refuses to run on other code:
+  `src/atlas/benchmark/baselines.ts` e3b579413c800cb52d112399070c93ddbd5d1dee,
+  `src/atlas/benchmark/leakage.ts` af32f9ea7367f228a65236db636f7aab49210bcd,
+  `src/canonical/normal-form.ts` 5f52b355e84fa10a03128cc7f4a3796f8b0b15bb,
+  `src/atlas/benchmark/stats.ts` 0f873161cdea6fa125327505a8446696fd16fbea.
+- **The embedding condition** is local only, because the owner declined spend. It runs after
+  LLMBench is done, on the model that LLMBench's final class-6 result ranks best on search. The
+  corpus and the queries are embedded ONCE, and the condition is scored from the stored vectors.
+  Local embeddings are not deterministic run to run. The model name, its digest and the vector-file
+  hash are registered in a further amendment BEFORE the embedding condition is scored.
+- **Scoring.** Recall at depth 10 per condition, with Wilson 95% intervals. A query with no ranking
+  counts as a miss. Results are given for PRIMARY and SECONDARY, pooled over all families, per family,
+  and for the in-distribution families pooled (PRIMARY n = 30). Fluid statics is reported separately.
+- **The criterion (§6, item 3) is evaluated on PRIMARY, pooled over all families (n = 50).** The
+  wording of §6 does not name a pool, so the pool is fixed here, before any result is seen.
+- **Power.** At n = 50 and a recall of 0.8, the Wilson 95% interval is [0.670, 0.888], a half-width
+  of about ±0.109. This half-width is wider than the design's ±0.07. At n = 64 it is about ±0.097.
+- **The word "valid".** All 3 query texts that contain the word "valid" are valid items. The verdict
+  is never a label and is never scored, so the word cannot raise recall in any condition. The frozen
+  text is left unchanged.
+- **Until the embedding condition runs there is no criterion verdict.** In-process results are
+  reported as INTERIM.
+
+These SHA-256 values freeze the files. A test binds each value to its committed file under
+`docs/research/criterion3/`. The values have no back quotes, because the test of §1 reads the LAST
+back-quoted hash in this note as the item-set hash. The item-set hash does not change.
+
+| File | SHA-256 |
+|---|---|
+| corpus.json | 232062ff9fd0e6c1f3fcc56d489c0c1de92c4db6370c8696eb42b4463a4f2fcc |
+| queries.json | dea19d47606ca6c59eb5e73fb2487a111c9d38cca17a0e0603dc39c38cc367f0 |
+| queries-key.json | c97e8bd1babc2ca2bd2439711290370988d92c36921c08b4ebe08ff75230043a |
+| labels/labeler-A.json | f92df3899db581b07c2fb28718cb7b84702722ccc07f0786332b17e01d4ed29f |
+| labels/labeler-B.json | f36b9ee2b0ded763685a7600d7462f8e49dee0665c7562fdfef06bcb6502265f |
+| labels/agreed-labels.json | 8737cfc28577263f0164674223aabb44e588a697f4206235b3259df91a0c5c67 |
+| truth.json | 06756dd14cc7f663d592749ac3e5777ccecbfac7f7dd647c696adf052b1b274e |
+
+No threshold, item or rater assignment changes.
