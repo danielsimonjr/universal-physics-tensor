@@ -71,8 +71,13 @@ Those are different claims and merging them produces a false green.
 
 ### Open defects and unknowns
 
-- A **flaky test** has never been captured. A large number of green runs is evidence about those
-  runs, not about the defect. It stays **OPEN** until captured failing, with its name and output.
+- A **flaky test WAS captured failing** on 2026-09-23 19:50, in the pre-push gate for `e1b7bea`
+  (a docs-only commit): `tests/composition/probe/coverage-backfill.test.ts > backend nonzero exit +
+  store illegal transition > reports worker stderr on nonzero exit`, `AssertionError: expected 'worker
+  timed out after 1000ms' to match /exited 2/` (line 464). The test gives `runBackendWorker` a
+  1000 ms budget to spawn `node -e "process.exit(2)"`; the budget includes process start-up, and a bare
+  spawn of that command measured 843–4307 ms on the loaded host at the time. It is a wall-clock race by
+  design. Whether it is the flaky test seen before is unknown. **OPEN** until the race is removed.
 - **Sprint 0 closure is unverified.** The Phase 0 curation-cost log said on 2026-09-20 that Sprint
   0 was not closed: `docs-fresh` was red and the wrap checklist was incomplete. `docs-fresh` was
   green on every push checked on 2026-09-22; the wrap checklist has not been re-checked.
