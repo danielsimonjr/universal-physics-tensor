@@ -41,6 +41,17 @@ from v0.1.0 onward.
 
   No dependency changes in this release.
 
+### Fixed (2026-09-24) — the pre-push gate refused every annotated tag
+
+- **The gate compared the wrong sha.** git passes each pushed ref to `pre-push` as "<local ref> <local sha>
+  <remote ref> <remote sha>". For an annotated tag the local sha is the TAG OBJECT's, not the commit's, so
+  the check "the pushed commit is HEAD" refused every annotated release tag, the v0.46.0 tag included, although
+  the tag named HEAD.
+- **The check is now `tools/gate-inputs/pushed-head.ts`.** It peels each sha to the commit it names before the
+  comparison, and the hook calls it. `tests/tools/pushed-head.test.ts` has 4 cases. The annotated-tag case
+  FAILS when the tool is reverted to the raw comparison.
+- Release tooling only: the npm package is unchanged.
+
 ### Changed (2026-09-24) — UPT is DONE: the owner accepts the measured verdicts (pre-registration Amendment 12)
 
 Mothership relayed the owner's words verbatim (21:29 CDT): "(a) for now. (b) as a future ROADMAP using embedding with Qwen3-embedding:4b."

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 346,
-    "totalTestFiles": 449,
+    "totalTestFiles": 450,
     "testedCount": 345,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -10412,6 +10412,7 @@
       "src/atlas/families.ts"
     ],
     "tests/tools/plan-doc-audit.test.ts": [],
+    "tests/tools/pushed-head.test.ts": [],
     "tests/tools/untracked-gate-inputs.test.ts": []
   }
 }

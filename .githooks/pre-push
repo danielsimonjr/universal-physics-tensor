@@ -28,21 +28,13 @@ set -e
 # The gates below read the working tree (tsc compiles tests/**, vitest runs every test file on
 # disk, and tests read data/, bin/, docs/ and more), so they must see exactly the commit being
 # pushed. An untracked stray test once failed the typecheck, and an unpushed edit could pass it.
-# First: the commit being pushed must be HEAD (git passes "<local ref> <local sha> <remote ref>
-# <remote sha>" lines on stdin; an all-zero local sha is a branch deletion).
+# First: the commit being pushed must be HEAD. The tool reads git's "<local ref> <local sha>
+# <remote ref> <remote sha>" lines from this hook's stdin and peels an annotated tag's sha to its
+# commit (comparing the raw tag-object sha once refused every release tag).
 echo "pre-push gate: the pushed commit is HEAD"
-head_sha=$(git rev-parse HEAD)
-while read -r local_ref local_sha remote_ref remote_sha; do
-  case "$local_sha" in
-    0000000000000000000000000000000000000000) ;;
-    "$head_sha") ;;
-    *)
-      echo "PRE-PUSH GATE REFUSED: pushing $local_ref ($local_sha), but HEAD is $head_sha."
-      echo "The gates read the working tree, so they can only vouch for HEAD. Check it out first."
-      exit 1
-      ;;
-  esac
-done
+if ! bun tools/gate-inputs/pushed-head.ts; then
+  exit 1
+fi
 # Second: the working tree must equal HEAD.
 echo "pre-push gate: the working tree equals HEAD"
 if ! bun tools/gate-inputs/gate-inputs.ts; then
