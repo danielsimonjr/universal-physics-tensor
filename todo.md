@@ -282,7 +282,7 @@ warning-silencing, not debug logging).
       - [ ] Tier 10 → 0.49.0: C3, cross-family `upt path`, with bound composition across families.
       - [ ] Tier 11 → 0.50.0: ROADMAP §8 hybrid retrieval: optional out-of-process embedding backend (qwen3-embedding:4b via Ollama), zero hard deps, fallback to atlas search, deterministic tests with a stub embedder plus the frozen study vectors; the live GPU evaluation waits for LLMBench's reservation to end.
 
-- [ ] **0.47.0 batch from the persona pass (Mothership ruling 2026-09-25).** One finding per commit;
+- [x] **0.47.0 batch from the persona pass (Mothership ruling 2026-09-25).** One finding per commit;
       STOP and report before any release (0.47.0 is Mothership's).
       - [x] P: canonical prefactor table OUTSIDE the pinned `src/canonical` tree (entry id, exact prefactor, source quote + locator); L2 and L7 read it, so π-for-2π and a missing ½ report "differs by factor".
       - [x] D1: README links docs, `cli/README.md`, `examples/`, `data/bridge-catalog.json` that the npm package does not ship.
@@ -299,6 +299,7 @@ warning-silencing, not debug logging).
       - [x] C5: `upt probe falsify` prints no falsification batteries: find out whether it is a bug (fix) or not (defer).
       - [x] Tracker hygiene (owner order 2026-09-25, item 1): tick S6, the 2026-07-04 NEXT umbrella and the BRIDGE-PHYSICS-AUDIT row if every sub-item is done; re-scope or close "v0.11 headline"; close be-12 as won't-do; correct the stale Dependabot and Sprint-0 lines in NOTES.md. Leave the owner-kept groups open.
       - [x] C1, C3: record in ROADMAP §8 Future (probe scan has nothing searchable; `path` cannot cross families). Deferred by ruling.
+      - [x] Release prep PR for 0.47.0 (Mothership order 2026-09-25): version bump, CHANGELOG `[0.47.0]` with a MIGRATION section, version-stamped artifacts regenerated. The tag, npm publish and GitHub release are Mothership's.
 
 - [x] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
       findings in the persona's `FINDINGS.md`, rulings by inbox 2026-09-25). One finding per commit.

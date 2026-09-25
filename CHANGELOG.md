@@ -8,6 +8,41 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.47.0] - 2026-09-25
+
+### Migration
+
+Four changes can break a caller. The entries below give the detail.
+
+1. **Exit code 3: a check that runs and fails** (F2). `derive --formula`, `map --equation` and
+   `path` exited 0 when their check failed. They now exit 3. Exit codes are 0 success, 1 runtime
+   error, 2 usage error, 3 check failed. UNKNOWN (a coordinate not supplied, an unresolved name)
+   stays 0. A script that treats any non-zero exit as a crash must treat 3 as "the check failed".
+2. **Exit code 1: `upt explain` of a name that is not a quantity** (C4). The command printed "no
+   derivation path" and exited 0. It now prints "'X' is not a quantity in the catalog graph: NOT
+   COVERED", with near-name suggestions, and exits 1. A real quantity that the inputs cannot reach
+   still exits 0.
+3. **`BridgeEquations.crossingResidual` is removed** (announced in 0.46.0). The five removed symbols
+   are `crossingResidual`, `evaluateCrossingResidual`, `BE35_CROSSING_RESIDUAL_RHS`,
+   `BE35_FORWARD_BLOCK` and `BE35_CROSSED_BLOCK`. Call `crossingEquation({ u, v, delta_phi, g_uv,
+   g_vu })` with the full reduced four-point function. It returns v^Δφ g(u,v) − u^Δφ g(v,u).
+4. **Packaging: the MathTS and Graphviz packages are optional peers** (F3). `npm install
+   universal-physics-tensor` installs 1 package, not 36. A caller that uses the MathTS parser, the
+   `numerical/mathts-engine` subpath or SVG output installs those peers explicitly. The README
+   lists them.
+
+### Release summary
+
+- **The outside-user persona pass on 0.46.0 is closed.** W1 and L1–L9 (physics and honesty) and the
+  0.47.0 batch (D1, D2, D4–D6, F1–F3, C2, C4, C5, the sourced prefactor table and the
+  `crossingResidual` removal) each landed as one commit or one PR. C1 and C3 are recorded as
+  design-first work in ROADMAP §8.
+- **Dependency health, measured for this release:** `bun audit` finds 0 vulnerabilities in 135
+  packages. `bun outdated` lists only the optional `@danielsimonjr/mathts-*` peers behind their
+  latest releases. `@vitest/coverage-v8` is aligned with vitest (^4.1.7), so the coverage gates
+  measure again. Probe coverage then read 94.53% of statements against its 95% gate. That gap is
+  open in `todo.md`.
+
 ### Removed (BREAKING)
 
 - **`BridgeEquations.crossingResidual` is removed, as announced in 0.46.0.** The 0.46.0 notice said:
