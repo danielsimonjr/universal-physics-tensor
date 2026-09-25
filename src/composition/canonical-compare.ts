@@ -58,9 +58,52 @@ export interface CanonicalComparison {
   readonly ratio?: number;
   /** Why the prefactor is unchecked, or why no comparison was made. */
   readonly detail?: string;
+  /** `[yours, canonical]` for each variable paired by dimension, not by name (persona finding N1). */
+  readonly paired?: readonly (readonly [string, string])[];
 }
 
+/** A user source variable; with a dimension it may pair with a differently named canonical variable. */
+export type ComparisonSource = string | { readonly name: string; readonly dim: Dimension };
+
 const normalize = (name: string): string => name.replace(/_/g, '-');
+
+/**
+ * Pair each user source with one canonical variable: by name first, then by a dimension that
+ * exactly one remaining canonical variable carries, repeated until nothing changes. `null` when the
+ * sources cannot be this entry's variables (a count, a name without a dimension, or a dimension no
+ * variable left carries); `'ambiguous'` when every source has a same-dimension partner but the
+ * pairing is not unique. Returns user name → canonical name, both normalized.
+ */
+function pairSources(
+  sources: readonly { name: string; dim?: Dimension }[],
+  variables: readonly { name: string; dim: Dimension }[],
+): Map<string, string> | 'ambiguous' | null {
+  if (sources.length !== variables.length) return null;
+  const pairs = new Map<string, string>();
+  const freeVars = new Map(variables.map((v) => [normalize(v.name), v.dim]));
+  let open = sources.filter((s) => {
+    if (!freeVars.has(s.name)) return true;
+    pairs.set(s.name, s.name);
+    freeVars.delete(s.name);
+    return false;
+  });
+  let progress = true;
+  while (open.length > 0 && progress) {
+    progress = false;
+    for (const s of open) {
+      if (s.dim === undefined) return null;
+      const partners = [...freeVars].filter(([, dim]) => equals(dim, s.dim!));
+      if (partners.length === 0) return null;
+      if (partners.length === 1) {
+        pairs.set(s.name, partners[0]![0]);
+        freeVars.delete(partners[0]![0]);
+        progress = true;
+      }
+    }
+    open = open.filter((s) => !pairs.has(s.name));
+  }
+  return open.length === 0 ? pairs : 'ambiguous';
+}
 
 /** A governing variable that is a registered physical constant of the same dimension. */
 function isConstant(v: { name: string; dim: Dimension }): boolean {
@@ -133,8 +176,13 @@ function classify(
 
 /**
  * Compare a user formula with every canonical equation that has the same
- * target and the same non-constant variables (names match after `_` → `-`).
- * `evaluateUser` receives values keyed by the CANONICAL variable names.
+ * target and the same non-constant variables. The target must match by name
+ * (after `_` → `-`): pairing it by dimension would reach every law of that
+ * dimension. Each source matches a variable by name, or, when the source
+ * carries a dimension, by a dimension exactly one remaining variable carries
+ * (`velocity` → CE-kinetic-energy's `speed`); such pairs are listed in
+ * `paired`. A non-unique pairing is reported as `not-compared`, never guessed.
+ * `evaluateUser` receives values keyed by the user's (normalized) source names.
  * Returns one comparison per matching entry, in registry order; empty when
  * no entry matches.
  *
@@ -142,24 +190,42 @@ function classify(
  */
 export function compareWithCanonical(
   target: string,
-  sources: readonly string[],
+  sources: readonly ComparisonSource[],
   evaluateUser: (values: Readonly<Record<string, number>>) => number,
   entries: readonly CanonicalEquation[] = CANONICAL_EQUATIONS,
 ): CanonicalComparison[] {
   const wantTarget = normalize(target);
-  const wantSources = [...new Set(sources.map(normalize))].sort();
+  const wantSources = new Map<string, { name: string; dim?: Dimension }>();
+  for (const s of sources) {
+    const name = normalize(typeof s === 'string' ? s : s.name);
+    if (!wantSources.has(name)) wantSources.set(name, typeof s === 'string' ? { name } : { name, dim: s.dim });
+  }
   const results: CanonicalComparison[] = [];
 
   for (const entry of entries) {
     const d = entry.dimensional;
     if (normalize(d.target.name) !== wantTarget) continue;
     const variables = d.governing.filter((g) => !isConstant(g));
+    const pairing = pairSources([...wantSources.values()], variables);
+    if (pairing === null) continue;
+    if (pairing === 'ambiguous') {
+      results.push({
+        id: entry.id,
+        name: entry.name,
+        kind: 'not-compared',
+        detail: 'your variable names differ from its names, and they pair with its variables by dimension in more than one way',
+      });
+      continue;
+    }
+    const byDimension = [...pairing].filter(([u, c]) => u !== c).sort(([a], [b]) => a.localeCompare(b));
+    const paired = byDimension.length > 0 ? { paired: byDimension } : {};
     const names = variables.map((g) => normalize(g.name)).sort();
-    if (names.length !== wantSources.length || names.some((n, i) => n !== wantSources[i])) continue;
 
     const points = FIXED_POINT_EXPONENTS.map((p) =>
       Object.fromEntries(names.map((n, i) => [n, Math.pow(1.7 + i, p)])),
     );
+    const userAt = (p: Readonly<Record<string, number>>) =>
+      evaluateUser(Object.fromEntries([...pairing].map(([u, c]) => [u, p[c]!])));
 
     // A prefactor the entry does not record may come from the sourced table,
     // which lives outside the pinned src/canonical tree.
@@ -174,6 +240,7 @@ export function compareWithCanonical(
           name: entry.name,
           kind: 'not-compared',
           detail: 'its variables could not be aligned by name or by a unique dimension',
+          ...paired,
         });
         continue;
       }
@@ -190,21 +257,25 @@ export function compareWithCanonical(
 
     let ratios: number[];
     try {
-      ratios = points.map((p) => evaluateUser(p) / canonicalAt(p));
+      ratios = points.map((p) => userAt(p) / canonicalAt(p));
     } catch (e) {
       results.push({
         id: entry.id,
         name: entry.name,
         kind: 'not-compared',
         detail: `an evaluation failed (${e instanceof Error ? e.message : String(e)})`,
+        ...paired,
       });
       continue;
     }
     if (!ratios.every((r) => Number.isFinite(r) && r !== 0)) {
-      results.push({ id: entry.id, name: entry.name, kind: 'not-compared', detail: 'a ratio was zero or not finite' });
+      results.push({ id: entry.id, name: entry.name, kind: 'not-compared', detail: 'a ratio was zero or not finite', ...paired });
       continue;
     }
-    results.push(classify(entry, ratios, entry.epistemicStatus === 'fully-quantitative' || tabled !== undefined));
+    results.push({
+      ...classify(entry, ratios, entry.epistemicStatus === 'fully-quantitative' || tabled !== undefined),
+      ...paired,
+    });
   }
   return results;
 }
@@ -234,7 +305,12 @@ export async function compareUserEquation(
   } catch {
     return [];
   }
-  return compareWithCanonical(target, [...resolved.values()], (values) =>
+  // A name the catalog does not know carries no dimension, so it never pairs by dimension.
+  const sources = [...resolved.values()].map((r) => {
+    const dim = catalogDims.get(r);
+    return dim === undefined ? r : { name: r, dim };
+  });
+  return compareWithCanonical(target, sources, (values) =>
     evalExpr(expr, {
       pi: Math.PI,
       tau: 2 * Math.PI,
@@ -257,7 +333,8 @@ export function describeComparisons(cs: readonly CanonicalComparison[]): string[
 
 /** One report line per comparison. @internal */
 export function describeComparison(c: CanonicalComparison): string {
-  const who = `${c.id} (${c.name})`;
+  const pairs = c.paired?.map(([yours, its]) => `your ${yours} as its ${its}`).join(', ');
+  const who = `${c.id} (${c.name}${pairs === undefined ? '' : `; ${pairs}, paired by dimension`})`;
   const n = FIXED_POINT_EXPONENTS.length;
   switch (c.kind) {
     case 'agrees':
