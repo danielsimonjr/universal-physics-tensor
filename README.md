@@ -101,7 +101,10 @@ and a built-in, dependency-free parser otherwise — transparently, via a
 **zero hard dependencies**; the MathTS packages and `@viz-js/viz` are optional peers, which a
 default install does not pull in. Add the ones you want, for example
 `npm install @danielsimonjr/mathts-functions` for the MathTS parser, or `npm install @viz-js/viz`
-for `upt map --format=svg`.
+for `upt map --format=svg`. The `universal-physics-tensor/numerical/mathts-engine` subpath imports
+`@danielsimonjr/mathts-tensor` directly, so importing it without that peer fails with
+`ERR_MODULE_NOT_FOUND`. That is the opt-in, not a bug: install the peer to use the engine. The main
+entry point never loads that subpath.
 
 See [`cli/README.md`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/cli/README.md) for the full CLI reference — every command
 and alias, the `--source=catalog|canonical|both` flag, input syntax, exit codes,

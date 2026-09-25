@@ -98,7 +98,9 @@ from v0.1.0 onward.
   there: `eval` and `derive` run on the built-in parser, and `--debug` reports `builtin`. **Packaging
   change:** a user who relied on the MathTS parser or SVG output now installs those peers
   explicitly, and the README says how. A new test fails if `dependencies` or
-  `optionalDependencies` reappear, or if a peer is not optional.
+  `optionalDependencies` reappear, or if a peer is not optional. The README also says that
+  importing the `numerical/mathts-engine` subpath without `@danielsimonjr/mathts-tensor` fails
+  with `ERR_MODULE_NOT_FOUND` by design, as checked in the peerless install.
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and
