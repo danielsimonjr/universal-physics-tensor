@@ -16,6 +16,9 @@ import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { loadSearchProblemFromJson, searchProblemFromFile } from '../../../src/composition/probe/problem.js';
 import { runProbeSearch } from '../../../src/composition/probe/pipeline.js';
+import { corpusPrefactorNotes, type CorpusComparisonResult } from '../../../src/composition/probe/corpus.js';
+import { sym, dim } from '../../../src/dimensional/ast-builders.js';
+import type { ExprNode } from '../../../src/dimensional/ast-types.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const fixtures = join(here, '../../fixtures/discovery');
@@ -101,5 +104,34 @@ describe('probe — the fitted prefactor against the corpus prefactor', () => {
     const result = await runProbeSearch(problem, { repositoryCommit: 'test', now: '2026-09-25T00:00:00.000Z' });
     const notes = Object.values(result.prefactorNotes).flat();
     expect(notes.some((n) => /contradicts CE-pendulum-period's prefactor 6\.283 \(\+\d+%\)/.test(n))).toBe(true);
+  });
+});
+
+describe('corpusPrefactorNotes — alignment and failure paths', () => {
+  const G_DIM = dim(3, -1, -2);
+  const RHO_DIM = dim(-3, 1, 0);
+  const result = (id: string, layer: 'canonical' | 'bridge'): CorpusComparisonResult => ({
+    corpusId: 'c', corpusVersion: '0', exactMatches: [], algebraicMatches: [{ id, layer }], searchedAt: '',
+  });
+  const times = (a: ExprNode, b: ExprNode): ExprNode => ({ kind: 'op', op: '*', args: [a, b] }) as ExprNode;
+
+  it('aligns candidate symbols to the corpus AST by DIMENSION when the names differ', () => {
+    // CE-friedmann's AST uses G and rho; this candidate calls them Gee and density.
+    const candidate = times(sym('Gee', G_DIM), sym('density', RHO_DIM));
+    const [note] = corpusPrefactorNotes(result('CE-friedmann', 'canonical'), candidate, (8 * Math.PI) / 3, 0.15);
+    expect(note).toMatch(/agrees with CE-friedmann's prefactor 8\.378/);
+  });
+
+  it('a bridge-layer match records no prefactor', () => {
+    const [note] = corpusPrefactorNotes(result('be-42', 'bridge'), sym('x', G_DIM), 1, 0.15);
+    expect(note).toBe('be-42 records no prefactor, so the fitted ĉ=1.000 is not compared with it');
+  });
+
+  it('a candidate that cannot be evaluated gives no comparison rather than a number', () => {
+    // rho / (G − G) divides by zero at every point: the evaluator throws, and no prefactor is read.
+    const zero: ExprNode = { kind: 'op', op: '-', args: [sym('G', G_DIM), sym('G', G_DIM)] } as ExprNode;
+    const candidate: ExprNode = { kind: 'op', op: '/', args: [sym('rho', RHO_DIM), zero] } as ExprNode;
+    const [note] = corpusPrefactorNotes(result('CE-friedmann', 'canonical'), candidate, 1, 0.15);
+    expect(note).toMatch(/CE-friedmann records no prefactor/);
   });
 });

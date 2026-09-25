@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 463,
+    "totalTestFiles": 464,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -3517,6 +3517,7 @@
     "src/composition/probe/corpus.ts": [
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/composition/probe/corpus-prefactor.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/modules.test.ts"
     ],
@@ -4143,6 +4144,7 @@
       "tests/atlas/witness-runners.test.ts",
       "tests/bridges/equations/_be-helpers.test.ts",
       "tests/canonical/dimensional-fields.test.ts",
+      "tests/composition/probe/corpus-prefactor.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/experiment-design.test.ts",
       "tests/composition/probe/modules.test.ts",
@@ -4226,6 +4228,7 @@
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/canonical-prefactors.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
+      "tests/composition/probe/corpus-prefactor.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/proposed-bridges.test.ts",
@@ -9034,7 +9037,10 @@
     ],
     "tests/composition/probe/corpus-prefactor.test.ts": [
       "src/composition/probe/problem.ts",
-      "src/composition/probe/pipeline.ts"
+      "src/composition/probe/pipeline.ts",
+      "src/composition/probe/corpus.ts",
+      "src/dimensional/ast-builders.ts",
+      "src/dimensional/ast-types.ts"
     ],
     "tests/composition/probe/coverage-backfill.test.ts": [
       "src/dimensional/types.ts",
@@ -10686,6 +10692,7 @@
     "tests/tools/plan-doc-audit.test.ts": [],
     "tests/tools/pushed-head.test.ts": [],
     "tests/tools/readme-links.test.ts": [],
-    "tests/tools/untracked-gate-inputs.test.ts": []
+    "tests/tools/untracked-gate-inputs.test.ts": [],
+    "tests/tools/vitest-coverage-alignment.test.ts": []
   }
 }

@@ -45,6 +45,16 @@ from v0.1.0 onward.
   counterexample names L = 2 and C = 0.125, the circuit witness W2b runs, and states the ζ formula.
   A test recomputes ζ from the numbers in the text, and checks that they are the ones W2b uses.
   `data/atlas/*.json` were regenerated with `bun run atlas:json`.
+- **The coverage gates measured nothing for eleven days.** Dependabot #167 (2026-09-14) raised
+  `@vitest/coverage-v8` to 5.0.0, whose peer dependency is `vitest@5.0.0`, while vitest stayed on
+  4.1.11. Every coverage run then died with "AssertionError: coverageFilesDirectory is required"
+  and reported 0% on every file. No CI job runs `test:probe-coverage` or `test:coverage`, so nothing
+  turned red. The provider is back on `^4.1.7`, matching vitest (installed 4.1.11), and a new test
+  fails whenever the two majors differ, in `package.json` or in `node_modules`. With the gate
+  measuring again, probe coverage is 94.53% statements against its 95% threshold: lines, functions
+  and branches pass. The shortfall is mostly in modules that predate this session, and it is filed
+  as a todo row. The threshold is NOT lowered. The new `corpus.ts` code from L7 is now fully
+  line-covered: dimension-based alignment, bridge-layer matches and evaluation failure.
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and
