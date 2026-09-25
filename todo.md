@@ -275,6 +275,13 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **After 0.47.0: one release per tier, each DESIGNED and approved by Mothership before any code**
+      (owner order 2026-09-25). No code before the design is approved.
+      - [ ] After the criterion 3 study closes: switch the product's typed structural search (`rankByStructure` callers) to the residual-form canonical corpus, so user claims in residual form can match. Blocked while the Amendment 8 pins are live.
+      - [ ] Tier 8 → 0.48.0 also: C1, probe-searchable frontier gaps (today `upt probe scan` lists 232 gaps, none searchable).
+      - [ ] Tier 10 → 0.49.0: C3, cross-family `upt path`, with bound composition across families.
+      - [ ] Tier 11 → 0.50.0: ROADMAP §8 hybrid retrieval: optional out-of-process embedding backend (qwen3-embedding:4b via Ollama), zero hard deps, fallback to atlas search, deterministic tests with a stub embedder plus the frozen study vectors; the live GPU evaluation waits for LLMBench's reservation to end.
+
 - [ ] **0.47.0 batch from the persona pass (Mothership ruling 2026-09-25).** One finding per commit;
       STOP and report before any release (0.47.0 is Mothership's).
       - [x] P: canonical prefactor table OUTSIDE the pinned `src/canonical` tree (entry id, exact prefactor, source quote + locator); L2 and L7 read it, so π-for-2π and a missing ½ report "differs by factor".
@@ -286,11 +293,11 @@ warning-silencing, not debug logging).
       - [ ] F1: `--at` ignores unknown keys silently, and composite groups must be typed as the exact display string.
       - [ ] F2: failed checks exit 0 (derive/map dimension mismatch, path with a violated horizon or regime, explain of an unknown name). BREAKING CLI change.
       - [ ] F3: the default install pulls 36 packages / 48 MB through `optionalDependencies` for a "zero hard dependencies" package.
-      - [ ] Remove the deprecated `BridgeEquations.crossingResidual` (the row below; breaking, lands in 0.47.0).
+      - [ ] Remove the deprecated `BridgeEquations.crossingResidual` (BE-35 single-block residual, no prefactors; superseded by `crossingEquation` in the F1 fix). A breaking change to the public API, so it waits for Mothership's release call.
       - [ ] C2: probe with a dimensionless governing variable says "no dimensionally valid candidates", which is false.
       - [ ] C4: `upt explain` answers an unknown name and a real uncovered quantity alike, and exits 0; say "not covered" plainly.
       - [ ] C5: `upt probe falsify` prints no falsification batteries: find out whether it is a bug (fix) or not (defer).
-      - [ ] Tracker hygiene (owner order 2026-09-25, item 1): tick S6, the 2026-07-04 NEXT umbrella and the BRIDGE-PHYSICS-AUDIT row if every sub-item is done; re-scope or close "v0.11 headline"; close be-12 as won't-do; correct the stale Dependabot and Sprint-0 lines in NOTES.md. Leave the owner-kept groups open.
+      - [x] Tracker hygiene (owner order 2026-09-25, item 1): tick S6, the 2026-07-04 NEXT umbrella and the BRIDGE-PHYSICS-AUDIT row if every sub-item is done; re-scope or close "v0.11 headline"; close be-12 as won't-do; correct the stale Dependabot and Sprint-0 lines in NOTES.md. Leave the owner-kept groups open.
       - [ ] C1, C3: record in ROADMAP §8 Future (probe scan has nothing searchable; `path` cannot cross families). Deferred by ruling.
 
 - [x] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
@@ -308,7 +315,7 @@ warning-silencing, not debug logging).
       - [x] L9: `upt path --at` prints only the domain supremum; add `deltaAt(point)` as "bound at this point", tested ≥ the exact error.
       - [ ] Found during L7 (2026-09-25), NOT investigated, outside the W1/L1–L9 scope: `bun run test:probe-coverage` reports 0% on every file and "AssertionError: coverageFilesDirectory is required". Not in CI. Whether it also fails at the commit before L7 was not measured.
 
-- [ ] **Atlas Sprint 6 — study, scoped release, discovery hypothesis (IN FLIGHT).** **S6.1** — study
+- [x] **Atlas Sprint 6 — study, scoped release, discovery hypothesis (IN FLIGHT).** **S6.1** — study
       orchestration (`bun run atlas:study`); refuses (exit 3) on the empty frozen set.
       **S6.2** — ablation: four cumulative configurations, paired step statistics.
       **S6.3** — link prediction: ONE result, hypothesis NOT supported (typed 0.70 vs text 0.80 recall@10).
@@ -405,12 +412,10 @@ warning-silencing, not debug logging).
       - [x] Amendment 12: record the owner's DONE decision (2026-09-24 21:29: accept the NOT MET verdicts; hybrid retrieval as future work), the §7 header line, and a ROADMAP Future entry.
       - [x] Prepare release 0.46.0 (Mothership 2026-09-24; no tag, no GitHub release, no publish): bump every version site, CHANGELOG [0.46.0], full gate plus npm pack --dry-run, commit, push, CI.
       - [x] Pre-push gate refused every ANNOTATED tag (Mothership 2026-09-24, found when the v0.46.0 tag push was refused): it compared the raw local sha from stdin with HEAD, and an annotated tag arrives as its TAG-OBJECT sha. Moved the check to `tools/gate-inputs/pushed-head.ts`, which peels each sha to its commit; 4 tests, proved RED by reverting to the raw comparison. This row was filed with the fix, not before it.
-      - [ ] Remove the deprecated `BridgeEquations.crossingResidual` (BE-35 single-block residual, no prefactors; superseded by `crossingEquation` in the F1 fix). A breaking change to the public API, so it waits for Mothership's release call.
       - [x] CHANGELOG "Deprecated" entry for `evaluateCrossingResidual` / `BridgeEquations.crossingResidual` (Mothership ruling 2026-09-24): say it is physically WRONG (it tests nothing), keep it deprecated for the next release, and name the release after that as the removal release.
       - [x] Rewrite the spec Part-II BE-35 sum-rule text to Rattazzi's F, a crossing combination of one block (Mothership ruling 2026-09-24; do it with F2).
       - [x] Criterion 3 step 4 (Mothership 2026-09-24): AFTER the step-3 amendment is committed and CI green, run the three in-process conditions (text retrieval, symbol matching, typed structural search) on PRIMARY (n=50) and SECONDARY (n=64); recall@10 with Wilson intervals, per family, fluid statics (held out) separately; write docs/research/atlas-study-results.md marked INTERIM (no criterion verdict: the embedding condition waits for LLMBench).
       - [x] Criterion 3 EXPLORATORY corrected structural condition (Mothership ruling 2026-09-24 (b)): normalise both sides to residual form (query lhs − rhs as stored; canonical target − scalarAst) in the code, TDD RED first; no symbol-alias map (the naming gap is a stated limitation); Amendment 9 (POST HOC, EXPLORATORY, pins the corrected code, same truth sets and pool, reported beside the criterion and never substituted) committed and CI green BEFORE the condition runs; then run on PRIMARY and SECONDARY and add it to atlas-study-results under INTERIM, separated.
-      - [ ] After the criterion 3 study closes: switch the product's typed structural search (`rankByStructure` callers) to the residual-form canonical corpus, so user claims in residual form can match. Blocked while the Amendment 8 pins are live.
       - [x] Census finding F2: BE-48's `name` ("CSL extension", verbatim spec heading) and `context` ("GRW / CSL mass-amplified") credit the linear law λ_0 (m/m_0) to CSL; Bassi & Ghirardi 2003 give it for GRW/QMSL (§6.4) and a different CSL rate (§8.3). `notes` carry the same framing as history.
       - [x] Triage the stale open rows outside the atlas roadmap (lines 654, 658, 830-844, 943, 985 and the optional rows); tick parents whose children are all done, box only.
       - [x] Found by the COMPONENTS.md review: `src/numerical/lowering.ts:395-396` holds an orphaned doc comment ("Lower a validated ExprNode to an EngineTensor. @internal") that documents `DeferredEvaluatorEntry` instead of `lowerNode`. It describes `lowerNode` (line 447), which has no doc comment and so no `@internal` tag; move the comment back onto `lowerNode`.
@@ -734,7 +739,10 @@ warning-silencing, not debug logging).
             publishable coincidence-rejection catalog + a legible frontier map
             (what physics hasn't connected + what would test it).
 
-- [ ] 🟢 **NEXT — active work (as of 2026-07-04, post-v0.36.0).** The
+- [ ] **BE-53 Yang–Mills β-function confrontation** (re-homed 2026-09-25 from the closed 2026-07-04
+      NEXT umbrella): PDG α_s(M_Z) = 0.1179 running, open data, value/consistency kind. Needs its own
+      design → Adam/Eve vet → Task-0 gate. Optional backlog.
+- [x] 🟢 **NEXT — active work (as of 2026-07-04, post-v0.36.0).** The
       discovery-hardening program is COMPLETE (results:
       `docs/research/v0.33.0-discovery-hardening-results.md`) and the canonical
       L-layer is done for now (monomial + L1-sum = **103** equations). Remaining
@@ -756,6 +764,9 @@ warning-silencing, not debug logging).
       - **L2 field-equation tier: NOT recommended** (Einstein-only node +
         `fieldEquation` read-by-nothing = the E-layer inert-metadata trap; would
         need its own tensor-level consumer to be worth building).
+      - CLOSED 2026-09-25 (tracker hygiene): BE-21 KSS is confronted (`src/bridges/be21-kss-confrontation.ts`);
+        be-16, be-23 and be-38 are tracked as their own data-pending rows; BE-53, the one live item, is
+        re-homed as its own row above.
 
 - [x] ✅ **L1-sum tier + BE-51 confrontation — RELEASED v0.35.0 (2026-07-04,
       registry-verified `dist-tags.latest=0.35.0`).** Two programs off the
@@ -920,13 +931,14 @@ warning-silencing, not debug logging).
                   Blocked on whether the deep-MOND-limit confrontation is a
                   genuine test vs an a₀-reproduction tautology (Task-0 gate #1
                   special case) — not a data-availability block.
-            - [ ] **be-12 confrontation DEFERRED (design-time drop):** the
+            - [x] **be-12 confrontation DEFERRED (design-time drop):** the
                   bridge encodes `λ_T=h/√(2πmkT)` (a length of m,T); the
                   BEC-onset criterion `nλ³≈2.612` needs density `n` the
                   bridge doesn't encode, and a bare `λ_T` value isn't a
                   directly-measured observable (computing it = reproduction,
                   not confrontation — G-3). Revisit only if a many-body
                   coherence BE entry is added (the module's own known_issue).
+                  WON'T DO (owner, 2026-09-25): the reason above stands; a bare λ_T is not an observable.
       - [x] ✅ **Phase 4 (v0.34.0) — P2, consequence propagation (Unit A) —
             EXECUTED.** Design r5 FINAL (Adam GREEN + Eve YELLOW; Task-0
             measured): `docs/superpowers/specs/2026-07-03-discovery-hardening-
@@ -1587,10 +1599,14 @@ warning-silencing, not debug logging).
 - [ ] **Frontier (research-level):** ensemble averages (BE-29 `⟨…⟩`) and
       interpolation-function stubs (BE-26 `f()`, BE-38 `ν(z)`) remain non-closed-form;
       `bridgeGradientNumerical` (FD) serves them. No clean lever — large/open scope.
-- [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
+- [x] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,
       + C2/C3 calibration targets, + second data confrontation.
+      - CLOSED 2026-09-25 (tracker hygiene): the v0.11 namespacing gate shipped; O-4 was executed on
+        2026-06-11 (its row below); the confrontations number 19. The catalog→graph migration stops at
+        41 edges by design: 17 of the 55 bridges have no graph edge, 13 of them because they have no AST.
+        The C2/C3 calibration targets remain on the standing physicist-review surface in NOTES.md.
 
 ## Open & pending — consolidated 3-agent audit, 2026-06-11
 

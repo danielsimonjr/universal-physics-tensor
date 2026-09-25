@@ -119,7 +119,8 @@ Those are different claims and merging them produces a false green.
   `CHANGELOG.md`): the test now drives a fake worker with no clock; five real-worker siblings in the
   same race class use a named 30 s hang guard. A real-process test can still lose to a start-up
   longer than that guard.
-- **Sprint 0 closure is unverified.** The Phase 0 curation-cost log said on 2026-09-20 that Sprint
+- **Sprint 0 closure: moot** (2026-09-25). UPT is DONE under Amendment 12, so its wrap checklist no
+  longer gates anything. The original note, kept for the record: The Phase 0 curation-cost log said on 2026-09-20 that Sprint
   0 was not closed: `docs-fresh` was red and the wrap checklist was incomplete. `docs-fresh` was
   green on every push checked on 2026-09-22; the wrap checklist has not been re-checked.
 
@@ -146,5 +147,6 @@ Those are different claims and merging them produces a false green.
   `bridges/index.ts:36`, `composition/compose.ts:48`, `composition/edge.ts:24`, `graph-viz.ts:24`
   and `uncertainty.ts:25`.
   `docs:deps` reports 0 circular dependencies.
-- **Dependabot PRs open against the lockfile problem** described in `MEMORY.md` (Stack): UPT #177–181.
+- **Dependabot PRs against the lockfile problem** described in `MEMORY.md` (Stack): #177–181 are CLOSED, and
+  `gh pr list --state open` shows 0 open PRs (checked 2026-09-25).
 
