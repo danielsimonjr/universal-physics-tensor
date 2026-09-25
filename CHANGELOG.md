@@ -37,6 +37,15 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`upt explain` says plainly when a name is not covered** (persona finding C4). `upt explain
+  qwertyuiop`, `soliton-speed` and `driven-damped-oscillator` all printed "cannot be determined
+  from {} (no inputs): the graph has no derivation path" and exited 0. That is the same answer as
+  for a real quantity the inputs cannot reach. A name that is not a quantity of the chosen graph
+  now reads "'X' is not a quantity in the catalog graph: NOT COVERED", with near-name suggestions
+  (`hawkng-temperature` → `hawking-temperature`), and exits 1, as an unknown model id does in
+  `upt path`. Underscores resolve like hyphens (`hawking_temperature`). A real quantity the inputs
+  cannot reach is still an answer and exits 0, and its summary now starts "'X' is in the graph,
+  but cannot be determined from …".
 - **README links were dead on npm** (persona finding D1). The npm package ships only `dist/`,
   `bin/`, `README.md` and `LICENSE`. The README linked 44 other repository paths relatively, among
   them `docs/`, `cli/README.md`, `examples/` and `data/bridge-catalog.json`, and every one of those

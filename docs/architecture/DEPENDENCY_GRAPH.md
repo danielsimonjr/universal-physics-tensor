@@ -3077,7 +3077,7 @@ The codebase is organized into the following modules:
 | `../command.js` | `registerCommand, Command, CommandCtx` | Import |
 | `../graphs.js` | `resolveGraph` | Import |
 | `../output.js` | `emitJson` | Import |
-| `../errors.js` | `UsageError` | Import |
+| `../errors.js` | `UsageError, CliError` | Import |
 
 **Exports:**
 - Constants: `command`
@@ -3337,7 +3337,7 @@ The codebase is organized into the following modules:
 **Internal Dependencies:**
 | File | Imports | Type |
 |------|---------|------|
-| `./index.js` | `explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic, be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format, buildVizModel, renderDotToSvg, equationLanding, analyzeUserEquation, buckinghamPi, dimensionallyDetermines` | Re-export |
+| `./index.js` | `explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic, be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format, buildVizModel, renderDotToSvg, equationLanding, analyzeUserEquation, resolveToCatalogName, suggestQuantities, buckinghamPi, dimensionallyDetermines` | Re-export |
 | `./composition/bridge-analysis.js` | `bridgePriority, attemptDerivation, dimensionalFreedom, linkageMap, proposeLinkCandidates, proposeOrphanConnectors` | Re-export |
 | `./numerical/formula-registry.js` | `getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker` | Re-export |
 | `./dimensional/dimension-spec.js` | `parseDimensionSpec` | Re-export |
@@ -3392,27 +3392,27 @@ The codebase is organized into the following modules:
   ```text
   explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic, be42Edge, be16Edge,
   lawSchwarzschildRadius, be42ViaRsEdge, format, buildVizModel, renderDotToSvg, equationLanding,
-  analyzeUserEquation, buckinghamPi, dimensionallyDetermines, bridgePriority, attemptDerivation,
-  dimensionalFreedom, linkageMap, proposeLinkCandidates, proposeOrphanConnectors, getFormulaParser,
-  getFormulaParserKind, getFormulaDimensionChecker, parseDimensionSpec, predictMissingBridges,
-  rankDiscoveries, BRIDGE_EQUATIONS, auditCoverage, CONFRONTATIONS, listConfrontations,
-  runConfrontation, confrontationRigor, rigorDistribution, ConfrontationEntry, RigorTier,
-  ConfrontationOutcome, decidingMeasurement, BRIDGE_EVALUATORS, evaluateBridge, EvaluatorSpec,
-  auditAxisDiscrimination, AxisDiscrimination, AXES, AxisSpec, simplifyObservable,
-  CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner, scanLinkages, deriveProposedBridges,
-  filterEdges, deriveEdgeEvidence, formatFilterLegend, POSTER_GRAPH, posterJunctions, validatePoster,
-  describePosterSource, PosterGraph, PosterValidation, DEFAULT_SEARCH_BUDGET, scanFrontier,
-  findFrontierGap, problemFromResidualGap, makeResidualGap, loadSearchProblemFromJson, parseExprJson,
-  runProbeSearch, formatProbeReport, formatFrontierScan, formatFrontierGap,
-  suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto, annotateAdjudications,
-  adjudicationFor, candidateId, ADJUDICATIONS, AnnotatedCandidate, CandidateAdjudication,
-  annotateConsequences, ConsequenceAnnotatedCandidate, ConsequenceSignal, ConsequenceEvidence,
-  checkConventions, unknownConventionKeys, ConventionKey, describeGrounding, REPRESENTATIVE_VALUES,
-  compareWithCanonical, compareUserEquation, describeComparison, describeComparisons,
-  CanonicalComparison, CONSTANTS, CandidateGrounding, OSCILLATOR_FAMILY, ATLAS_FAMILIES,
-  deriveEvidence, NO_PASSING_WITNESSES, AtlasFamily, regimeHolds, regimeOverlap, uncoveredRegions,
-  RegimeCheck, RegimeOverlap, RegionSample, findPath, boundPath, PathBoundResult, PathBoundClaim,
-  PathNoClaim, AtlasBridge, RegimeInequality, AtlasModel, ModelId
+  analyzeUserEquation, resolveToCatalogName, suggestQuantities, buckinghamPi, dimensionallyDetermines,
+  bridgePriority, attemptDerivation, dimensionalFreedom, linkageMap, proposeLinkCandidates,
+  proposeOrphanConnectors, getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker,
+  parseDimensionSpec, predictMissingBridges, rankDiscoveries, BRIDGE_EQUATIONS, auditCoverage,
+  CONFRONTATIONS, listConfrontations, runConfrontation, confrontationRigor, rigorDistribution,
+  ConfrontationEntry, RigorTier, ConfrontationOutcome, decidingMeasurement, BRIDGE_EVALUATORS,
+  evaluateBridge, EvaluatorSpec, auditAxisDiscrimination, AxisDiscrimination, AXES, AxisSpec,
+  simplifyObservable, CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner, scanLinkages,
+  deriveProposedBridges, filterEdges, deriveEdgeEvidence, formatFilterLegend, POSTER_GRAPH,
+  posterJunctions, validatePoster, describePosterSource, PosterGraph, PosterValidation,
+  DEFAULT_SEARCH_BUDGET, scanFrontier, findFrontierGap, problemFromResidualGap, makeResidualGap,
+  loadSearchProblemFromJson, parseExprJson, runProbeSearch, formatProbeReport, formatFrontierScan,
+  formatFrontierGap, suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto,
+  annotateAdjudications, adjudicationFor, candidateId, ADJUDICATIONS, AnnotatedCandidate,
+  CandidateAdjudication, annotateConsequences, ConsequenceAnnotatedCandidate, ConsequenceSignal,
+  ConsequenceEvidence, checkConventions, unknownConventionKeys, ConventionKey, describeGrounding,
+  REPRESENTATIVE_VALUES, compareWithCanonical, compareUserEquation, describeComparison,
+  describeComparisons, CanonicalComparison, CONSTANTS, CandidateGrounding, OSCILLATOR_FAMILY,
+  ATLAS_FAMILIES, deriveEvidence, NO_PASSING_WITNESSES, AtlasFamily, regimeHolds, regimeOverlap,
+  uncoveredRegions, RegimeCheck, RegimeOverlap, RegionSample, findPath, boundPath, PathBoundResult,
+  PathBoundClaim, PathNoClaim, AtlasBridge, RegimeInequality, AtlasModel, ModelId
   ```
 
 
@@ -6614,9 +6614,9 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 351 |
 | Total Modules | 11 |
-| Total Lines of Code | 70033 |
-| Total Exports | 2472 |
-| Total Re-exports | 1239 |
+| Total Lines of Code | 70051 |
+| Total Exports | 2474 |
+| Total Re-exports | 1241 |
 | Total Classes | 58 |
 | Total Interfaces | 362 |
 | Total Functions | 563 |
