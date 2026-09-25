@@ -3,7 +3,7 @@ metadata:
   version: 0.46.0
   totalFiles: 351
   totalModules: 11
-  totalExports: 2474
+  totalExports: 2475
 entryPoints:
   - file: src/index.ts
     type: main
@@ -10090,6 +10090,7 @@ modules:
         - file: ../../dimensional/buckingham.js
           imports:
             - dimensionallyDetermines
+            - DimensionalDeterminationResult
         - file: ../../dimensional/validator.js
           imports:
             - validate
@@ -10105,10 +10106,12 @@ modules:
             - BudgetState
       exports:
         - monomialToExpr
+        - nativeDetermination
       interfaces:
         - RawCandidate
       functions:
         - monomialToExpr
+        - nativeDetermination
     src/composition/probe/index.ts:
       description: Experimental Product B barrel — expression / residual search.
       externalDependencies: []
@@ -10673,6 +10676,7 @@ modules:
         - file: ./generator.js
           imports:
             - generateNative
+            - nativeDetermination
             - RawCandidate
         - file: ./fingerprint.js
           imports:
@@ -16919,11 +16923,11 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 351
   totalModules: 11
-  totalLinesOfCode: 70051
-  totalExports: 2474
+  totalLinesOfCode: 70093
+  totalExports: 2475
   totalClasses: 58
   totalInterfaces: 362
-  totalFunctions: 563
+  totalFunctions: 564
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 611

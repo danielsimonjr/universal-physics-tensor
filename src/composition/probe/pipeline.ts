@@ -21,7 +21,7 @@ import type {
 } from './types.js';
 import { DEFAULT_SEARCH_BUDGET, SCHEMA_VERSION } from './types.js';
 import { openBudget, budgetStopReason, type BudgetState } from './search-budget.js';
-import { generateNative, type RawCandidate } from './generator.js';
+import { generateNative, nativeDetermination, type RawCandidate } from './generator.js';
 import { fingerprintExpr, complexityOf, bodyExpression } from './fingerprint.js';
 import {
   compareToCorpus,
@@ -205,6 +205,13 @@ export async function runProbeSearch(
   let seq = 0;
 
   const raws: RawCandidate[] = [];
+  const { unsearched } = nativeDetermination(problem);
+  if (unsearched.length > 0) {
+    wording.push(
+      `the monomial is taken from the dimensioned inputs; an unknown function of the ` +
+        `dimensionless input(s) {${unsearched.join(', ')}} is not searched`,
+    );
+  }
   for (const raw of generateNative(problem, state)) {
     raws.push(raw);
     const stop = budgetStopReason(state);
@@ -436,7 +443,15 @@ export async function runProbeSearch(
     stopReason = budgetStop;
   } else if (all.length === 0) {
     stopReason = 'no-credible-candidate';
-    wording.push('enumerator produced no dimensionally valid candidates');
+    // Say WHY (persona finding C2): "no dimensionally valid candidates" was
+    // printed even when the real reason was a non-unique monomial.
+    const { det } = nativeDetermination(problem);
+    wording.push(
+      det.determined
+        ? 'enumerator produced no dimensionally valid candidates'
+        : `the target is not a unique monomial of the inputs (${det.reason}); ` +
+            'the native enumerator searches unique monomials only',
+    );
   } else if (
     hasAnyData(problem) &&
     all.every(
