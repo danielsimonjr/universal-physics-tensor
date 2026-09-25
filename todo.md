@@ -275,6 +275,13 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **0.47.1 patch batch from the 0.47.0 persona re-test (Mothership ruling 2026-09-25).** After the hermetic-tests fix; one PR per item, in this order. Findings: `C:\dogfood\upt-persona-047\FINDINGS.md`.
+      - [ ] N1 (limits): the prefactor check matches variable names exactly; `kinetic_energy = mass*velocity^2` reports "prefactor NOT checked" and exits 0, because CE-kinetic-energy names its variable `speed`. Resolve names through the CLI's synonym/alias layer; test velocity AND speed, plus one name that must stay unresolved.
+      - [ ] N3 (clarity): with an unknown name, `map --equation` prints "dimensional MISMATCH" and exits 0 (the UNKNOWN rule). Say on the mismatch line that it involves the unresolved placeholder; keep the exit code.
+      - [ ] N2 + N5: ONE name suggester for `map` and `explain`, ranked by edit distance first (`lenght` → `length`; `hawkng-temperature` → `hawking-temperature` first).
+      - [ ] N4: `map --equation` prints the verdict first and the 40-component map after it (or behind a flag). No exit-code change.
+      - [ ] L9 residual: ab-damped-massless states δ = 3 for x0 = 1; the measured worst case over its domain is 0.523. Fix only if small; otherwise document it.
+
 - [ ] **The git-spawning gate tests are not hermetic** (Mothership report 2026-09-25; fix AFTER the 0.47.0 persona re-test). When the pre-push hook runs from a LINKED git worktree, git exports GIT_DIR to the hook. `tests/tools/pushed-head.test.ts` (3 tests) and `tests/tools/untracked-gate-inputs.test.ts` (15 tests) spawn `git init` and `git commit` in temp dirs, inherit GIT_DIR, and act on the REAL repository. On the 0.47.0 release push they set `core.bare = true` in the main `.git/config` and committed "a" by t@example.invalid onto the worktree HEAD (repaired; nothing reached the remote). Fix: the tests' git helper removes GIT_DIR, GIT_WORK_TREE, GIT_INDEX_FILE and GIT_COMMON_DIR from the child env, and the hook unsets GIT_* before it runs the suite. Proof: a test that runs the gate from a linked worktree and checks that the main repo is unchanged.
 
 - [ ] **After 0.47.0: one release per tier, each DESIGNED and approved by Mothership before any code**
