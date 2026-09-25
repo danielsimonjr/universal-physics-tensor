@@ -62,6 +62,7 @@ export function formatProbeReport(result: ProbeSearchResult): string {
     );
     const corp = result.corpus[rec.id];
     if (corp) lines.push(`      ${corpusRelativeWording(corp)}`);
+    for (const note of result.prefactorNotes[rec.id] ?? []) lines.push(`      ${note}`);
     lines.push(`      ${exprSummary(rec).slice(0, 180)}`);
   }
   return lines.join('\n');

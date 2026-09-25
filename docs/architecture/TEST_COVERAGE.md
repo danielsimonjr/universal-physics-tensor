@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 347 |
-| Total Test Files | 454 |
+| Total Test Files | 455 |
 | Source Files with Tests | 346 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -272,8 +272,8 @@ The following 1 source files are not directly imported by any test file:
 | `probe/index.ts` | `graphs.test.ts`, `recover-conventions.test.ts` |
 | `probe/limits.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `coverage-backfill.test.ts`, `modules.test.ts` |
 | `probe/metadata.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `modules.test.ts` |
-| `probe/pipeline.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `coverage-backfill.test.ts`, `family-b.test.ts` |
-| `probe/problem.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `coverage-backfill.test.ts`, `family-b.test.ts`, `modules.test.ts`, `parse-expr-json.test.ts` |
+| `probe/pipeline.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `corpus-prefactor.test.ts`, `coverage-backfill.test.ts`, `family-b.test.ts` |
+| `probe/problem.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `corpus-prefactor.test.ts`, `coverage-backfill.test.ts`, `family-b.test.ts`, `modules.test.ts`, `parse-expr-json.test.ts` |
 | `probe/report.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `coverage-backfill.test.ts`, `family-b.test.ts` |
 | `probe/residual.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `coverage-backfill.test.ts`, `modules.test.ts` |
 | `probe/run-manifest.ts` | `graphs.test.ts`, `recover-conventions.test.ts`, `modules.test.ts` |
@@ -637,6 +637,7 @@ The following 1 source files are not directly imported by any test file:
 | `composition/orphan-connectors.test.ts` | 27 files |
 | `composition/poster-source.test.ts` | 5 files |
 | `probe/backend.test.ts` | 1 files |
+| `probe/corpus-prefactor.test.ts` | 2 files |
 | `probe/coverage-backfill.test.ts` | 21 files |
 | `probe/discovery-run-schema.test.ts` | 0 files |
 | `probe/experiment-design.test.ts` | 3 files |

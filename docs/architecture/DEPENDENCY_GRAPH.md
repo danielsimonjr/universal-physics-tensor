@@ -4153,10 +4153,13 @@ The codebase is organized into the following modules:
 | `../../canonical/normal-form.js` | `normalForm` | Import |
 | `../../bridges/rhs-registry.js` | `BRIDGE_RHS_BY_ID` | Import |
 | `./generator.js` | `monomialToExpr` | Import |
+| `../expr-eval.js` | `evalExpr` | Import |
+| `../../dimensional/algebra.js` | `equals` | Import |
+| `../../dimensional/types.js` | `Dimension` | Import (type-only) |
 
 **Exports:**
 - Interfaces: `CorpusMatch`, `CorpusComparisonResult`
-- Functions: `compareToCorpus`, `corpusRelativeWording`
+- Functions: `compareToCorpus`, `corpusPrefactorNotes`, `corpusRelativeWording`
 
 ---
 
@@ -4396,7 +4399,7 @@ The codebase is organized into the following modules:
 | `./search-budget.js` | `openBudget, budgetStopReason, BudgetState` | Import |
 | `./generator.js` | `generateNative, RawCandidate` | Import |
 | `./fingerprint.js` | `fingerprintExpr, complexityOf, bodyExpression` | Import |
-| `./corpus.js` | `compareToCorpus, corpusRelativeWording, CorpusComparisonResult` | Import |
+| `./corpus.js` | `compareToCorpus, corpusPrefactorNotes, corpusRelativeWording, CorpusComparisonResult` | Import |
 | `./fit.js` | `fitPrefactor, FitResult` | Import |
 | `./falsify.js` | `runFalsification, FalsifyResult` | Import |
 | `./candidate-store.js` | `applyStatus, ProbeCandidateStore` | Import |
@@ -6598,15 +6601,15 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 350 |
 | Total Modules | 11 |
-| Total Lines of Code | 69567 |
-| Total Exports | 2466 |
+| Total Lines of Code | 69678 |
+| Total Exports | 2467 |
 | Total Re-exports | 1238 |
 | Total Classes | 58 |
 | Total Interfaces | 361 |
-| Total Functions | 560 |
+| Total Functions | 561 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 489 |
+| Type-only Imports | 490 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

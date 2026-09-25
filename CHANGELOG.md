@@ -120,6 +120,21 @@ from v0.1.0 onward.
   `c:length` stays a length. The `--json` envelopes gain `canonicalComparisons` (additive). New
   internal module `composition/canonical-compare.ts`. The `derive-formula` and three
   `map-equation` goldens gain the comparison line.
+- **`upt probe` compares a fitted prefactor with the prefactor of the corpus relation it matches**
+  (persona finding L7). On finite-amplitude pendulum data (θ0 up to 2.5 rad), probe found √(ℓ/g)
+  with ĉ = 7.387 and marked it "equivalent to CE-pendulum-period (not novel)", although the
+  small-angle law has 2π = 6.283. `normalForm` matches up to a constant, so the new
+  `corpusPrefactorNotes` evaluates the corpus relation against the candidate at three fixed
+  points to get the corpus prefactor. It then prints one of:
+  - "fitted ĉ agrees with X's prefactor" (within the holdout tolerance);
+  - "fitted ĉ contradicts X's prefactor (+N%): the data may lie outside that relation's regime";
+  - "X records no prefactor, so the fitted ĉ is not compared with it".
+
+  Only a fully quantitative canonical entry records a prefactor. CE-pendulum-period is dimensional
+  only, so the persona's own case now reads "records no prefactor" rather than being flagged: the
+  same data limit as L2. Checked on CE-friedmann, H² = (8π/3) G ρ: true data give ĉ = 8.378,
+  "agrees", and data 20% high give ĉ = 10.05, "contradicts … (+20%)". `ProbeSearchResult` gains
+  `prefactorNotes` (additive).
 
 ## [0.46.0] - 2026-09-24
 

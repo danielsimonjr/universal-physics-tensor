@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 347,
-    "totalTestFiles": 454,
+    "totalTestFiles": 455,
     "testedCount": 346,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -3500,12 +3500,14 @@
     "src/composition/probe/pipeline.ts": [
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/composition/probe/corpus-prefactor.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts"
     ],
     "src/composition/probe/problem.ts": [
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/composition/probe/corpus-prefactor.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/probe/modules.test.ts",
@@ -8844,6 +8846,10 @@
     ],
     "tests/composition/probe/backend.test.ts": [
       "src/composition/probe/backend-protocol.ts"
+    ],
+    "tests/composition/probe/corpus-prefactor.test.ts": [
+      "src/composition/probe/problem.ts",
+      "src/composition/probe/pipeline.ts"
     ],
     "tests/composition/probe/coverage-backfill.test.ts": [
       "src/dimensional/types.ts",

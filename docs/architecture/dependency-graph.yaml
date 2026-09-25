@@ -3,7 +3,7 @@ metadata:
   version: 0.46.0
   totalFiles: 350
   totalModules: 11
-  totalExports: 2466
+  totalExports: 2467
 entryPoints:
   - file: src/index.ts
     type: main
@@ -9807,14 +9807,26 @@ modules:
         - file: ./generator.js
           imports:
             - monomialToExpr
+        - file: ../expr-eval.js
+          imports:
+            - evalExpr
+        - file: ../../dimensional/algebra.js
+          imports:
+            - equals
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
       exports:
         - compareToCorpus
+        - corpusPrefactorNotes
         - corpusRelativeWording
       interfaces:
         - CorpusMatch
         - CorpusComparisonResult
       functions:
         - compareToCorpus
+        - corpusPrefactorNotes
         - corpusRelativeWording
     src/composition/probe/dataset.ts:
       description: Observation adapters for Product B.
@@ -10628,6 +10640,7 @@ modules:
         - file: ./corpus.js
           imports:
             - compareToCorpus
+            - corpusPrefactorNotes
             - corpusRelativeWording
             - CorpusComparisonResult
         - file: ./fit.js
@@ -16863,16 +16876,16 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 350
   totalModules: 11
-  totalLinesOfCode: 69567
-  totalExports: 2466
+  totalLinesOfCode: 69678
+  totalExports: 2467
   totalClasses: 58
   totalInterfaces: 361
-  totalFunctions: 560
+  totalFunctions: 561
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 609
   totalReExports: 1238
-  totalTypeOnlyImports: 489
+  totalTypeOnlyImports: 490
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 1

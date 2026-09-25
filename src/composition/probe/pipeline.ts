@@ -23,7 +23,12 @@ import { DEFAULT_SEARCH_BUDGET, SCHEMA_VERSION } from './types.js';
 import { openBudget, budgetStopReason, type BudgetState } from './search-budget.js';
 import { generateNative, type RawCandidate } from './generator.js';
 import { fingerprintExpr, complexityOf, bodyExpression } from './fingerprint.js';
-import { compareToCorpus, corpusRelativeWording, type CorpusComparisonResult } from './corpus.js';
+import {
+  compareToCorpus,
+  corpusPrefactorNotes,
+  corpusRelativeWording,
+  type CorpusComparisonResult,
+} from './corpus.js';
 import { fitPrefactor, type FitResult } from './fit.js';
 import { runFalsification, type FalsifyResult } from './falsify.js';
 import { applyStatus, ProbeCandidateStore } from './candidate-store.js';
@@ -50,6 +55,11 @@ export interface ProbeSearchResult {
   readonly fits: Readonly<Record<string, FitResult>>;
   readonly falsifications: Readonly<Record<string, FalsifyResult>>;
   readonly corpus: Readonly<Record<string, CorpusComparisonResult>>;
+  /**
+   * For a candidate equivalent to a corpus relation, the fitted prefactor
+   * against that relation's prefactor (see `corpusPrefactorNotes`).
+   */
+  readonly prefactorNotes: Readonly<Record<string, readonly string[]>>;
   readonly wording: readonly string[];
   readonly stopReason: SearchStopReason;
 }
@@ -78,6 +88,7 @@ function abstain(
     fits: {},
     falsifications: {},
     corpus: {},
+    prefactorNotes: {},
     wording,
     stopReason: reason,
   };
@@ -188,6 +199,7 @@ export async function runProbeSearch(
   const fits: Record<string, FitResult> = {};
   const falsifications: Record<string, FalsifyResult> = {};
   const corpus: Record<string, CorpusComparisonResult> = {};
+  const prefactorNotes: Record<string, string[]> = {};
   const wording: string[] = [];
   const seenHash = new Set<string>();
   let seq = 0;
@@ -372,6 +384,14 @@ export async function runProbeSearch(
     store.replace(rec);
 
     if (known) {
+      // Equivalent up to a constant is not equal: compare the fitted constant
+      // with the corpus one where the corpus records it (persona finding L7).
+      prefactorNotes[rec.id] = corpusPrefactorNotes(
+        corp,
+        bodyExpression(rec.body),
+        fit.prefactor,
+        opts.holdoutTol ?? 0.15,
+      );
       rec = applyStatus(rec, 'equivalent-known', corpusRelativeWording(corp), runId, at);
       store.replace(rec);
       continue;
@@ -440,6 +460,7 @@ export async function runProbeSearch(
     fits,
     falsifications,
     corpus,
+    prefactorNotes,
     wording,
     stopReason,
   };
