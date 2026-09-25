@@ -194,7 +194,7 @@ export const BRIDGE_TELEGRAPH_DIFFUSION: AtlasBridge = {
     delta: telegraphSlowRateRatio(TELEGRAPH_FICK_MAX_EPS, 1, 1) - 1,
     deltaAt: (p) =>
       telegraphSlowRateRatio(p['tau'] ?? Number.NaN, p['D'] ?? Number.NaN, p['q'] ?? Number.NaN) - 1,
-    norm: 'relative error of the slow-mode decay rate of a Fourier mode',
+    norm: 'relative error of the slow-mode decay rate of a Fourier mode, normalized by the value of the reduced model',
     domain: 'ε = τDq² ≤ 0.05',
     horizon:
       'τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; ' +
@@ -270,7 +270,7 @@ export const BRIDGE_TELEGRAPH_WAVE: AtlasBridge = {
     delta: 1 - telegraphWaveFrequencyRatio(TELEGRAPH_WAVE_MIN_EPS, 1, 1),
     deltaAt: (p) =>
       1 - telegraphWaveFrequencyRatio(p['tau'] ?? Number.NaN, p['D'] ?? Number.NaN, p['q'] ?? Number.NaN),
-    norm: 'relative error of the oscillation frequency of a Fourier mode',
+    norm: 'relative error of the oscillation frequency of a Fourier mode, normalized by the value of the reduced model',
     domain: 'ε = τDq² ≥ 25',
     horizon:
       't ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)',

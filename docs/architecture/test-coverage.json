@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 346,
-    "totalTestFiles": 450,
+    "totalTestFiles": 451,
     "testedCount": 345,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -487,6 +487,7 @@
       "tests/atlas/link-prediction.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/regime-admission.test.ts",
+      "tests/atlas/relative-norm-convention.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
@@ -5966,6 +5967,9 @@
       "src/atlas/types.ts",
       "src/atlas/oscillators/dimensions.ts",
       "src/dimensional/types.ts"
+    ],
+    "tests/atlas/relative-norm-convention.test.ts": [
+      "src/atlas/families.ts"
     ],
     "tests/atlas/schema-pin.test.ts": [],
     "tests/atlas/serialize.test.ts": [

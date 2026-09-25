@@ -86,7 +86,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 870 | dependency-graph.json |
+| totalSourceFiles | 871 | dependency-graph.json |
 | totalExports | 3099 | dependency-graph.json |
 | entryRoots | 5 | dependency-graph.json |
 
@@ -98,7 +98,7 @@ change when the STRUCTURE changes.
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`bun run docs:deps`): 349 files, 2453 exports, 1232 of them re-exports. 870 and 349 do not
+(`bun run docs:deps`): 349 files, 2453 exports, 1232 of them re-exports. 871 and 349 do not
 contradict each other; they answer different questions. Every figure states its scope.
 
 > The `src/`-scope figures above are read from `statistics` in the generated

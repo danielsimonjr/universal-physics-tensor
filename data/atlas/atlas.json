@@ -707,7 +707,7 @@
           "bound": {
             "K": 1,
             "delta": 0.015852531101436806,
-            "norm": "relative period error",
+            "norm": "relative period error, normalized by the value of the reduced model",
             "domain": "θ0 ≤ 0.5 rad",
             "horizon": "t ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time",
             "parameterRange": "θ0 ≤ 0.5 rad",
@@ -1775,7 +1775,7 @@
           "bound": {
             "K": 1,
             "delta": 0.055728090000841446,
-            "norm": "relative error of the slow-mode decay rate of a Fourier mode",
+            "norm": "relative error of the slow-mode decay rate of a Fourier mode, normalized by the value of the reduced model",
             "domain": "ε = τDq² ≤ 0.05",
             "horizon": "τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; machine form 5τ < t < 0.1/(δ D q²)",
             "parameterRange": "ε = τDq² ≤ 0.05",
@@ -1858,7 +1858,7 @@
           "bound": {
             "K": 1,
             "delta": 0.005012562893380035,
-            "norm": "relative error of the oscillation frequency of a Fourier mode",
+            "norm": "relative error of the oscillation frequency of a Fourier mode, normalized by the value of the reduced model",
             "domain": "ε = τDq² ≥ 25",
             "horizon": "t ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)",
             "parameterRange": "ε = τDq² ≥ 25",
@@ -2531,7 +2531,7 @@
           "bound": {
             "K": 1,
             "delta": 0.00498756211208895,
-            "norm": "relative phase-velocity error of a Fourier mode",
+            "norm": "relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model",
             "domain": "ω₀/(c k) ≤ 0.1",
             "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 c k δ(ω₀, c, k))",
             "parameterRange": "ω₀/(c k) ≤ 0.1",
@@ -2614,7 +2614,7 @@
           "bound": {
             "K": 1,
             "delta": 0.0024875775822101875,
-            "norm": "relative error of the kinetic frequency ω − ω₀",
+            "norm": "relative error of the kinetic frequency ω − ω₀, normalized by the value of the reduced model",
             "domain": "x = ck/ω₀ ≤ 0.1",
             "horizon": "t ≪ π/(δ ω₀ x²): the kinetic-phase drift reaches π/2; machine form t < π/(δ ω₀ x²)",
             "parameterRange": "x = ck/ω₀ ≤ 0.1",
@@ -2658,7 +2658,7 @@
           },
           "counterexamples": [
             {
-              "description": "At x = ck/ω₀ = 1 the non-relativistic kinetic frequency is 17% too high: the limit is a long-wavelength statement.",
+              "description": "At x = ck/ω₀ = 1 the non-relativistic kinetic frequency ω₀/2 is 20.7% above the exact ω₀(√2 − 1), which is 17.2% of its own value (the normalization of delta): the limit is a long-wavelength statement.",
               "witness": "WS5b"
             }
           ],
@@ -2677,7 +2677,7 @@
               "id": "WS5b",
               "kind": "numeric",
               "test": "tests/atlas/closure.test.ts",
-              "tolerance": "relative error 3 − 2√2 = 0.1716 at x = 1"
+              "tolerance": "relative error 3 − 2√2 = 0.1716 at x = 1, normalized by the reduced value"
             }
           ],
           "citations": [
@@ -2760,7 +2760,7 @@
           "bound": {
             "K": 1,
             "delta": 0.00498756211208895,
-            "norm": "relative phase-velocity error of a Fourier mode",
+            "norm": "relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model",
             "domain": "β = EIk²/F ≤ 0.01",
             "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 √(F/μ) k δ)",
             "parameterRange": "β = EIk²/F ≤ 0.01",

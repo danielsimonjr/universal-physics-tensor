@@ -791,7 +791,7 @@
       "bound": {
         "K": 1,
         "delta": 0.055728090000841446,
-        "norm": "relative error of the slow-mode decay rate of a Fourier mode",
+        "norm": "relative error of the slow-mode decay rate of a Fourier mode, normalized by the value of the reduced model",
         "domain": "ε = τDq² ≤ 0.05",
         "horizon": "τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; machine form 5τ < t < 0.1/(δ D q²)",
         "parameterRange": "ε = τDq² ≤ 0.05",
@@ -874,7 +874,7 @@
       "bound": {
         "K": 1,
         "delta": 0.005012562893380035,
-        "norm": "relative error of the oscillation frequency of a Fourier mode",
+        "norm": "relative error of the oscillation frequency of a Fourier mode, normalized by the value of the reduced model",
         "domain": "ε = τDq² ≥ 25",
         "horizon": "t ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)",
         "parameterRange": "ε = τDq² ≥ 25",

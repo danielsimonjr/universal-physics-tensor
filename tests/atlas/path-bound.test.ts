@@ -287,7 +287,7 @@ describe('boundPath — the arithmetic, where a claim is actually licensed', () 
     expect(result.kind).toBe('bound');
     if (result.kind !== 'bound') throw new Error('unreachable');
     expect(result.relation).toBe('approximation');
-    expect(result.norm).toBe('relative period error');
+    expect(result.norm).toBe('relative period error, normalized by the value of the reduced model');
     // The bridge's delta is now the EXACT relative period error at the edge of
     // its declared range, θ0 = 0.5, not the series term 0.5²/16 = 0.015625 —
     // which is 1.456% below the error it was supposed to bound. A single-edge

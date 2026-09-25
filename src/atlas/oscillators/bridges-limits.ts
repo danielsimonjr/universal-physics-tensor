@@ -177,7 +177,7 @@ export const AB_PENDULUM_LINEAR: AtlasBridge = {
     // reproduced by quadrature of the complete elliptic integral.
     delta: pendulumPeriodErrorAt({ theta0: 0.5 }),
     deltaAt: pendulumPeriodErrorAt,
-    norm: 'relative period error',
+    norm: 'relative period error, normalized by the value of the reduced model',
     domain: 'θ0 ≤ 0.5 rad',
     horizon: 't ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time',
     // ⚠ The machine form is a QUARTER of the prose scale, and it must be.

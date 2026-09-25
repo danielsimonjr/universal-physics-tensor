@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 346 |
-| Total Test Files | 450 |
+| Total Test Files | 451 |
 | Source Files with Tests | 345 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -55,7 +55,7 @@ The following 1 source files are not directly imported by any test file:
 | `diffusion/numerics.ts` | `closure.test.ts`, `diffusion.test.ts`, `negative-controls.test.ts` |
 | `atlas/error-algebra.ts` | `barrel-completeness.test.ts`, `error-algebra.test.ts`, `path-bound.test.ts` |
 | `atlas/export.ts` | `barrel-completeness.test.ts`, `export.test.ts` |
-| `atlas/families.ts` | `atlas-json.test.ts`, `barrel-completeness.test.ts`, `benchmark.test.ts`, `bound-machine-form.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `formalref-axiom-gate.test.ts` |
+| `atlas/families.ts` | `atlas-json.test.ts`, `barrel-completeness.test.ts`, `benchmark.test.ts`, `bound-machine-form.test.ts`, `evidence-rule.test.ts`, `export.test.ts`, `families.test.ts`, `formal-sanity.test.ts`, `link-prediction.test.ts`, `oscillators-coarse.test.ts`, `regime-admission.test.ts`, `relative-norm-convention.test.ts`, `atlas-command.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts`, `formalref-axiom-gate.test.ts` |
 | `atlas/index.ts` | `barrel-completeness.test.ts` |
 | `atlas/link-prediction.ts` | `barrel-completeness.test.ts`, `link-prediction.test.ts` |
 | `atlas/model.ts` | `applicability.test.ts`, `barrel-completeness.test.ts`, `link-prediction.test.ts`, `model.test.ts`, `graphs.test.ts`, `recover-conventions.test.ts` |
@@ -432,6 +432,7 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/quantum-support.test.ts` | 1 files |
 | `atlas/regime-admission.test.ts` | 7 files |
 | `atlas/regime.test.ts` | 4 files |
+| `atlas/relative-norm-convention.test.ts` | 1 files |
 | `atlas/schema-pin.test.ts` | 0 files |
 | `atlas/serialize.test.ts` | 2 files |
 | `atlas/statement-derivation.test.ts` | 3 files |

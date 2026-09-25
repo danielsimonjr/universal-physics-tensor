@@ -157,7 +157,17 @@ export interface ApproximationBound {
    * tighter value at its own point.
    */
   readonly delta: number;
-  /** `'relative period'`, `'sup |x − x_reduced| for t ≥ 5 m/b'`, … */
+  /**
+   * `'relative period error, normalized by the value of the reduced model'`,
+   * `'sup |x − x_reduced| for t ≥ 5 m/b'`, …
+   *
+   * A RELATIVE norm divides |exact − reduced| by the REDUCED model's value, and
+   * says so in this string. The other reading, by the exact value, gives a
+   * different number: at x = ck/ω₀ = 1 the non-relativistic kinetic frequency
+   * exceeds the exact Klein–Gordon one by 20.7% of the exact value, and by
+   * 17.2% of its own value. `tests/atlas/relative-norm-convention.test.ts` recomputes
+   * every relative `delta` from closed-form physics and pins the convention.
+   */
   readonly norm: string;
   /** Where the bound holds. */
   readonly domain: string;

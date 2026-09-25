@@ -41,6 +41,18 @@ from v0.1.0 onward.
   bridge (BE-42) … agreement by construction, not an independent check". Routes over several
   distinct bridges are counted as such. `DerivationExplanation` gains `beId` (additive). Three
   goldens change by that summary line (`demo-no-args`, `explain-bare-names`, `explain-mass-value`).
+- **A relative-error convention was stated nowhere, and one counterexample read it the wrong way**
+  (persona finding W1). The `ab-kg-schrodinger` counterexample said that at x = ck/ω₀ = 1 "the
+  non-relativistic kinetic frequency is 17% too high". It is ω₀/2 against the exact ω₀(√2 − 1), so
+  it is **20.7% above the exact value**. 17.2% is the gap over its own value, 3 − 2√2. Every relative
+  `delta` in the atlas divides |exact − reduced| by the REDUCED model's value. A new test,
+  `tests/atlas/relative-norm-convention.test.ts`, recomputes all six from closed-form physics at
+  the edge of each domain: the pendulum (elliptic K by AGM), telegraph → Fick, telegraph → wave,
+  Klein–Gordon → wave, Klein–Gordon → Schrödinger, and stiff → flexible string. Every numeric
+  `delta` was already correct under that convention. The six `norm` strings now end ", normalized by
+  the value of the reduced model", `ApproximationBound.norm` documents the rule, and the
+  counterexample states both numbers. `data/atlas/*.json` were regenerated with
+  `bun run atlas:json`, and the `atlas-pendulum` golden changes by the norm line.
 
 ## [0.46.0] - 2026-09-24
 
