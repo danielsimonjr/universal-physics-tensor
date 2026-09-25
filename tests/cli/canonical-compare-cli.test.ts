@@ -75,7 +75,9 @@ describe('upt derive / map — the prefactor is never silently unchecked', () =>
   });
 
   it('map --equation with a catalog target and no canonical match says the same', async () => {
-    const t = await text(['map', '--equation', 'kinetic_energy = mass*velocity^2']);
+    // This used `mass*velocity^2`, the N1 defect itself: velocity now pairs with CE-kinetic-energy's
+    // speed by dimension (see the N1 block below). Three variables match no kinetic-energy entry.
+    const t = await text(['map', '--equation', 'kinetic_energy = mass*acceleration*displacement']);
     expect(t).toMatch(/· no canonical equation has this target and these variables, so the prefactor is NOT checked/);
   });
 });
@@ -92,5 +94,31 @@ describe('upt derive — a variable is a constant only when its name AND dimensi
     // Taken by name alone for the speed of light, c would drop out, the variables would match
     // CE-pendulum-period, and the formula would be evaluated with c = 299792458 m/s.
     expect(result.canonicalComparisons).toEqual([]);
+  });
+});
+
+// 0.47.0 persona finding N1: CE-kinetic-energy names its variable `speed`, and `velocity` (the
+// name CE-lorentz-factor uses) switched the check off with "prefactor NOT checked" and exit 0.
+describe('N1: a velocity/speed synonym no longer switches the prefactor check off', () => {
+  it('map: K = m·velocity² differs from CE-kinetic-energy by the factor 2, and the pairing is named', async () => {
+    const t = await text(['map', '--equation', 'kinetic_energy = mass*velocity^2'], 3);
+    expect(t).toMatch(
+      /⚠ differs from CE-kinetic-energy \(Kinetic energy; your velocity as its speed, paired by dimension\) by a constant factor: yours\/canonical = 2\.00000/,
+    );
+  });
+
+  it('map: the true law with velocity agrees', async () => {
+    const t = await text(['map', '--equation', 'kinetic_energy = 0.5*mass*velocity^2']);
+    expect(t).toMatch(/✓ agrees with CE-kinetic-energy \(Kinetic energy; your velocity as its speed, paired by dimension\)/);
+  });
+
+  it('derive: velocity:velocity is paired the same way', async () => {
+    const t = await text(['derive', 'kinetic-energy:energy', 'mass:mass', 'velocity:velocity', '--formula', 'mass*velocity^2'], 3);
+    expect(t).toMatch(/differs from CE-kinetic-energy \(Kinetic energy; your velocity as its speed, paired by dimension\)/);
+  });
+
+  it('map: an unresolved name stays unresolved, and the prefactor is NOT checked', async () => {
+    const t = await text(['map', '--equation', 'kinetic_energy = mass*vel^2']);
+    expect(t).toMatch(/no canonical equation has this target and these variables, so the prefactor is NOT checked/);
   });
 });

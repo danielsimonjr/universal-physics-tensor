@@ -146,7 +146,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     const compiled = cf;
     canonicalComparisons = api.compareWithCanonical(
       target.name,
-      variables.map((g) => g.name),
+      variables.map((g) => ({ name: g.name, dim: g.dim })),
       (values) =>
         compiled.evaluate(
           Object.fromEntries(

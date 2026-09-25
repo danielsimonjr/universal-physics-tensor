@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 472,
+    "totalTestFiles": 473,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -2717,6 +2717,7 @@
     "src/composition/canonical-compare.ts": [
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/composition/canonical-compare-pairing.test.ts",
       "tests/composition/canonical-compare.test.ts",
       "tests/composition/canonical-prefactors.test.ts"
     ],
@@ -4756,6 +4757,7 @@
       "tests/composition/axis-gate.test.ts",
       "tests/composition/bridge-prediction.test.ts",
       "tests/composition/calibration-targets.test.ts",
+      "tests/composition/canonical-compare-pairing.test.ts",
       "tests/composition/canonical-graph-information-axis.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/compose-properties.test.ts",
@@ -8739,6 +8741,10 @@
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts"
+    ],
+    "tests/composition/canonical-compare-pairing.test.ts": [
+      "src/composition/canonical-compare.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/composition/canonical-compare.test.ts": [
       "src/composition/canonical-compare.ts",

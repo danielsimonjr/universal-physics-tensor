@@ -10,6 +10,25 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **A velocity/speed synonym no longer switches the prefactor check off** (0.47.0 persona finding
+  N1). CE-kinetic-energy names its variable `speed`, and CE-lorentz-factor names the same dimension
+  `velocity`. `upt map --equation "kinetic_energy = mass*velocity^2"` reported "the prefactor is NOT
+  checked" and exited 0, while the same formula with `speed` was caught (factor 2, exit 3). The CLI
+  has no quantity synonym table, so the comparison now pairs each variable by name first, then by a
+  dimension that exactly one remaining canonical variable carries. The report names the pairing:
+  "differs from CE-kinetic-energy (Kinetic energy; your velocity as its speed, paired by dimension) by a
+  constant factor: yours/canonical = 2.00000", exit 3. Three limits keep this from guessing:
+  - the TARGET still matches by name only, because a dimension would reach every law of that dimension
+    (`energy = mass*velocity^2` is still not compared with CE-kinetic-energy);
+  - a name the catalog does not know has no dimension and never pairs (`mass*vel^2` stays "NOT
+    checked");
+  - a pairing that is not unique is reported as not compared, never guessed. CE-carnot-efficiency
+    with `cold` and `hot` temperatures could pair either way, and 1 − T_c/T_h is not symmetric.
+
+  `upt derive` pairs its declared variables the same way. One existing CLI test used
+  `mass*velocity^2` as its "no canonical match" example. It pinned the defect, so it now uses a
+  three-variable equation.
+
 - **A push from a linked worktree no longer lets the test suite write to the repository.** git
   exports an absolute `GIT_DIR` to a hook run from a linked worktree (`<main>/.git/worktrees/<name>`);
   from the main worktree it exports none. The pre-push gate runs the suite, and
