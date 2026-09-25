@@ -165,6 +165,28 @@ from v0.1.0 onward.
   computed by Simpson quadrature of the elliptic integral, independent of the AGM the code uses, and
   the two agree to 1e-9. The five other closed forms are checked at an interior point. `--json`
   gains `pointBound` and `pointBoundReason` (additive).
+- **A sourced prefactor table lets L2 and L7 catch a wrong constant** (Mothership ruling on the
+  L2/L7 limit). `src/canonical` records CE-pendulum-period only dimensionally and CE-kinetic-energy
+  only up to a constant, so T = π√(ℓ/g) and K = m·v² could only be reported as "prefactor NOT
+  checked". `src/canonical` is a pinned Criterion 3 input tree and is not edited. The new
+  `src/composition/canonical-prefactors.ts`, outside it, records nine exact prefactors: pendulum
+  period 2π, kinetic energy ½, rotational kinetic energy ½, capacitor energy ½, Schwarzschild
+  radius 2, Kepler's third law 2π, LC resonance 1, Stokes drag 6π, and Stokes–Einstein 1/(6π).
+
+  Each has a verbatim quote and a locator pinned to a Wikipedia revision and wikitext line. The
+  quotes are held as `String.raw` literals, and all nine were checked byte for byte against the
+  fetched revisions. Elastic energy and the inductor were left out: no clean verbatim line was found.
+
+  The prefactor multiplies the entry's AST, or its monomial when it has none; a test holds that
+  neither carries a constant of its own.
+  - `upt map --equation` / `upt derive`: T = π√(ℓ/g) now reports "differs … by a constant factor:
+    0.500000", K = m·v² reports the factor 2, and the true laws report "agrees".
+  - `upt probe`: the pendulum fixture reports "agrees with CE-pendulum-period's prefactor 6.283".
+    The persona's finite-amplitude data now report "contradicts CE-pendulum-period's prefactor
+    6.283 (+18%)", which is the L7 outcome originally proposed.
+
+  Three goldens change from "NOT checked" to "agrees". Landed in 35152dd; this entry was added in
+  the following commit, because a shell chain let that commit through without it.
 
 ## [0.46.0] - 2026-09-24
 
