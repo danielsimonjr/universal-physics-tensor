@@ -57,9 +57,9 @@ function run(args) {
   };
 }
 
-for (const { name, args, pinStderr } of GOLDEN_CASES) {
+for (const { name, args, pinStderr, exitCode } of GOLDEN_CASES) {
   const result = run(args);
-  if (result.status !== 0) {
+  if (result.status !== (exitCode ?? 0)) {
     console.error(`FAILED (exit ${result.status}): ${name} — args=${JSON.stringify(args)}`);
     console.error(result.stderr);
     process.exitCode = 1;

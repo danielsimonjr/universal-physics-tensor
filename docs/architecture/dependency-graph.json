@@ -4,7 +4,7 @@
     "version": "0.46.0",
     "totalFiles": 351,
     "totalModules": 11,
-    "totalExports": 2471
+    "totalExports": 2472
   },
   "entryPoints": [
     {
@@ -9903,7 +9903,8 @@
           {
             "file": "../errors.js",
             "imports": [
-              "UsageError"
+              "UsageError",
+              "EXIT_CHECK_FAILED"
             ]
           },
           {
@@ -10353,7 +10354,8 @@
             "file": "../errors.js",
             "imports": [
               "UsageError",
-              "CliError"
+              "CliError",
+              "EXIT_CHECK_FAILED"
             ]
           },
           {
@@ -10437,7 +10439,8 @@
           {
             "file": "../errors.js",
             "imports": [
-              "CliError"
+              "CliError",
+              "EXIT_CHECK_FAILED"
             ]
           },
           {
@@ -10721,17 +10724,21 @@
         ]
       },
       "src/cli/errors.ts": {
-        "description": "Typed error classes for the UPT CLI.",
+        "description": "Typed error classes and exit codes for the UPT CLI.",
         "externalDependencies": [],
         "nodeDependencies": [],
         "internalDependencies": [],
         "exports": [
+          "EXIT_CHECK_FAILED",
           "UsageError",
           "CliError"
         ],
         "classes": [
           "UsageError",
           "CliError"
+        ],
+        "constants": [
+          "EXIT_CHECK_FAILED"
         ]
       },
       "src/cli/graphs.ts": {
@@ -24205,14 +24212,14 @@
   "statistics": {
     "totalTypeScriptFiles": 351,
     "totalModules": 11,
-    "totalLinesOfCode": 69999,
-    "totalExports": 2471,
+    "totalLinesOfCode": 70033,
+    "totalExports": 2472,
     "totalClasses": 58,
     "totalInterfaces": 362,
     "totalFunctions": 563,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 610,
+    "totalConstants": 611,
     "totalReExports": 1239,
     "totalTypeOnlyImports": 490,
     "runtimeCircularDeps": 0,

@@ -12,6 +12,8 @@ export interface GoldenCase {
   peerGated?: boolean;
   /** Additionally pin filtered stderr as tests/cli/golden/<name>.stderr.txt. */
   pinStderr?: boolean;
+  /** Expected exit code when it is not 0: 3 for a check that ran and failed (0.47.0). */
+  exitCode?: number;
 }
 
 export declare const GOLDEN_CASES: GoldenCase[];

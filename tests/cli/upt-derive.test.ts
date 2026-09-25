@@ -28,9 +28,9 @@ describe('upt derive --formula (regression: api.format ReferenceError)', () => {
     expect(r.stdout).toContain('recovered prefactor');
   });
 
-  it('still reports a dimensional mismatch formula without crashing', () => {
+  it('still reports a dimensional mismatch formula without crashing, and exits 3 (a failed check)', () => {
     const r = run(['derive', 'period:time', 'mass:mass', '--formula', 'mass']);
-    expect(r.status).toBe(0);
+    expect(r.status).toBe(3);
     expect(r.stdout).toContain('⚠ homogeneous but ≠ target');
   });
 });

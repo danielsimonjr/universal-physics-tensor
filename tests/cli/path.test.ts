@@ -42,7 +42,7 @@ describe('upt path', () => {
       ['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.2', 'T0=1', 't=1000'],
       cap.io,
     );
-    expect(code).toBe(0);
+    expect(code).toBe(3); // a violated horizon or regime is a failed check (0.47.0)
     const text = cap.lines.join('');
     // Machine horizon is t < 4 T0/θ0² = 100, so 1000 is outside it.
     expect(text).toMatch(/horizons at t=1000: NOT all hold/);
@@ -59,7 +59,7 @@ describe('upt path', () => {
       ['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.8', 'T0=1', 't=1'],
       cap.io,
     );
-    expect(code).toBe(0);
+    expect(code).toBe(3); // a violated horizon or regime is a failed check (0.47.0)
     const text = cap.lines.join('');
     expect(text).toMatch(/regimes at --at: VIOLATED/);
     expect(text).toMatch(/ab-pendulum-linear: VIOLATED — theta0 <= 0\.5/);
@@ -82,7 +82,7 @@ describe('upt path', () => {
         ['path', 'model-pendulum', 'model-spring', '--at', `theta0=${theta0}`, 'T0=1', 't=1', '--json'],
         cap.io,
       );
-      expect(code).toBe(0);
+      expect(code).toBe(Number(theta0) > 0.5 ? 3 : 0); // outside θ0 ≤ 0.5 the regime is violated
       return JSON.parse(cap.lines.join('')).result;
     };
     const outside = await run('0.8');

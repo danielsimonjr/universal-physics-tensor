@@ -3010,7 +3010,7 @@ The codebase is organized into the following modules:
 | `../args.js` | `FlagSpec` | Import (type-only) |
 | `../command.js` | `registerCommand, Command, CommandCtx` | Import |
 | `../output.js` | `emitJson` | Import |
-| `../errors.js` | `UsageError` | Import |
+| `../errors.js` | `UsageError, EXIT_CHECK_FAILED` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import (type-only) |
 
 **Exports:**
@@ -3144,7 +3144,7 @@ The codebase is organized into the following modules:
 | `../command.js` | `registerCommand, Command, CommandCtx` | Import |
 | `../graphs.js` | `resolveGraph` | Import |
 | `../output.js` | `emitJson` | Import |
-| `../errors.js` | `UsageError, CliError` | Import |
+| `../errors.js` | `UsageError, CliError, EXIT_CHECK_FAILED` | Import |
 | `./_discovery-opts.js` | `parseDiscoveryOpts` | Import |
 | `../../composition/edge.js` | `BridgeEdge` | Import (type-only) |
 | `../../composition/graph-viz.js` | `VizJunction, VizModel` | Import (type-only) |
@@ -3165,7 +3165,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `../args.js` | `FlagSpec` | Import (type-only) |
 | `../command.js` | `registerCommand, Command, CommandCtx` | Import |
-| `../errors.js` | `CliError` | Import |
+| `../errors.js` | `CliError, EXIT_CHECK_FAILED` | Import |
 | `../output.js` | `emitJson` | Import |
 | `./regime.js` | `parseAt, resolveAtPoint, showInequality` | Import |
 
@@ -3270,10 +3270,11 @@ The codebase is organized into the following modules:
 
 ---
 
-### `src/cli/errors.ts` - Typed error classes for the UPT CLI.
+### `src/cli/errors.ts` - Typed error classes and exit codes for the UPT CLI.
 
 **Exports:**
 - Classes: `UsageError`, `CliError`
+- Constants: `EXIT_CHECK_FAILED`
 
 ---
 
@@ -6613,8 +6614,8 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 351 |
 | Total Modules | 11 |
-| Total Lines of Code | 69999 |
-| Total Exports | 2471 |
+| Total Lines of Code | 70033 |
+| Total Exports | 2472 |
 | Total Re-exports | 1239 |
 | Total Classes | 58 |
 | Total Interfaces | 362 |
