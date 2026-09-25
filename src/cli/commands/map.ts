@@ -411,6 +411,18 @@ Your equation:  ${user.junction.label}`);
     return exitCode;
   }
 
+  // --equation: the verdict on the user's equation is the answer asked for, so it
+  // comes BEFORE the linkage map, not after ~45 lines of it (persona finding N4).
+  if (user) {
+    const model = api.buildVizModel(fullGraph, {
+      title: `UPT physics map — ${label}`,
+      extraJunctions: overlay([user.junction]),
+      ...filterOpts,
+    });
+    out(`\nYour equation:  ${user.junction.label}`);
+    printEquationReport(api, model, user, out, comparisons);
+  }
+
   const m = api.linkageMap(graph);
   const mix = (s: Readonly<Record<string, number>>) =>
     Object.entries(s)
@@ -428,17 +440,6 @@ Your equation:  ${user.junction.label}`);
   out(`  ○ isolated (${m.isolated.length}) — share no quantity with any other edge:`);
   out(`     ${m.isolated.join(', ')}`);
   out('\n  (a structural map — shared-quantity connectivity, NOT a credibility signal)');
-
-  // --equation: where does the user's equation land in this graph?
-  if (user) {
-    const model = api.buildVizModel(fullGraph, {
-      title: `UPT physics map — ${label}`,
-      extraJunctions: overlay([user.junction]),
-      ...filterOpts,
-    });
-    out(`\nYour equation:  ${user.junction.label}`);
-    printEquationReport(api, model, user, out, comparisons);
-  }
   return exitCode;
 }
 
