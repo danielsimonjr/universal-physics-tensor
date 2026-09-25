@@ -25,6 +25,12 @@ from v0.1.0 onward.
   `"dimensionless"` spelling. It also gives a minimal pendulum example, whose periods are
   2π√(ℓ/g) to three places. A test takes that example out of the help text and loads it with the
   real loader, and it checks every kind and role against the ones the loader accepts.
+- **The `upt evaluate` help quoted a Chandrasekhar mass the command does not print** (persona
+  finding D4). It said "~1.44 M_sun", but `upt evaluate be-63 mu_e=2` prints 1.4559. The help in
+  `upt help`, `upt help evaluate` and `cli/README.md` now says ≈ 1.456 and names the inputs: an ideal
+  degenerate gas, with m_u and M☉ = 1.989e30 kg. Independent recomputation gives
+  ω₃√(3π)/2 · (ħc/G)^{3/2}/(2m_u)² = 2.8957e30 kg = 1.4559 M☉. A test reads the number back out
+  of both help sources and compares it with the evaluator.
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and

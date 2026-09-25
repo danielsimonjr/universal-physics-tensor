@@ -174,7 +174,8 @@ Usage:
   upt evaluate <be-NN> key=value ...
         Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55..65).
         With no bridge id, lists the evaluable bridges and their input keys.
-        e.g.  upt evaluate be-63 mu_e=2   → Chandrasekhar mass ~1.44 M_sun
+        e.g.  upt evaluate be-63 mu_e=2   → Chandrasekhar mass ≈ 1.456 M_sun
+              (ideal degenerate gas, with m_u and M_sun = 1.989e30 kg)
 
   upt ground <quantityA> <quantityB>
         The epistemic-grounding ledger for one discovery candidate a=b: which

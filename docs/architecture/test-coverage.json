@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 460,
+    "totalTestFiles": 461,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -1275,6 +1275,7 @@
       "tests/bridges/spec-vs-index.test.ts",
       "tests/bridges-index.test.ts",
       "tests/canonical/invariants.test.ts",
+      "tests/cli/evaluate-help-claim.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/catalog-full.test.ts",
@@ -7570,6 +7571,9 @@
       "src/cli/commands/regime.ts",
       "src/cli/commands/path.ts",
       "src/cli/commands/atlas.ts"
+    ],
+    "tests/cli/evaluate-help-claim.test.ts": [
+      "src/bridges/be63-chandrasekhar-mass.ts"
     ],
     "tests/cli/explain-bridge-redirect.test.ts": [
       "src/cli/main.ts",

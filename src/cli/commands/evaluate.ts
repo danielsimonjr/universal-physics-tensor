@@ -14,7 +14,8 @@ const FLAGS: FlagSpec[] = [{ name: '--json', valueStyle: 'none' }];
 
 const HELP = `upt evaluate <be-NN> key=value ...
         Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55..65).
-        e.g.  upt evaluate be-63 mu_e=2   → Chandrasekhar mass ≈ 1.44 M_⊙
+        e.g.  upt evaluate be-63 mu_e=2   → Chandrasekhar mass ≈ 1.456 M_⊙
+              (ideal degenerate gas, with m_u and M_⊙ = 1.989e30 kg)
               upt evaluate be-55 C=1      → quantum Hall R_H = von Klitzing constant
         With no bridge id, lists the evaluable bridges and their input keys.`;
 

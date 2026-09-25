@@ -116,7 +116,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 |---|---|
 | `confront [--bridge=be-XX] [--rigor=<tier>] [--frontier] [--sensitivity]` | Run the catalog's committed real-data confrontations — predicted vs observed, each tagged with its **rigor tier** (`[stringent\|moderate\|loose]`) and headed by the distribution ("NOT N equal confirmations"). `--bridge=be-XX` runs one; `--rigor=stringent\|moderate\|loose` filters to a tier; `--frontier` ranks the σ-tests by margin to exclusion (tightest = most at-risk under new data); `--sensitivity` adds the input-elasticity ranking (value-kind only). Not `--source`-parameterized. |
 | `axes` (`axis-audit`) | Axis-discrimination audit — which tensor classification axes GATE the discovery funnel (an axis gates only when it MEASURABLY fires). Reproduces the rank-7 measurement: scale+force gate; topology/statistics/symmetry classify but do not gate. |
-| `evaluate <be-NN> key=value …` | Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55…65) via its registered evaluator. With no bridge id, lists the evaluable bridges + their input keys. e.g. `upt evaluate be-63 mu_e=2` → M_Ch ≈ 1.44 M_⊙. |
+| `evaluate <be-NN> key=value …` | Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55…65) via its registered evaluator. With no bridge id, lists the evaluable bridges + their input keys. e.g. `upt evaluate be-63 mu_e=2` → M_Ch ≈ 1.456 M_⊙ (ideal degenerate gas, with m_u and M_⊙ = 1.989e30 kg). |
 | `ground <a> <b>` | The epistemic-grounding ledger for one discovery candidate a≡b: which falsifiers passed, which abstained (gaps), and the honest permanent ceiling (no mechanism test, no data test). |
 
 ### Atlas — regimes and routes between MODELS
