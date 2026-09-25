@@ -32,6 +32,15 @@ from v0.1.0 onward.
   under *gaps* ("anchor-invariant … an identity, not evidence"). A magnitude clash stays a clash.
   The flag fires on 4 catalog candidates; only this one was a pass. The verdict, still `promising`,
   is unchanged: magnitude is not one of its conditions.
+- **`upt explain` called one bridge written twice "independent derivations"** (persona finding
+  L5). For `hawking-temperature mass=1.989e30` it reported "2 independent derivations (be-42,
+  be-42-via-rs). They agree … — a passing consistency check". The two edges are BE-42 in M and in
+  r_s: ℏc/(4π k_B r_s) with r_s = 2GM/c² is ℏc³/(8πGM k_B), so their agreement is algebra. The value
+  itself, 6.1684 × 10⁻⁸ K, is correct (independent recomputation: 6.16843 × 10⁻⁸ K). The summary now
+  counts independence by catalog bridge (`BridgeEdge.beId`): "2 derivation routes … restate ONE
+  bridge (BE-42) … agreement by construction, not an independent check". Routes over several
+  distinct bridges are counted as such. `DerivationExplanation` gains `beId` (additive). Three
+  goldens change by that summary line (`demo-no-args`, `explain-bare-names`, `explain-mass-value`).
 
 ## [0.46.0] - 2026-09-24
 

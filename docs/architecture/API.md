@@ -588,6 +588,8 @@ Everything in this section is `@public` and re-exported from `src/index.ts` unle
   - the dimensional sufficiency of the known set (Buckingham-π);
   - a plain-language `summary`.
 
+   Each `DerivationExplanation` carries the `beId` of the bridge its last edge encodes. The summary counts independence by bridge, not by edge: two routes with the same `beId` (`be-42` and `be-42-via-rs`) restate one bridge, so their agreement is reported as agreement by construction, not as a consistency check.
+
    `known` may be a name list (structural + dimensional only) or values (adds recovery + consistency); `extraDimensions` declares dims for non-graph knowns (raw `G`, `c`, …). Types: `QuantityExplanation`, `DerivationExplanation`, `ExplainOptions`.
 
 ```typescript

@@ -5,7 +5,9 @@
  * name→value), it composes:
  *
  *   1. the identifiability classifier — CAN the graph compute the target
- *      from the knowns, and via how many independent derivations?
+ *      from the knowns, and via how many derivations? Independence is
+ *      counted by catalog bridge (`beId`): two routes that restate one bridge
+ *      agree by algebra, and the summary says so.
  *   2. the retrodiction harness — when values are supplied, RECOVER the
  *      value via each derivation and (for over-determined targets) check
  *      they agree;
@@ -37,6 +39,12 @@ import { dimensionallyDetermines } from '../dimensional/buckingham.js';
  *  ground-truth values were supplied. @public */
 export interface DerivationExplanation {
   readonly edge: string;
+  /**
+   * The catalog bridge the last edge encodes (`BridgeEdge.beId`), `null` for a
+   * law or an uncatalogued edge. Two routes with the same `beId` are one
+   * bridge restated, so their agreement is algebra, not a check.
+   */
+  readonly beId: number | null;
   readonly label: string;
   /** The edge's immediate (last-hop) source quantities. */
   readonly sources: readonly string[];
@@ -201,13 +209,31 @@ function buildSummary(
       }
       break;
     case 'over-determined':
-    default:
-      s = `'${target}' is over-determined from ${known}: ${derivations.length} independent derivations (${ids}).`;
+    default: {
+      // Independence is counted by BRIDGE, not by edge: be-42 and be-42-via-rs
+      // are one bridge written in M and in r_s, and agree by algebra.
+      const bridges = [...new Set(derivations.map((d) => (d.beId === null ? d.edge : `BE-${d.beId}`)))];
+      const oneBridge = bridges.length === 1 && derivations.length > 1;
+      if (bridges.length === derivations.length) {
+        s = `'${target}' is over-determined from ${known}: ${derivations.length} independent derivations (${ids}).`;
+      } else if (oneBridge) {
+        s = `'${target}' is over-determined from ${known}: ${derivations.length} derivation routes (${ids}) restate ONE bridge (${bridges[0]}).`;
+      } else {
+        s = `'${target}' is over-determined from ${known}: ${derivations.length} derivation routes (${ids}) over ${bridges.length} distinct bridges (${bridges.join(', ')}).`;
+      }
       if (consistency) {
-        s +=
-          consistency.outcome === 'consistent'
-            ? ` They agree (relative spread ${consistency.relativeSpread.toExponential(1)}) — a passing consistency check.`
-            : ` They DISAGREE (relative spread ${consistency.relativeSpread.toExponential(1)}) — a falsification.`;
+        const spread = consistency.relativeSpread.toExponential(1);
+        if (consistency.outcome === 'consistent') {
+          s += oneBridge
+            ? ` They agree (relative spread ${spread}) — agreement by construction, not an independent check.`
+            : ` They agree (relative spread ${spread}) — a passing consistency check.`;
+        } else {
+          s += oneBridge
+            ? ` They DISAGREE (relative spread ${spread}) — two forms of one bridge disagree: an encoding error.`
+            : ` They DISAGREE (relative spread ${spread}) — a falsification.`;
+        }
+      } else if (oneBridge) {
+        s += ` The routes restate one bridge, so they carry no independent constraint.`;
       } else {
         s += ` The ${id.surplusConstraints} surplus derivation(s) are falsifiable consistency constraints (supply values to check them).`;
       }
@@ -215,6 +241,7 @@ function buildSummary(
         s += ` Recovered value: ${recoveredValue.toExponential(4)}.`;
       }
       break;
+    }
   }
 
   if (dimensional?.determined && dimensional.monomial) {
@@ -317,6 +344,7 @@ export function explainQuantity(
       }
       return {
         edge: eid,
+        beId: e?.beId ?? null,
         label: e?.label ?? eid,
         sources,
         leafInputs,
