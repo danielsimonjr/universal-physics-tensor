@@ -275,7 +275,7 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
+- [x] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
       findings in the persona's `FINDINGS.md`, rulings by inbox 2026-09-25). One finding per commit.
       - [x] L1: `upt path` quotes a bound and "all hold" outside the bound's own regime (pendulum at θ0 = 0.8: bound 1.59%, true error 4.15%).
       - [x] L3: the discovery magnitude gate passes an anchor-invariant identity as evidence (λ_th(T_H) = 4π ℓ_P for every M).
