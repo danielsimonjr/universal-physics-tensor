@@ -4,7 +4,8 @@ Usage:
   upt explain <quantity> [name=value | name] ...
         Explain how the graph determines a quantity: the identifiability
         verdict, recovered value, derivation chains, and whether the inputs
-        are dimensionally sufficient.
+        are dimensionally sufficient. A name that is not a quantity of the
+        graph is reported NOT COVERED, with near names, and exits 1.
         e.g.  upt explain hawking-temperature mass=1.989e30
 
   upt priority

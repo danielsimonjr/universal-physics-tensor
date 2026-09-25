@@ -197,7 +197,7 @@ function buildSummary(
       }
       break;
     case 'under-determined':
-      s = `'${target}' cannot be determined from ${known}: the graph has no derivation path.`;
+      s = `'${target}' is in the graph, but cannot be determined from ${known}: the graph has no derivation path.`;
       if (id.blockingFrontier.length) {
         s += ` Knowing one of {${id.blockingFrontier.join(', ')}} would unblock it.`;
       }

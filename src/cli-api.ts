@@ -31,6 +31,8 @@ export {
   renderDotToSvg,
   equationLanding,
   analyzeUserEquation,
+  resolveToCatalogName,
+  suggestQuantities,
   buckinghamPi,
   dimensionallyDetermines,
 } from './index.js';

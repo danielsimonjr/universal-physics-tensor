@@ -4,7 +4,7 @@
     "version": "0.46.0",
     "totalFiles": 351,
     "totalModules": 11,
-    "totalExports": 2472
+    "totalExports": 2474
   },
   "entryPoints": [
     {
@@ -10112,7 +10112,8 @@
           {
             "file": "../errors.js",
             "imports": [
-              "UsageError"
+              "UsageError",
+              "CliError"
             ]
           }
         ],
@@ -10892,6 +10893,8 @@
               "renderDotToSvg",
               "equationLanding",
               "analyzeUserEquation",
+              "resolveToCatalogName",
+              "suggestQuantities",
               "buckinghamPi",
               "dimensionallyDetermines"
             ],
@@ -11296,6 +11299,8 @@
           "renderDotToSvg",
           "equationLanding",
           "analyzeUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
           "buckinghamPi",
           "dimensionallyDetermines",
           "bridgePriority",
@@ -11415,6 +11420,8 @@
           "renderDotToSvg",
           "equationLanding",
           "analyzeUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
           "buckinghamPi",
           "dimensionallyDetermines",
           "bridgePriority",
@@ -24212,15 +24219,15 @@
   "statistics": {
     "totalTypeScriptFiles": 351,
     "totalModules": 11,
-    "totalLinesOfCode": 70033,
-    "totalExports": 2472,
+    "totalLinesOfCode": 70051,
+    "totalExports": 2474,
     "totalClasses": 58,
     "totalInterfaces": 362,
     "totalFunctions": 563,
     "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 611,
-    "totalReExports": 1239,
+    "totalReExports": 1241,
     "totalTypeOnlyImports": 490,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
