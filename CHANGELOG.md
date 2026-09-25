@@ -29,6 +29,11 @@ from v0.1.0 onward.
   way. **Migration:** a script that treated any non-zero exit as a crash should treat 3 as "the
   check failed", and read the output or `--json` for the detail. The golden harness gains an
   optional `exitCode` per case; `map-equation-mismatch` pins 3.
+  `path --at` accepts the same group spellings and parameter-derived groups as `regime`. This
+  landed in F1 (e9a90c5), and exit 3 depends on it: a spelling the path could not resolve would
+  otherwise read as unchecked, or produce a false VIOLATED and a wrong exit 3. A new test
+  runs `tau · D · q^2=…`, `tau*D*q^2=…` and `tau=1 D=… q=1` on the telegraph path. At ε = 1 all
+  three exit 3, and at ε = 0.02 all three exit 0.
 
 ### Fixed
 

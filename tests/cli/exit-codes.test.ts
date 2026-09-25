@@ -64,3 +64,25 @@ describe('an unknown name is not a failed check', () => {
     expect(await code(['map', '--equation', 'period = uu / gravity'])).toBe(0);
   });
 });
+
+// `path --at` resolves group spellings and parameter-derived groups the same way as `upt regime`
+// (landed in F1, e9a90c5). With exit 3, that matters more: a spelling the path could not resolve
+// would read as an unchecked regime, or, worse, feed a wrong value, and a false VIOLATED now fails
+// a script. Every spelling of the same point must give the same verdict and the same exit code.
+describe('path --at: every spelling of a point gives the same verdict', () => {
+  const spellings = (eps: number): string[][] => [
+    [`tau · D · q^2=${eps}`],
+    [`tau*D*q^2=${eps}`],
+    ['tau=1', `D=${eps}`, 'q=1'],
+  ];
+  it('ε = 1 (outside ε ≤ 0.05): all three spellings exit 3', async () => {
+    for (const at of spellings(1)) {
+      expect(await code(['path', 'model-telegraph', 'model-fick', '--at', ...at]), at.join(' ')).toBe(3);
+    }
+  });
+  it('ε = 0.02 (inside): all three spellings exit 0', async () => {
+    for (const at of spellings(0.02)) {
+      expect(await code(['path', 'model-telegraph', 'model-fick', '--at', ...at]), at.join(' ')).toBe(0);
+    }
+  });
+});
