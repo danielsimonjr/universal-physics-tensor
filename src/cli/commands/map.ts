@@ -24,6 +24,7 @@ import type { VizJunction, VizModel } from '../../composition/graph-viz.js';
 import type { EvidenceTag, RelationType } from '../../atlas/types.js';
 import type { SourceName } from '../graphs.js';
 import type { EquationAnalysis } from '../../composition/user-equation.js';
+import type { CanonicalComparison } from '../../composition/canonical-compare.js';
 
 const FLAGS: FlagSpec[] = [
   { name: '--source', valueStyle: 'attached' },
@@ -150,12 +151,16 @@ async function analyzeEquation(
   api: CommandCtx['api'],
   equation: string,
   graph: readonly BridgeEdge[]
-): Promise<EquationAnalysis> {
+): Promise<{ user: EquationAnalysis; comparisons: CanonicalComparison[] }> {
   const catalogDims = new Map<string, import('../../dimensional/types.js').Dimension>();
   for (const e of graph) {
     for (const q of [...e.sources, e.target]) catalogDims.set(q.name, q.dim);
   }
-  return api.analyzeUserEquation(equation, catalogDims);
+  const user = await api.analyzeUserEquation(equation, catalogDims);
+  // Dimensions cannot see a prefactor: compare with the canonical equation the
+  // user's one restates, when the registry holds one (persona finding L2).
+  const comparisons = user.parseError ? [] : await api.compareUserEquation(equation, catalogDims);
+  return { user, comparisons };
 }
 
 // Print the dimensional verdict, where the equation landed, and any hints.
@@ -164,7 +169,8 @@ function printEquationReport(
   api: CommandCtx['api'],
   model: VizModel,
   user: EquationAnalysis,
-  out: (line?: string) => void
+  out: (line?: string) => void,
+  comparisons: readonly CanonicalComparison[] = [],
 ): void {
   out('');
   if (user.consistent === true) {
@@ -178,6 +184,7 @@ function printEquationReport(
   } else if (user.rhsDimension) {
     out(`  · RHS dimension: ${api.format(user.rhsDimension)} (target not in the catalog, so no comparison)`);
   }
+  for (const line of api.describeComparisons(comparisons)) out(`  ${line}`);
   const L = api.equationLanding(model, 'user-equation');
   if (L.isolated) {
     out('  ⚠ your equation is ISOLATED — it shares no quantity with this graph.');
@@ -249,6 +256,7 @@ async function run(ctx: CommandCtx): Promise<number> {
 
   // --equation injects a user-supplied "TARGET = EXPR" as a 'user' junction.
   let user: EquationAnalysis | null = null;
+  let comparisons: CanonicalComparison[] = [];
   const equationValues = args.flags.get('equation');
   const equation = equationValues && equationValues.length > 0 ? equationValues[equationValues.length - 1] : null;
   if (equation != null) {
@@ -256,7 +264,7 @@ async function run(ctx: CommandCtx): Promise<number> {
       throw new UsageError('upt: --equation requires "TARGET = EXPR"');
     }
     try {
-      user = await analyzeEquation(api, equation, graph); // throws UserEquationError on malformed structure
+      ({ user, comparisons } = await analyzeEquation(api, equation, graph)); // throws UserEquationError on malformed structure
     } catch (e) {
       throw new UsageError('upt: ' + (e && (e as Error).message ? (e as Error).message : String(e)));
     }
@@ -294,6 +302,7 @@ async function run(ctx: CommandCtx): Promise<number> {
         rhsDimension: user.rhsDimension,
         targetDimension: user.targetDimension,
         hints: user.hints,
+        canonicalComparisons: comparisons,
       };
     }
     emitJson(
@@ -349,7 +358,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     // source. The diagram itself also carries the legend (see `buildVizModel`).
     if (posterNote !== null) err(`upt: ${posterNote}`);
     if (model.filterLegend !== null) err(`upt: ${model.filterLegend}`);
-    if (user) printEquationReport(api, model, user, err);
+    if (user) printEquationReport(api, model, user, err, comparisons);
     return 0;
   }
   if (fmt !== 'text') {
@@ -377,7 +386,7 @@ Poster index — statements and the derivations between them  [source: ${label}]
     if (user) {
       out(`
 Your equation:  ${user.junction.label}`);
-      printEquationReport(api, model, user, out);
+      printEquationReport(api, model, user, out, comparisons);
     }
     return 0;
   }
@@ -408,7 +417,7 @@ Your equation:  ${user.junction.label}`);
       ...filterOpts,
     });
     out(`\nYour equation:  ${user.junction.label}`);
-    printEquationReport(api, model, user, out);
+    printEquationReport(api, model, user, out, comparisons);
   }
   return 0;
 }

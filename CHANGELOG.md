@@ -62,6 +62,34 @@ from v0.1.0 onward.
   and `DATAFLOW.md` say the same. The verdict enum, counts and ranking are unchanged. Four
   `discover` goldens change by those two lines.
 
+### Added
+
+- **A user formula is now compared with the canonical equation it restates** (persona finding L2).
+  `upt map --equation "period = pi*sqrt(length/gravity)"` and `upt derive … --formula
+  "mass*velocity^2"` answered "✓ consistent" and "MATCHES", although each is wrong by a constant.
+  Dimensional analysis cannot see a prefactor, and the output did not say so. When a canonical
+  equation has the same target and the same non-constant variables, both commands now evaluate
+  the two formulas at three fixed points, where variable i takes (1.7 + i)^p for p = 1, 1.3, 1.6.
+  The output is identical on every run. They report one of:
+  - **agrees**, prefactor included;
+  - **differs by a constant factor**, with the ratio `yours/canonical`;
+  - **differs in FORM**, when the ratio is not constant across the points;
+  - **prefactor NOT checked**, with the reason.
+
+  The last one matters for the persona's own two examples. `src/canonical` records CE-pendulum-period
+  only dimensionally and CE-kinetic-energy only up to a constant (its AST is m·v²), so a wrong 2π or
+  ½ still cannot be caught there. The output now says so instead of staying silent. `src/canonical`
+  is a pinned Criterion 3 input tree, so recording those prefactors needs an amendment. When no
+  entry matches, the output says the prefactor is not checked. Checked computation:
+  `hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)` reports the factor 2.00000 against
+  CE-hawking-temperature (4π for 8π). The exact form reports agreement. A 1/M² variant and T ∝ ℓ/g
+  report a difference in form. A same-scale point design would have hidden the T ∝ ℓ/g case, because
+  every ratio between variables stays fixed; the per-variable bases were chosen after a test caught
+  that. In `derive`, a variable counts as a constant only when its name AND dimension match one:
+  `c:length` stays a length. The `--json` envelopes gain `canonicalComparisons` (additive). New
+  internal module `composition/canonical-compare.ts`. The `derive-formula` and three
+  `map-equation` goldens gain the comparison line.
+
 ## [0.46.0] - 2026-09-24
 
 ### Release summary

@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 346,
-    "totalTestFiles": 451,
-    "testedCount": 345,
+    "totalSourceFiles": 347,
+    "totalTestFiles": 453,
+    "testedCount": 346,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -207,6 +207,7 @@
     "src/composition/axis-audit.ts",
     "src/composition/bridge-analysis.ts",
     "src/composition/bridge-prediction.ts",
+    "src/composition/canonical-compare.ts",
     "src/composition/canonical-graph.ts",
     "src/composition/catalog-graph.ts",
     "src/composition/compose-surface.ts",
@@ -1967,6 +1968,7 @@
     "src/cli/commands/atlas.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -1987,6 +1989,7 @@
     "src/cli/commands/audit.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2007,6 +2010,7 @@
     "src/cli/commands/axes.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2027,6 +2031,7 @@
     "src/cli/commands/candidates.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2047,6 +2052,7 @@
     "src/cli/commands/canonical.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2067,6 +2073,7 @@
     "src/cli/commands/confront.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2087,6 +2094,7 @@
     "src/cli/commands/connectors.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2107,6 +2115,7 @@
     "src/cli/commands/coverage.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2127,6 +2136,7 @@
     "src/cli/commands/derive.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2147,6 +2157,7 @@
     "src/cli/commands/discover.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2167,6 +2178,7 @@
     "src/cli/commands/eval.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2187,6 +2199,7 @@
     "src/cli/commands/evaluate.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2207,6 +2220,7 @@
     "src/cli/commands/explain.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2227,6 +2241,7 @@
     "src/cli/commands/ground.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2247,6 +2262,7 @@
     "src/cli/commands/index.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2267,6 +2283,7 @@
     "src/cli/commands/map.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2287,6 +2304,7 @@
     "src/cli/commands/path.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2307,6 +2325,7 @@
     "src/cli/commands/predict.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2327,6 +2346,7 @@
     "src/cli/commands/priority.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2347,6 +2367,7 @@
     "src/cli/commands/probe.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2367,6 +2388,7 @@
     "src/cli/commands/recover.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2387,6 +2409,7 @@
     "src/cli/commands/regime.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2407,6 +2430,7 @@
     "src/cli/commands/symbolic.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2435,6 +2459,7 @@
     "src/cli/main.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
+      "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
       "tests/cli/command-count-prose.test.ts",
       "tests/cli/confront.test.ts",
@@ -2507,6 +2532,11 @@
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/attribute-audit.test.ts",
       "tests/composition/bridge-prediction.test.ts"
+    ],
+    "src/composition/canonical-compare.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
+      "tests/composition/canonical-compare.test.ts"
     ],
     "src/composition/canonical-graph.ts": [
       "tests/api/atlas-public-closure.test.ts",
@@ -3638,6 +3668,8 @@
       "tests/tensor.test.ts"
     ],
     "src/composition/symbolic-constants.ts": [
+      "tests/cli/graphs.test.ts",
+      "tests/cli/recover-conventions.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-constants-extra.test.ts"
     ],
@@ -3757,6 +3789,7 @@
       "tests/canonical/numeric-prefactor.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/composition/canonical-compare.test.ts",
       "tests/composition/canonical-graph.test.ts",
       "tests/composition/namespacing.test.ts",
       "tests/core/constants.test.ts",
@@ -7332,6 +7365,32 @@
       "src/atlas/families.ts",
       "src/atlas/types.ts"
     ],
+    "tests/cli/canonical-compare-cli.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts",
+      "src/cli/commands/atlas.ts"
+    ],
     "tests/cli/cli-from-src.test.ts": [
       "src/cli/main.ts",
       "src/cli/commands/index.ts",
@@ -7465,6 +7524,8 @@
       "src/composition/consequence.ts",
       "src/atlas/conventions.ts",
       "src/composition/grounding.ts",
+      "src/composition/canonical-compare.ts",
+      "src/composition/symbolic-constants.ts",
       "src/atlas/oscillators/index.ts",
       "src/atlas/families.ts",
       "src/atlas/derive-evidence.ts",
@@ -7873,6 +7934,8 @@
       "src/composition/consequence.ts",
       "src/atlas/conventions.ts",
       "src/composition/grounding.ts",
+      "src/composition/canonical-compare.ts",
+      "src/composition/symbolic-constants.ts",
       "src/atlas/oscillators/index.ts",
       "src/atlas/families.ts",
       "src/atlas/derive-evidence.ts",
@@ -8272,6 +8335,10 @@
       "src/dimensional/algebra.ts",
       "src/dimensional/types.ts",
       "src/core/types.ts"
+    ],
+    "tests/composition/canonical-compare.test.ts": [
+      "src/composition/canonical-compare.ts",
+      "src/core/constants.ts"
     ],
     "tests/composition/canonical-graph-information-axis.test.ts": [
       "src/canonical/registry.ts",

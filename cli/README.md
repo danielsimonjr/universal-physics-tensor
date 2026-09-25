@@ -108,7 +108,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | Command (aliases) | What it does |
 |---|---|
 | `eval "<formula>" name=value …` (`calc`) | Evaluate **your own** scalar formula (safe — arithmetic only). Knows `pi`/`tau` and `sqrt`/`exp`/`ln`/`sin`/…; any other name must be supplied. |
-| `derive <target:dim> <var:dim> … [--formula "<expr>"]` (`dim`) | Derive **your own** equation's dimensional form, and (with `--formula`) verify it and recover the dimensionless prefactor. |
+| `derive <target:dim> <var:dim> … [--formula "<expr>"]` (`dim`) | Derive **your own** equation's dimensional form, and (with `--formula`) verify it and recover the dimensionless prefactor. With `--formula` it also compares the formula with the canonical equation of the same target and variables, at fixed points: agrees, differs by a constant factor, differs in form, or the prefactor is NOT checked because the registry holds the law only up to a constant. `upt map --equation` reports the same comparison. |
 
 ### Data confrontation
 
@@ -298,6 +298,10 @@ node bin/upt.mjs map --source=both --proposed --format=mermaid
 # Inject YOUR OWN equation: dimensional check + where it lands in the graph:
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
 #   → ✓ dimensionally consistent: [time]; joins the anchored cluster via {gravity, length, period}
+#   → · same form as CE-pendulum-period, but the registry records its dimensional form only,
+#       so your prefactor is NOT checked   (dimensions cannot see a prefactor)
+node bin/upt.mjs map --equation "hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)"
+#   → ⚠ differs from CE-hawking-temperature by a constant factor: yours/canonical = 2.00000
 node bin/upt.mjs map --source=canonical --equation "period = mass"
 #   → ⚠ dimensional MISMATCH: RHS is [mass] but the target is [time]
 node bin/upt.mjs map --source=canonical --equation "period = uu / gravity"

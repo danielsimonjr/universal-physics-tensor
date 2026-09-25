@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
   version: 0.46.0
-  totalFiles: 349
+  totalFiles: 350
   totalModules: 11
-  totalExports: 2454
+  totalExports: 2464
 entryPoints:
   - file: src/index.ts
     type: main
@@ -6899,6 +6899,10 @@ modules:
           imports:
             - EquationAnalysis
           typeOnly: true
+        - file: ../../composition/canonical-compare.js
+          imports:
+            - CanonicalComparison
+          typeOnly: true
       exports:
         - command
       constants:
@@ -7369,6 +7373,21 @@ modules:
           imports:
             - describeGrounding
           reExport: true
+        - file: ./composition/canonical-compare.js
+          imports:
+            - compareWithCanonical
+            - compareUserEquation
+            - describeComparison
+            - describeComparisons
+          reExport: true
+        - file: ./composition/canonical-compare.js
+          imports:
+            - CanonicalComparison
+          reExport: true
+        - file: ./composition/symbolic-constants.js
+          imports:
+            - CONSTANTS
+          reExport: true
         - file: ./composition/grounding.js
           imports:
             - CandidateGrounding
@@ -7499,6 +7518,11 @@ modules:
         - checkConventions
         - unknownConventionKeys
         - describeGrounding
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparison
+        - describeComparisons
+        - CONSTANTS
         - OSCILLATOR_FAMILY
         - ATLAS_FAMILIES
         - deriveEvidence
@@ -7522,6 +7546,7 @@ modules:
         - ConsequenceSignal
         - ConsequenceEvidence
         - ConventionKey
+        - CanonicalComparison
         - CandidateGrounding
         - AtlasFamily
         - RegimeCheck
@@ -7624,6 +7649,12 @@ modules:
         - unknownConventionKeys
         - ConventionKey
         - describeGrounding
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparison
+        - describeComparisons
+        - CanonicalComparison
+        - CONSTANTS
         - CandidateGrounding
         - OSCILLATOR_FAMILY
         - ATLAS_FAMILIES
@@ -7806,6 +7837,57 @@ modules:
         - placeQuantity
         - buildRegimeTensor
         - predictMissingBridges
+    src/composition/canonical-compare.ts:
+      description: Compare a user's formula with the canonical (textbook) equation it restates.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/algebra.js
+          imports:
+            - equals
+        - file: ../canonical/registry.js
+          imports:
+            - CANONICAL_EQUATIONS
+        - file: ../canonical/canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+        - file: ./symbolic-constants.js
+          imports:
+            - CONSTANTS
+        - file: ./expr-eval.js
+          imports:
+            - evalExpr
+        - file: ./user-equation.js
+          imports:
+            - parseUserEquation
+            - resolveToCatalogName
+        - file: ../numerical/formula-registry.js
+          imports:
+            - parsePhysics
+        - file: ../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+      exports:
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparisons
+        - describeComparison
+      interfaces:
+        - CanonicalComparison
+      functions:
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparisons
+        - describeComparison
     src/composition/canonical-graph.ts:
       description: Canonical-only graph — project the standard-physics L-layer
       externalDependencies: []
@@ -16604,6 +16686,7 @@ dependencyGraph:
         - src/composition/axis-audit.ts
         - src/composition/bridge-analysis.ts
         - src/composition/bridge-prediction.ts
+        - src/composition/canonical-compare.ts
         - src/composition/canonical-graph.ts
         - src/composition/catalog-graph.ts
         - src/composition/compose-surface.ts
@@ -16766,18 +16849,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 349
+  totalTypeScriptFiles: 350
   totalModules: 11
-  totalLinesOfCode: 69200
-  totalExports: 2454
+  totalLinesOfCode: 69519
+  totalExports: 2464
   totalClasses: 58
-  totalInterfaces: 360
-  totalFunctions: 556
+  totalInterfaces: 361
+  totalFunctions: 560
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 607
-  totalReExports: 1232
-  totalTypeOnlyImports: 485
+  totalReExports: 1238
+  totalTypeOnlyImports: 489
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 1

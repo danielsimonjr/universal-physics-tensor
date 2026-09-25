@@ -41,7 +41,7 @@ The codebase is organized into the following modules:
 - **canonical**: 18 files
 - **cli**: 31 files
 - **root**: 1 file
-- **composition**: 71 files
+- **composition**: 72 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 31 files
@@ -3149,6 +3149,7 @@ The codebase is organized into the following modules:
 | `../../atlas/types.js` | `EvidenceTag, RelationType` | Import (type-only) |
 | `../graphs.js` | `SourceName` | Import (type-only) |
 | `../../composition/user-equation.js` | `EquationAnalysis` | Import (type-only) |
+| `../../composition/canonical-compare.js` | `CanonicalComparison` | Import (type-only) |
 
 **Exports:**
 - Constants: `command`
@@ -3366,6 +3367,9 @@ The codebase is organized into the following modules:
 | `./atlas/conventions.js` | `checkConventions, unknownConventionKeys` | Re-export |
 | `./atlas/conventions.js` | `ConventionKey` | Re-export |
 | `./composition/grounding.js` | `describeGrounding` | Re-export |
+| `./composition/canonical-compare.js` | `compareWithCanonical, compareUserEquation, describeComparison, describeComparisons` | Re-export |
+| `./composition/canonical-compare.js` | `CanonicalComparison` | Re-export |
+| `./composition/symbolic-constants.js` | `CONSTANTS` | Re-export |
 | `./composition/grounding.js` | `CandidateGrounding` | Re-export |
 | `./atlas/oscillators/index.js` | `OSCILLATOR_FAMILY` | Re-export |
 | `./atlas/families.js` | `ATLAS_FAMILIES` | Re-export |
@@ -3399,10 +3403,12 @@ The codebase is organized into the following modules:
   suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto, annotateAdjudications,
   adjudicationFor, candidateId, ADJUDICATIONS, AnnotatedCandidate, CandidateAdjudication,
   annotateConsequences, ConsequenceAnnotatedCandidate, ConsequenceSignal, ConsequenceEvidence,
-  checkConventions, unknownConventionKeys, ConventionKey, describeGrounding, CandidateGrounding,
-  OSCILLATOR_FAMILY, ATLAS_FAMILIES, deriveEvidence, NO_PASSING_WITNESSES, AtlasFamily, regimeHolds,
-  regimeOverlap, uncoveredRegions, RegimeCheck, RegimeOverlap, RegionSample, findPath, boundPath,
-  PathBoundResult, PathBoundClaim, PathNoClaim, AtlasBridge, RegimeInequality, AtlasModel, ModelId
+  checkConventions, unknownConventionKeys, ConventionKey, describeGrounding, compareWithCanonical,
+  compareUserEquation, describeComparison, describeComparisons, CanonicalComparison, CONSTANTS,
+  CandidateGrounding, OSCILLATOR_FAMILY, ATLAS_FAMILIES, deriveEvidence, NO_PASSING_WITNESSES,
+  AtlasFamily, regimeHolds, regimeOverlap, uncoveredRegions, RegimeCheck, RegimeOverlap, RegionSample,
+  findPath, boundPath, PathBoundResult, PathBoundClaim, PathNoClaim, AtlasBridge, RegimeInequality,
+  AtlasModel, ModelId
   ```
 
 
@@ -3485,6 +3491,28 @@ The codebase is organized into the following modules:
 
 **Exports:**
 - Functions: `regimeKey`, `placeQuantity`, `buildRegimeTensor`, `predictMissingBridges`
+
+---
+
+### `src/composition/canonical-compare.ts` - Compare a user's formula with the canonical (textbook) equation it restates.
+
+**Internal Dependencies:**
+| File | Imports | Type |
+|------|---------|------|
+| `../dimensional/validator.js` | `ExprNode` | Import (type-only) |
+| `../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../dimensional/algebra.js` | `equals` | Import |
+| `../canonical/registry.js` | `CANONICAL_EQUATIONS` | Import |
+| `../canonical/canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
+| `./symbolic-constants.js` | `CONSTANTS` | Import |
+| `./expr-eval.js` | `evalExpr` | Import |
+| `./user-equation.js` | `parseUserEquation, resolveToCatalogName` | Import |
+| `../numerical/formula-registry.js` | `parsePhysics` | Import |
+| `../dimensional/types.js` | `DIMENSIONLESS` | Import |
+
+**Exports:**
+- Interfaces: `CanonicalComparison`
+- Functions: `compareWithCanonical`, `compareUserEquation`, `describeComparisons`, `describeComparison`
 
 ---
 
@@ -6488,7 +6516,7 @@ graph TD
         N27[axis-audit]
         N28[bridge-analysis]
         N29[bridge-prediction]
-        N30[...66 more]
+        N30[...67 more]
     end
 
     subgraph Core
@@ -6566,17 +6594,17 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 349 |
+| Total TypeScript Files | 350 |
 | Total Modules | 11 |
-| Total Lines of Code | 69200 |
-| Total Exports | 2454 |
-| Total Re-exports | 1232 |
+| Total Lines of Code | 69519 |
+| Total Exports | 2464 |
+| Total Re-exports | 1238 |
 | Total Classes | 58 |
-| Total Interfaces | 360 |
-| Total Functions | 556 |
+| Total Interfaces | 361 |
+| Total Functions | 560 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
-| Type-only Imports | 485 |
+| Type-only Imports | 489 |
 | Runtime Circular Deps | 0 |
 | Type-only Circular Deps | 0 |
 

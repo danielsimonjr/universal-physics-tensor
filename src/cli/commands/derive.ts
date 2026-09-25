@@ -77,6 +77,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   let full: ReturnType<typeof api.buckinghamPi> | undefined;
   let formulaCheck: ReturnType<Awaited<ReturnType<typeof api.getFormulaDimensionChecker>>['check']> | undefined;
   let mean: number | undefined;
+  let canonicalComparisons: ReturnType<typeof api.compareWithCanonical> | undefined;
 
   const emitEnvelope = (): void => {
     emitJson(
@@ -87,6 +88,7 @@ async function run(ctx: CommandCtx): Promise<number> {
           ...(full !== undefined ? { buckingham: full } : {}),
           ...(formulaCheck !== undefined ? { formulaCheck } : {}),
           ...(mean !== undefined ? { prefactor: mean } : {}),
+          ...(canonicalComparisons !== undefined ? { canonicalComparisons } : {}),
         },
       },
       ctx.write
@@ -128,8 +130,36 @@ async function run(ctx: CommandCtx): Promise<number> {
       throw new UsageError('  formula parse error: ' + (e as Error).message);
     }
 
+    // Dimensions cannot see a prefactor: compare with the canonical equation this
+    // formula restates, when the registry holds one (persona finding L2). This
+    // needs no unique monomial, so it runs on both branches below. A variable
+    // named after a registered constant is that constant, as in `upt map --equation`.
+    const isConstant = (g: { name: string; dim: Dimension }): boolean => {
+      const c = api.CONSTANTS[g.name];
+      return c !== undefined && dimsEqualTol(c.dim, g.dim);
+    };
+    const variables = governing.filter((g) => !isConstant(g));
+    const compiled = cf;
+    canonicalComparisons = api.compareWithCanonical(
+      target.name,
+      variables.map((g) => g.name),
+      (values) =>
+        compiled.evaluate(
+          Object.fromEntries(
+            governing.map((g) => [
+              g.name,
+              isConstant(g) ? api.CONSTANTS[g.name]!.value : values[g.name.replace(/_/g, '-')]!,
+            ]),
+          ),
+        ),
+    );
+    const printComparisons = (): void => {
+      for (const line of api.describeComparisons(canonicalComparisons!)) textOut(`  ${line}`);
+    };
+
     if (!det.determined) {
       textOut('  formula given, but with no unique monomial there is no single prefactor to recover.');
+      printComparisons();
       if (isJson) emitEnvelope();
       return 0;
     }
@@ -155,6 +185,7 @@ async function run(ctx: CommandCtx): Promise<number> {
         ? `  formula MATCHES the dimensional form — recovered prefactor ≈ ${mean.toExponential(4)}`
         : `  formula does NOT match the dimensional monomial (different input-dependence — a decoy or different physics).`
     );
+    printComparisons();
   }
 
   if (isJson) emitEnvelope();
