@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 348 |
-| Total Test Files | 471 |
+| Total Test Files | 472 |
 | Source Files with Tests | 347 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -851,6 +851,7 @@ The following 1 source files are not directly imported by any test file:
 | `tools/criterion3-residual-corpus.test.ts` | 3 files |
 | `tools/criterion3-run.test.ts` | 1 files |
 | `tools/formalref-axiom-gate.test.ts` | 1 files |
+| `tools/hook-git-env.test.ts` | 0 files |
 | `tools/package-deps.test.ts` | 0 files |
 | `tools/plan-doc-audit.test.ts` | 0 files |
 | `tools/pushed-head.test.ts` | 0 files |
