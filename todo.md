@@ -275,6 +275,20 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
+      findings in the persona's `FINDINGS.md`, rulings by inbox 2026-09-25). One finding per commit.
+      - [ ] L1: `upt path` quotes a bound and "all hold" outside the bound's own regime (pendulum at θ0 = 0.8: bound 1.59%, true error 4.15%).
+      - [ ] L3: the discovery magnitude gate passes an anchor-invariant identity as evidence (λ_th(T_H) = 4π ℓ_P for every M).
+      - [ ] L5: `upt explain` calls two restatements of ONE bridge (be-42, be-42-via-rs) "independent derivations" and their agreement a consistency check.
+      - [ ] W1: `ab-kg-schrodinger` counterexample says "17% too high" (true excess 20.7%); the relative-error reference (the reduced model) is stated nowhere.
+      - [ ] L4: AXIS-CLASH is labelled "identification falsified" while the funnel counts 0 falsified; relabel as a regime-label prior (text only).
+      - [ ] L2: a user equation whose target and inputs match one canonical equation is compared with it at fixed points (prefactor agrees / differs by factor r / differs in FORM).
+      - [ ] L6: `upt confront` be-51 shows a derived deflection as "observed"; show γ_obs ± σ as the observation.
+      - [ ] L6b: BE-37/51/52 confrontations use G × 1.989e30 for GM☉; switch to the IAU 2015 nominal 1.3271244e20 m³ s⁻².
+      - [ ] L7: probe marks a corpus-equivalent candidate "not novel" without comparing its fitted prefactor with the corpus one.
+      - [ ] L8: `ab-stokes-einstein` states Re ≪ 1 and t ≫ m/γ in prose only; add machine inequalities (conditional: no frozen hash may move).
+      - [ ] L9: `upt path --at` prints only the domain supremum; add `deltaAt(point)` as "bound at this point", tested ≥ the exact error.
+
 - [ ] **Atlas Sprint 6 — study, scoped release, discovery hypothesis (IN FLIGHT).** **S6.1** — study
       orchestration (`bun run atlas:study`); refuses (exit 3) on the empty frozen set.
       **S6.2** — ablation: four cumulative configurations, paired step statistics.
