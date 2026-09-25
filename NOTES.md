@@ -13,6 +13,10 @@ nothing validates prose and the next reader cannot tell.
 
 ### Phase exit criteria — kept separate from "tasks landed"
 
+- **UPT is DONE** (owner, 2026-09-24; pre-registration Amendment 12): every §7 criterion is measured
+  and reported. Criteria 2 and 3 are NOT MET, and they are the study's findings. Hybrid retrieval is
+  future work (ROADMAP §8).
+
 Those are different claims and merging them produces a false green.
 
 - **Phase 4.** ≥ 20 bridges across ≥ 5 relation types: **met**, 20 bridges and 6 types.

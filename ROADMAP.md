@@ -501,6 +501,8 @@ agent's time is not a reviewer's time. The owner amended this criterion; it is n
 
 ## 7. Phase status
 
+**UPT is DONE (owner, 2026-09-24; pre-registration Amendment 12).** DONE means that every criterion below is MEASURED and REPORTED: MET, NOT MET, amended or deferred. It does not mean that every criterion is met. Study criteria 2 and 3 are NOT MET, and they are the study's findings.
+
 | Phase | Status | Pointer |
 |---|---|---|
 | 0 — Oscillator pilot | code delivered; exit criteria closed by amendment | Independent human physicist review NOT MEASURED (no human reviewer); a model-persona review (Fable) was run on 2026-09-24, 13 findings, each with its disposition in [`docs/research/phase-0-model-persona-review.md`](docs/research/phase-0-model-persona-review.md) (pre-registration Amendment 7). Per-bridge curation cost AMENDED to NOT MEASURED (Amendment 6). [`NOTES.md`](NOTES.md) |
@@ -518,6 +520,10 @@ agent's time is not a reviewer's time. The owner amended this criterion; it is n
 > Phases 0–2 had shipped and Phase 3 was under way. A stale status table is worse than no status
 > table: it answers the question "what is left?" confidently and wrongly, and it is the one
 > document a reader consults before deciding whether to proceed or ask.
+
+## 8. Future (not started)
+
+**Hybrid retrieval** (owner, 2026-09-24; pre-registration Amendment 12). An embedding model finds the candidate canonical relations for a claim, and the atlas verifies them. Each part is used where the study measured it strong. qwen3-embedding:4b retrieved the correct relation for 49/50 claims, and the atlas's typed search for 12/50 (criterion 3, Amendment 11). The atlas made 1 wrong accept, and the local LLMs made 9 to 13 (criterion 4, Amendment 4). No design exists yet.
 
 Subagent-driven execution plan for all seven phases:
 [`docs/planning/Atlas-Roadmap-Implementation-Plan.md`](docs/planning/Atlas-Roadmap-Implementation-Plan.md).

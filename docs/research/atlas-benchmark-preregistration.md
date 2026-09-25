@@ -373,3 +373,16 @@ This SHA-256 value freezes the vector file under `docs/research/criterion3/`:
 | embeddings/qwen3-embedding-4b.json | 8fd79d2c6aaaf95c67f9a29ceb5fe4b88b42970c8e514d98c72c00a2c519cbdc |
 
 No threshold, item, rater assignment, truth set or hash changes.
+
+**Amendment 12 (2026-09-24) — the owner accepts the measured verdicts, and UPT is DONE.** Criteria 2
+and 3 are NOT MET (Amendments 4 and 11). Mothership relayed the owner's decision verbatim (2026-09-24,
+21:29 CDT): "(a) for now. (b) as a future ROADMAP using embedding with Qwen3-embedding:4b."
+
+- **(a) The measured verdicts are the study's findings.** Criterion 2 is NOT MET: the atlas rejected
+  6/61 invalid items, and qwen3.8:27b rejected 51/61. Criterion 3 is NOT MET: typed structural search
+  scored 12/50, and embeddings scored 49/50. Neither is re-run or re-framed.
+- **DONE means that every ROADMAP §7 criterion is MEASURED and REPORTED:** MET, NOT MET, amended or
+  deferred. UPT is DONE on that basis. DONE does not mean that every criterion is met.
+- **(b) is future work, not started:** hybrid retrieval with qwen3-embedding:4b. The ROADMAP records it.
+
+No threshold, item, rater assignment, truth set or hash changes.

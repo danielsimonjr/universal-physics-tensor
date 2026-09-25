@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (2026-09-24) — UPT is DONE: the owner accepts the measured verdicts (pre-registration Amendment 12)
+
+Mothership relayed the owner's words verbatim (21:29 CDT): "(a) for now. (b) as a future ROADMAP using embedding with Qwen3-embedding:4b."
+
+- **Amendment 12** records the decision. DONE means that every ROADMAP §7 criterion is measured and
+  reported, and UPT is DONE on that basis. Criteria 2 and 3 are NOT MET, and they stand as the study's
+  findings.
+- **The ROADMAP §7 header** says so.
+- **A new ROADMAP §8, Future (not started), holds one entry:** hybrid retrieval. qwen3-embedding:4b
+  finds the candidate relations (49/50 in criterion 3), and the atlas verifies them (1 wrong accept,
+  against 9 to 13 for the LLMs).
+
 ### Added (2026-09-24) — criterion 3 VERDICT: NOT MET (pre-registration Amendment 11)
 
 The embedding condition was scored after Amendment 11 was committed (`b6916ab`) and its CI run was
