@@ -34,7 +34,7 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
     thermal-wavelength ≟ planck-length                   [[length]]  score 6
         unlocks: planck-length
         [consequence: inconclusive]
-        [grounding — passed: numerical-consistency, magnitude (1.1 orders, anchor-derived), axis-compatible (≥1 regime axis) · gaps: consequence: inconclusive · ceiling: no mechanism/data test]
+        [grounding — passed: numerical-consistency, axis-compatible (≥1 regime axis) · gaps: magnitude (anchor-invariant: the graph fixes this ratio at every anchor, so the match is an identity, not evidence), consequence: inconclusive · ceiling: no mechanism/data test]
 
   MAGNITUDE-CLASH (representative values differ by > N orders — a falsifier):
     attempt-frequency ≟ hubble-rate                      ~30.7 orders apart

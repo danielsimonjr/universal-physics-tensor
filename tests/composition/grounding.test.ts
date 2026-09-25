@@ -29,6 +29,16 @@ function candidate(over: Partial<VettedCandidate> = {}): VettedCandidate {
 }
 
 describe('describeGrounding — epistemic-grounding ledger', () => {
+  it('an anchor-invariant magnitude match is a GAP, never a pass (persona finding L3)', () => {
+    const g = describeGrounding(
+      candidate({ ordersApart: 1.1, magnitudeUsedAnchor: true, magnitudeAnchorInvariant: true }),
+    );
+    expect(g.passed.some((p) => p.startsWith('magnitude'))).toBe(false);
+    expect(g.gaps).toContain(
+      'magnitude (anchor-invariant: the graph fixes this ratio at every anchor, so the match is an identity, not evidence)',
+    );
+  });
+
   it('a fully-vetted entailed candidate: all gates passed, no gaps', () => {
     const g = describeGrounding(candidate(), 'entailed');
     expect(g.passed).toContain('numerical-consistency');

@@ -138,6 +138,22 @@ export interface VettedCandidate {
    *  the anchor (no static table entry) rather than the sourced table. */
   readonly magnitudeUsedAnchor: boolean;
   /**
+   * The magnitude comparison used an anchor-derived value, and the ratio of the
+   * two magnitudes does NOT move when every anchor input is rescaled by
+   * {@link ANCHOR_PROBE_FACTOR}. The graph then fixes the ratio at every
+   * anchor, so agreement in magnitude is an identity of the graph and not
+   * evidence for the identification. The case that exposed it: the anchor sets
+   * the temperature to the Hawking temperature of the anchor mass M, and then
+   * the thermal wavelength is exactly 4π ℓ_P for EVERY M. Its anchor-derived
+   * magnitude is not a representative magnitude of the quantity at all.
+   * A quantity whose value really is a constant belongs in the
+   * representative-value table, where it is not anchor-derived.
+   * A clash stays a clash (the graph itself fixes the two apart); only a pass is
+   * withheld, in `describeGrounding`. Optional on the type so hand-built
+   * candidates need not state it; the funnel always sets it.
+   */
+  readonly magnitudeAnchorInvariant?: boolean;
+  /**
    * One endpoint name's hyphen-token set is a strict subset of the other's
    * (`mass` ⊂ `reference-mass`) — a generic↔specific identification of the
    * same KIND. Near-tautological (identifying a generic quantity with one of
@@ -253,6 +269,17 @@ function quantityComponents(
 const ANCHOR_DEFAULT: Readonly<Record<string, number>> = { mass: M_SUN_KG };
 
 /**
+ * Factor every anchor input is multiplied by to probe whether a magnitude ratio
+ * depends on the anchor at all (persona finding L3). Three decades moves any
+ * log-ratio that depends on the anchor far beyond {@link ANCHOR_INVARIANCE_TOL}.
+ * @internal
+ */
+const ANCHOR_PROBE_FACTOR = 1e3;
+
+/** Decades within which a log-ratio counts as unchanged by the probe. @internal */
+const ANCHOR_INVARIANCE_TOL = 1e-9;
+
+/**
  * One name's hyphen-token set is a STRICT subset of the other's
  * (`mass` ⊂ `reference-mass`, `mass` ⊂ `planck-mass`) — i.e. identifying a
  * generic quantity with one of its own specializations of the same kind.
@@ -292,6 +319,8 @@ interface DiscoveryContext {
   readonly attributesByName: ReadonlyMap<string, RegimeAttributes>;
   /** `forwardEvaluate(edges, groundTruth, baseIdents)` — anchor magnitudes. */
   readonly anchorValues: ReadonlyMap<string, number>;
+  /** The same evaluation with every anchor input times {@link ANCHOR_PROBE_FACTOR}. */
+  readonly anchorValuesProbe: ReadonlyMap<string, number>;
   /** `quantityComponents(edges, baseIdents)` — base component roots. */
   readonly comps: ReadonlyMap<string, string>;
   /** `forwardClosure(edges, anchor, baseIdents)` — base determinable set. */
@@ -317,6 +346,13 @@ function buildDiscoveryContext(
     // Candidate-invariant: the anchor's forward evaluation, the base component
     // partition, and the base forward closure all depend only on (edges, opts).
     anchorValues: forwardEvaluate(edges, groundTruth, baseIdents),
+    anchorValuesProbe: forwardEvaluate(
+      edges,
+      Object.fromEntries(
+        Object.entries(groundTruth).map(([k, v]) => [k, v * ANCHOR_PROBE_FACTOR]),
+      ),
+      baseIdents,
+    ),
     comps: quantityComponents(edges, baseIdents),
     closureBase: forwardClosure(edges, anchor, baseIdents),
   };
@@ -356,6 +392,7 @@ function vetInContext(
     repVals,
     maxOrders,
     anchorValues,
+    anchorValuesProbe,
     comps,
     closureBase,
     attributesByName,
@@ -390,6 +427,25 @@ function vetInContext(
     ? Math.abs(Math.log10(Math.abs(va!.value)) - Math.log10(Math.abs(vb!.value)))
     : null;
   const magnitudeClash = ordersApart !== null && ordersApart > maxOrders;
+
+  // Anchor-invariance probe: re-read each anchor-derived magnitude at the
+  // rescaled anchor. A table value is a constant and does not move.
+  const probeOf = (
+    name: string,
+    m: { value: number; fromAnchor: boolean },
+  ): number | undefined => (m.fromAnchor ? anchorValuesProbe.get(name) : m.value);
+  let magnitudeAnchorInvariant = false;
+  if (magnitudeUsedAnchor) {
+    const pa = probeOf(candidate.a, va!);
+    const pb = probeOf(candidate.b, vb!);
+    if (pa !== undefined && pb !== undefined && pa !== 0 && pb !== 0 && Number.isFinite(pa) && Number.isFinite(pb)) {
+      const la = Math.log10(Math.abs(va!.value));
+      const lb = Math.log10(Math.abs(vb!.value));
+      const lpa = Math.log10(Math.abs(pa));
+      const lpb = Math.log10(Math.abs(pb));
+      magnitudeAnchorInvariant = Math.abs((lpa - lpb) - (la - lb)) <= ANCHOR_INVARIANCE_TOL;
+    }
+  }
 
   // A generic↔specialization identification (mass ≟ reference-mass) is
   // near-tautological — barred from `promising` regardless of structure.
@@ -494,6 +550,7 @@ function vetInContext(
     ordersApart,
     magnitudeChecked,
     magnitudeUsedAnchor,
+    magnitudeAnchorInvariant,
     subsuming,
     verdict,
     score,

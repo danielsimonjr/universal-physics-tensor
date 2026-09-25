@@ -683,6 +683,8 @@ Caller runs `upt discover`
 │    ├── magnitude gate — orders of magnitude apart (from       │
 │    │   REPRESENTATIVE_VALUES or anchor-derived); > N orders   │
 │    │   (default maxOrdersOfMagnitude=3) → 'magnitude-clash'   │
+│    │   a ratio the anchor probe (×1e3) cannot move is         │
+│    │   graph-fixed: an identity, shown as a grounding gap     │
 │    ├── axis gate — scale/force RegimeAttributes agreement;    │
 │    │   a clash → 'axis-clash' (an identity falsifier)         │
 │    ├── structural signals — mergesComponents (union-find       │

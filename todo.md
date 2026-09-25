@@ -278,7 +278,7 @@ warning-silencing, not debug logging).
 - [ ] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
       findings in the persona's `FINDINGS.md`, rulings by inbox 2026-09-25). One finding per commit.
       - [x] L1: `upt path` quotes a bound and "all hold" outside the bound's own regime (pendulum at θ0 = 0.8: bound 1.59%, true error 4.15%).
-      - [ ] L3: the discovery magnitude gate passes an anchor-invariant identity as evidence (λ_th(T_H) = 4π ℓ_P for every M).
+      - [x] L3: the discovery magnitude gate passes an anchor-invariant identity as evidence (λ_th(T_H) = 4π ℓ_P for every M).
       - [ ] L5: `upt explain` calls two restatements of ONE bridge (be-42, be-42-via-rs) "independent derivations" and their agreement a consistency check.
       - [ ] W1: `ab-kg-schrodinger` counterexample says "17% too high" (true excess 20.7%); the relative-error reference (the reduced model) is stated nowhere.
       - [ ] L4: AXIS-CLASH is labelled "identification falsified" while the funnel counts 0 falsified; relabel as a regime-label prior (text only).

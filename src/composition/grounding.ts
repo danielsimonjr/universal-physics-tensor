@@ -81,7 +81,13 @@ export function describeGrounding(
   if (c.numericallyConsistent) passed.push('numerical-consistency');
 
   // Magnitude gate: ran only when both endpoints had a representative value.
-  if (c.magnitudeChecked) {
+  // An anchor-invariant ratio is fixed by the graph at every anchor, so its
+  // agreement is an identity, not a survived test (persona finding L3).
+  if (c.magnitudeChecked && c.magnitudeAnchorInvariant === true) {
+    gaps.push(
+      'magnitude (anchor-invariant: the graph fixes this ratio at every anchor, so the match is an identity, not evidence)',
+    );
+  } else if (c.magnitudeChecked) {
     const parts: string[] = [];
     if (c.ordersApart != null) parts.push(`${c.ordersApart.toFixed(1)} orders`);
     if (c.magnitudeUsedAnchor) parts.push('anchor-derived');

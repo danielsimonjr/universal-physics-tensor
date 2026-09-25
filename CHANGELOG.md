@@ -20,6 +20,18 @@ from v0.1.0 onward.
   missing, and VACUOUS when no bridge states an inequality. `--json` gains `regimes` (per-bridge
   `ok`, `violated`, `unchecked`) and `allRegimesHold` (`true`, `false` or `'unknown'`). Both fields
   are additive. The help text states the regime check.
+- **The discovery magnitude gate counted a graph identity as evidence** (persona finding L3).
+  `thermal-wavelength ≟ planck-length` was "promising" with `magnitude (1.1 orders, anchor-derived)`
+  under *passed*, and `upt ground` showed no gaps. The anchor sets the temperature to the Hawking
+  temperature of the anchor mass M, and then h/√(2π M k_B T_H) = 4π ℓ_P exactly, for every M
+  (log10 4π = 1.099). The magnitude agreement is therefore fixed by the graph and tests nothing.
+  Checked at M = 1 kg, 10¹² kg and M☉: the ratio is 12.566 each time, and the funnel's own
+  thermal wavelength is 2.0310 × 10⁻³⁴ m at both M☉ and 10³ M☉. The funnel now re-evaluates the
+  graph with every anchor input times 10³. It sets `magnitudeAnchorInvariant` when an
+  anchor-derived magnitude ratio does not move, and the grounding ledger then lists the magnitude
+  under *gaps* ("anchor-invariant … an identity, not evidence"). A magnitude clash stays a clash.
+  The flag fires on 4 catalog candidates; only this one was a pass. The verdict, still `promising`,
+  is unchanged: magnitude is not one of its conditions.
 
 ## [0.46.0] - 2026-09-24
 
