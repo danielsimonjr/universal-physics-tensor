@@ -298,8 +298,9 @@ node bin/upt.mjs map --source=both --proposed --format=mermaid
 # Inject YOUR OWN equation: dimensional check + where it lands in the graph:
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
 #   → ✓ dimensionally consistent: [time]; joins the anchored cluster via {gravity, length, period}
-#   → · same form as CE-pendulum-period, but the registry records its dimensional form only,
-#       so your prefactor is NOT checked   (dimensions cannot see a prefactor)
+#   → ✓ agrees with CE-pendulum-period, prefactor included (2π from the sourced prefactor table)
+node bin/upt.mjs map --source=canonical --equation "period = pi*sqrt(length/gravity)"
+#   → ⚠ differs from CE-pendulum-period by a constant factor: yours/canonical = 0.500000
 node bin/upt.mjs map --equation "hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)"
 #   → ⚠ differs from CE-hawking-temperature by a constant factor: yours/canonical = 2.00000
 node bin/upt.mjs map --source=canonical --equation "period = mass"

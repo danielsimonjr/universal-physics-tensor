@@ -33,10 +33,10 @@ describe('upt map --equation — the canonical comparison', () => {
     expect(t).toMatch(/✓ agrees with CE-hawking-temperature \(Hawking temperature\), prefactor included/);
   });
 
-  it('the persona example T = π√(ℓ/g) says the prefactor is NOT checked, and why', async () => {
+  it('the persona example T = π√(ℓ/g) differs from CE-pendulum-period by the factor 0.5', async () => {
     const t = await text(['map', '--equation', 'period = pi*sqrt(length/gravity)']);
     expect(t).toMatch(
-      /· same form as CE-pendulum-period \(Pendulum period\), but the registry records its dimensional form only, so your prefactor is NOT checked/,
+      /⚠ differs from CE-pendulum-period \(Pendulum period\) by a constant factor: yours\/canonical = 0\.500000 at 3 fixed points/,
     );
   });
 
@@ -55,7 +55,7 @@ describe('upt derive --formula — the canonical comparison', () => {
       'derive', 'period:time', 'length:length', 'gravity:acceleration', '--formula', 'pi*sqrt(length/gravity)',
     ]);
     expect(t).toMatch(/formula MATCHES the dimensional form — recovered prefactor ≈ 3\.1416e\+0/);
-    expect(t).toMatch(/same form as CE-pendulum-period \(Pendulum period\), but the registry records its dimensional form only/);
+    expect(t).toMatch(/⚠ differs from CE-pendulum-period \(Pendulum period\) by a constant factor: yours\/canonical = 0\.500000/);
   });
 });
 

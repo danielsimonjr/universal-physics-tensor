@@ -65,10 +65,41 @@ describe('probe — the fitted prefactor against the corpus prefactor', () => {
     ).toBe(true);
   });
 
-  it('the persona case: CE-pendulum-period records no prefactor, so ĉ is not compared', async () => {
+  it('the pendulum fixture fits 2π and AGREES with CE-pendulum-period, whose 2π the sourced table supplies', async () => {
     const problem = loadSearchProblemFromJson(join(fixtures, 'pendulum-scaling/public/problem.json'));
     const result = await runProbeSearch(problem, { repositoryCommit: 'test', now: '2026-09-25T00:00:00.000Z' });
     const notes = Object.values(result.prefactorNotes).flat();
-    expect(notes.some((n) => /CE-pendulum-period records no prefactor, so the fitted ĉ=6\.28\d is not compared with it/.test(n))).toBe(true);
+    expect(notes.some((n) => /fitted ĉ=6\.283 agrees with CE-pendulum-period's prefactor 6\.283/.test(n))).toBe(true);
+  });
+
+  it('the persona case: finite-amplitude pendulum data CONTRADICT CE-pendulum-period', async () => {
+    // T = 4√(ℓ/g) K(sin(θ0/2)) for θ0 across [1.2, 1.75] rad (so the holdout still passes);
+    // K by the arithmetic-geometric mean. There T/T0 is 1.10–1.23, so ĉ lands 10–23% above 2π.
+    const K = (k: number) => {
+      let a = 1;
+      let b = Math.sqrt(1 - k * k);
+      for (let i = 0; i < 40; i++) [a, b] = [(a + b) / 2, Math.sqrt(a * b)];
+      return Math.PI / (2 * a);
+    };
+    const rows = (n: number, offset: number) =>
+      Array.from({ length: n }, (_, i) => {
+        const length = 0.3 + ((i * 7 + offset) % 11) * 0.25 + offset * 0.013; // offset keeps holdout rows distinct
+        const gravity = 2 + ((i * 5 + offset) % 13) * 1.7;
+        const theta0 = 1.2 + ((i * 3 + offset) % 12) * 0.05;
+        return { length, gravity, period: 4 * Math.sqrt(length / gravity) * K(Math.sin(theta0 / 2)) };
+      });
+    const problem = searchProblemFromFile({
+      gap: { id: 'fg-large-amplitude', kind: 'unexplained-observation', summary: 'finite-amplitude pendulum' },
+      target: { name: 'period', dim: 'time' },
+      governing: [
+        { name: 'length', dim: 'length' },
+        { name: 'gravity', dim: 'acceleration' },
+      ],
+      exploratory: { id: 'e', role: 'exploratory-fit', observable: 'period', schemaVersion: '1', rows: rows(40, 0) },
+      holdout: { id: 'h', role: 'validation-holdout', observable: 'period', schemaVersion: '1', rows: rows(15, 3) },
+    });
+    const result = await runProbeSearch(problem, { repositoryCommit: 'test', now: '2026-09-25T00:00:00.000Z' });
+    const notes = Object.values(result.prefactorNotes).flat();
+    expect(notes.some((n) => /contradicts CE-pendulum-period's prefactor 6\.283 \(\+\d+%\)/.test(n))).toBe(true);
   });
 });

@@ -1,8 +1,8 @@
 {
   "metadata": {
-    "totalSourceFiles": 347,
-    "totalTestFiles": 457,
-    "testedCount": 346,
+    "totalSourceFiles": 348,
+    "totalTestFiles": 458,
+    "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
   },
@@ -209,6 +209,7 @@
     "src/composition/bridge-prediction.ts",
     "src/composition/canonical-compare.ts",
     "src/composition/canonical-graph.ts",
+    "src/composition/canonical-prefactors.ts",
     "src/composition/catalog-graph.ts",
     "src/composition/compose-surface.ts",
     "src/composition/compose-symbolic.ts",
@@ -1937,6 +1938,7 @@
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/canonical-graph-information-axis.test.ts",
       "tests/composition/canonical-graph.test.ts",
+      "tests/composition/canonical-prefactors.test.ts",
       "tests/composition/consequence.test.ts",
       "tests/composition/proposed-bridges.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
@@ -2566,7 +2568,8 @@
     "src/composition/canonical-compare.ts": [
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
-      "tests/composition/canonical-compare.test.ts"
+      "tests/composition/canonical-compare.test.ts",
+      "tests/composition/canonical-prefactors.test.ts"
     ],
     "src/composition/canonical-graph.ts": [
       "tests/api/atlas-public-closure.test.ts",
@@ -2608,6 +2611,9 @@
       "tests/dimensional/symbolic-exponent.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
       "tests/tensor.test.ts"
+    ],
+    "src/composition/canonical-prefactors.ts": [
+      "tests/composition/canonical-prefactors.test.ts"
     ],
     "src/composition/catalog-graph.ts": [
       "tests/api/atlas-public-closure.test.ts",
@@ -4165,6 +4171,7 @@
       "tests/canonical/thermo-nuclear-cosmo.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/composition/canonical-prefactors.test.ts",
       "tests/composition/collect-symbols-transcendental.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
       "tests/composition/probe/family-b.test.ts",
@@ -8426,6 +8433,12 @@
       "src/dimensional/types.ts",
       "src/composition/graph-viz.ts",
       "src/composition/user-equation.ts"
+    ],
+    "tests/composition/canonical-prefactors.test.ts": [
+      "src/composition/canonical-prefactors.ts",
+      "src/canonical/registry.ts",
+      "src/composition/canonical-compare.ts",
+      "src/dimensional/ast-types.ts"
     ],
     "tests/composition/catalog-full.test.ts": [
       "src/composition/index.ts",

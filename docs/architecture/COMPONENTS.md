@@ -82,7 +82,7 @@ UPT follows a layered architecture. The 348 source files fall into eleven module
 └────────────────────────────────────────────────────────────────┘
 ```
 
-**Total** (`src/` scope): 350 TypeScript files, 2467 exports (1238 re-exports), and 55 bridge catalog entries. The catalog spans IDs 11–65: 19 established, 33 speculative, 3 highly-speculative. The scope also has 41 composition-graph edges, plus 107 canonical-only `law` edges through `CANONICAL_GRAPH`. The scope has 19 real-data confrontations: BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65.
+**Total** (`src/` scope): 351 TypeScript files, 2469 exports (1238 re-exports), and 55 bridge catalog entries. The catalog spans IDs 11–65: 19 established, 33 speculative, 3 highly-speculative. The scope also has 41 composition-graph edges, plus 107 canonical-only `law` edges through `CANONICAL_GRAPH`. The scope has 19 real-data confrontations: BE-11, BE-21, BE-23, BE-35, BE-36, BE-37, BE-48, BE-51, BE-52, BE-55, BE-56, BE-58, BE-59, BE-60, BE-61, BE-62, BE-63, BE-64, BE-65.
 
 (The `src/`-scope file and export counts come from the Summary Statistics in `docs/architecture/DEPENDENCY_GRAPH.md`, which `bun run docs:deps` regenerates. The catalog, canonical, graph and confrontation counts come from the built package; see Verification below.)
 
@@ -918,14 +918,14 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 878 | dependency-graph.json |
-| totalExports | 3113 | dependency-graph.json |
-| totalTypeOnlyImports | 893 | dependency-graph.json |
+| totalSourceFiles | 880 | dependency-graph.json |
+| totalExports | 3116 | dependency-graph.json |
+| totalTypeOnlyImports | 894 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`bun run docs:deps`): 350 files, 2467 exports, 1238 of them re-exports. 878 and 350 do not
+(`bun run docs:deps`): 351 files, 2469 exports, 1238 of them re-exports. 880 and 351 do not
 contradict each other; they answer different questions. Every figure states its scope.
 
 **Claims the gate cannot hold.** Catalog figures are properties of the physics catalog,

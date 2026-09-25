@@ -13,6 +13,7 @@ import { monomialToExpr } from './generator.js';
 import { evalExpr } from '../expr-eval.js';
 import { equals } from '../../dimensional/algebra.js';
 import type { Dimension } from '../../dimensional/types.js';
+import { canonicalPrefactor } from '../canonical-prefactors.js';
 
 export interface CorpusMatch {
   readonly id: string;
@@ -126,9 +127,22 @@ export function corpusPrefactorNotes(
   return result.algebraicMatches.map((m) => {
     const entry = m.layer === 'canonical' ? CANONICAL_EQUATIONS.find((e) => e.id === m.id) : undefined;
     let k: number | null = null;
-    if (entry?.epistemicStatus === 'fully-quantitative' && entry.scalarAst) {
+    // Fully quantitative entries carry their prefactor; others may take it from
+    // the sourced table, applied to the entry's AST or, lacking one, its monomial.
+    const tabled = entry && entry.epistemicStatus !== 'fully-quantitative' ? canonicalPrefactor(entry.id) : undefined;
+    const body =
+      entry?.epistemicStatus === 'fully-quantitative'
+        ? entry.scalarAst
+        : tabled === undefined
+          ? undefined
+          : (entry?.scalarAst ??
+            (entry?.dimensional.monomial
+              ? monomialToExpr(entry.dimensional.monomial, [entry.dimensional.target, ...entry.dimensional.governing])
+              : undefined));
+    if (body !== undefined) {
       try {
-        k = corpusPrefactor(entry.scalarAst, candidate);
+        const base = corpusPrefactor(body, candidate);
+        k = base === null ? null : (tabled ?? 1) * base;
       } catch {
         k = null;
       }

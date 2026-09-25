@@ -30,6 +30,7 @@ import { CANONICAL_EQUATIONS } from '../canonical/registry.js';
 import type { CanonicalEquation } from '../canonical/canonical-equation.js';
 import { CONSTANTS } from './symbolic-constants.js';
 import { evalExpr } from './expr-eval.js';
+import { canonicalPrefactor } from './canonical-prefactors.js';
 import { parseUserEquation, resolveToCatalogName } from './user-equation.js';
 import { parsePhysics } from '../numerical/formula-registry.js';
 import { DIMENSIONLESS } from '../dimensional/types.js';
@@ -160,6 +161,10 @@ export function compareWithCanonical(
       Object.fromEntries(names.map((n, i) => [n, Math.pow(1.7 + i, p)])),
     );
 
+    // A prefactor the entry does not record may come from the sourced table,
+    // which lives outside the pinned src/canonical tree.
+    const tabled = entry.epistemicStatus === 'fully-quantitative' ? undefined : canonicalPrefactor(entry.id);
+    const factor = tabled ?? 1;
     let canonicalAt: (p: Readonly<Record<string, number>>) => number;
     if (entry.scalarAst !== undefined) {
       const alignment = alignSymbols(freeSymbols(entry.scalarAst, new Map()), variables);
@@ -174,11 +179,11 @@ export function compareWithCanonical(
       }
       const ast = entry.scalarAst;
       canonicalAt = (p) =>
-        evalExpr(ast, Object.fromEntries([...alignment].map(([sym, g]) => [sym, p[normalize(g)]!])));
+        factor * evalExpr(ast, Object.fromEntries([...alignment].map(([sym, g]) => [sym, p[normalize(g)]!])));
     } else if (d.monomial !== null) {
       const monomial = d.monomial;
       canonicalAt = (p) =>
-        Object.entries(monomial).reduce((acc, [n, e]) => acc * Math.pow(p[normalize(n)] ?? 1, e), 1);
+        factor * Object.entries(monomial).reduce((acc, [n, e]) => acc * Math.pow(p[normalize(n)] ?? 1, e), 1);
     } else {
       continue;
     }
@@ -199,7 +204,7 @@ export function compareWithCanonical(
       results.push({ id: entry.id, name: entry.name, kind: 'not-compared', detail: 'a ratio was zero or not finite' });
       continue;
     }
-    results.push(classify(entry, ratios, entry.epistemicStatus === 'fully-quantitative'));
+    results.push(classify(entry, ratios, entry.epistemicStatus === 'fully-quantitative' || tabled !== undefined));
   }
   return results;
 }

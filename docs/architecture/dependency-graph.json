@@ -2,9 +2,9 @@
   "metadata": {
     "name": "universal-physics-tensor",
     "version": "0.46.0",
-    "totalFiles": 350,
+    "totalFiles": 351,
     "totalModules": 11,
-    "totalExports": 2467
+    "totalExports": 2469
   },
   "entryPoints": [
     {
@@ -11804,6 +11804,12 @@
             ]
           },
           {
+            "file": "./canonical-prefactors.js",
+            "imports": [
+              "canonicalPrefactor"
+            ]
+          },
+          {
             "file": "./user-equation.js",
             "imports": [
               "parseUserEquation",
@@ -11925,6 +11931,25 @@
         "constants": [
           "CANONICAL_CONSTANTS",
           "CANONICAL_GRAPH"
+        ]
+      },
+      "src/composition/canonical-prefactors.ts": {
+        "description": "Exact prefactors for canonical equations that `src/canonical` records only",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "CANONICAL_PREFACTORS",
+          "canonicalPrefactor"
+        ],
+        "interfaces": [
+          "CanonicalPrefactor"
+        ],
+        "functions": [
+          "canonicalPrefactor"
+        ],
+        "constants": [
+          "CANONICAL_PREFACTORS"
         ]
       },
       "src/composition/catalog-graph.ts": {
@@ -14588,6 +14613,12 @@
               "Dimension"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "../canonical-prefactors.js",
+            "imports": [
+              "canonicalPrefactor"
+            ]
           }
         ],
         "exports": [
@@ -23979,6 +24010,7 @@
           "src/composition/bridge-prediction.ts",
           "src/composition/canonical-compare.ts",
           "src/composition/canonical-graph.ts",
+          "src/composition/canonical-prefactors.ts",
           "src/composition/catalog-graph.ts",
           "src/composition/compose-surface.ts",
           "src/composition/compose-symbolic.ts",
@@ -24159,16 +24191,16 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 350,
+    "totalTypeScriptFiles": 351,
     "totalModules": 11,
-    "totalLinesOfCode": 69765,
-    "totalExports": 2467,
+    "totalLinesOfCode": 69878,
+    "totalExports": 2469,
     "totalClasses": 58,
-    "totalInterfaces": 361,
-    "totalFunctions": 561,
+    "totalInterfaces": 362,
+    "totalFunctions": 562,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 609,
+    "totalConstants": 610,
     "totalReExports": 1238,
     "totalTypeOnlyImports": 490,
     "runtimeCircularDeps": 0,

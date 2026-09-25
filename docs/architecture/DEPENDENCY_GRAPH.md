@@ -41,7 +41,7 @@ The codebase is organized into the following modules:
 - **canonical**: 18 files
 - **cli**: 31 files
 - **root**: 1 file
-- **composition**: 72 files
+- **composition**: 73 files
 - **core**: 11 files
 - **diff**: 3 files
 - **dimensional**: 31 files
@@ -3508,6 +3508,7 @@ The codebase is organized into the following modules:
 | `../canonical/canonical-equation.js` | `CanonicalEquation` | Import (type-only) |
 | `./symbolic-constants.js` | `CONSTANTS` | Import |
 | `./expr-eval.js` | `evalExpr` | Import |
+| `./canonical-prefactors.js` | `canonicalPrefactor` | Import |
 | `./user-equation.js` | `parseUserEquation, resolveToCatalogName` | Import |
 | `../numerical/formula-registry.js` | `parsePhysics` | Import |
 | `../dimensional/types.js` | `DIMENSIONLESS` | Import |
@@ -3537,6 +3538,15 @@ The codebase is organized into the following modules:
 **Exports:**
 - Functions: `canonicalToEdges`
 - Constants: `CANONICAL_CONSTANTS`, `CANONICAL_GRAPH`
+
+---
+
+### `src/composition/canonical-prefactors.ts` - Exact prefactors for canonical equations that `src/canonical` records only
+
+**Exports:**
+- Interfaces: `CanonicalPrefactor`
+- Functions: `canonicalPrefactor`
+- Constants: `CANONICAL_PREFACTORS`
 
 ---
 
@@ -4156,6 +4166,7 @@ The codebase is organized into the following modules:
 | `../expr-eval.js` | `evalExpr` | Import |
 | `../../dimensional/algebra.js` | `equals` | Import |
 | `../../dimensional/types.js` | `Dimension` | Import (type-only) |
+| `../canonical-prefactors.js` | `canonicalPrefactor` | Import |
 
 **Exports:**
 - Interfaces: `CorpusMatch`, `CorpusComparisonResult`
@@ -6521,7 +6532,7 @@ graph TD
         N27[axis-audit]
         N28[bridge-analysis]
         N29[bridge-prediction]
-        N30[...67 more]
+        N30[...68 more]
     end
 
     subgraph Core
@@ -6599,14 +6610,14 @@ graph TD
 
 | Category | Count |
 |----------|-------|
-| Total TypeScript Files | 350 |
+| Total TypeScript Files | 351 |
 | Total Modules | 11 |
-| Total Lines of Code | 69765 |
-| Total Exports | 2467 |
+| Total Lines of Code | 69878 |
+| Total Exports | 2469 |
 | Total Re-exports | 1238 |
 | Total Classes | 58 |
-| Total Interfaces | 361 |
-| Total Functions | 561 |
+| Total Interfaces | 362 |
+| Total Functions | 562 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 490 |

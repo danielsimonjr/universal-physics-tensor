@@ -52,10 +52,12 @@ describe('compareWithCanonical — a fully quantitative entry', () => {
 });
 
 describe('compareWithCanonical — entries that record no prefactor', () => {
-  it('the persona example T = π√(ℓ/g): same form as CE-pendulum-period, prefactor NOT checked', () => {
+  // CE-pendulum-period and CE-kinetic-energy now take their prefactors from the sourced table
+  // (tests/composition/canonical-prefactors.test.ts). These cases use entries it does not cover.
+  it('ω = 2√(k/m): same form as CE-simple-harmonic-frequency, prefactor NOT checked (dimensional only)', () => {
     const r = find(
-      compareWithCanonical('period', ['length', 'gravity'], (v) => Math.PI * Math.sqrt(v['length']! / v['gravity']!)),
-      'CE-pendulum-period',
+      compareWithCanonical('angular-velocity', ['spring-constant', 'mass'], (v) => 2 * Math.sqrt(v['spring-constant']! / v['mass']!)),
+      'CE-simple-harmonic-frequency',
     );
     expect(r?.kind).toBe('prefactor-unchecked');
     expect(r?.detail).toMatch(/dimensional form only/);
@@ -69,10 +71,10 @@ describe('compareWithCanonical — entries that record no prefactor', () => {
     expect(r?.kind).toBe('form');
   });
 
-  it('K = m·v² has the form of CE-kinetic-energy, which the registry records only up to a constant', () => {
+  it('E = k·A² has the form of CE-oscillator-energy, which the registry records only up to a constant', () => {
     const r = find(
-      compareWithCanonical('kinetic-energy', ['mass', 'speed'], (v) => v['mass']! * v['speed']! ** 2),
-      'CE-kinetic-energy',
+      compareWithCanonical('oscillator-energy', ['spring-constant', 'amplitude'], (v) => v['spring-constant']! * v['amplitude']! ** 2),
+      'CE-oscillator-energy',
     );
     expect(r?.kind).toBe('prefactor-unchecked');
     expect(r?.detail).toMatch(/up to a constant/);

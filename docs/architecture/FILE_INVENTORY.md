@@ -21,23 +21,23 @@ construction. Both are correct; each states its scope.
 
 | Zone | Files | What lives here |
 |---|---|---|
-| `tests` | 486 | The vitest suite |
-| `src` | 352 | The library, the CLI, and the physics catalog |
+| `tests` | 487 | The vitest suite |
+| `src` | 353 | The library, the CLI, and the physics catalog |
 | `benchmarks` | 15 | `bench/*.bench.ts` plus their fixture, run by `npm run bench` |
 | `tools` | 23 | Repository tooling under `tools/` and `scripts/` |
 | `examples` | 1 | The smoke entry |
 | `config` | 1 | A `*.config.*` file |
-| **Total** | **878** | |
+| **Total** | **880** | |
 
-**Tests outnumber source files: 486 against 352.** The ratio fits a repository whose claims are
+**Tests outnumber source files: 487 against 353.** The ratio fits a repository whose claims are
 physical: a wrong number is a wrong prediction, not a cosmetic defect.
 
 ## By disposition
 
 | Disposition | Files | Meaning |
 |---|---|---|
-| `test` | 486 | In the test zone |
-| `reachable` | 331 | Reached from an entry root |
+| `test` | 487 | In the test zone |
+| `reachable` | 332 | Reached from an entry root |
 | `bench` | 15 | A benchmark; nothing imports it, `npm run bench` runs it |
 | `test-only` | 11 | Reached only from a test |
 | `orphan` | 5 | Reached from nothing the tool can follow |
@@ -74,9 +74,9 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 878 | dependency-graph.json |
+| totalSourceFiles | 880 | dependency-graph.json |
 | orphanedFiles | 5 | dependency-graph.json |
-| reachableFiles | 336 | dependency-graph.json |
+| reachableFiles | 337 | dependency-graph.json |
 | testOnlyFiles | 11 | dependency-graph.json |
 | entryRoots | 5 | dependency-graph.json |
 
