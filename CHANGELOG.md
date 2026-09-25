@@ -29,6 +29,7 @@ green (36084344662, 2026-09-25T02:01:31Z). The scorer checked every Amendment 8 
 - **Criterion 2 stands as measured, NOT MET.** No re-run is planned (Mothership).
 - `atlas-study-results.md` now includes the verdict section, and a note marks the older INTERIM
   wording. Its other content regenerated unchanged.
+- The ROADMAP §7 Phase 1 row now says that the two browser checks are deferred by the owner.
 
 ### Added (2026-09-24) — criterion 3: pre-registration Amendment 11 registers the embedding condition before it is scored
 
