@@ -34,6 +34,10 @@ const HELP = `upt regime <family> [--at group=value ...] [--json]
         bridge is reported as valid, violated (naming the failed inequality),
         or UNKNOWN — a coordinate the point never supplied is NOT a pass, and a
         regime that states no inequality is marked VACUOUS rather than passed.
+        A group can be given by its formula (spaces ignored, * read as ·, so
+        --at "tau*D*q^2=1" works) or through its parameters: --at tau=1 D=1
+        q=1 derives tau · D · q^2 = 1. A key that no record uses is named, and
+        ignored.
         Also prints the pairwise overlap of the regimes and, over the box --at
         states, the points no CONSTRAINING regime covers.
         e.g.  upt regime oscillators --at theta0=0.2`;
@@ -63,6 +67,49 @@ export function parseAt(raw: readonly string[], command: string): Record<string,
     point[name] = value;
   }
   return point;
+}
+
+/** A group name with spaces removed and `*` read as `·`, for comparison only. */
+const normalizeGroup = (name: string): string => name.replace(/\s+/g, '').replace(/\*/g, '·');
+
+/**
+ * Resolve an `--at` point against the regimes it will be checked against
+ * (persona finding F1). A key naming a group matches it with spaces ignored and
+ * `*` read as `·`, so `tau*D*q^2` reaches the group `tau · D · q^2`. A group
+ * whose parameters are all given, and which the point does not state itself, is
+ * derived from them: the product of each parameter to its exponent. `unknown`
+ * lists the keys that are neither a group nor a parameter of any regime here.
+ * @internal
+ */
+export function resolveAtPoint(
+  point: Readonly<Record<string, number>>,
+  regimes: readonly { groupDefinitions: Readonly<Record<string, { exponents: Readonly<Record<string, number>> }>>; inequalities: readonly { group: string }[] }[],
+): { values: Record<string, number>; unknown: string[] } {
+  const groups = new Map<string, Readonly<Record<string, number>>>();
+  for (const r of regimes) {
+    for (const [key, g] of Object.entries(r.groupDefinitions)) groups.set(key, g.exponents);
+    for (const i of r.inequalities) if (!groups.has(i.group)) groups.set(i.group, { [i.group]: 1 });
+  }
+  const byNormal = new Map([...groups.keys()].map((k) => [normalizeGroup(k), k]));
+  // A zero exponent does not enter the product: two records can key the same
+  // group with and without an extra `c: 0`, and that must not block derivation.
+  const used = (e: Readonly<Record<string, number>>) => Object.keys(e).filter((n) => e[n] !== 0);
+  const parameters = new Set([...groups.values()].flatMap(used));
+  const values: Record<string, number> = {};
+  const unknown: string[] = [];
+  for (const [key, value] of Object.entries(point)) {
+    const group = byNormal.get(normalizeGroup(key));
+    values[group ?? key] = value;
+    if (group === undefined && !parameters.has(key)) unknown.push(key);
+  }
+  for (const [key, exponents] of groups) {
+    if (key in values) continue;
+    const names = used(exponents);
+    if (names.length > 0 && names.every((n) => typeof values[n] === 'number')) {
+      values[key] = names.reduce((acc, n) => acc * Math.pow(values[n]!, exponents[n]!), 1);
+    }
+  }
+  return { values, unknown };
 }
 
 /** Display form of one inequality — the alias when the record states one. */
@@ -111,8 +158,10 @@ async function run(ctx: CommandCtx): Promise<number> {
     ...family.bridges.map((b) => ({ id: b.id, kind: 'bridge' as const, regime: b.regime })),
   ];
 
+  const { values: resolved, unknown } = resolveAtPoint(point, records.map((r) => r.regime));
+
   const verdicts = records.map((r) => {
-    const check = api.regimeHolds(r.regime, point);
+    const check = api.regimeHolds(r.regime, resolved);
     return {
       id: r.id,
       kind: r.kind,
@@ -146,7 +195,7 @@ async function run(ctx: CommandCtx): Promise<number> {
 
   // The box is what --at states, and nothing else.
   const samples: Record<string, number[]> = {};
-  for (const [group, value] of Object.entries(point)) samples[group] = [value];
+  for (const [group, value] of Object.entries(resolved)) samples[group] = [value];
   // Coverage is asked of the records that actually CONSTRAIN something. An
   // unconstrained model regime holds at every point, so including the models
   // would make coverage vacuously total and the report would answer nothing.
@@ -164,6 +213,8 @@ async function run(ctx: CommandCtx): Promise<number> {
           'Uncovered regions are reported only over the box --at states; none is synthesized.',
         options: { family: family.family, at: point },
         result: {
+          resolvedPoint: resolved,
+          unknownCoordinates: unknown,
           records: verdicts,
           overlaps,
           uncovered:
@@ -183,6 +234,12 @@ async function run(ctx: CommandCtx): Promise<number> {
       ? '(no --at point supplied: every inequality is UNCHECKED, which is not a pass)'
       : `at ${stated.map((g) => `${g}=${point[g]}`).join(' · ')}`,
   );
+  if (unknown.length > 0) {
+    out(
+      `unknown coordinate(s): ${unknown.join(', ')} — no record in family '${family.family}' uses ` +
+        `${unknown.length === 1 ? 'it' : 'them'}; ignored`,
+    );
+  }
   out('');
   for (const m of verdicts) {
     const verdict = m.ok === true ? 'valid' : m.ok === false ? 'VIOLATED' : 'unknown';

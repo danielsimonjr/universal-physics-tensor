@@ -132,7 +132,9 @@ Usage:
         model reads valid, VIOLATED (naming the failed inequality), or UNKNOWN
         — a coordinate --at never supplied is NOT a pass. Also prints the
         pairwise regime overlap and, over the box --at states, the uncovered
-        points.
+        points. A group can be given by name (spaces ignored, * for ·) or
+        through its parameters (--at tau=1 D=1 q=1 gives tau · D · q^2 = 1);
+        a key no record uses is named and ignored.
         e.g.  upt regime oscillators --at theta0=0.2
 
   upt path <from> <to> [--at group=value ...]

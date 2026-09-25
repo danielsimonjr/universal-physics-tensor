@@ -55,6 +55,18 @@ from v0.1.0 onward.
   and branches pass. The shortfall is mostly in modules that predate this session, and it is filed
   as a todo row. The threshold is NOT lowered. The new `corpus.ts` code from L7 is now fully
   line-covered: dimension-based alignment, bridge-layer matches and evaluation failure.
+- **`--at` takes coordinates the way a user writes them** (persona finding F1).
+  `upt regime diffusion --at tau=1 D=1 q=1` reported the telegraph bridge "unchecked (no value
+  supplied)". Only the exact display string `"tau · D · q^2=1"`, with its middle dots, reached the
+  check, and an unknown key such as `Foo=2` was dropped silently. Now, in both `upt regime` and
+  `upt path`:
+  - a group whose parameters are all given is derived from them, as the product of each parameter
+    to its exponent;
+  - a group name matches with spaces ignored and `*` read as `·`.
+
+  `upt regime` also names every key that no record in the family uses. A zero exponent does not
+  block derivation: two records key `tau · D · q^2`, one with an extra `c: 0`, which the first test
+  caught. `--json` gains `resolvedPoint` and `unknownCoordinates` (additive).
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and

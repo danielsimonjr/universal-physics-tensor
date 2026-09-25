@@ -4,7 +4,7 @@
     "version": "0.46.0",
     "totalFiles": 351,
     "totalModules": 11,
-    "totalExports": 2470
+    "totalExports": 2471
   },
   "entryPoints": [
     {
@@ -10450,6 +10450,7 @@
             "file": "./regime.js",
             "imports": [
               "parseAt",
+              "resolveAtPoint",
               "showInequality"
             ]
           }
@@ -10666,10 +10667,12 @@
         "exports": [
           "command",
           "parseAt",
+          "resolveAtPoint",
           "showInequality"
         ],
         "functions": [
           "parseAt",
+          "resolveAtPoint",
           "showInequality"
         ],
         "constants": [
@@ -24202,11 +24205,11 @@
   "statistics": {
     "totalTypeScriptFiles": 351,
     "totalModules": 11,
-    "totalLinesOfCode": 69936,
-    "totalExports": 2470,
+    "totalLinesOfCode": 69999,
+    "totalExports": 2471,
     "totalClasses": 58,
     "totalInterfaces": 362,
-    "totalFunctions": 562,
+    "totalFunctions": 563,
     "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 610,

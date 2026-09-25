@@ -28,7 +28,7 @@ import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { CliError } from '../errors.js';
 import { emitJson } from '../output.js';
-import { parseAt, showInequality } from './regime.js';
+import { parseAt, resolveAtPoint, showInequality } from './regime.js';
 
 const FLAGS: FlagSpec[] = [
   { name: '--at', valueStyle: 'either', repeatable: true },
@@ -145,8 +145,12 @@ async function run(ctx: CommandCtx): Promise<number> {
     }));
   const allHold = horizons.every((h) => h.holds === true);
 
+  // The same --at resolution as `upt regime`: group spellings, and groups derived
+  // from their parameters. Unknown keys are not reported here, because horizon
+  // parameters such as T0 and t are legitimate --at keys on a path.
+  const { values: resolved } = resolveAtPoint(point, bridges.map((b) => b.regime));
   const regimes: RegimeReport[] = bridges.map((b) => {
-    const check = api.regimeHolds(b.regime, point);
+    const check = api.regimeHolds(b.regime, resolved);
     return {
       bridgeId: b.id,
       ok: check.ok,

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 464,
+    "totalTestFiles": 465,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -1995,6 +1995,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2019,6 +2020,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2043,6 +2045,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2067,6 +2070,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2091,6 +2095,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2115,6 +2120,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2139,6 +2145,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2163,6 +2170,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2187,6 +2195,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2211,6 +2220,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2235,6 +2245,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2259,6 +2270,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2283,6 +2295,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2307,6 +2320,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2331,6 +2345,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2355,6 +2370,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2379,6 +2395,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2403,6 +2420,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2427,6 +2445,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2451,6 +2470,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2475,6 +2495,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2499,6 +2520,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2523,6 +2545,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -2555,6 +2578,7 @@
       "tests/cli/probe-help-problem-format.test.ts",
       "tests/cli/probe.test.ts",
       "tests/cli/recover-conventions.test.ts",
+      "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
@@ -8270,6 +8294,32 @@
       "src/composition/edges/catalog-condensed-matter.ts",
       "src/bridges/rejected.ts",
       "src/cli/command.ts"
+    ],
+    "tests/cli/regime-at-resolution.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts",
+      "src/cli/commands/atlas.ts"
     ],
     "tests/cli/regime.test.ts": [
       "src/cli/main.ts",
