@@ -216,6 +216,7 @@ export const BRIDGE_KLEIN_GORDON_WAVE: AtlasBridge = {
       const { omega0, c, k } = params;
       return kleinGordonPhaseError(omega0 ?? Number.NaN, c ?? Number.NaN, k ?? Number.NaN);
     },
+    deltaAtBasis: 'closed-form',
     norm: 'relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model',
     domain: 'ω₀/(c k) ≤ 0.1',
     horizon:

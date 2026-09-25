@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 347,
-    "totalTestFiles": 456,
+    "totalTestFiles": 457,
     "testedCount": 346,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -482,6 +482,7 @@
       "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark.test.ts",
       "tests/atlas/bound-machine-form.test.ts",
+      "tests/atlas/delta-at-proven.test.ts",
       "tests/atlas/evidence-rule.test.ts",
       "tests/atlas/export.test.ts",
       "tests/atlas/families.test.ts",
@@ -5832,6 +5833,9 @@
       "src/bridges/be65-jeans-mass.ts",
       "src/bridges/membership.ts",
       "src/bridges/rejected.ts"
+    ],
+    "tests/atlas/delta-at-proven.test.ts": [
+      "src/atlas/families.ts"
     ],
     "tests/atlas/derive-evidence.test.ts": [
       "src/atlas/derive-evidence.ts",

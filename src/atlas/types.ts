@@ -190,6 +190,13 @@ export interface ApproximationBound {
    * `approximation`, enforced at admission by `admitApproximation`.
    */
   readonly deltaAt?: (params: Readonly<Record<string, number>>) => number;
+  /**
+   * What `deltaAt` rests on. `'closed-form'`: it returns the EXACT error in
+   * closed form, so it is a proven bound, holding with equality. `'numerically-
+   * supported'`: a formula that witnesses support numerically but no proof
+   * covers. `upt path` prints a point bound only when every step is closed-form.
+   */
+  readonly deltaAtBasis?: 'closed-form' | 'numerically-supported';
   /** `'θ0 ≤ 0.5 rad'`. */
   readonly parameterRange?: string;
   readonly limitCharacter: LimitCharacter;

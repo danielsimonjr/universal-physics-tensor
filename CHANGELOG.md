@@ -148,6 +148,23 @@ from v0.1.0 onward.
   same data limit as L2. Checked on CE-friedmann, H² = (8π/3) G ρ: true data give ĉ = 8.378,
   "agrees", and data 20% high give ĉ = 10.05, "contradicts … (+20%)". `ProbeSearchResult` gains
   `prefactorNotes` (additive).
+- **`upt path --at` prints the PROVEN bound at the point, beside the domain supremum** (persona
+  finding L9). The path printed only the supremum over each bridge's declared domain: for the
+  pendulum, 0.0159 at any θ0. At θ0 = 0.2 the true period error is 0.0025, and for
+  `ab-damped-massless` the supremum, δ = 3, exceeds the unit signal. `ApproximationBound` gains an
+  optional `deltaAtBasis`:
+  - `'closed-form'` means `deltaAt` is the exact error, so a proven bound that holds with equality;
+  - `'numerically-supported'` means witnesses support it, but no proof covers it.
+
+  Six approximations are closed-form. `ab-damped-massless`'s 2(1 + |v0|) m/b is numerical (witness
+  W8b). `upt path` prints "bound at this point: K = 1 · delta = 0.002505744228602058 (closed-form: the
+  exact error; the composed bound above is the supremum over the bridge's domain)" only when every
+  regime holds and every step is closed-form. Otherwise it prints "none" and the reason, for
+  example "ab-damped-massless's point bound is numerically supported, not proven". A new test checks
+  the pendulum `deltaAt` against the exact error at θ0 = 0.1, 0.2, 0.35 and 0.5. The exact error is
+  computed by Simpson quadrature of the elliptic integral, independent of the AGM the code uses, and
+  the two agree to 1e-9. The five other closed forms are checked at an interior point. `--json`
+  gains `pointBound` and `pointBoundReason` (additive).
 
 ## [0.46.0] - 2026-09-24
 

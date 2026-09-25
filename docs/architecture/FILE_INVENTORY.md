@@ -21,22 +21,22 @@ construction. Both are correct; each states its scope.
 
 | Zone | Files | What lives here |
 |---|---|---|
-| `tests` | 485 | The vitest suite |
+| `tests` | 486 | The vitest suite |
 | `src` | 352 | The library, the CLI, and the physics catalog |
 | `benchmarks` | 15 | `bench/*.bench.ts` plus their fixture, run by `npm run bench` |
 | `tools` | 23 | Repository tooling under `tools/` and `scripts/` |
 | `examples` | 1 | The smoke entry |
 | `config` | 1 | A `*.config.*` file |
-| **Total** | **877** | |
+| **Total** | **878** | |
 
-**Tests outnumber source files: 485 against 352.** The ratio fits a repository whose claims are
+**Tests outnumber source files: 486 against 352.** The ratio fits a repository whose claims are
 physical: a wrong number is a wrong prediction, not a cosmetic defect.
 
 ## By disposition
 
 | Disposition | Files | Meaning |
 |---|---|---|
-| `test` | 485 | In the test zone |
+| `test` | 486 | In the test zone |
 | `reachable` | 331 | Reached from an entry root |
 | `bench` | 15 | A benchmark; nothing imports it, `npm run bench` runs it |
 | `test-only` | 11 | Reached only from a test |
@@ -74,7 +74,7 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 877 | dependency-graph.json |
+| totalSourceFiles | 878 | dependency-graph.json |
 | orphanedFiles | 5 | dependency-graph.json |
 | reachableFiles | 336 | dependency-graph.json |
 | testOnlyFiles | 11 | dependency-graph.json |

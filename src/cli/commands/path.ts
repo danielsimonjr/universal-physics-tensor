@@ -160,6 +160,36 @@ async function run(ctx: CommandCtx): Promise<number> {
       ? 'unknown'
       : true;
 
+  // The bound AT the --at point (persona finding L9). Printed only when it is
+  // PROVEN: every regime holds, every step has a closed-form deltaAt (the exact
+  // error), and every value is finite. It is composed by the same rule as the
+  // domain supremum, by substituting each step's point value for its delta.
+  let pointBound: { K: number; delta: number } | null = null;
+  let pointBoundReason: string | null = null;
+  if (result.kind === 'bound' && Object.keys(point).length > 0) {
+    const steps = bridges.filter((b) => b.bound !== undefined);
+    const numerical = steps.find((b) => b.bound!.deltaAtBasis !== 'closed-form');
+    if (allRegimesHold !== true) {
+      pointBoundReason = 'a regime on the path is violated or unchecked';
+    } else if (steps.length === 0) {
+      pointBoundReason = 'no step carries a bound';
+    } else if (numerical !== undefined) {
+      pointBoundReason =
+        numerical.bound!.deltaAt === undefined
+          ? `${numerical.id} states no point bound`
+          : `${numerical.id}'s point bound is numerically supported, not proven`;
+    } else {
+      const atPoint = bridges.map((b) =>
+        b.bound === undefined ? b : { ...b, bound: { ...b.bound, delta: b.bound.deltaAt!(point) } },
+      );
+      const composed = atPoint.every((b) => b.bound === undefined || Number.isFinite(b.bound.delta))
+        ? api.boundPath(atPoint)
+        : null;
+      if (composed !== null && composed.kind === 'bound') pointBound = composed.bound;
+      else pointBoundReason = 'a parameter the point bound needs was not supplied';
+    }
+  }
+
   if (wantJson) {
     emitJson(
       {
@@ -181,6 +211,8 @@ async function run(ctx: CommandCtx): Promise<number> {
             : { kind: 'no-claim', reason: result.reason, detail: result.detail, phrase: NO_COMPOSITE_PHRASE }),
           regimes,
           allRegimesHold,
+          pointBound,
+          ...(pointBoundReason !== null ? { pointBoundReason } : {}),
           horizons,
           horizonsEvaluated: t !== undefined,
           allHorizonsHold: t === undefined ? null : allHold,
@@ -200,6 +232,14 @@ async function run(ctx: CommandCtx): Promise<number> {
     out(`  composed bound: K = ${result.bound.K} · delta = ${result.bound.delta}`);
     out(`  norm: ${result.norm ?? '(none stated — the claim is the vacuous identity)'}`);
     if (result.terminal) out('  terminal: the last step states no Lipschitz constant; the claim ends there');
+    if (pointBound !== null) {
+      out(
+        `  bound at this point: K = ${pointBound.K} · delta = ${pointBound.delta} (closed-form: the exact error; ` +
+          "the composed bound above is the supremum over the bridge's domain)",
+      );
+    } else if (pointBoundReason !== null) {
+      out(`  bound at this point: none — ${pointBoundReason}`);
+    }
   } else {
     out(`  composite relation: ${NO_COMPOSITE_PHRASE}`);
     out(`  bound: ${NO_COMPOSITE_PHRASE} — reason '${result.reason}'`);

@@ -177,6 +177,7 @@ export const AB_PENDULUM_LINEAR: AtlasBridge = {
     // reproduced by quadrature of the complete elliptic integral.
     delta: pendulumPeriodErrorAt({ theta0: 0.5 }),
     deltaAt: pendulumPeriodErrorAt,
+    deltaAtBasis: 'closed-form',
     norm: 'relative period error, normalized by the value of the reduced model',
     domain: 'θ0 ≤ 0.5 rad',
     horizon: 't ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time',
@@ -293,6 +294,8 @@ export const AB_DAMPED_MASSLESS: AtlasBridge = {
     // declared bound.
     delta: dampedOffsetBoundAt({ m: 0.25, b: 1, k: 1, x0: 1, v0: 5 }),
     deltaAt: dampedOffsetBoundAt,
+    // Witness W8b supports it numerically for m ∈ {1e-1, 1e-2, 1e-3}; no proof covers it.
+    deltaAtBasis: 'numerically-supported',
     norm: 'sup |x − x_reduced| for t ≥ 5 m/b',
     domain: 't ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1',
     horizon: 't ≥ 5 m/b (outside the boundary layer)',

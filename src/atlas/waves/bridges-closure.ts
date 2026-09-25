@@ -73,6 +73,7 @@ export const BRIDGE_KG_SCHRODINGER: AtlasBridge = {
       if (c === undefined || k === undefined || omega0 === undefined) return Number.NaN;
       return kgNonrelativisticError((c * k) / omega0);
     },
+    deltaAtBasis: 'closed-form',
     norm: 'relative error of the kinetic frequency ω − ω₀, normalized by the value of the reduced model',
     domain: 'x = ck/ω₀ ≤ 0.1',
     horizon:
@@ -180,6 +181,7 @@ export const BRIDGE_STIFF_STRING: AtlasBridge = {
     delta: stiffStringPhaseError(1, STIFF_MAX_BETA, 1),
     deltaAt: (p) =>
       stiffStringPhaseError(p['F'] ?? Number.NaN, p['EI'] ?? Number.NaN, p['k'] ?? Number.NaN),
+    deltaAtBasis: 'closed-form',
     norm: 'relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model',
     domain: 'β = EIk²/F ≤ 0.01',
     horizon:
