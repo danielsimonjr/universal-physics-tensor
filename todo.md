@@ -275,6 +275,8 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **The git-spawning gate tests are not hermetic** (Mothership report 2026-09-25; fix AFTER the 0.47.0 persona re-test). When the pre-push hook runs from a LINKED git worktree, git exports GIT_DIR to the hook. `tests/tools/pushed-head.test.ts` (3 tests) and `tests/tools/untracked-gate-inputs.test.ts` (15 tests) spawn `git init` and `git commit` in temp dirs, inherit GIT_DIR, and act on the REAL repository. On the 0.47.0 release push they set `core.bare = true` in the main `.git/config` and committed "a" by t@example.invalid onto the worktree HEAD (repaired; nothing reached the remote). Fix: the tests' git helper removes GIT_DIR, GIT_WORK_TREE, GIT_INDEX_FILE and GIT_COMMON_DIR from the child env, and the hook unsets GIT_* before it runs the suite. Proof: a test that runs the gate from a linked worktree and checks that the main repo is unchanged.
+
 - [ ] **After 0.47.0: one release per tier, each DESIGNED and approved by Mothership before any code**
       (owner order 2026-09-25). No code before the design is approved.
       - [ ] After the criterion 3 study closes: switch the product's typed structural search (`rankByStructure` callers) to the residual-form canonical corpus, so user claims in residual form can match. Blocked while the Amendment 8 pins are live.
