@@ -257,7 +257,9 @@ async function run(ctx: CommandCtx): Promise<number> {
               status: r.record.status,
             })),
             wording: result.wording,
-            ...(sub === 'falsify' ? { falsifications: result.falsifications } : {}),
+            ...(sub === 'falsify'
+              ? { falsifications: result.falsifications, notFalsified: notFalsified(result) }
+              : {}),
           },
         },
         ctx.write,
@@ -270,11 +272,41 @@ async function run(ctx: CommandCtx): Promise<number> {
         out(`\n  falsify ${id} survived=${fal.survived}`);
         for (const rec of fal.records) out(`    ${rec.battery}: ${rec.outcome} — ${rec.detail}`);
       }
+      // Every candidate is accounted for (persona finding C5): one without
+      // batteries used to be passed over in silence.
+      for (const n of notFalsified(result)) {
+        out(`\n  falsify ${n.id}: no batteries run — status ${n.status}: ${n.reason}`);
+      }
     }
     return 0;
   }
 
   throw new UsageError(`upt probe: unhandled subverb '${sub}'`);
+}
+
+/** Why the falsification batteries did not run for a candidate, by its final status. */
+const NOT_FALSIFIED_REASON: Readonly<Record<string, string>> = {
+  'equivalent-known':
+    'batteries run only for candidates that are not equivalent to a known corpus relation',
+  rejected: 'the candidate was rejected before falsification',
+  'insufficient-evidence': 'there were no holdout observations to test it on',
+  'empirically-fit': 'the candidate did not pass its holdout',
+  'structurally-valid': 'the candidate was not fit to data',
+  generated: 'the candidate was not validated',
+};
+
+/** The candidates the batteries did not run for, with the reason. */
+function notFalsified(result: {
+  candidates: readonly { id: string; status: string }[];
+  falsifications: Readonly<Record<string, unknown>>;
+}): { id: string; status: string; reason: string }[] {
+  return result.candidates
+    .filter((c) => !(c.id in result.falsifications))
+    .map((c) => ({
+      id: c.id,
+      status: c.status,
+      reason: NOT_FALSIFIED_REASON[c.status] ?? 'the batteries did not run for this status',
+    }));
 }
 
 export const command: Command = {

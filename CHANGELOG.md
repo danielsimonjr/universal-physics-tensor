@@ -37,6 +37,14 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`upt probe falsify` accounts for every candidate** (persona finding C5). The persona ran
+  `falsify` and got no battery lines. That was by design, but it looked broken: the batteries run
+  only for NEW candidates, and a candidate equivalent to a known corpus relation stops at
+  `equivalent-known`. The command said nothing, so "no batteries ran" read as "the command is
+  broken". Each candidate without batteries is now listed as "falsify <id>: no batteries run —
+  status <status>: <reason>", and `--json` gains `notFalsified`. The skip rule itself is unchanged.
+  A control test runs a new relation, f = η/(ρL²), absent from the corpus: it still prints all four
+  batteries and no "no batteries" line. New fixture `tests/fixtures/discovery/viscous-rate-problem.json`.
 - **A dimensionless input no longer blocks `upt probe`, and its stop reason is true** (persona
   finding C2). With θ0 among the inputs, the target's monomial is not unique, since any f(θ0) can
   multiply it. The native enumerator then produced nothing, and the run said "enumerator produced no
