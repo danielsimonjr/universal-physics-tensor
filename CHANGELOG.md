@@ -8,6 +8,18 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Documented
+
+- **The massless-limit bound δ = 3 is 5.7× loose; this is recorded, not tightened** (0.47.0 persona
+  re-test, L9 residual). `ab-damped-massless` states δ = 3, the supremum of 2(1+|v0|)m/b over its
+  declared range (m < 1/4, |v0| ≤ 5, at b = k = 1). For x0 = 1, the measured supremum of
+  |x − x_reduced| over that whole range is 0.524, at m ≈ 0.21 and v0 = +5. It does not grow toward
+  critical damping (0.514 at m = 0.249999). So δ holds, but it exceeds the unit signal it bounds.
+  A tighter δ needs a bound with its own basis, not a grid maximum, so the claim is unchanged. The
+  measurement is recorded beside δ in `src/atlas/oscillators/bridges-limits.ts`, in comments only:
+  no record text or exported data changes. Since 0.47.0, `upt path` withholds the point bound for
+  this bridge ("numerically supported, not proven").
+
 ### Fixed
 
 - **`upt map --equation` prints the verdict before the linkage map** (0.47.0 persona finding N4).

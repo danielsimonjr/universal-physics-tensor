@@ -292,6 +292,15 @@ export const AB_DAMPED_MASSLESS: AtlasBridge = {
     // the same formula frozen at the ONE fixture mass `m = 1e-3` — true error
     // there is 5.96e-3, but at m = 0.24 it is 5.19e-1, forty times the
     // declared bound.
+    // KNOWN LOOSENESS (0.47.0 persona re-test, L9 residual; documented, not
+    // tightened): for x0 = 1 the measured sup of |x − x_reduced| over the whole
+    // declared range (m < 1/4, |v0| ≤ 5, t ≥ 5m/b) is 0.524, at m ≈ 0.21 and
+    // v0 = +5, and it does not grow toward critical damping (0.514 at
+    // m = 0.249999). So δ = 3 holds but is 5.7× loose, and it exceeds the unit
+    // signal it bounds. A tighter δ needs a bound with its own basis, not a grid
+    // maximum; until then `upt path` withholds the point bound
+    // (deltaAtBasis below). Independent check: the persona's
+    // checks/recheck_047.py and a 115 × 2 grid over (m, ±5).
     delta: dampedOffsetBoundAt({ m: 0.25, b: 1, k: 1, x0: 1, v0: 5 }),
     deltaAt: dampedOffsetBoundAt,
     // Witness W8b supports it numerically for m ∈ {1e-1, 1e-2, 1e-3}; no proof covers it.
