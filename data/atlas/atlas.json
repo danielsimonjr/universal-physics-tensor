@@ -515,7 +515,7 @@
             "model-spring"
           ],
           "conclusion": "model-lc",
-          "transformation": "u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_LC t / ω_s)",
+          "transformation": "force–voltage analogy m ↔ L, k ↔ 1/C, x ↔ q (so ω0² = k/m ↔ 1/(LC)); u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_LC t / ω_s)",
           "inverse": "x = x0 u, t = τ/ω0",
           "preserves": [
             "the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)",
@@ -549,7 +549,7 @@
           },
           "counterexamples": [
             {
-              "description": "adding R to bridge 1 breaks it: the same L, C with R = 4 has ζ_RLC = 0.5, which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π",
+              "description": "adding R to bridge 1 breaks it: the circuit L = 2, C = 0.125 of witness W2b with R = 4 has ζ_RLC = (R/2)√(C/L) = 0.5, which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π",
               "witness": "W2b"
             }
           ],
@@ -602,7 +602,7 @@
             "model-damped-spring"
           ],
           "conclusion": "model-rlc",
-          "transformation": "u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_RLC t / ω_mech)",
+          "transformation": "force–voltage analogy m ↔ L, k ↔ 1/C, b ↔ R, x ↔ q; u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_RLC t / ω_mech)",
           "inverse": "x = x0 u, t = τ/ω0",
           "preserves": [
             "the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)",

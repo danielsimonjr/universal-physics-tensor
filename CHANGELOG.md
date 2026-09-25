@@ -38,6 +38,13 @@ from v0.1.0 onward.
   representative-value table and a documented room temperature of 300 K. Otherwise the line reads
   "no sourced sample value for X; not evaluated". Checked: T = b·H₀/c = 2.13 × 10⁻²⁹ K at
   H₀ = 2.2 × 10⁻¹⁸ s⁻¹, and ν = k_B ln 2 · 300 K / h = 4.33 × 10¹² Hz, both recomputed independently.
+- **The LC analogies state their dictionary where a reader looks** (persona finding D6). The
+  force–voltage map m ↔ L, k ↔ 1/C, b ↔ R, x ↔ q was only inside the witness tolerance text. The
+  `ab-spring-lc` counterexample also said "the same L, C with R = 4 has ζ_RLC = 0.5" without giving
+  L and C, and ζ = (R/2)√(C/L) = 0.5 needs L/C = 16. Both transformations now name the map. The
+  counterexample names L = 2 and C = 0.125, the circuit witness W2b runs, and states the ζ formula.
+  A test recomputes ζ from the numbers in the text, and checks that they are the ones W2b uses.
+  `data/atlas/*.json` were regenerated with `bun run atlas:json`.
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and

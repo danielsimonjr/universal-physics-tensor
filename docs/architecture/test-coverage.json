@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 462,
+    "totalTestFiles": 463,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -488,6 +488,7 @@
       "tests/atlas/export.test.ts",
       "tests/atlas/families.test.ts",
       "tests/atlas/formal-sanity.test.ts",
+      "tests/atlas/lc-analogy-text.test.ts",
       "tests/atlas/link-prediction.test.ts",
       "tests/atlas/oscillators-coarse.test.ts",
       "tests/atlas/regime-admission.test.ts",
@@ -5997,6 +5998,9 @@
       "src/bridges/be52-mercury-confrontation.ts"
     ],
     "tests/atlas/import-graph.test.ts": [],
+    "tests/atlas/lc-analogy-text.test.ts": [
+      "src/atlas/families.ts"
+    ],
     "tests/atlas/link-prediction.test.ts": [
       "src/atlas/link-prediction.ts",
       "src/atlas/families.ts",

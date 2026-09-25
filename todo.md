@@ -289,7 +289,7 @@ warning-silencing, not debug logging).
       - [x] D2: the `upt probe run --problem` file format is documented nowhere a user can read (types are `@internal`).
       - [x] D4: `upt evaluate` help says "~1.44 M_sun"; the output is 1.4559 (m_u, M☉ = 1.989e30).
       - [x] D5: `discover --derive` example values use 300 for every free variable, whatever its dimension.
-      - [ ] D6: `ab-spring-lc` states the m↔L, k↔1/C map only in witness text; its counterexample's L/C = 16 is unstated.
+      - [x] D6: `ab-spring-lc` states the m↔L, k↔1/C map only in witness text; its counterexample's L/C = 16 is unstated.
       - [ ] F1: `--at` ignores unknown keys silently, and composite groups must be typed as the exact display string.
       - [ ] F2: failed checks exit 0 (derive/map dimension mismatch, path with a violated horizon or regime, explain of an unknown name). BREAKING CLI change.
       - [ ] F3: the default install pulls 36 packages / 48 MB through `optionalDependencies` for a "zero hard dependencies" package.
