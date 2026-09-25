@@ -37,6 +37,17 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **A dimensionless input no longer blocks `upt probe`, and its stop reason is true** (persona
+  finding C2). With θ0 among the inputs, the target's monomial is not unique, since any f(θ0) can
+  multiply it. The native enumerator then produced nothing, and the run said "enumerator produced no
+  dimensionally valid candidates", which is false: √(ℓ/g) is valid. The monomial is now taken from
+  the dimensioned inputs, and the run says that an unknown function of the dimensionless inputs is
+  not searched. When not even the dimensioned inputs fix a unique monomial, the stop reason says
+  "the target is not a unique monomial of the inputs … the native enumerator searches unique
+  monomials only". On the persona's finite-amplitude pendulum data with θ0 as an input, the probe
+  now finds √(ℓ/g), fits ĉ = 7.387, and reports that it contradicts CE-pendulum-period's 2π by
+  18%: the data lie outside the small-angle regime. Probe statement coverage rose from 94.53% to
+  94.62%.
 - **`upt explain` says plainly when a name is not covered** (persona finding C4). `upt explain
   qwertyuiop`, `soliton-speed` and `driven-damped-oscillator` all printed "cannot be determined
   from {} (no inputs): the graph has no derivation path" and exited 0. That is the same answer as

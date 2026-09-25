@@ -4286,14 +4286,14 @@ The codebase is organized into the following modules:
 | `../../dimensional/ast-types.js` | `ExprNode` | Import (type-only) |
 | `../../dimensional/types.js` | `DIMENSIONLESS` | Import |
 | `../../dimensional/ast-builders.js` | `sym` | Import |
-| `../../dimensional/buckingham.js` | `dimensionallyDetermines` | Import |
+| `../../dimensional/buckingham.js` | `dimensionallyDetermines, DimensionalDeterminationResult` | Import |
 | `../../dimensional/validator.js` | `validate` | Import |
 | `./types.js` | `DimensionalVariableRef, SearchBudget, SearchProblem` | Import (type-only) |
 | `./search-budget.js` | `canEmitCandidate, BudgetState` | Import |
 
 **Exports:**
 - Interfaces: `RawCandidate`
-- Functions: `monomialToExpr`
+- Functions: `monomialToExpr`, `nativeDetermination`
 
 ---
 
@@ -4410,7 +4410,7 @@ The codebase is organized into the following modules:
 | `./types.js` | `ProbeCandidateRecord, ProbeRejectionRecord, SearchBudget, SearchProblem, SearchStopReason, DiscoveryRunManifest` | Import (type-only) |
 | `./types.js` | `DEFAULT_SEARCH_BUDGET, SCHEMA_VERSION` | Import |
 | `./search-budget.js` | `openBudget, budgetStopReason, BudgetState` | Import |
-| `./generator.js` | `generateNative, RawCandidate` | Import |
+| `./generator.js` | `generateNative, nativeDetermination, RawCandidate` | Import |
 | `./fingerprint.js` | `fingerprintExpr, complexityOf, bodyExpression` | Import |
 | `./corpus.js` | `compareToCorpus, corpusPrefactorNotes, corpusRelativeWording, CorpusComparisonResult` | Import |
 | `./fit.js` | `fitPrefactor, FitResult` | Import |
@@ -6614,12 +6614,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 351 |
 | Total Modules | 11 |
-| Total Lines of Code | 70051 |
-| Total Exports | 2474 |
+| Total Lines of Code | 70093 |
+| Total Exports | 2475 |
 | Total Re-exports | 1241 |
 | Total Classes | 58 |
 | Total Interfaces | 362 |
-| Total Functions | 563 |
+| Total Functions | 564 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 490 |

@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 468,
+    "totalTestFiles": 469,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -3658,6 +3658,7 @@
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/corpus-prefactor.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/dimensionless-input.test.ts",
       "tests/composition/probe/family-b.test.ts"
     ],
     "src/composition/probe/problem.ts": [
@@ -3666,6 +3667,7 @@
       "tests/cli/recover-conventions.test.ts",
       "tests/composition/probe/corpus-prefactor.test.ts",
       "tests/composition/probe/coverage-backfill.test.ts",
+      "tests/composition/probe/dimensionless-input.test.ts",
       "tests/composition/probe/family-b.test.ts",
       "tests/composition/probe/modules.test.ts",
       "tests/composition/probe/parse-expr-json.test.ts"
@@ -9214,6 +9216,10 @@
       "src/composition/probe/candidate-store.ts",
       "src/composition/probe/corpus.ts",
       "src/bridges/rhs-registry.ts"
+    ],
+    "tests/composition/probe/dimensionless-input.test.ts": [
+      "src/composition/probe/problem.ts",
+      "src/composition/probe/pipeline.ts"
     ],
     "tests/composition/probe/discovery-run-schema.test.ts": [],
     "tests/composition/probe/experiment-design.test.ts": [
