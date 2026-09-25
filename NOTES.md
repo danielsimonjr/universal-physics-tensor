@@ -30,13 +30,18 @@ Those are different claims and merging them produces a false green.
   defects, both fixed: the validator rejected every "x = 0", and the atlas condition accepted items
   that no instrument had checked. Result: the atlas rejects **6 of 61** invalid items, all with the
   right failure kind, abstains on **116 of 125**, **1** wrong accept and **1** false reject.
-  **Criterion 2 (atlas vs the best LOCAL LLM, Amendment 4): NOT MET.** qwen3.8:27b rejected 51/61
+  **Criterion 2 (atlas vs the best LOCAL LLM, Amendment 4): NOT MET, and it stands as measured (no
+  re-run; Mothership, 2026-09-24).** qwen3.8:27b rejected 51/61
   invalid items against the atlas's 6/61; the interval for the difference is −73.8%
   [−82.7%, −58.7%]. The atlas made 1 wrong accept against 9–13 for the models, by abstaining on
   116/125. gemma4:26b returned empty answers
   on 64/125 items under the frozen 8,192-token context.
-- **Criterion 3 (recall@10, typed structural search vs embeddings): INTERIM, no verdict** (as of
-  2026-09-24; pre-registration Amendment 8). The in-process conditions ran on PRIMARY (n = 50, MODEL
+- **Criterion 3 (recall@10, typed structural search vs embeddings): NOT MET** (2026-09-24,
+  pre-registration Amendment 11). On PRIMARY (n = 50), the embedding condition (qwen3-embedding:4b,
+  frozen vectors) scored 49/50 = 98.0% [89.5%, 99.6%] and 30/30 in-distribution. The typed structural
+  search's interval, [14.3%, 37.4%], does not lie above 98.0%. A second embedding pass gave the same
+  49/50, with no query crossing the depth cut (min cosine 0.9972). Result:
+  `docs/research/criterion3/results-embedding.md`. Before that, as INTERIM (Amendment 8), the in-process conditions ran on PRIMARY (n = 50, MODEL
   labels): text retrieval 34/50 = 68.0% [54.2%, 79.2%]; symbol matching and typed structural search
   both 12/50 = 24.0% [14.3%, 37.4%], and 0/30 on the in-distribution families. The typed structural
   tier never fired (0 of 11,125 key equalities): 123/125 queries are `lhs − rhs` residuals and the

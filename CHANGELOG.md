@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — criterion 3 VERDICT: NOT MET (pre-registration Amendment 11)
+
+The embedding condition was scored after Amendment 11 was committed (`b6916ab`) and its CI run was
+green (36084344662, 2026-09-25T02:01:31Z). The scorer checked every Amendment 8 and 11 pin first.
+
+- **PRIMARY (n = 50), the criterion's pool:**
+  - embeddings (qwen3-embedding:4b, frozen vectors): 49/50 = 98.0% [89.5%, 99.6%];
+  - typed structural search: 12/50 = 24.0% [14.3%, 37.4%].
+- **The verdict is NOT MET.** The typed interval does not lie above the embedding point estimate.
+- **In-distribution:** 30/30 for embeddings, 0/30 for typed search. Fluid statics (held out): 19/20
+  for embeddings, 12/20 for typed search.
+- **SECONDARY (n = 64):** 63/64 = 98.4% against 15/64 = 23.4%.
+- **Variance, disclosed and not scored.** A second embedding pass is not byte-identical: min cosine
+  0.9972, mean 0.9994 over 232 vectors. It gives the same 49/50, and no truth query crosses the depth
+  cut. The file is committed beside the frozen one.
+- **A negative result, recorded as one.** On this task, finding the established relation that a claim
+  restates or misuses, a local embedding model beats the atlas's typed structural search by a wide
+  margin.
+- **Criterion 2 stands as measured, NOT MET.** No re-run is planned (Mothership).
+- `atlas-study-results.md` now includes the verdict section, and a note marks the older INTERIM
+  wording. Its other content regenerated unchanged.
+
 ### Added (2026-09-24) — criterion 3: pre-registration Amendment 11 registers the embedding condition before it is scored
 
 - **Registered, as Amendment 8 requires, before any score:**

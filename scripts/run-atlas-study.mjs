@@ -185,6 +185,19 @@ const lines = [
 // Criterion 3 (pre-registration Amendment 8) is scored by `tools/criterion3-study/run.ts`, which
 // writes its own section. It is included here as written, so that this file holds every criterion.
 const criterion3 = resolve(repoRoot, 'docs', 'research', 'criterion3', 'results-interim.md');
+// The embedding condition and the verdict (Amendment 11) are scored by `tools/criterion3-study/embedding.ts`.
+// The in-process section's INTERIM wording predates them and is pinned code, so a note points forward.
+const embeddingMd = resolve(repoRoot, 'docs', 'research', 'criterion3', 'results-embedding.md');
+const embeddingJson = resolve(repoRoot, 'docs', 'research', 'criterion3', 'results-embedding.json');
+if (existsSync(embeddingJson)) {
+  const met = JSON.parse(readFileSync(embeddingJson, 'utf8')).verdict.met;
+  lines.push(
+    `> **Criterion 3 has a verdict: ${met ? 'MET' : 'NOT MET'}** (pre-registration Amendment 11, in its own section below). ` +
+      'The INTERIM wording in the next section was written before the embedding condition ran; its numbers are unchanged.',
+    '',
+  );
+}
 if (existsSync(criterion3)) lines.push(readFileSync(criterion3, 'utf8').trimEnd(), '');
+if (existsSync(embeddingMd)) lines.push(readFileSync(embeddingMd, 'utf8').trimEnd(), '');
 writeFileSync(resolve(repoRoot, 'docs', 'research', 'atlas-study-results.md'), lines.join('\n'));
 console.log(`run-atlas-study: scored ${items.length} items over ${metrics.length} condition(s)`);
