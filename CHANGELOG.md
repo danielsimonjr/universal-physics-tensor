@@ -10,6 +10,22 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **One "did you mean?" ranking for `upt map` and `upt explain`, edit distance first** (0.47.0
+  persona findings N2 and N5). There were two rankers, and they disagreed:
+  - `map --equation` listed the quantities of an unknown name's inferred dimension alphabetically, so
+    `lenght` got "a, amplitude, barrier-width, bohr-radius, boundary-length" and never `length`;
+  - the name ranker put a substring before a near spelling, so `explain hawkng-temperature` listed
+    `temperature` before `hawking-temperature`.
+
+  Both now use one ranking: edit distance first, then containment, then length. The dimension is
+  still the filter when it can be inferred. The distance is optimal-string-alignment distance, so a
+  swap of two adjacent letters is one edit. Under plain Levenshtein, `lenght` → `length` and
+  `lenght` → `height` both cost 2, and the alphabet then put `height` first. Measured on the real
+  catalog: `lenght` → "length, height, wavelength, a, r"; `hawkng-temperature` →
+  "hawking-temperature, reheating-temperature, temperature, …". `suggestByDimension` takes the
+  typed name as an optional fourth argument; without it, the order stays alphabetical. The
+  `PHYSICS_MAP.md` example and its prose now show the new ranking.
+
 - **A mismatch caused by an unknown name says UNKNOWN, not MISMATCH** (0.47.0 persona finding N3).
   `upt map --equation` checks an unknown name as a dimensionless placeholder, so its mismatch is not
   a real check, and the command exits 0 (the UNKNOWN rule of F2). The line still read "⚠ dimensional

@@ -721,9 +721,11 @@ e.g. `photon_energy` → `photon-energy`).
 catalog's dimensions, with physics constants carrying their real dimensions.
 The CLI then reports whether the RHS is **dimensionally consistent** with the
 target. For a single unknown symbol, the CLI also **infers its dimension**.
-The CLI uses the inferred dimension to give a dimension-based "did you
-mean?", and falls back to
-name-similarity when it cannot.
+The CLI uses the inferred dimension to select the "did you mean?"
+candidates. When it cannot infer the dimension, it uses all catalog names.
+One ranking orders both sets: edit distance to the typed name first, where a
+swap of two adjacent letters counts as one edit (`lenght` → `length`).
+`upt explain` uses the same ranking.
 
 ```bash
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
@@ -733,7 +735,7 @@ node bin/upt.mjs map --source=canonical --equation "period = mass"
 #   ⚠ dimensional MISMATCH: RHS is [mass] but the target is [time]
 node bin/upt.mjs map --source=canonical --equation "period = uu / gravity"
 #   · UNKNOWN: RHS is [L^-1 T^2] but the target is [time]; the mismatch involves the unresolved placeholder 'uu' (taken as dimensionless), so it is not a failed check
-#   ⚠ 'uu' is unknown — by its inferred dimension, did you mean: drift-velocity, fermi-velocity, flow-velocity, most-probable-speed, sound-speed?
+#   ⚠ 'uu' is unknown — by its inferred dimension, did you mean: v, speed, velocity, sound-speed, flow-velocity?
 ```
 
 The active formula parser extracts the free variables. That parser is the
