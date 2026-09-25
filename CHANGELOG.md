@@ -10,6 +10,15 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **README links were dead on npm** (persona finding D1). The npm package ships only `dist/`,
+  `bin/`, `README.md` and `LICENSE`. The README linked 44 other repository paths relatively, among
+  them `docs/`, `cli/README.md`, `examples/` and `data/bridge-catalog.json`, and every one of those
+  links was dead on the npm page. They now point to the GitHub repository. The Quick Start opens
+  with the npm route (`npx upt …`), and says that the docs and fixtures it names are in the
+  repository. It no longer says "Once published". A new test, `tests/tools/readme-links.test.ts`,
+  fails on any relative link outside the shipped `files`, and on any GitHub link to a path that
+  does not exist in the tree.
+
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and
   "horizons all hold", although `ab-pendulum-linear` claims that bound only for θ0 ≤ 0.5. The

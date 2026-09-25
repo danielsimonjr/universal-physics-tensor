@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 348 |
-| Total Test Files | 458 |
+| Total Test Files | 459 |
 | Source Files with Tests | 347 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -843,4 +843,5 @@ The following 1 source files are not directly imported by any test file:
 | `tools/formalref-axiom-gate.test.ts` | 1 files |
 | `tools/plan-doc-audit.test.ts` | 0 files |
 | `tools/pushed-head.test.ts` | 0 files |
+| `tools/readme-links.test.ts` | 0 files |
 | `tools/untracked-gate-inputs.test.ts` | 0 files |

@@ -918,14 +918,14 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 880 | dependency-graph.json |
+| totalSourceFiles | 881 | dependency-graph.json |
 | totalExports | 3116 | dependency-graph.json |
 | totalTypeOnlyImports | 894 | dependency-graph.json |
 
 **Two scopes, both correct.** The table above is **whole-repository** — `repo_map` counts
 every TypeScript file git tracks, including `tests/`, `bench/`, `examples/` and `tools/`. The prose in this
 document uses the **`src/` scope** produced by this repository's own generator
-(`bun run docs:deps`): 351 files, 2469 exports, 1238 of them re-exports. 880 and 351 do not
+(`bun run docs:deps`): 351 files, 2469 exports, 1238 of them re-exports. 881 and 351 do not
 contradict each other; they answer different questions. Every figure states its scope.
 
 **Claims the gate cannot hold.** Catalog figures are properties of the physics catalog,
