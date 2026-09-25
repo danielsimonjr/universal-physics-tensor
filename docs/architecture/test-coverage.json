@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 465,
+    "totalTestFiles": 466,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -10739,6 +10739,7 @@
     "tests/tools/formalref-axiom-gate.test.ts": [
       "src/atlas/families.ts"
     ],
+    "tests/tools/package-deps.test.ts": [],
     "tests/tools/plan-doc-audit.test.ts": [],
     "tests/tools/pushed-head.test.ts": [],
     "tests/tools/readme-links.test.ts": [],

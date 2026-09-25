@@ -73,10 +73,11 @@ array are `@public`.
   fails on them with either engine. Use `bridgeGradientNumerical`,
   or `bridgeGradientAST` for an exact gradient.
 
-- **Optional peer for exact AD.** `mathts-autograd` is in
-  `optionalDependencies`. Run `npm install --include=optional` to
-  install it. `bridgeGradientAST` needs it, together with
-  `mathts-tensor`; `bridgeGradientNumerical` does not.
+- **Optional peer for exact AD.** `mathts-autograd` is an optional peer
+  dependency, which a default install leaves out. Run
+  `npm install @danielsimonjr/mathts-autograd @danielsimonjr/mathts-tensor`
+  to install it. `bridgeGradientAST` needs both; `bridgeGradientNumerical`
+  does not.
 
 - **Scalar output only.** Bridges returning structs (e.g.,
   `PerihelionPrecessionResult` with 6 fields) need a selector
