@@ -275,6 +275,23 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **0.47.0 batch from the persona pass (Mothership ruling 2026-09-25).** One finding per commit;
+      STOP and report before any release (0.47.0 is Mothership's).
+      - [ ] P: canonical prefactor table OUTSIDE the pinned `src/canonical` tree (entry id, exact prefactor, source quote + locator); L2 and L7 read it, so π-for-2π and a missing ½ report "differs by factor".
+      - [ ] D1: README links docs, `cli/README.md`, `examples/`, `data/bridge-catalog.json` that the npm package does not ship.
+      - [ ] D2: the `upt probe run --problem` file format is documented nowhere a user can read (types are `@internal`).
+      - [ ] D4: `upt evaluate` help says "~1.44 M_sun"; the output is 1.4559 (m_u, M☉ = 1.989e30).
+      - [ ] D5: `discover --derive` example values use 300 for every free variable, whatever its dimension.
+      - [ ] D6: `ab-spring-lc` states the m↔L, k↔1/C map only in witness text; its counterexample's L/C = 16 is unstated.
+      - [ ] F1: `--at` ignores unknown keys silently, and composite groups must be typed as the exact display string.
+      - [ ] F2: failed checks exit 0 (derive/map dimension mismatch, path with a violated horizon or regime, explain of an unknown name). BREAKING CLI change.
+      - [ ] F3: the default install pulls 36 packages / 48 MB through `optionalDependencies` for a "zero hard dependencies" package.
+      - [ ] Remove the deprecated `BridgeEquations.crossingResidual` (the row below; breaking, lands in 0.47.0).
+      - [ ] C2: probe with a dimensionless governing variable says "no dimensionally valid candidates", which is false.
+      - [ ] C4: `upt explain` answers an unknown name and a real uncovered quantity alike, and exits 0; say "not covered" plainly.
+      - [ ] C5: `upt probe falsify` prints no falsification batteries: find out whether it is a bug (fix) or not (defer).
+      - [ ] C1, C3: record in ROADMAP §8 Future (probe scan has nothing searchable; `path` cannot cross families). Deferred by ruling.
+
 - [x] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
       findings in the persona's `FINDINGS.md`, rulings by inbox 2026-09-25). One finding per commit.
       - [x] L1: `upt path` quotes a bound and "all hold" outside the bound's own regime (pendulum at θ0 = 0.8: bound 1.59%, true error 4.15%).
