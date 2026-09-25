@@ -10,7 +10,7 @@
  *
  * Per P8 Decision #1, this lives in `src/diff/` (NOT in
  * `src/bridges/`), keeping bridge evaluators untouched. The AD
- * dependency `mathts-autograd` is in `optionalDependencies`. Note this
+ * dependency `mathts-autograd` is an optional peer dependency. Note this
  * gives `bridgeGradient` TWO failure modes, not graceful success: when
  * the peer is ABSENT it throws `EngineCapabilityError`; when the peer is
  * PRESENT it still throws (see the AD limitation below) — installing the

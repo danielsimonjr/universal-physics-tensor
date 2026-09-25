@@ -67,6 +67,16 @@ from v0.1.0 onward.
   `upt regime` also names every key that no record in the family uses. A zero exponent does not
   block derivation: two records key `tau · D · q^2`, one with an extra `c: 0`, which the first test
   caught. `--json` gains `resolvedPoint` and `unknownCoordinates` (additive).
+- **A default install is one package, not 36** (persona finding F3). The nine `@danielsimonjr/mathts-*`
+  packages and `@viz-js/viz` were `optionalDependencies`, and npm installs those by default, so
+  `npm install universal-physics-tensor` pulled 36 packages and 48 MB. They are now optional
+  `peerDependencies`, marked in `peerDependenciesMeta`, which npm does not install unless asked.
+  They are also `devDependencies`, so this repository's tests still run against them. Measured
+  with `npm pack` and a clean `npm install` of the tarball: 1 package, 8.4 MB. The CLI works
+  there: `eval` and `derive` run on the built-in parser, and `--debug` reports `builtin`. **Packaging
+  change:** a user who relied on the MathTS parser or SVG output now installs those peers
+  explicitly, and the README says how. A new test fails if `dependencies` or
+  `optionalDependencies` reappear, or if a peer is not optional.
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and

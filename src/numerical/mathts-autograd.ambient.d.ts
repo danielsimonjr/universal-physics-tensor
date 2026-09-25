@@ -1,7 +1,7 @@
 /**
  * Ambient module declaration for the optional peer dependency
- * `@danielsimonjr/mathts-autograd`. The package is listed in package.json's
- * `optionalDependencies` and is therefore not guaranteed to be installed at
+ * `@danielsimonjr/mathts-autograd`. The package is listed in package.json's peerDependencies as
+ * optional, and is therefore not guaranteed to be installed at
  * tsc time — without this declaration, the dynamic `await import(
  * '@danielsimonjr/mathts-autograd')` call sites in numerical/engine-registry.ts
  * and numerical/mathts-engine.ts would fail tsc with TS2307 and need

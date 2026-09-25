@@ -98,7 +98,10 @@ bun run upt -- help
 (`@danielsimonjr/mathts-functions`) when the optional peers are installed,
 and a built-in, dependency-free parser otherwise — transparently, via a
 `FormulaParser` registry (add `--debug` to see which is active). UPT keeps
-**zero hard dependencies**; the MathTS packages are optional.
+**zero hard dependencies**; the MathTS packages and `@viz-js/viz` are optional peers, which a
+default install does not pull in. Add the ones you want, for example
+`npm install @danielsimonjr/mathts-functions` for the MathTS parser, or `npm install @viz-js/viz`
+for `upt map --format=svg`.
 
 See [`cli/README.md`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/cli/README.md) for the full CLI reference — every command
 and alias, the `--source=catalog|canonical|both` flag, input syntax, exit codes,
