@@ -10,6 +10,15 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **A mismatch caused by an unknown name says UNKNOWN, not MISMATCH** (0.47.0 persona finding N3).
+  `upt map --equation` checks an unknown name as a dimensionless placeholder, so its mismatch is not
+  a real check, and the command exits 0 (the UNKNOWN rule of F2). The line still read "⚠ dimensional
+  MISMATCH", which looks like a failed check with a success exit. It now reads "· UNKNOWN: RHS is
+  [L^-0.5 T] but the target is [time]; the mismatch involves the unresolved placeholder 'lenght'
+  (taken as dimensionless), so it is not a failed check". The exit code does not change. With every
+  name resolved, a mismatch still reads "⚠ dimensional MISMATCH" and exits 3. The `uu` example in
+  `docs/architecture/PHYSICS_MAP.md` shows the new line.
+
 - **A velocity/speed synonym no longer switches the prefactor check off** (0.47.0 persona finding
   N1). CE-kinetic-energy names its variable `speed`, and CE-lorentz-factor names the same dimension
   `velocity`. `upt map --equation "kinetic_energy = mass*velocity^2"` reported "the prefactor is NOT
