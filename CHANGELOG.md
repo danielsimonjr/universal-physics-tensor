@@ -10,6 +10,15 @@ from v0.1.0 onward.
 
 ### Fixed
 
+- **`upt map --equation` prints the verdict before the linkage map** (0.47.0 persona finding N4).
+  The verdict on the user's equation (the dimensional check, the canonical comparison, where it
+  lands, and the hints) came after the whole 40-component linkage map, about 45 lines, so the
+  answer the user asked for was printed last. The "Your equation" block now comes first, and the
+  map follows it. The exit code does not change. The `map-equation-ok` and `map-equation-mismatch`
+  goldens are regenerated; their sorted lines are identical before and after, so only the order
+  changed. The `--poster` index (about 5 lines) and the visual formats (report on stderr) are
+  unchanged.
+
 - **One "did you mean?" ranking for `upt map` and `upt explain`, edit distance first** (0.47.0
   persona findings N2 and N5). There were two rankers, and they disagreed:
   - `map --equation` listed the quantities of an unknown name's inferred dimension alphabetically, so

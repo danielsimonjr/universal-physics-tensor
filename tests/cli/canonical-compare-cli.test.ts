@@ -140,3 +140,16 @@ describe('N3: a mismatch caused by an unresolved placeholder is reported as UNKN
     expect(t).toMatch(/⚠ dimensional MISMATCH: RHS is \[frequency\] but the target is \[time\]/);
   });
 });
+
+// 0.47.0 persona finding N4: the verdict on the user's equation came after the whole linkage map
+// (about 45 lines), so the answer the user asked for was the last thing printed.
+describe('N4: map --equation prints the verdict before the linkage map', () => {
+  it('the "Your equation" block comes first, and the linkage map follows it', async () => {
+    const t = await text(['map', '--equation', 'period = 2*pi*sqrt(length/gravity)']);
+    const verdict = t.indexOf('Your equation:');
+    const map = t.indexOf('Linkage map');
+    expect(verdict).toBeGreaterThanOrEqual(0);
+    expect(map).toBeGreaterThan(verdict);
+    expect(t.slice(verdict, map)).toMatch(/✓ agrees with CE-pendulum-period/);
+  });
+});
