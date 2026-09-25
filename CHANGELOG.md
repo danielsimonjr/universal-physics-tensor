@@ -92,8 +92,21 @@ from v0.1.0 onward.
   comments. `data/bridge-catalog.json` was regenerated with `bun run catalog:json`. The public
   `M_SUN_SI` (1.989e30) and the be-37/51 solar-limb regime bound, which is built from it, are
   unchanged.
+- **`ab-stokes-einstein` states its regime in machine form** (persona finding L8). Its side
+  conditions said "Re ≪ 1" and "t ≫ m/γ" in prose, but the regime had no inequality. So `upt
+  regime diffusion --at Re=1000` reported it VACUOUS and valid, although Stokes drag, and with it
+  D = k_B T/(6πηa), holds only in creeping flow. The regime now has `Re ≤ 0.1` and `m · gamma^-1 ·
+  t^-1 ≤ 0.01`. Re is a dimensionless input of the flow. The overdamping group uses the same key as
+  `ab-langevin-diffusion`, so one `--at` value checks both bridges. The side conditions state that
+  0.1 and 0.01 are chosen thresholds for "≪ 1". This was conditional on no frozen hash moving, and
+  none did:
+  - the eight pinned code blobs and the eight Criterion 3 file hashes are unchanged;
+  - the benchmark items blob is unchanged;
+  - `witness-results.json` and `atlas-study-results.md` regenerate byte-identical.
 
-### Added
+  The `src/canonical` input tree already differed from `freeze.json` before this session: the
+  change is at dbd4e95, which registered Amendment 9. `data/atlas/{atlas,diffusion}.json` were
+  regenerated with `bun run atlas:json`.
 
 - **A user formula is now compared with the canonical equation it restates** (persona finding L2).
   `upt map --equation "period = pi*sqrt(length/gravity)"` and `upt derive … --formula

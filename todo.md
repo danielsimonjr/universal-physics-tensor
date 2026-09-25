@@ -286,7 +286,7 @@ warning-silencing, not debug logging).
       - [x] L6: `upt confront` be-51 shows a derived deflection as "observed"; show γ_obs ± σ as the observation.
       - [x] L6b: BE-37/51/52 confrontations use G × 1.989e30 for GM☉; switch to the IAU 2015 nominal 1.3271244e20 m³ s⁻².
       - [x] L7: probe marks a corpus-equivalent candidate "not novel" without comparing its fitted prefactor with the corpus one.
-      - [ ] L8: `ab-stokes-einstein` states Re ≪ 1 and t ≫ m/γ in prose only; add machine inequalities (conditional: no frozen hash may move).
+      - [x] L8: `ab-stokes-einstein` states Re ≪ 1 and t ≫ m/γ in prose only; add machine inequalities (conditional: no frozen hash may move).
       - [ ] L9: `upt path --at` prints only the domain supremum; add `deltaAt(point)` as "bound at this point", tested ≥ the exact error.
       - [ ] Found during L7 (2026-09-25), NOT investigated, outside the W1/L1–L9 scope: `bun run test:probe-coverage` reports 0% on every file and "AssertionError: coverageFilesDirectory is required". Not in CI. Whether it also fails at the commit before L7 was not measured.
 

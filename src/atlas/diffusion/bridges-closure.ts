@@ -48,11 +48,24 @@ export const STEADY_MIN_FOURIER = 1;
 const regime = (
   parameters: readonly { name: string; dim: import('../../dimensional/types.js').Dimension }[],
   inequalities: AtlasBridge['regime']['inequalities'],
+): AtlasBridge['regime'] => regimeWithInputs(parameters, [], inequalities);
+
+/** A regime whose coordinates also include dimensionless model inputs (such as Re). */
+const regimeWithInputs = (
+  parameters: readonly { name: string; dim: import('../../dimensional/types.js').Dimension }[],
+  dimensionlessInputs: readonly string[],
+  inequalities: AtlasBridge['regime']['inequalities'],
 ): AtlasBridge['regime'] => ({
   family: DIFFUSION_FAMILY_NAME,
   inequalities,
-  groupDefinitions: deriveRegimeGroups(DIFFUSION_FAMILY_NAME, parameters, []),
+  groupDefinitions: deriveRegimeGroups(DIFFUSION_FAMILY_NAME, parameters, dimensionlessInputs),
 });
+
+/** Reynolds-number ceiling of the Stokes–Einstein derivation: a chosen threshold for Re ≪ 1. @internal */
+const STOKES_MAX_RE = 0.1;
+
+/** Ceiling of τ_p/t = m/(γt) for the overdamped limit: a chosen threshold for ≪ 1. @internal */
+const STOKES_MAX_TAU_RATIO = 0.01;
 
 /** Bridge: Langevin → Fick, the Einstein coarse-graining D = k_BT/γ. @internal */
 export const BRIDGE_LANGEVIN_DIFFUSION: AtlasBridge = {
@@ -131,16 +144,35 @@ export const BRIDGE_STOKES_EINSTEIN: AtlasBridge = {
   transformation: 'substitute γ = 6πηa into D = k_B T/γ: D = k_B T/(6πηa)',
   preserves: ['the long-time diffusion coefficient of a sphere'],
   doesNotPreserve: ['the particle mass (it drops out)', 'the shape beyond the radius a'],
-  sideConditions: ['creeping flow around the sphere, Re ≪ 1', 'no-slip boundary', 'overdamped times t ≫ m/γ'],
-  regime: regime(
+  sideConditions: [
+    'creeping flow around the sphere, Re ≪ 1 (machine form Re ≤ 0.1: a chosen threshold for "≪ 1")',
+    'no-slip boundary',
+    'overdamped times t ≫ m/γ (machine form m/(γt) ≤ 0.01: a chosen threshold for "≪ 1", as in ab-langevin-diffusion)',
+  ],
+  // The prose conditions were not machine-checked, so `upt regime` reported this
+  // bridge VACUOUS and "valid" at Re = 1000 (persona finding L8). Re is a
+  // dimensionless input of the flow; m/(γt) is listed first so its π-group key is
+  // the one ab-langevin-diffusion uses, and one --at value checks both bridges.
+  regime: regimeWithInputs(
     [
-      { name: 'kT', dim: ENERGY },
+      { name: 'm', dim: MASS },
       { name: 'gamma', dim: DAMPING },
+      { name: 't', dim: TIME },
+      { name: 'kT', dim: ENERGY },
       { name: 'eta', dim: VISCOSITY },
       { name: 'a', dim: LENGTH },
       { name: 'D', dim: DIFFUSIVITY },
     ],
-    [],
+    ['Re'],
+    [
+      { group: 'Re', op: '<=', bound: STOKES_MAX_RE, alias: 'Re ≪ 1 (machine form Re ≤ 0.1)' },
+      {
+        group: 'm · gamma^-1 · t^-1',
+        op: '<=',
+        bound: STOKES_MAX_TAU_RATIO,
+        alias: 'τ_p/t ≪ 1 (machine form m/(γt) ≤ 0.01)',
+      },
+    ],
   ),
   counterexamples: [],
   evidence: new Set(['proposed', 'numerically-supported']),

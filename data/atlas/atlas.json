@@ -1696,33 +1696,91 @@
             "the shape beyond the radius a"
           ],
           "sideConditions": [
-            "creeping flow around the sphere, Re ≪ 1",
+            "creeping flow around the sphere, Re ≪ 1 (machine form Re ≤ 0.1: a chosen threshold for \"≪ 1\")",
             "no-slip boundary",
-            "overdamped times t ≫ m/γ"
+            "overdamped times t ≫ m/γ (machine form m/(γt) ≤ 0.01: a chosen threshold for \"≪ 1\", as in ab-langevin-diffusion)"
           ],
           "regime": {
             "family": "diffusion",
-            "inequalities": [],
+            "inequalities": [
+              {
+                "group": "Re",
+                "op": "<=",
+                "bound": 0.1,
+                "alias": "Re ≪ 1 (machine form Re ≤ 0.1)"
+              },
+              {
+                "group": "m · gamma^-1 · t^-1",
+                "op": "<=",
+                "bound": 0.01,
+                "alias": "τ_p/t ≪ 1 (machine form m/(γt) ≤ 0.01)"
+              }
+            ],
             "groupDefinitions": {
-              "gamma · eta^-1 · a^-1": {
+              "Re": {
                 "exponents": {
                   "D": 0,
-                  "a": -1,
-                  "eta": -1,
-                  "gamma": 1,
-                  "kT": 0
+                  "Re": 1,
+                  "a": 0,
+                  "eta": 0,
+                  "gamma": 0,
+                  "kT": 0,
+                  "m": 0,
+                  "t": 0
                 },
-                "formula": "gamma · eta^-1 · a^-1"
+                "formula": "Re"
               },
-              "kT · gamma^-1 · D^-1": {
+              "gamma · kT^-1 · D": {
                 "exponents": {
-                  "D": -1,
+                  "D": 1,
+                  "Re": 0,
+                  "a": 0,
+                  "eta": 0,
+                  "gamma": 1,
+                  "kT": -1,
+                  "m": 0,
+                  "t": 0
+                },
+                "formula": "gamma · kT^-1 · D"
+              },
+              "m · gamma^-1 · t^-1": {
+                "exponents": {
+                  "D": 0,
+                  "Re": 0,
                   "a": 0,
                   "eta": 0,
                   "gamma": -1,
-                  "kT": 1
+                  "kT": 0,
+                  "m": 1,
+                  "t": -1
                 },
-                "formula": "kT · gamma^-1 · D^-1"
+                "formula": "m · gamma^-1 · t^-1"
+              },
+              "m · gamma^-2 · kT · a^-2": {
+                "exponents": {
+                  "D": 0,
+                  "Re": 0,
+                  "a": -2,
+                  "eta": 0,
+                  "gamma": -2,
+                  "kT": 1,
+                  "m": 1,
+                  "t": 0
+                },
+                "formula": "m · gamma^-2 · kT · a^-2"
+              },
+              "m · gamma^-4 · kT · eta^2": {
+                "exponents": {
+                  "D": 0,
+                  "Re": 0,
+                  "a": 0,
+                  "eta": 2,
+                  "gamma": -4,
+                  "kT": 1,
+                  "m": 1,
+                  "t": 0
+                },
+                "formula": "m · gamma^-4 · kT · eta^2"
               }
             }
           },

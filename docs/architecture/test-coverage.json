@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 347,
-    "totalTestFiles": 455,
+    "totalTestFiles": 456,
     "testedCount": 346,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -442,6 +442,7 @@
     "src/atlas/diffusion/bridges-closure.ts": [
       "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/closure.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/atlas/witness-results.test.ts"
     ],
     "src/atlas/diffusion/bridges.ts": [
@@ -582,6 +583,7 @@
       "tests/atlas/gr-spine-regime.test.ts",
       "tests/atlas/regime-admission.test.ts",
       "tests/atlas/regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/atlas/waves.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts"
@@ -1970,6 +1972,7 @@
     ],
     "src/cli/commands/atlas.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -1991,6 +1994,7 @@
     ],
     "src/cli/commands/audit.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2012,6 +2016,7 @@
     ],
     "src/cli/commands/axes.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2033,6 +2038,7 @@
     ],
     "src/cli/commands/candidates.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2054,6 +2060,7 @@
     ],
     "src/cli/commands/canonical.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2075,6 +2082,7 @@
     ],
     "src/cli/commands/confront.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2096,6 +2104,7 @@
     ],
     "src/cli/commands/connectors.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2117,6 +2126,7 @@
     ],
     "src/cli/commands/coverage.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2138,6 +2148,7 @@
     ],
     "src/cli/commands/derive.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2159,6 +2170,7 @@
     ],
     "src/cli/commands/discover.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2180,6 +2192,7 @@
     ],
     "src/cli/commands/eval.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2201,6 +2214,7 @@
     ],
     "src/cli/commands/evaluate.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2222,6 +2236,7 @@
     ],
     "src/cli/commands/explain.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2243,6 +2258,7 @@
     ],
     "src/cli/commands/ground.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2264,6 +2280,7 @@
     ],
     "src/cli/commands/index.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2285,6 +2302,7 @@
     ],
     "src/cli/commands/map.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2306,6 +2324,7 @@
     ],
     "src/cli/commands/path.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2327,6 +2346,7 @@
     ],
     "src/cli/commands/predict.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2348,6 +2368,7 @@
     ],
     "src/cli/commands/priority.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2369,6 +2390,7 @@
     ],
     "src/cli/commands/probe.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2390,6 +2412,7 @@
     ],
     "src/cli/commands/recover.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2411,6 +2434,7 @@
     ],
     "src/cli/commands/regime.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2432,6 +2456,7 @@
     ],
     "src/cli/commands/symbolic.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -2461,6 +2486,7 @@
     ],
     "src/cli/main.ts": [
       "tests/atlas/gr-spine-regime.test.ts",
+      "tests/atlas/stokes-einstein-regime.test.ts",
       "tests/cli/atlas-command.test.ts",
       "tests/cli/canonical-compare-cli.test.ts",
       "tests/cli/cli-from-src.test.ts",
@@ -6019,6 +6045,34 @@
       "src/atlas/statement.ts",
       "src/atlas/derivation.ts",
       "src/atlas/types.ts"
+    ],
+    "tests/atlas/stokes-einstein-regime.test.ts": [
+      "src/atlas/diffusion/bridges-closure.ts",
+      "src/atlas/regime.ts",
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts",
+      "src/cli/commands/atlas.ts"
     ],
     "tests/atlas/waves.test.ts": [
       "src/atlas/waves/index.ts",
