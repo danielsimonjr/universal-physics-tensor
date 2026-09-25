@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 346,
-    "totalTestFiles": 448,
+    "totalTestFiles": 449,
     "testedCount": 345,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -372,6 +372,7 @@
     "src/atlas/benchmark/baselines.ts": [
       "tests/atlas/barrel-completeness.test.ts",
       "tests/atlas/benchmark-baselines.test.ts",
+      "tests/tools/criterion3-embedding.test.ts",
       "tests/tools/criterion3-residual-corpus.test.ts"
     ],
     "src/atlas/benchmark/leakage.ts": [
@@ -10391,6 +10392,9 @@
     ],
     "tests/tools/api-surface.test.ts": [],
     "tests/tools/citation-quote-check.test.ts": [],
+    "tests/tools/criterion3-embedding.test.ts": [
+      "src/atlas/benchmark/baselines.ts"
+    ],
     "tests/tools/criterion3-export.test.ts": [
       "src/canonical/registry.ts",
       "src/canonical/canonical-equation.ts"

@@ -332,3 +332,44 @@ of 5 (`ab-pendulum-linear`). Mothership relayed the owner's words verbatim (2026
   cover.
 
 No threshold, item, rater assignment or hash changes.
+
+**Amendment 11 (2026-09-24) — criterion 3: the embedding condition is registered before it is scored.**
+Amendment 8 requires the model, its digest and the vector-file hash to be registered here BEFORE the
+embedding condition is scored. When this amendment is committed, no embedding score has been read or
+stored. One early invocation is disclosed below.
+
+- **Model.** qwen3-embedding:4b, run locally by Ollama, digest
+  df5bd2e3c74cd8d069d21dc038f1b359fcdc9458fce1c99bd43c9eb1518ff907. LLMBench's final class-6 result ranks it best on search (recall@5 0.987, MRR 0.88, as
+  relayed by Mothership on 2026-09-24). No money is spent.
+- **Inputs.** Each corpus record is embedded as its `text`, as is. Each query is embedded in the
+  Qwen3-Embedding query form, `Instruct: <instruction>` then a newline and `Query: <text>`. The
+  instruction is: "Given a physics claim, retrieve the established physical relation that the claim restates or misuses". This amendment fixes the instruction before any score.
+- **Frozen vectors.** The corpus and the queries were embedded once, on 2026-09-24: 2,560 dimensions,
+  107 records and 125 queries. The condition is scored from the file below and never re-embedded.
+- **Ranking and scoring.** Cosine similarity, best first, with ties broken by id, as in the in-process
+  conditions. The Amendment 8 scoring is unchanged: recall at depth 10 with Wilson 95% intervals. The
+  criterion is decided on PRIMARY pooled over all families (n = 50).
+- **The verdict rule, restated before the score (§6 item 3).** The criterion is MET only when the typed
+  structural search's Wilson interval lies above the embedding condition's point estimate. The typed
+  search scored 12/50 = 24.0% [14.3%, 37.4%] under Amendment 8. The criterion is therefore NOT MET
+  when the embedding condition scores 8/50 = 16.0% or more, and MET at 7/50 = 14.0% or less.
+- **Variance.** Local embeddings are not deterministic. After this amendment is committed, a second,
+  independent pass is embedded and scored beside the frozen one. Its agreement with the frozen pass and
+  its recall are disclosed. It never replaces the frozen pass and never decides the verdict.
+- **Pinned code**, which the scorer checks together with the Amendment 8 pins:
+  `tools/criterion3-study/embedding.ts` 6242771b60bf20e1762ac4736e492b0b5da9eb73,
+  `tools/criterion3-study/run.ts` e13a0a35752916487b671147323a9c448e144d43.
+- **Order.** The condition is scored only after this amendment is committed and its CI is green.
+- **Disclosed: one early scorer invocation.** At about 20:40 CDT on 2026-09-24, before this amendment
+  was committed, the scorer was run once to test its pin gate. The gate passed, and the scorer computed
+  and printed the score. The output was cut to its first three lines, the heading and the model line,
+  so no number was read, and nothing was stored. The scorer now refuses to run without this
+  amendment's commit and CI result, the guard that the Amendment 9 condition already had.
+
+This SHA-256 value freezes the vector file under `docs/research/criterion3/`:
+
+| File | SHA-256 |
+|---|---|
+| embeddings/qwen3-embedding-4b.json | 8fd79d2c6aaaf95c67f9a29ceb5fe4b88b42970c8e514d98c72c00a2c519cbdc |
+
+No threshold, item, rater assignment, truth set or hash changes.

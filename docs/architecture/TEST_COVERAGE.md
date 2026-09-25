@@ -11,7 +11,7 @@
 | Metric | Count |
 |--------|-------|
 | Total Source Files | 346 |
-| Total Test Files | 448 |
+| Total Test Files | 449 |
 | Source Files with Tests | 345 |
 | Source Files without Tests | 1 |
 | Coverage | 99.7% |
@@ -35,7 +35,7 @@ The following 1 source files are not directly imported by any test file:
 | `atlas/applicability.ts` | `applicability.test.ts`, `barrel-completeness.test.ts` |
 | `atlas/association.ts` | `association.test.ts`, `poster-source.test.ts` |
 | `benchmark/backend-shapes.ts` | `barrel-completeness.test.ts`, `benchmark-baselines.test.ts` |
-| `benchmark/baselines.ts` | `barrel-completeness.test.ts`, `benchmark-baselines.test.ts`, `criterion3-residual-corpus.test.ts` |
+| `benchmark/baselines.ts` | `barrel-completeness.test.ts`, `benchmark-baselines.test.ts`, `criterion3-embedding.test.ts`, `criterion3-residual-corpus.test.ts` |
 | `benchmark/leakage.ts` | `barrel-completeness.test.ts`, `benchmark.test.ts`, `residual.test.ts` |
 | `benchmark/loader.ts` | `benchmark-model-set.test.ts`, `benchmark-preregistration.test.ts`, `benchmark.test.ts` |
 | `benchmark/run-atlas.ts` | `barrel-completeness.test.ts`, `benchmark-ablation.test.ts`, `benchmark-run-atlas.test.ts` |
@@ -825,6 +825,7 @@ The following 1 source files are not directly imported by any test file:
 | `tests/tensor.test.ts` | 127 files |
 | `tools/api-surface.test.ts` | 0 files |
 | `tools/citation-quote-check.test.ts` | 0 files |
+| `tools/criterion3-embedding.test.ts` | 1 files |
 | `tools/criterion3-export.test.ts` | 2 files |
 | `tools/criterion3-labels.test.ts` | 0 files |
 | `tools/criterion3-residual-corpus.test.ts` | 3 files |

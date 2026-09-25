@@ -8,6 +8,24 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added (2026-09-24) — criterion 3: pre-registration Amendment 11 registers the embedding condition before it is scored
+
+- **Registered, as Amendment 8 requires, before any score:**
+  - the model, qwen3-embedding:4b, which LLMBench's final class 6 ranks best on search, and its digest;
+  - the query instruction;
+  - the pinned code (`embedding.ts`, `run.ts`);
+  - the SHA-256 of the frozen vector file, `docs/research/criterion3/embeddings/qwen3-embedding-4b.json`
+    (2,560 dimensions, 107 records, 125 queries, embedded once).
+- **The verdict rule is restated before the score.** The typed search scored 12/50 [14.3%, 37.4%], so
+  the criterion is NOT MET at an embedding recall of 8/50 = 16.0% or more.
+- **`tools/criterion3-study/embedding.ts`:** embeds once, ranks by cosine with the id tie-break, and
+  scores through the runner's own scorer. It refuses to score unless the Amendment 8 and 11 pins
+  match AND the amendment's commit and CI result are given.
+- **Disclosed:** that last guard came after one early scorer invocation had computed a score. Its
+  output was cut before any number was shown. Amendment 11 records the event.
+- `UPT_OLLAMA_URL` sets the Ollama address. `OLLAMA_HOST` is the server's bind address
+  (`0.0.0.0:11434`), not a URL, so the script does not read it.
+
 ### Changed (2026-09-24) — Sprint 4 and Sprint 5 tracker rows closed by amendment; a gate observation
 
 - **Ticked, titles unchanged, with Mothership's OK.** Each row has a child line that names its
