@@ -119,20 +119,28 @@ export function resolveToCatalogName(
   return null;
 }
 
-/** Levenshtein edit distance (small DP). */
+/**
+ * Optimal-string-alignment edit distance: Levenshtein plus a swap of two adjacent
+ * letters as ONE edit. Plain Levenshtein counts `lenght` → `length` as 2, the same
+ * as `lenght` → `height`, and the typo's intended name then lost the tie
+ * (persona finding N2).
+ */
 function editDistance(a: string, b: string): number {
   const m = a.length;
   const n = b.length;
-  let prev = new Array<number>(n + 1);
-  for (let j = 0; j <= n; j++) prev[j] = j;
+  let prev2 = new Array<number>(n + 1).fill(0);
+  let prev = Array.from({ length: n + 1 }, (_, j) => j);
   let curr = new Array<number>(n + 1);
   for (let i = 1; i <= m; i++) {
     curr[0] = i;
     for (let j = 1; j <= n; j++) {
       const cost = a[i - 1] === b[j - 1] ? 0 : 1;
       curr[j] = Math.min(prev[j] + 1, curr[j - 1] + 1, prev[j - 1] + cost);
+      if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+        curr[j] = Math.min(curr[j], prev2[j - 2] + 1);
+      }
     }
-    [prev, curr] = [curr, prev];
+    [prev2, prev, curr] = [prev, curr, prev2];
   }
   return prev[n];
 }
@@ -141,9 +149,39 @@ function editDistance(a: string, b: string): number {
 const normalizeForCompare = (s: string): string => s.toLowerCase().replace(/[_-]/g, '-');
 
 /**
+ * The one "did you mean?" ranking, shared by {@link suggestQuantities} and
+ * {@link suggestByDimension}: edit distance first, then containment (one name
+ * inside the other), then length, then name. Edit distance leads so a one-edit
+ * typo beats a substring: `hawkng-temperature` → `hawking-temperature` before
+ * `temperature` (persona finding N5). `gate` keeps a candidate only if one name
+ * contains the other or the distance is small against the query length; the
+ * dimension-based caller passes `false`, because there the dimension is the evidence.
+ */
+function rankByName(name: string, candidates: Iterable<string>, gate: boolean): string[] {
+  const needle = normalizeForCompare(name);
+  // Without the gate, short catalog names (`a`, `nu`) are spurious "matches" for any typo.
+  const maxDist = Math.max(1, Math.ceil(needle.length / 2));
+  return [...candidates]
+    .map((cand) => {
+      const hay = normalizeForCompare(cand);
+      const contains = hay.includes(needle) || needle.includes(hay) ? 0 : 1;
+      return { cand, contains, dist: editDistance(needle, hay) };
+    })
+    .filter((s) => !gate || s.contains === 0 || s.dist <= maxDist)
+    .sort(
+      (x, y) =>
+        x.dist - y.dist ||
+        x.contains - y.contains ||
+        x.cand.length - y.cand.length ||
+        x.cand.localeCompare(y.cand),
+    )
+    .map((s) => s.cand);
+}
+
+/**
  * Up to `k` catalog names most similar to `name` — the "did you mean?" set for an
- * unmatched user symbol. Names where one string contains the other rank first,
- * then by edit distance, then by length.
+ * unmatched user symbol. Ranked by edit distance first, then containment, then
+ * length (the shared ranking of `upt map` and `upt explain`).
  *
  * @public
  */
@@ -152,33 +190,15 @@ export function suggestQuantities(
   catalogNames: Iterable<string>,
   k = 5,
 ): string[] {
-  const needle = normalizeForCompare(name);
-  // Relevance gate: keep a candidate only if one name contains the other or the
-  // edit distance is small relative to the query length — otherwise short catalog
-  // names (`a`, `nu`) are spurious "matches" for any typo.
-  const maxDist = Math.max(1, Math.ceil(needle.length / 2));
-  return [...catalogNames]
-    .map((cand) => {
-      const hay = normalizeForCompare(cand);
-      const contains = hay.includes(needle) || needle.includes(hay) ? 0 : 1;
-      return { cand, contains, dist: editDistance(needle, hay) };
-    })
-    .filter((s) => s.contains === 0 || s.dist <= maxDist)
-    .sort(
-      (x, y) =>
-        x.contains - y.contains ||
-        x.dist - y.dist ||
-        x.cand.length - y.cand.length ||
-        x.cand.localeCompare(y.cand),
-    )
-    .slice(0, k)
-    .map((s) => s.cand);
+  return rankByName(name, catalogNames, true).slice(0, k);
 }
 
 /**
- * Catalog quantity names whose dimension equals `dim` (sorted, capped at `k`) —
- * the dimension-based "did you mean?" set once an unknown symbol's dimension has
- * been inferred.
+ * Catalog quantity names whose dimension equals `dim`, capped at `k` — the
+ * dimension-based "did you mean?" set once an unknown symbol's dimension has
+ * been inferred. With `near` (the unknown symbol) they are ranked by the same
+ * edit-distance ranking as {@link suggestQuantities}, so `lenght` lists `length`
+ * first (persona finding N2); without it they are sorted by name.
  *
  * @public
  */
@@ -186,12 +206,10 @@ export function suggestByDimension(
   dim: Dimension,
   catalogDims: ReadonlyMap<string, Dimension>,
   k = 5,
+  near?: string,
 ): string[] {
-  return [...catalogDims.entries()]
-    .filter(([, d]) => equals(d, dim))
-    .map(([name]) => name)
-    .sort()
-    .slice(0, k);
+  const same = [...catalogDims.entries()].filter(([, d]) => equals(d, dim)).map(([name]) => name);
+  return (near === undefined ? same.sort() : rankByName(near, same, false)).slice(0, k);
 }
 
 /**
@@ -319,7 +337,7 @@ export async function analyzeUserEquation(
       let byDim: string[] | null = null;
       if (targetDimension && totalUnmatched === 1) {
         const inferred = inferUnknownDimension(exprForInference, s, targetDimension);
-        if (inferred) byDim = suggestByDimension(inferred, catalogDims, 5);
+        if (inferred) byDim = suggestByDimension(inferred, catalogDims, 5, s);
       }
       hints.push(
         byDim

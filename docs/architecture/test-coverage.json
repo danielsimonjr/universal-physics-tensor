@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 473,
+    "totalTestFiles": 475,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -2004,6 +2004,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/audit.ts": [
@@ -2032,6 +2033,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/axes.ts": [
@@ -2060,6 +2062,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/candidates.ts": [
@@ -2088,6 +2091,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/canonical.ts": [
@@ -2116,6 +2120,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/confront.ts": [
@@ -2144,6 +2149,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/connectors.ts": [
@@ -2172,6 +2178,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/coverage.ts": [
@@ -2200,6 +2207,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/derive.ts": [
@@ -2228,6 +2236,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/discover.ts": [
@@ -2256,6 +2265,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/eval.ts": [
@@ -2284,6 +2294,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/evaluate.ts": [
@@ -2312,6 +2323,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/explain.ts": [
@@ -2340,6 +2352,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/ground.ts": [
@@ -2368,6 +2381,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/index.ts": [
@@ -2396,6 +2410,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/map.ts": [
@@ -2424,6 +2439,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/path.ts": [
@@ -2452,6 +2468,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/predict.ts": [
@@ -2480,6 +2497,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/priority.ts": [
@@ -2508,6 +2526,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/probe.ts": [
@@ -2536,6 +2555,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/recover.ts": [
@@ -2564,6 +2584,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/regime.ts": [
@@ -2592,6 +2613,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/commands/symbolic.ts": [
@@ -2620,6 +2642,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/errors.ts": [
@@ -2656,6 +2679,7 @@
       "tests/cli/regime-at-resolution.test.ts",
       "tests/cli/regime.test.ts",
       "tests/cli/source-extension.test.ts",
+      "tests/cli/suggest-ranking-cli.test.ts",
       "tests/cli/upt-discover-opts.test.ts"
     ],
     "src/cli/output.ts": [
@@ -3933,6 +3957,7 @@
       "tests/composition/quantities.test.ts",
       "tests/composition/retrodiction.test.ts",
       "tests/composition/stress-tests.test.ts",
+      "tests/composition/suggest-ranking.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/user-equation.test.ts",
       "tests/dimensional/bridge-derivation-audit.test.ts",
@@ -4777,6 +4802,7 @@
       "tests/composition/probe/modules.test.ts",
       "tests/composition/probe/parse-expr-json.test.ts",
       "tests/composition/retrodiction.test.ts",
+      "tests/composition/suggest-ranking.test.ts",
       "tests/composition/symbolic-composition.test.ts",
       "tests/composition/symbolic-simplification.test.ts",
       "tests/composition/user-equation.test.ts",
@@ -8535,6 +8561,32 @@
       "src/cli/commands/path.ts",
       "src/cli/commands/atlas.ts"
     ],
+    "tests/cli/suggest-ranking-cli.test.ts": [
+      "src/cli/main.ts",
+      "src/cli/commands/index.ts",
+      "src/cli/commands/priority.ts",
+      "src/cli/commands/audit.ts",
+      "src/cli/commands/coverage.ts",
+      "src/cli/commands/canonical.ts",
+      "src/cli/commands/recover.ts",
+      "src/cli/commands/connectors.ts",
+      "src/cli/commands/predict.ts",
+      "src/cli/commands/candidates.ts",
+      "src/cli/commands/explain.ts",
+      "src/cli/commands/symbolic.ts",
+      "src/cli/commands/eval.ts",
+      "src/cli/commands/derive.ts",
+      "src/cli/commands/map.ts",
+      "src/cli/commands/discover.ts",
+      "src/cli/commands/confront.ts",
+      "src/cli/commands/axes.ts",
+      "src/cli/commands/evaluate.ts",
+      "src/cli/commands/ground.ts",
+      "src/cli/commands/probe.ts",
+      "src/cli/commands/regime.ts",
+      "src/cli/commands/path.ts",
+      "src/cli/commands/atlas.ts"
+    ],
     "tests/cli/upt-derive.test.ts": [],
     "tests/cli/upt-discover-opts.test.ts": [
       "src/cli/main.ts",
@@ -9450,6 +9502,10 @@
       "src/composition/edges/catalog-gravitation-cosmology.ts",
       "src/composition/edges/catalog-fields.ts",
       "src/composition/edges/catalog-condensed-matter.ts"
+    ],
+    "tests/composition/suggest-ranking.test.ts": [
+      "src/composition/user-equation.ts",
+      "src/dimensional/types.ts"
     ],
     "tests/composition/symbolic-composition.test.ts": [
       "src/composition/expr-eval.ts",

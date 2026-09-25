@@ -278,7 +278,7 @@ warning-silencing, not debug logging).
 - [ ] **0.47.1 patch batch from the 0.47.0 persona re-test (Mothership ruling 2026-09-25).** After the hermetic-tests fix; one PR per item, in this order. Findings: `C:\dogfood\upt-persona-047\FINDINGS.md`.
       - [x] N1 (limits): the prefactor check matches variable names exactly; `kinetic_energy = mass*velocity^2` reports "prefactor NOT checked" and exits 0, because CE-kinetic-energy names its variable `speed`. Resolve names through the CLI's synonym/alias layer; test velocity AND speed, plus one name that must stay unresolved.
       - [x] N3 (clarity): with an unknown name, `map --equation` prints "dimensional MISMATCH" and exits 0 (the UNKNOWN rule). Say on the mismatch line that it involves the unresolved placeholder; keep the exit code.
-      - [ ] N2 + N5: ONE name suggester for `map` and `explain`, ranked by edit distance first (`lenght` → `length`; `hawkng-temperature` → `hawking-temperature` first).
+      - [x] N2 + N5: ONE name suggester for `map` and `explain`, ranked by edit distance first (`lenght` → `length`; `hawkng-temperature` → `hawking-temperature` first).
       - [ ] N4: `map --equation` prints the verdict first and the 40-component map after it (or behind a flag). No exit-code change.
       - [ ] L9 residual: ab-damped-massless states δ = 3 for x0 = 1; the measured worst case over its domain is 0.523. Fix only if small; otherwise document it.
 
