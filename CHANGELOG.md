@@ -18,6 +18,13 @@ from v0.1.0 onward.
   repository. It no longer says "Once published". A new test, `tests/tools/readme-links.test.ts`,
   fails on any relative link outside the shipped `files`, and on any GitHub link to a path that
   does not exist in the tree.
+- **The `upt probe --problem` file format is documented** (persona finding D2). The loader's types
+  are `@internal`, and the persona needed three failing runs to learn the rules: `gap.kind` is an
+  enum, `gap.id` must start with `fg-`, and a dataset `role` is an enum. `upt help probe` now
+  describes every field, all 10 gap kinds and all 4 dataset roles, the holdout-leak rule and the
+  `"dimensionless"` spelling. It also gives a minimal pendulum example, whose periods are
+  2π√(ℓ/g) to three places. A test takes that example out of the help text and loads it with the
+  real loader, and it checks every kind and role against the ones the loader accepts.
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and

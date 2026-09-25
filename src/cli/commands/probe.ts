@@ -42,7 +42,38 @@ const HELP = `upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
         --budget-ms=N        wall-clock cap (default 5000)
         --holdout-tol=X      relative holdout RMSE cap (default 0.15)
         --worker=PATH        optional NDJSON worker (spawned as node PATH)
-        --json               machine envelope`;
+        --json               machine envelope
+
+        PROBLEM FILE (--problem=FILE, JSON)
+        target       {"name", "dim"}: the observable to explain. "dim" is a named
+                     dimension (time, length, mass, acceleration, ...) or explicit
+                     L^a.M^b.T^c (e.g. "L^3.M^-1.T^-2").
+        governing    [{"name", "dim"}, ...]: the candidate inputs.
+        exploratory  {"observable", "rows": [{name: value, ...}, ...]}: the fit data.
+        holdout      the same shape: the locked data the fit must also pass. A row
+                     that also appears in exploratory is refused as a leak.
+        gap          optional {"id", "kind", "summary"}. "id" must start with "fg-".
+                     "kind" is one of prediction-residual, relation-link,
+                     regime-transition, parameter-tension, assumption-conflict,
+                     missing-operator, unexplained-observation (default),
+                     model-disagreement, causal-mechanism, other.
+        role         optional on a dataset: exploratory-fit (default for
+                     exploratory), validation-holdout (default for holdout),
+                     external-replication, falsification-only.
+        observationsPath  optional: a separate JSON file with the datasets.
+        A dimensionless governing variable is written with "dim": "dimensionless".
+        Minimal example (small-angle pendulum):
+        {
+          "target": {"name": "period", "dim": "time"},
+          "governing": [{"name": "length", "dim": "length"},
+                        {"name": "gravity", "dim": "acceleration"}],
+          "exploratory": {"observable": "period", "rows": [
+            {"length": 1, "gravity": 9.81, "period": 2.006},
+            {"length": 2, "gravity": 9.81, "period": 2.837},
+            {"length": 0.5, "gravity": 1.62, "period": 3.491}]},
+          "holdout": {"observable": "period", "rows": [
+            {"length": 1.5, "gravity": 3.71, "period": 3.995}]}
+        }`;
 
 const EPISTEMICS =
   '⚠ experimental Product B. Not a discovery claim. `upt discover` is the identification funnel.';

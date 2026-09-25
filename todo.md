@@ -286,7 +286,7 @@ warning-silencing, not debug logging).
       STOP and report before any release (0.47.0 is Mothership's).
       - [x] P: canonical prefactor table OUTSIDE the pinned `src/canonical` tree (entry id, exact prefactor, source quote + locator); L2 and L7 read it, so π-for-2π and a missing ½ report "differs by factor".
       - [x] D1: README links docs, `cli/README.md`, `examples/`, `data/bridge-catalog.json` that the npm package does not ship.
-      - [ ] D2: the `upt probe run --problem` file format is documented nowhere a user can read (types are `@internal`).
+      - [x] D2: the `upt probe run --problem` file format is documented nowhere a user can read (types are `@internal`).
       - [ ] D4: `upt evaluate` help says "~1.44 M_sun"; the output is 1.4559 (m_u, M☉ = 1.989e30).
       - [ ] D5: `discover --derive` example values use 300 for every free variable, whatever its dimension.
       - [ ] D6: `ab-spring-lc` states the m↔L, k↔1/C map only in witness text; its counterexample's L/C = 16 is unstated.

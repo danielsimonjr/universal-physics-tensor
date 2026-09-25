@@ -146,7 +146,7 @@ Do not use `probe` to vet identifications; do not use `discover` to search expre
 
 | Command (aliases) | What it does |
 |---|---|
-| `probe <scan\|show\|run\|candidates\|falsify\|rank\|design\|reproduce>` | Bounded expression/residual search. `scan` / `show` list typed frontier gaps (`fg-*`); relation-link and regime-transition gaps are **not searchable** here — use `upt discover`. `run --problem=FILE` enumerates dimensional monomials under a search budget, fits a prefactor on exploratory data only, scores locked holdout, compares `normalForm` to the in-repo corpus, and never prints a status stronger than the stored lifecycle. `no-credible-candidate` is an honest abstention. Optional `--worker=PATH` spawns an NDJSON worker as `node PATH` (no shell, no vendored Python). Experimental subpath: `universal-physics-tensor/probe`. |
+| `probe <scan\|show\|run\|candidates\|falsify\|rank\|design\|reproduce>` | Bounded expression/residual search. `scan` / `show` list typed frontier gaps (`fg-*`); relation-link and regime-transition gaps are **not searchable** here — use `upt discover`. `run --problem=FILE` enumerates dimensional monomials under a search budget, fits a prefactor on exploratory data only, scores locked holdout, compares `normalForm` to the in-repo corpus, and never prints a status stronger than the stored lifecycle. `no-credible-candidate` is an honest abstention. Optional `--worker=PATH` spawns an NDJSON worker as `node PATH` (no shell, no vendored Python). Experimental subpath: `universal-physics-tensor/probe`. The `--problem` file format, with a minimal example, is in `upt help probe`. |
 
 ### Help
 
