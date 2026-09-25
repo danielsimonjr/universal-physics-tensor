@@ -1482,7 +1482,7 @@ The codebase is organized into the following modules:
 | `./equations/be-32-quantum-reference-frame.js` | `evaluateQRFOverlap` | Import |
 | `./equations/be-33-hertz-millis.js` | `evaluateHertzMillis` | Import |
 | `./equations/be-34-kibble-zurek.js` | `evaluateKibbleZurek` | Import |
-| `./equations/be-35-conformal-bootstrap.js` | `evaluateCrossingEquation, evaluateCrossingResidual` | Import |
+| `./equations/be-35-conformal-bootstrap.js` | `evaluateCrossingEquation` | Import |
 | `./equations/be-36-gw-speed-bound.js` | `evaluateGWSpeedRatio` | Import |
 | `./equations/be-37-shapiro-delay.js` | `evaluateShapiroDelay` | Import |
 | `./equations/be-38-mond.js` | `evaluateMONDForce` | Import |
@@ -2042,8 +2042,8 @@ The codebase is organized into the following modules:
 | `./_be-helpers.js` | `sym, validateFiniteInputs, validateBEDimensions` | Import |
 
 **Exports:**
-- Functions: `evaluateCrossingEquation`, `evaluateCrossingResidual`
-- Constants: `BE35_CROSSING_EQUATION_RHS`, `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`, `BE35_CROSSING_RESIDUAL_RHS`
+- Functions: `evaluateCrossingEquation`
+- Constants: `BE35_CROSSING_EQUATION_RHS`
 
 ---
 
@@ -6614,12 +6614,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 351 |
 | Total Modules | 11 |
-| Total Lines of Code | 70125 |
-| Total Exports | 2475 |
+| Total Lines of Code | 70029 |
+| Total Exports | 2471 |
 | Total Re-exports | 1241 |
 | Total Classes | 58 |
 | Total Interfaces | 362 |
-| Total Functions | 564 |
+| Total Functions | 563 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 490 |

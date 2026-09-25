@@ -26,8 +26,8 @@
  *
  * The earlier encoding, `R = C² · [g_block(u, v) − g_block(v, u)]`, had no
  * prefactors and was written for one block; neither is crossing symmetric
- * (census finding F1). It stays exported as `evaluateCrossingResidual`, marked
- * deprecated, because `BridgeEquations.crossingResidual` is public API.
+ * (census finding F1). It was deprecated in 0.46.0 and removed in 0.47.0, with its
+ * evaluator `evaluateCrossingResidual` and `BridgeEquations.crossingResidual`.
  *
  * References:
  *   - Rattazzi-Rychkov-Tonni-Vichi 2008 JHEP 0812:031
@@ -99,64 +99,6 @@ export const BE35_CROSSING_EQUATION_RHS: ExprNode = {
 /** LHS: R_cross is dimensionless. */
 const BE35_CROSSING_LHS: ExprNode = sym('R_cross', DIMENSIONLESS);
 
-// --- Deprecated single-block residual (kept: public API) ---
-
-/**
- * Lemma AST of the deprecated residual: `C² · g_block(u, v)`.
- *
- * @deprecated One block with no prefactor is not crossing symmetric; use
- * {@link BE35_CROSSING_EQUATION_RHS}.
- */
-export const BE35_FORWARD_BLOCK: ExprNode = {
-  kind: 'op', op: '*',
-  args: [
-    {
-      kind: 'op', op: '^',
-      args: [
-        sym('C', DIMENSIONLESS),
-        // Numeric-literal exponent: the validator parses the symbol's
-        // `name` via Number(), so the literal text must be a finite
-        // number ('2'), not a word ('two').
-        sym('2', DIMENSIONLESS),
-      ],
-    },
-    sym('g_block_uv', DIMENSIONLESS),
-  ],
-};
-
-/**
- * Lemma AST of the deprecated residual: `C² · g_block(v, u)`.
- *
- * @deprecated See {@link BE35_FORWARD_BLOCK}.
- */
-export const BE35_CROSSED_BLOCK: ExprNode = {
-  kind: 'op', op: '*',
-  args: [
-    {
-      kind: 'op', op: '^',
-      args: [
-        sym('C', DIMENSIONLESS),
-        sym('2', DIMENSIONLESS),
-      ],
-    },
-    sym('g_block_vu', DIMENSIONLESS),
-  ],
-};
-
-/**
- * The deprecated residual `C² · g_block(u, v) − C² · g_block(v, u)`.
- *
- * @deprecated No prefactors, and one block: not crossing symmetric. Use
- * {@link BE35_CROSSING_EQUATION_RHS}, which is the RHS registered for BE-35.
- */
-export const BE35_CROSSING_RESIDUAL_RHS: ExprNode = {
-  kind: 'op', op: '-',
-  args: [
-    BE35_FORWARD_BLOCK,
-    BE35_CROSSED_BLOCK,
-  ],
-};
-
 // --- Numerical evaluators ---
 
 /**
@@ -201,43 +143,6 @@ export function evaluateCrossingEquation(input: CrossingEquationInputs): number 
   );
   const { u, v, delta_phi, g_uv, g_vu } = input;
   return v ** delta_phi * g_uv - u ** delta_phi * g_vu;
-}
-
-/**
- * Inputs of the deprecated {@link evaluateCrossingResidual}: one OPE coefficient and one block at both points.
- *
- * @internal — file-local typed-arg shape, not in the v0.7 public surface. See `docs/architecture/archive/v0.7-be-module-exports-audit.md` §4.
- */
-interface CrossingResidualInputs {
-  /** OPE coefficient C (dimensionless under unit-normalized operators). Must be finite. */
-  ope_coefficient: number;
-  /** Conformal block g_block(u, v) at (u, v). Must be finite. */
-  g_block_uv: number;
-  /** Conformal block g_block(v, u) at the crossed point. Must be finite. */
-  g_block_vu: number;
-}
-
-/**
- * Evaluate the deprecated single-block residual `C² · (g_block(u, v) − g_block(v, u))`.
- *
- * @deprecated One block with no v^Δφ / u^Δφ prefactors is not crossing
- * symmetric, so a zero here is not evidence of crossing. Use
- * {@link evaluateCrossingEquation} (`BridgeEquations.crossingEquation`).
- * Kept because `BridgeEquations.crossingResidual` is public API; removing it
- * is a breaking change.
- */
-export function evaluateCrossingResidual(input: CrossingResidualInputs): number {
-  validateFiniteInputs(
-    input,
-    [
-      { name: 'ope_coefficient' },
-      { name: 'g_block_uv' },
-      { name: 'g_block_vu' },
-    ],
-    'evaluateCrossingResidual',
-  );
-  const { ope_coefficient, g_block_uv, g_block_vu } = input;
-  return ope_coefficient * ope_coefficient * (g_block_uv - g_block_vu);
 }
 
 // --- Self-validation ---

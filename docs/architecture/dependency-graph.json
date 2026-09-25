@@ -4,7 +4,7 @@
     "version": "0.46.0",
     "totalFiles": 351,
     "totalModules": 11,
-    "totalExports": 2475
+    "totalExports": 2471
   },
   "entryPoints": [
     {
@@ -4683,8 +4683,7 @@
           {
             "file": "./equations/be-35-conformal-bootstrap.js",
             "imports": [
-              "evaluateCrossingEquation",
-              "evaluateCrossingResidual"
+              "evaluateCrossingEquation"
             ]
           },
           {
@@ -6661,21 +6660,13 @@
         ],
         "exports": [
           "BE35_CROSSING_EQUATION_RHS",
-          "BE35_FORWARD_BLOCK",
-          "BE35_CROSSED_BLOCK",
-          "BE35_CROSSING_RESIDUAL_RHS",
-          "evaluateCrossingEquation",
-          "evaluateCrossingResidual"
+          "evaluateCrossingEquation"
         ],
         "functions": [
-          "evaluateCrossingEquation",
-          "evaluateCrossingResidual"
+          "evaluateCrossingEquation"
         ],
         "constants": [
-          "BE35_CROSSING_EQUATION_RHS",
-          "BE35_FORWARD_BLOCK",
-          "BE35_CROSSED_BLOCK",
-          "BE35_CROSSING_RESIDUAL_RHS"
+          "BE35_CROSSING_EQUATION_RHS"
         ]
       },
       "src/bridges/equations/be-36-gw-speed-bound.ts": {
@@ -24223,14 +24214,14 @@
   "statistics": {
     "totalTypeScriptFiles": 351,
     "totalModules": 11,
-    "totalLinesOfCode": 70125,
-    "totalExports": 2475,
+    "totalLinesOfCode": 70029,
+    "totalExports": 2471,
     "totalClasses": 58,
     "totalInterfaces": 362,
-    "totalFunctions": 564,
+    "totalFunctions": 563,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 611,
+    "totalConstants": 608,
     "totalReExports": 1241,
     "totalTypeOnlyImports": 490,
     "runtimeCircularDeps": 0,

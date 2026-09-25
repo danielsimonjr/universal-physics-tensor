@@ -51,7 +51,7 @@ import { evaluateBenincasaDowker } from './equations/be-31-causal-set-bd.js';
 import { evaluateQRFOverlap } from './equations/be-32-quantum-reference-frame.js';
 import { evaluateHertzMillis } from './equations/be-33-hertz-millis.js';
 import { evaluateKibbleZurek } from './equations/be-34-kibble-zurek.js';
-import { evaluateCrossingEquation, evaluateCrossingResidual } from './equations/be-35-conformal-bootstrap.js';
+import { evaluateCrossingEquation } from './equations/be-35-conformal-bootstrap.js';
 import { evaluateGWSpeedRatio } from './equations/be-36-gw-speed-bound.js';
 import { evaluateShapiroDelay } from './equations/be-37-shapiro-delay.js';
 import { evaluateMONDForce } from './equations/be-38-mond.js';
@@ -118,7 +118,6 @@ export const BridgeEquations = {
   hertzMillis: evaluateHertzMillis,                         // BE-33
   kibbleZurek: evaluateKibbleZurek,                         // BE-34
   crossingEquation: evaluateCrossingEquation,               // BE-35 (v^Δφ g(u,v) − u^Δφ g(v,u))
-  crossingResidual: evaluateCrossingResidual,               // BE-35, DEPRECATED: one block, no prefactors
   gwSpeedRatio: evaluateGWSpeedRatio,                       // BE-36
   shapiroDelay: evaluateShapiroDelay,                       // BE-37
   mondForce: evaluateMONDForce,                             // BE-38
