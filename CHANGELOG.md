@@ -72,6 +72,26 @@ from v0.1.0 onward.
   zero-tolerance confrontation golden (`tests/fixtures/confrontation-numbers.golden.json`) was NOT
   regenerated. The two new input numbers, γ and σ, were added to it by hand, and every existing
   number is unchanged.
+- **The GR confrontations take GM☉ from the IAU 2015 nominal value** (Mothership ruling on persona
+  finding L6). BE-51 used G × 1.989e30 kg and BE-52 used G × 1.98892e30 kg, which put G·M 3.0e-4
+  and 2.6e-4 above the nominal (GM)☉ = 1.3271244e20 m³ s⁻² (IAU 2015 Resolution B3). GM☉ is
+  known to about 10 digits and G to about 5. For BE-51 the offset was 5.2e-4 arcsec, five times the
+  VLBI 1σ on the deflection. A new internal `GM_SUN_SI` (with `GM_SUN_SOURCE`) is the source, and
+  each confrontation uses M = GM☉/G, so G·M is the nominal value exactly. **be-37/51/52 outputs
+  shift by about 3e-4 relative:**
+  - BE-51 predicted deflection: 1.7517100517691688″ → 1.751190325559984″ (−2.97e-4). The residual
+    stays 0.67σ, because it tests only γ.
+  - BE-52 predicted Mercury precession: 42.99158858487129 → 42.98056186229095 ″/cy (−2.56e-4). The
+    residual goes from 0.263σ to 0.288σ.
+  - BE-52 regime bound r_s/r_p: 6.4216e-8 → 6.4199e-8.
+  - BE-37 does not move: its prediction is PPN γ = 1 and uses no mass.
+
+  Each new value was recomputed independently from the closed forms before it was pinned. The
+  zero-tolerance pins in `tests/fixtures/confrontation-numbers.golden.json` and
+  `tests/atlas/gr-spine-regime.test.ts` were re-pinned deliberately, with the old values kept in
+  comments. `data/bridge-catalog.json` was regenerated with `bun run catalog:json`. The public
+  `M_SUN_SI` (1.989e30) and the be-37/51 solar-limb regime bound, which is built from it, are
+  unchanged.
 
 ### Added
 

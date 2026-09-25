@@ -74,10 +74,14 @@ describe('S2.5 — the GR spine gains regimes and changes no number', () => {
     // Captured 2026-09-21 from the built CLI, and identical to the values the
     // pre-S2.5 tree produced. Exact equality, not toBeCloseTo: a tolerance here
     // would be a place for a real regression to hide.
+    // Re-pinned 2026-09-25, deliberately: be-51 and be-52 now take GM☉ from the
+    // IAU 2015 nominal 1.3271244e20 m³ s⁻² instead of G × 1.989e30 / G × 1.98892e30
+    // (Mothership ruling on persona finding L6). Was 51: 0.6666666666680373 and
+    // 52: 0.2631364780638042. be-52 recomputed independently: 0.28764030602011.
     expect(residuals).toEqual({
       37: 0.9130434782629895,
-      51: 0.6666666666680373,
-      52: 0.2631364780638042,
+      51: 0.6666666666669404,
+      52: 0.2876403060201148,
     });
   });
 
@@ -126,7 +130,9 @@ describe('S2.5 — the GR spine gains regimes and changes no number', () => {
         ((2 * Math.PI * MERCURY.semi_major_axis_m) /
           (MERCURY.period_yr * 365.25 * 86400)) *
         Math.sqrt((1 + MERCURY.eccentricity) / (1 - MERCURY.eccentricity));
-      expect(rsOverR).toBeCloseTo(6.4216e-8, 12);
+      // 6.4216e-8 before 2026-09-25 (G × 1.98892e30); now 2 GM☉/(c² r_p) with the
+      // IAU nominal GM☉, recomputed independently as 6.419934159745687e-8.
+      expect(rsOverR).toBeCloseTo(6.4199e-8, 12);
       expect(v_p / C_SI).toBeCloseTo(1.9672e-4, 8);
       expect(BE52_REGIME.inequalities).toHaveLength(2);
       expect(BE52_REGIME.inequalities[0]?.bound).toBe(rsOverR);

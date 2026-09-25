@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 347,
-    "totalTestFiles": 453,
+    "totalTestFiles": 454,
     "testedCount": 346,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -735,6 +735,7 @@
       "tests/bridges/be37-cassini.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/solar-gm.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
@@ -757,6 +758,7 @@
       "tests/bridges/be51-lensing-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/solar-gm.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
@@ -769,6 +771,7 @@
       "tests/bridges/be52-mercury-confrontation.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/solar-gm.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
       "tests/fixtures/confrontation-golden.test.ts",
@@ -3786,6 +3789,7 @@
       "tests/bridges/bridge-equations-facade.test.ts",
       "tests/bridges/perihelion-precession.test.ts",
       "tests/bridges/public-api-stability.test.ts",
+      "tests/bridges/solar-gm.test.ts",
       "tests/canonical/numeric-prefactor.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
@@ -7174,6 +7178,12 @@
     ],
     "tests/bridges/sensitivity.test.ts": [
       "src/bridges/sensitivity.ts"
+    ],
+    "tests/bridges/solar-gm.test.ts": [
+      "src/core/constants.ts",
+      "src/bridges/be51-lensing-confrontation.ts",
+      "src/bridges/be52-mercury-confrontation.ts",
+      "src/bridges/be37-cassini-confrontation.ts"
     ],
     "tests/bridges/spec-vs-index.test.ts": [
       "src/bridges/index.ts",

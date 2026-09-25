@@ -1135,6 +1135,7 @@ The codebase is organized into the following modules:
 | `./observations/types.js` | `ObservationProvenance` | Import (type-only) |
 | `./observations/types.js` | `residualInSigma` | Import |
 | `./gravitational-lensing.js` | `evaluateGravitationalLensing` | Import |
+| `../core/constants.js` | `GM_SUN_SI, G_SI` | Import |
 
 **Exports:**
 - Interfaces: `VLBIDeflectionObservation`, `BE51ConfrontationResult`
@@ -1149,6 +1150,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./perihelion-precession.js` | `evaluatePerihelionPrecession` | Import |
+| `../core/constants.js` | `GM_SUN_SI, G_SI` | Import |
 
 **Exports:**
 - Interfaces: `PerihelionObservation`, `BE52ConfrontationResult`
@@ -4867,8 +4869,8 @@ The codebase is organized into the following modules:
 - Constants:
 
   ```text
-  C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI, M_SUN_SI, M_E_SI,
-  B_WIEN_SI
+  C_SI, G_SI, H_SI, HBAR_SI, K_B_SI, E_SI, ALPHA, M_P_SI, L_P_SI, T_P_SI, H0_SI, M_SUN_SI, GM_SUN_SI,
+  GM_SUN_SOURCE, M_E_SI, B_WIEN_SI
   ```
 
 
@@ -6596,8 +6598,8 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 350 |
 | Total Modules | 11 |
-| Total Lines of Code | 69547 |
-| Total Exports | 2464 |
+| Total Lines of Code | 69567 |
+| Total Exports | 2466 |
 | Total Re-exports | 1238 |
 | Total Classes | 58 |
 | Total Interfaces | 361 |

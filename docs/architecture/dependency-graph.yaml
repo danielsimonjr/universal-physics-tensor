@@ -3,7 +3,7 @@ metadata:
   version: 0.46.0
   totalFiles: 350
   totalModules: 11
-  totalExports: 2464
+  totalExports: 2466
 entryPoints:
   - file: src/index.ts
     type: main
@@ -2724,6 +2724,10 @@ modules:
         - file: ./gravitational-lensing.js
           imports:
             - evaluateGravitationalLensing
+        - file: ../core/constants.js
+          imports:
+            - GM_SUN_SI
+            - G_SI
       exports:
         - VLBI_LAMBERT_2009
         - confrontBE51
@@ -2742,6 +2746,10 @@ modules:
         - file: ./perihelion-precession.js
           imports:
             - evaluatePerihelionPrecession
+        - file: ../core/constants.js
+          imports:
+            - GM_SUN_SI
+            - G_SI
       exports:
         - MERCURY
         - confrontBE52
@@ -11715,6 +11723,8 @@ modules:
         - T_P_SI
         - H0_SI
         - M_SUN_SI
+        - GM_SUN_SI
+        - GM_SUN_SOURCE
         - M_E_SI
         - B_WIEN_SI
       constants:
@@ -11730,6 +11740,8 @@ modules:
         - T_P_SI
         - H0_SI
         - M_SUN_SI
+        - GM_SUN_SI
+        - GM_SUN_SOURCE
         - M_E_SI
         - B_WIEN_SI
     src/core/flux-rules.ts:
@@ -16851,14 +16863,14 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 350
   totalModules: 11
-  totalLinesOfCode: 69547
-  totalExports: 2464
+  totalLinesOfCode: 69567
+  totalExports: 2466
   totalClasses: 58
   totalInterfaces: 361
   totalFunctions: 560
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 607
+  totalConstants: 609
   totalReExports: 1238
   totalTypeOnlyImports: 489
   runtimeCircularDeps: 0

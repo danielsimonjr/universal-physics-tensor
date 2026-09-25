@@ -123,7 +123,7 @@ describe('upt confront be-51 shows the measurement, and labels the deflection as
     expect(code).toBe(0);
     const text = cap.lines.join('');
     expect(text).toMatch(/measured: PPN γ = 0\.99992 ± 0\.00012 \(VLBI\); the value above is derived from it, not observed/);
-    expect(text).toMatch(/derived \(1\+γ\)\/2 × predicted = 1\.75163\d* ± 0\.000105\d* arcsec/);
+    expect(text).toMatch(/derived \(1\+γ\)\/2 × predicted = 1\.75112\d* ± 0\.000105\d* arcsec/);
     expect(text).not.toMatch(/observed 1\.75/);
     expect(text).toMatch(/residual 0\.67σ/);
   });

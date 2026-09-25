@@ -16,10 +16,12 @@
 import type { ObservationProvenance } from './observations/types.js';
 import { residualInSigma } from './observations/types.js';
 import { evaluateGravitationalLensing } from './gravitational-lensing.js';
+import { GM_SUN_SI, G_SI } from '../core/constants.js';
 
-/** Solar mass (kg), IAU/CODATA nominal — matches be-37/be-52 usage. Internal:
- *  the confrontation's fixed baseline, not part of the public surface. */
-const SOLAR_MASS_KG = 1.989e30;
+/** Solar mass (kg) as GM☉/G, so the evaluator's G·M is the IAU 2015 nominal
+ *  (GM)☉ exactly. `G × 1.989e30` was 3.0e-4 high: 5.2e-4 arcsec, five times
+ *  the VLBI 1σ on the deflection. Internal: the confrontation's fixed baseline. */
+const SOLAR_MASS_KG = GM_SUN_SI / G_SI;
 /** Solar radius (m) — the grazing-ray impact parameter (matches be-37). Internal. */
 const SOLAR_RADIUS_M = 6.957e8;
 
