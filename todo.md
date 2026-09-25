@@ -298,7 +298,7 @@ warning-silencing, not debug logging).
       - [x] C4: `upt explain` answers an unknown name and a real uncovered quantity alike, and exits 0; say "not covered" plainly.
       - [x] C5: `upt probe falsify` prints no falsification batteries: find out whether it is a bug (fix) or not (defer).
       - [x] Tracker hygiene (owner order 2026-09-25, item 1): tick S6, the 2026-07-04 NEXT umbrella and the BRIDGE-PHYSICS-AUDIT row if every sub-item is done; re-scope or close "v0.11 headline"; close be-12 as won't-do; correct the stale Dependabot and Sprint-0 lines in NOTES.md. Leave the owner-kept groups open.
-      - [ ] C1, C3: record in ROADMAP §8 Future (probe scan has nothing searchable; `path` cannot cross families). Deferred by ruling.
+      - [x] C1, C3: record in ROADMAP §8 Future (probe scan has nothing searchable; `path` cannot cross families). Deferred by ruling.
 
 - [x] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
       findings in the persona's `FINDINGS.md`, rulings by inbox 2026-09-25). One finding per commit.
