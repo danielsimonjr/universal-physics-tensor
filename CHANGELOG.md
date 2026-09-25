@@ -8,6 +8,22 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Removed (BREAKING)
+
+- **`BridgeEquations.crossingResidual` is removed, as announced in 0.46.0.** The 0.46.0 notice said:
+  "`BridgeEquations.crossingResidual` (`evaluateCrossingResidual`) and its ASTs
+  (`BE35_CROSSING_RESIDUAL_RHS`, `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`) do not state crossing
+  symmetry. They have no `v^Δφ` / `u^Δφ` prefactors and describe one conformal block. A zero from
+  them is not evidence of crossing, so the evaluator tests nothing. Use
+  `BridgeEquations.crossingEquation`." All five symbols are removed. The registered BE-35 RHS was
+  already `BE35_CROSSING_EQUATION_RHS`, so no registered physics changes. **Migration:** a caller
+  that computed `crossingResidual({ ope_coefficient, g_block_uv, g_block_vu })` to test crossing
+  symmetry calls `crossingEquation({ u, v, delta_phi, g_uv, g_vu })` with the full reduced
+  four-point function g at (u, v) and at (v, u). That returns v^Δφ g(u,v) − u^Δφ g(v,u), which is
+  zero exactly when crossing holds (Rattazzi, Rychkov, Tonni & Vichi 2008, eq. 4.3). The old
+  single-block value has no crossing-symmetric replacement, because it never tested crossing. A new
+  test pins that the five symbols are gone and that the registered RHS is unchanged.
+
 ### Changed (BREAKING)
 
 - **A check that runs and fails now exits 3** (persona finding F2). `derive`, `map --equation`

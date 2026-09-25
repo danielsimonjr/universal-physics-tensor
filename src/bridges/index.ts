@@ -1555,7 +1555,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [
     {
       severity: 'other',
-      description: `The deprecated single-block residual R = C²·[g_block(u,v) − g_block(v,u)] (BridgeEquations.crossingResidual) has no v^Δφ / u^Δφ prefactors and is written for ONE conformal block; crossing holds only for the full four-point function g = 1 + Σ_O λ_O² g_O with the prefactors (Rattazzi et al. 2008, eq. 4.3). It is kept because it is public API; the encoded relation is BridgeEquations.crossingEquation. Removing crossingResidual is a breaking change for a release.`,
+      description: `The single-block residual R = C²·[g_block(u,v) − g_block(v,u)] (BridgeEquations.crossingResidual) had no v^Δφ / u^Δφ prefactors and was written for ONE conformal block; crossing holds only for the full four-point function g = 1 + Σ_O λ_O² g_O with the prefactors (Rattazzi et al. 2008, eq. 4.3). It was deprecated in 0.46.0 and REMOVED in 0.47.0; the encoded relation is BridgeEquations.crossingEquation.`,
       fixable: 'spec-edit',
     },
   ],

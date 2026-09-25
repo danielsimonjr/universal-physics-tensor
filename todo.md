@@ -293,7 +293,7 @@ warning-silencing, not debug logging).
       - [x] F1: `--at` ignores unknown keys silently, and composite groups must be typed as the exact display string.
       - [x] F2: failed checks exit 0 (derive/map dimension mismatch, path with a violated horizon or regime, explain of an unknown name). BREAKING CLI change.
       - [x] F3: the default install pulls 36 packages / 48 MB through `optionalDependencies` for a "zero hard dependencies" package.
-      - [ ] Remove the deprecated `BridgeEquations.crossingResidual` (BE-35 single-block residual, no prefactors; superseded by `crossingEquation` in the F1 fix). A breaking change to the public API, so it waits for Mothership's release call.
+      - [x] Remove the deprecated `BridgeEquations.crossingResidual` (BE-35 single-block residual, no prefactors; superseded by `crossingEquation` in the F1 fix). A breaking change to the public API, so it waits for Mothership's release call.
       - [x] C2: probe with a dimensionless governing variable says "no dimensionally valid candidates", which is false.
       - [x] C4: `upt explain` answers an unknown name and a real uncovered quantity alike, and exits 0; say "not covered" plainly.
       - [x] C5: `upt probe falsify` prints no falsification batteries: find out whether it is a bug (fix) or not (defer).

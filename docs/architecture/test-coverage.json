@@ -1,7 +1,7 @@
 {
   "metadata": {
     "totalSourceFiles": 348,
-    "totalTestFiles": 470,
+    "totalTestFiles": 471,
     "testedCount": 347,
     "untestedCount": 1,
     "coveragePercent": "99.7"
@@ -1404,6 +1404,7 @@
       "tests/api/public-surface.test.ts",
       "tests/bridges/be-35-encoding.test.ts",
       "tests/bridges/bridge-equations-facade.test.ts",
+      "tests/bridges/crossing-residual-removed.test.ts",
       "tests/bridges/public-api-stability.test.ts",
       "tests/cli/graphs.test.ts",
       "tests/cli/recover-conventions.test.ts",
@@ -1568,7 +1569,8 @@
       "tests/dimensional/bridge-check.test.ts"
     ],
     "src/bridges/equations/be-35-conformal-bootstrap.ts": [
-      "tests/bridges/be-35-encoding.test.ts"
+      "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/crossing-residual-removed.test.ts"
     ],
     "src/bridges/equations/be-36-gw-speed-bound.ts": [
       "tests/bridges/be-36-encoding.test.ts",
@@ -1828,6 +1830,7 @@
     ],
     "src/bridges/rhs-registry.ts": [
       "tests/bridges/be-35-encoding.test.ts",
+      "tests/bridges/crossing-residual-removed.test.ts",
       "tests/bridges/descriptor-consistency.test.ts",
       "tests/bridges/dimensional-signature-catalog.test.ts",
       "tests/canonical/linkage.test.ts",
@@ -7147,6 +7150,11 @@
     "tests/bridges/confrontation-rigor.test.ts": [
       "src/bridges/confrontations.ts",
       "src/bridges/confrontation-coverage.ts"
+    ],
+    "tests/bridges/crossing-residual-removed.test.ts": [
+      "src/bridges/bridge-equations.ts",
+      "src/bridges/equations/be-35-conformal-bootstrap.ts",
+      "src/bridges/rhs-registry.ts"
     ],
     "tests/bridges/descriptor-consistency.test.ts": [
       "src/bridges/index.ts",
