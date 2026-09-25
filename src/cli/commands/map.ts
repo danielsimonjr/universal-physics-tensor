@@ -175,6 +175,15 @@ function printEquationReport(
   out('');
   if (user.consistent === true) {
     out(`  ✓ dimensionally consistent: ${api.format(user.rhsDimension!)}`);
+  } else if (user.consistent === false && (user.hints ?? []).length > 0) {
+    // An unknown name is checked as a dimensionless placeholder, so this mismatch is not a real
+    // check and does not fail the command (exit 0). Say so on the line itself (persona finding N3).
+    const names = user.hints!.map((h) => `'${h.name}'`).join(', ');
+    out(
+      `  · UNKNOWN: RHS is ${api.format(user.rhsDimension!)} but the target is ${api.format(user.targetDimension!)}; ` +
+        `the mismatch involves the unresolved placeholder${user.hints!.length > 1 ? 's' : ''} ${names} ` +
+        `(taken as dimensionless), so it is not a failed check`,
+    );
   } else if (user.consistent === false) {
     out(
       `  ⚠ dimensional MISMATCH: RHS is ${api.format(user.rhsDimension!)} but the target is ${api.format(

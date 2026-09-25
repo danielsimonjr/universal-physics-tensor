@@ -122,3 +122,21 @@ describe('N1: a velocity/speed synonym no longer switches the prefactor check of
     expect(t).toMatch(/no canonical equation has this target and these variables, so the prefactor is NOT checked/);
   });
 });
+
+// 0.47.0 persona finding N3: an unknown name is checked as a dimensionless placeholder, so its
+// "mismatch" is not a real check and exits 0 (F2). The line said "⚠ dimensional MISMATCH" anyway,
+// which reads as a failed check with a success exit. It now says UNKNOWN and names the placeholder.
+describe('N3: a mismatch caused by an unresolved placeholder is reported as UNKNOWN', () => {
+  it('map: `lenght` is named as the placeholder, the line says UNKNOWN, and the exit stays 0', async () => {
+    const t = await text(['map', '--equation', 'period = 2*pi*sqrt(lenght/gravity)']);
+    expect(t).toMatch(
+      /· UNKNOWN: RHS is \[L\^-0\.5 T\] but the target is \[time\]; the mismatch involves the unresolved placeholder 'lenght' \(taken as dimensionless\), so it is not a failed check/,
+    );
+    expect(t).not.toMatch(/dimensional MISMATCH/);
+  });
+
+  it('control: with every name resolved, a mismatch is still a MISMATCH and exits 3', async () => {
+    const t = await text(['map', '--equation', 'period = 2*pi*sqrt(gravity/length)'], 3);
+    expect(t).toMatch(/⚠ dimensional MISMATCH: RHS is \[frequency\] but the target is \[time\]/);
+  });
+});
