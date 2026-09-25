@@ -143,6 +143,7 @@ export { checkConventions, unknownConventionKeys } from './atlas/conventions.js'
 export type { ConventionKey } from './atlas/conventions.js';
 
 export { describeGrounding } from './composition/grounding.js';
+export { REPRESENTATIVE_VALUES } from './composition/representative-values.js';
 // User formula vs the canonical equation it restates (persona finding L2).
 export {
   compareWithCanonical,

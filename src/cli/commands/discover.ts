@@ -59,6 +59,16 @@ const EPISTEMICS =
   '  Each candidate hypothesises an identification a≡b and tests its consequences.';
 
 // ── discover --derive (identity-consequence proposals) ────────────────────
+
+/**
+ * Sample values for GENERIC quantities, which the representative-value table
+ * leaves out on purpose. A proposal is evaluated only when every free input
+ * has a sourced sample: this command once put 300 into every input, a Hubble
+ * rate of 300 s⁻¹ among them (persona finding D5).
+ */
+const GENERIC_SAMPLES: Readonly<Record<string, { value: number; source: string }>> = {
+  temperature: { value: 300, source: 'room temperature, 300 K' },
+};
 function deriveReport(
   api: CommandCtx['api'],
   ranked: readonly VettedCandidate[],
@@ -76,12 +86,21 @@ function deriveReport(
   }
   for (const p of proposals) {
     let approx = '';
-    try {
-      const vals = Object.fromEntries((p.governing || []).map((g) => [g.name, 300]));
-      const at = (p.governing || []).map((g) => `${g.name}=300`).join(', ');
-      approx = `  ≈ ${p.evaluate(vals).toExponential(2)}${at ? ` (${at})` : ''}`;
-    } catch {
-      approx = '';
+    const governing = p.governing || [];
+    const sampleOf = (name: string) => api.REPRESENTATIVE_VALUES[name] ?? GENERIC_SAMPLES[name];
+    const missing = governing.filter((g) => sampleOf(g.name) === undefined).map((g) => g.name);
+    if (missing.length > 0) {
+      approx = `  (no sourced sample value for ${missing.join(', ')}; not evaluated)`;
+    } else {
+      try {
+        const vals = Object.fromEntries(governing.map((g) => [g.name, sampleOf(g.name)!.value]));
+        const at = governing
+          .map((g) => `${g.name}=${sampleOf(g.name)!.value} [${sampleOf(g.name)!.source}]`)
+          .join(', ');
+        approx = `  ≈ ${p.evaluate(vals).toExponential(2)}${at ? ` (${at})` : ''}`;
+      } catch {
+        approx = '';
+      }
     }
     out(`  ${p.id}`);
     out(`      ${p.formulaLatex}      ${p.dimensionalSignature}${approx}`);

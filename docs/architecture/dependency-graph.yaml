@@ -3,7 +3,7 @@ metadata:
   version: 0.46.0
   totalFiles: 351
   totalModules: 11
-  totalExports: 2469
+  totalExports: 2470
 entryPoints:
   - file: src/index.ts
     type: main
@@ -7381,6 +7381,10 @@ modules:
           imports:
             - describeGrounding
           reExport: true
+        - file: ./composition/representative-values.js
+          imports:
+            - REPRESENTATIVE_VALUES
+          reExport: true
         - file: ./composition/canonical-compare.js
           imports:
             - compareWithCanonical
@@ -7526,6 +7530,7 @@ modules:
         - checkConventions
         - unknownConventionKeys
         - describeGrounding
+        - REPRESENTATIVE_VALUES
         - compareWithCanonical
         - compareUserEquation
         - describeComparison
@@ -7657,6 +7662,7 @@ modules:
         - unknownConventionKeys
         - ConventionKey
         - describeGrounding
+        - REPRESENTATIVE_VALUES
         - compareWithCanonical
         - compareUserEquation
         - describeComparison
@@ -16897,15 +16903,15 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 351
   totalModules: 11
-  totalLinesOfCode: 69911
-  totalExports: 2469
+  totalLinesOfCode: 69931
+  totalExports: 2470
   totalClasses: 58
   totalInterfaces: 362
   totalFunctions: 562
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 610
-  totalReExports: 1238
+  totalReExports: 1239
   totalTypeOnlyImports: 490
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0

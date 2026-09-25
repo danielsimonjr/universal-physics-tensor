@@ -31,6 +31,13 @@ from v0.1.0 onward.
   degenerate gas, with m_u and M☉ = 1.989e30 kg. Independent recomputation gives
   ω₃√(3π)/2 · (ħc/G)^{3/2}/(2m_u)² = 2.8957e30 kg = 1.4559 M☉. A test reads the number back out
   of both help sources and compares it with the evaluator.
+- **`upt discover --derive` put 300 into every free input, whatever its dimension** (persona
+  finding D5). Examples: a Hubble rate of 300 s⁻¹ (H₀ is about 2.2 × 10⁻¹⁸ s⁻¹), a frequency of
+  300 Hz, a Yukawa coupling of 300, and a Higgs VEV of 300 J. A proposal is now evaluated only when
+  every input has a sourced sample, and each sample prints with its source. The sources are the
+  representative-value table and a documented room temperature of 300 K. Otherwise the line reads
+  "no sourced sample value for X; not evaluated". Checked: T = b·H₀/c = 2.13 × 10⁻²⁹ K at
+  H₀ = 2.2 × 10⁻¹⁸ s⁻¹, and ν = k_B ln 2 · 300 K / h = 4.33 × 10¹² Hz, both recomputed independently.
 
 - **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
   L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and

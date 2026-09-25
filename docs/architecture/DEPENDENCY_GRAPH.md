@@ -3369,6 +3369,7 @@ The codebase is organized into the following modules:
 | `./atlas/conventions.js` | `checkConventions, unknownConventionKeys` | Re-export |
 | `./atlas/conventions.js` | `ConventionKey` | Re-export |
 | `./composition/grounding.js` | `describeGrounding` | Re-export |
+| `./composition/representative-values.js` | `REPRESENTATIVE_VALUES` | Re-export |
 | `./composition/canonical-compare.js` | `compareWithCanonical, compareUserEquation, describeComparison, describeComparisons` | Re-export |
 | `./composition/canonical-compare.js` | `CanonicalComparison` | Re-export |
 | `./composition/symbolic-constants.js` | `CONSTANTS` | Re-export |
@@ -3405,12 +3406,12 @@ The codebase is organized into the following modules:
   suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto, annotateAdjudications,
   adjudicationFor, candidateId, ADJUDICATIONS, AnnotatedCandidate, CandidateAdjudication,
   annotateConsequences, ConsequenceAnnotatedCandidate, ConsequenceSignal, ConsequenceEvidence,
-  checkConventions, unknownConventionKeys, ConventionKey, describeGrounding, compareWithCanonical,
-  compareUserEquation, describeComparison, describeComparisons, CanonicalComparison, CONSTANTS,
-  CandidateGrounding, OSCILLATOR_FAMILY, ATLAS_FAMILIES, deriveEvidence, NO_PASSING_WITNESSES,
-  AtlasFamily, regimeHolds, regimeOverlap, uncoveredRegions, RegimeCheck, RegimeOverlap, RegionSample,
-  findPath, boundPath, PathBoundResult, PathBoundClaim, PathNoClaim, AtlasBridge, RegimeInequality,
-  AtlasModel, ModelId
+  checkConventions, unknownConventionKeys, ConventionKey, describeGrounding, REPRESENTATIVE_VALUES,
+  compareWithCanonical, compareUserEquation, describeComparison, describeComparisons,
+  CanonicalComparison, CONSTANTS, CandidateGrounding, OSCILLATOR_FAMILY, ATLAS_FAMILIES,
+  deriveEvidence, NO_PASSING_WITNESSES, AtlasFamily, regimeHolds, regimeOverlap, uncoveredRegions,
+  RegimeCheck, RegimeOverlap, RegionSample, findPath, boundPath, PathBoundResult, PathBoundClaim,
+  PathNoClaim, AtlasBridge, RegimeInequality, AtlasModel, ModelId
   ```
 
 
@@ -6612,9 +6613,9 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 351 |
 | Total Modules | 11 |
-| Total Lines of Code | 69911 |
-| Total Exports | 2469 |
-| Total Re-exports | 1238 |
+| Total Lines of Code | 69931 |
+| Total Exports | 2470 |
+| Total Re-exports | 1239 |
 | Total Classes | 58 |
 | Total Interfaces | 362 |
 | Total Functions | 562 |
