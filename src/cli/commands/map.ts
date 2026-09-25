@@ -17,7 +17,7 @@ import type { FlagSpec, ParsedArgs } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { resolveGraph } from '../graphs.js';
 import { emitJson } from '../output.js';
-import { UsageError, CliError } from '../errors.js';
+import { UsageError, CliError, EXIT_CHECK_FAILED } from '../errors.js';
 import { parseDiscoveryOpts } from './_discovery-opts.js';
 import type { BridgeEdge } from '../../composition/edge.js';
 import type { VizJunction, VizModel } from '../../composition/graph-viz.js';
@@ -273,6 +273,17 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
   }
 
+  // A user equation whose dimension mismatches, or that differs from its
+  // canonical equation, is a failed check: exit 3 (persona finding F2). A
+  // mismatch counts only when every name resolved: an unknown name is checked
+  // as a dimensionless placeholder, so its "mismatch" is not a real check.
+  const exitCode =
+    user !== null &&
+    ((user.consistent === false && (user.hints ?? []).length === 0) ||
+      comparisons.some((c) => c.kind === 'factor' || c.kind === 'form'))
+      ? EXIT_CHECK_FAILED
+      : 0;
+
   const overlay = (extra: VizJunction[]): VizJunction[] => [
     // Ranked from the UNFILTERED graph: the proposal set is a property of the
     // whole catalog, and the model then judges each overlay junction under the
@@ -318,7 +329,7 @@ async function run(ctx: CommandCtx): Promise<number> {
       },
       write
     );
-    return 0;
+    return exitCode;
   }
 
   if (fmt === 'mermaid' || fmt === 'dot' || fmt === 'svg') {
@@ -359,7 +370,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     if (posterNote !== null) err(`upt: ${posterNote}`);
     if (model.filterLegend !== null) err(`upt: ${model.filterLegend}`);
     if (user) printEquationReport(api, model, user, err, comparisons);
-    return 0;
+    return exitCode;
   }
   if (fmt !== 'text') {
     throw new CliError(`upt: unknown --format='${fmt}' (expected: text | mermaid | dot | svg)`);
@@ -388,7 +399,7 @@ Poster index — statements and the derivations between them  [source: ${label}]
 Your equation:  ${user.junction.label}`);
       printEquationReport(api, model, user, out, comparisons);
     }
-    return 0;
+    return exitCode;
   }
 
   const m = api.linkageMap(graph);
@@ -419,7 +430,7 @@ Your equation:  ${user.junction.label}`);
     out(`\nYour equation:  ${user.junction.label}`);
     printEquationReport(api, model, user, out, comparisons);
   }
-  return 0;
+  return exitCode;
 }
 
 export const command: Command = {

@@ -9,7 +9,7 @@
 import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { emitJson } from '../output.js';
-import { UsageError } from '../errors.js';
+import { UsageError, EXIT_CHECK_FAILED } from '../errors.js';
 import type { Dimension } from '../../dimensional/types.js';
 
 const FLAGS: FlagSpec[] = [
@@ -78,6 +78,8 @@ async function run(ctx: CommandCtx): Promise<number> {
   let formulaCheck: ReturnType<Awaited<ReturnType<typeof api.getFormulaDimensionChecker>>['check']> | undefined;
   let mean: number | undefined;
   let canonicalComparisons: ReturnType<typeof api.compareWithCanonical> | undefined;
+  // The formula's checks: dimension, monomial, canonical comparison. Any failure exits 3.
+  let failed = false;
 
   const emitEnvelope = (): void => {
     emitJson(
@@ -114,9 +116,11 @@ async function run(ctx: CommandCtx): Promise<number> {
     const r = checker.check(formula, dims);
     formulaCheck = r;
     if (!r.ok) {
+      failed = true;
       textOut(`  formula dimensional check: ✗ ${r.error}`);
     } else {
       const matches = dimsEqualTol(r.dim!, target.dim);
+      if (!matches) failed = true;
       textOut(
         `  formula dimension: ${api.format(r.dim!)}`
           + (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${api.format(target.dim)}`)
@@ -156,12 +160,13 @@ async function run(ctx: CommandCtx): Promise<number> {
     const printComparisons = (): void => {
       for (const line of api.describeComparisons(canonicalComparisons!)) textOut(`  ${line}`);
     };
+    if (canonicalComparisons.some((c) => c.kind === 'factor' || c.kind === 'form')) failed = true;
 
     if (!det.determined) {
       textOut('  formula given, but with no unique monomial there is no single prefactor to recover.');
       printComparisons();
       if (isJson) emitEnvelope();
-      return 0;
+      return failed ? EXIT_CHECK_FAILED : 0;
     }
 
     const ratios: number[] = [];
@@ -180,6 +185,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
     mean = ratios.reduce((a, b) => a + b, 0) / ratios.length;
     const cv = Math.sqrt(ratios.reduce((a, b) => a + (b - mean!) ** 2, 0) / ratios.length) / Math.abs(mean);
+    if (!(cv < 1e-9)) failed = true;
     textOut(
       cv < 1e-9
         ? `  formula MATCHES the dimensional form — recovered prefactor ≈ ${mean.toExponential(4)}`
@@ -189,7 +195,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   }
 
   if (isJson) emitEnvelope();
-  return 0;
+  return failed ? EXIT_CHECK_FAILED : 0;
 }
 
 export const command: Command = {

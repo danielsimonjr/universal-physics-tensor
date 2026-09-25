@@ -8,6 +8,28 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Changed (BREAKING)
+
+- **A check that runs and fails now exits 3** (persona finding F2). `derive`, `map --equation`
+  and `path` printed a failed check and exited 0, so a script could not tell it from a passed one.
+  The CLI's exit codes are now:
+  - `0`: success;
+  - `1`: runtime error;
+  - `2`: usage error;
+  - `3`: **the command ran and its check came out negative**.
+
+  Exit 3 covers:
+  - `derive --formula`: a dimension that differs from the target, a monomial mismatch, or a
+    canonical difference (a constant factor or the form);
+  - `map --equation`: a dimension mismatch when every name resolved, or a canonical difference;
+  - `path`: a violated regime or horizon at the `--at` point.
+
+  UNKNOWN stays 0: a coordinate was not supplied, or an unknown name was checked as a
+  dimensionless placeholder. So does a survey command such as `regime`. `--json` exits the same
+  way. **Migration:** a script that treated any non-zero exit as a crash should treat 3 as "the
+  check failed", and read the output or `--json` for the detail. The golden harness gains an
+  optional `exitCode` per case; `map-equation-mismatch` pins 3.
+
 ### Fixed
 
 - **README links were dead on npm** (persona finding D1). The npm package ships only `dist/`,

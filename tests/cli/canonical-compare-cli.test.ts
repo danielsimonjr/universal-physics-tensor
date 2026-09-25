@@ -13,16 +13,17 @@ function capture() {
   return { lines, io: { out: sink, err: sink, write: (s: string) => lines.push(s) } };
 }
 
-async function text(args: string[]): Promise<string> {
+/** Runs the CLI and checks the exit code: 3 when the formula's check fails (0.47.0), else 0. */
+async function text(args: string[], expected = 0): Promise<string> {
   const cap = capture();
   const code = await runCli(args, cap.io);
-  expect(code).toBe(0);
+  expect(code).toBe(expected);
   return cap.lines.join('');
 }
 
 describe('upt map --equation — the canonical comparison', () => {
   it('a Hawking temperature with 4π for 8π differs from CE-hawking-temperature by the factor 2', async () => {
-    const t = await text(['map', '--equation', 'hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)']);
+    const t = await text(['map', '--equation', 'hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)'], 3);
     expect(t).toMatch(
       /⚠ differs from CE-hawking-temperature \(Hawking temperature\) by a constant factor: yours\/canonical = 2\.00000 at 3 fixed points/,
     );
@@ -34,7 +35,7 @@ describe('upt map --equation — the canonical comparison', () => {
   });
 
   it('the persona example T = π√(ℓ/g) differs from CE-pendulum-period by the factor 0.5', async () => {
-    const t = await text(['map', '--equation', 'period = pi*sqrt(length/gravity)']);
+    const t = await text(['map', '--equation', 'period = pi*sqrt(length/gravity)'], 3);
     expect(t).toMatch(
       /⚠ differs from CE-pendulum-period \(Pendulum period\) by a constant factor: yours\/canonical = 0\.500000 at 3 fixed points/,
     );
@@ -53,7 +54,7 @@ describe('upt derive --formula — the canonical comparison', () => {
   it('derive reports the same comparison for a pendulum formula', async () => {
     const t = await text([
       'derive', 'period:time', 'length:length', 'gravity:acceleration', '--formula', 'pi*sqrt(length/gravity)',
-    ]);
+    ], 3);
     expect(t).toMatch(/formula MATCHES the dimensional form — recovered prefactor ≈ 3\.1416e\+0/);
     expect(t).toMatch(/⚠ differs from CE-pendulum-period \(Pendulum period\) by a constant factor: yours\/canonical = 0\.500000/);
   });
@@ -69,7 +70,7 @@ describe('upt derive / map — the prefactor is never silently unchecked', () =>
     const t = await text([
       'derive', 'hawking_temperature:temperature', 'mass:mass', 'hbar:hbar', 'c:c', 'G:G', 'k_B:k_B',
       '--formula', 'hbar*c^3/(4*pi*G*mass*k_B)',
-    ]);
+    ], 3);
     expect(t).toMatch(/⚠ differs from CE-hawking-temperature \(Hawking temperature\) by a constant factor: yours\/canonical = 2\.00000/);
   });
 

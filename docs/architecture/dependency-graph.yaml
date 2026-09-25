@@ -3,7 +3,7 @@ metadata:
   version: 0.46.0
   totalFiles: 351
   totalModules: 11
-  totalExports: 2471
+  totalExports: 2472
 entryPoints:
   - file: src/index.ts
     type: main
@@ -6627,6 +6627,7 @@ modules:
         - file: ../errors.js
           imports:
             - UsageError
+            - EXIT_CHECK_FAILED
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -6882,6 +6883,7 @@ modules:
           imports:
             - UsageError
             - CliError
+            - EXIT_CHECK_FAILED
         - file: ./_discovery-opts.js
           imports:
             - parseDiscoveryOpts
@@ -6932,6 +6934,7 @@ modules:
         - file: ../errors.js
           imports:
             - CliError
+            - EXIT_CHECK_FAILED
         - file: ../output.js
           imports:
             - emitJson
@@ -7102,16 +7105,19 @@ modules:
       constants:
         - command
     src/cli/errors.ts:
-      description: Typed error classes for the UPT CLI.
+      description: Typed error classes and exit codes for the UPT CLI.
       externalDependencies: []
       nodeDependencies: []
       internalDependencies: []
       exports:
+        - EXIT_CHECK_FAILED
         - UsageError
         - CliError
       classes:
         - UsageError
         - CliError
+      constants:
+        - EXIT_CHECK_FAILED
     src/cli/graphs.ts:
       description: Shared `--source=catalog|canonical|both` graph resolution — replaces
       externalDependencies: []
@@ -16906,14 +16912,14 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 351
   totalModules: 11
-  totalLinesOfCode: 69999
-  totalExports: 2471
+  totalLinesOfCode: 70033
+  totalExports: 2472
   totalClasses: 58
   totalInterfaces: 362
   totalFunctions: 563
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 610
+  totalConstants: 611
   totalReExports: 1239
   totalTypeOnlyImports: 490
   runtimeCircularDeps: 0

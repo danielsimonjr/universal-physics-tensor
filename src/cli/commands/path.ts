@@ -26,7 +26,7 @@
  */
 import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
-import { CliError } from '../errors.js';
+import { CliError, EXIT_CHECK_FAILED } from '../errors.js';
 import { emitJson } from '../output.js';
 import { parseAt, resolveAtPoint, showInequality } from './regime.js';
 
@@ -194,6 +194,10 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
   }
 
+  // A violated regime or horizon is a failed check: exit 3 (persona finding F2).
+  // UNKNOWN, where a coordinate or t was not supplied, is not a failure.
+  const exitCode = allRegimesHold === false || (t !== undefined && !allHold) ? EXIT_CHECK_FAILED : 0;
+
   if (wantJson) {
     emitJson(
       {
@@ -224,7 +228,7 @@ async function run(ctx: CommandCtx): Promise<number> {
       },
       ctx.write,
     );
-    return 0;
+    return exitCode;
   }
 
   out(`\nupt path ${from} → ${to}`);
@@ -275,7 +279,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
   }
   out(`  (${EPISTEMICS})`);
-  return 0;
+  return exitCode;
 }
 
 export const command: Command = { name: 'path', aliases: [], flags: FLAGS, help: HELP, run };
