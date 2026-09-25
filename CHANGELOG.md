@@ -25,6 +25,8 @@ from v0.1.0 onward.
   output was cut before any number was shown. Amendment 11 records the event.
 - `UPT_OLLAMA_URL` sets the Ollama address. `OLLAMA_HOST` is the server's bind address
   (`0.0.0.0:11434`), not a URL, so the script does not read it.
+- **Architecture-doc counts** updated for the two new files, from `repo_map`: 868 source files,
+  3,097 exports, 887 type-only imports; tests 478, tools 22.
 
 ### Changed (2026-09-24) — Sprint 4 and Sprint 5 tracker rows closed by amendment; a gate observation
 
