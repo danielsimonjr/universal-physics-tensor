@@ -25,6 +25,10 @@
 
 set -e
 
+# From a linked worktree git exports an absolute GIT_DIR, and the test suite's temp-dir
+# `git init` / `git commit` inherited it and acted on this repository. Drop it first.
+. "$(dirname "$0")/scrub-git-env.sh"
+
 # The gates below read the working tree (tsc compiles tests/**, vitest runs every test file on
 # disk, and tests read data/, bin/, docs/ and more), so they must see exactly the commit being
 # pushed. An untracked stray test once failed the typecheck, and an unpushed edit could pass it.

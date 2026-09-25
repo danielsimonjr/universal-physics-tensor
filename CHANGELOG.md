@@ -8,6 +8,33 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **A push from a linked worktree no longer lets the test suite write to the repository.** git
+  exports an absolute `GIT_DIR` to a hook run from a linked worktree (`<main>/.git/worktrees/<name>`);
+  from the main worktree it exports none. The pre-push gate runs the suite, and
+  `tests/tools/pushed-head.test.ts` and `tests/tools/untracked-gate-inputs.test.ts` run `git init`
+  and `git commit` in temp directories, so they inherited it. On the 0.47.0 release push they set
+  `core.bare = true` in the main `.git/config` and committed onto the worktree's HEAD (repaired by
+  hand; nothing reached the remote). Reproduced on a scratch sentinel: with that `GIT_DIR` the two
+  files fail 17 tests, flip `core.bare` and add three commits by `t@example.invalid`. Two fixes:
+  - `.githooks/scrub-git-env.sh` runs `unset $(git rev-parse --local-env-vars)`, git's own list of
+    repository-local variables, and `pre-push` sources it first. The hook runs in the worktree
+    root, so its own git commands still find the repository.
+  - A vitest setup file, `tests/setup/scrub-git-env.ts`, removes the same variables from every
+    test process. This covers the tools under test (`git -C <tmp>`) and any other launcher. With
+    `GIT_DIR` exported, the same files now pass 24/24, and the sentinel is unchanged.
+
+  `tests/tools/hook-git-env.test.ts` pushes from a real linked worktree through a pre-push hook
+  that does what the leaking tests did. Without the scrub, the positive control shows the damage.
+  With the real scrub file sourced, the repository is unchanged, and the hook still sees its branch.
+  Disabling the `unset` line turns that test red. A third test fails if the setup list drifts from
+  `git rev-parse --local-env-vars`.
+
+  `.gitattributes` now pins `.githooks/**` to LF. With `core.autocrlf=true`, a Windows checkout
+  would write the hooks CRLF, and `sh` fails on the CR (`unset NAME\r` is an invalid name under
+  `set -e`).
+
 ## [0.47.0] - 2026-09-25
 
 ### Migration

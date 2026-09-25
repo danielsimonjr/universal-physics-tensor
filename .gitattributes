@@ -15,6 +15,9 @@
 # tree too.
 *.snap text eol=lf
 docs/architecture/** text eol=lf
+# The git hooks run under sh, which fails on a CR ("unset NAME\r" is an invalid name under set -e).
+# With core.autocrlf=true a Windows checkout would write them CRLF, so they are LF everywhere.
+.githooks/** text eol=lf
 # Also tool-written, and so LF in the working tree: the exported data (catalog:json, atlas:json,
 # atlas:witness-results), the study results (atlas:study) and the benchmark fixtures (the
 # benchmark scripts). A fresh-clone reproduction on 2026-09-23 found all eight regenerated
