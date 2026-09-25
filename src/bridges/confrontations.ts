@@ -214,6 +214,13 @@ const be51Entry: ConfrontationEntry = {
       withinObserved: r.withinObserved,
       units: 'arcsec (solar-limb deflection)',
       provenance: r.observation.provenance,
+      measured: {
+        quantity: 'PPN γ',
+        value: r.observation.observed_gamma,
+        sigma: r.observation.observed_gamma_sigma,
+        source: 'VLBI',
+        derivation: '(1+γ)/2 × predicted',
+      },
     };
   },
 };

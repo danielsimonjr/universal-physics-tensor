@@ -2080,6 +2080,13 @@
           "year": 2009,
           "retrieved": "2026-07-04",
           "note": "BE-51 encodes the gamma=1 GR deflection alpha=4GM/(bc^2); predicted is the solar-limb deflection from evaluateGravitationalLensing(M_sun, R_sun). Observed = measured (1+gamma)/2 applied to that same limb baseline (the baseline is pure physical constants, not GR theory), so this is a genuine test of gamma vs 1 via deflection — complementary to be-37 (gamma via Shapiro delay)."
+        },
+        "measured": {
+          "quantity": "PPN γ",
+          "value": 0.99992,
+          "sigma": 0.00012,
+          "source": "VLBI",
+          "derivation": "(1+γ)/2 × predicted"
         }
       }
     },

@@ -283,7 +283,7 @@ warning-silencing, not debug logging).
       - [x] W1: `ab-kg-schrodinger` counterexample says "17% too high" (true excess 20.7%); the relative-error reference (the reduced model) is stated nowhere.
       - [x] L4: AXIS-CLASH is labelled "identification falsified" while the funnel counts 0 falsified; relabel as a regime-label prior (text only).
       - [x] L2: a user equation whose target and inputs match one canonical equation is compared with it at fixed points (prefactor agrees / differs by factor r / differs in FORM).
-      - [ ] L6: `upt confront` be-51 shows a derived deflection as "observed"; show γ_obs ± σ as the observation.
+      - [x] L6: `upt confront` be-51 shows a derived deflection as "observed"; show γ_obs ± σ as the observation.
       - [ ] L6b: BE-37/51/52 confrontations use G × 1.989e30 for GM☉; switch to the IAU 2015 nominal 1.3271244e20 m³ s⁻².
       - [ ] L7: probe marks a corpus-equivalent candidate "not novel" without comparing its fitted prefactor with the corpus one.
       - [ ] L8: `ab-stokes-einstein` states Re ≪ 1 and t ≫ m/γ in prose only; add machine inequalities (conditional: no frozen hash may move).

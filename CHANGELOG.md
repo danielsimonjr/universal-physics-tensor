@@ -61,6 +61,17 @@ from v0.1.0 onward.
   reads "contradictory (numerically falsified)". The `discovery.ts` doc comments, `cli/README.md`
   and `DATAFLOW.md` say the same. The verdict enum, counts and ranking are unchanged. Four
   `discover` goldens change by those two lines.
+- **`upt confront` showed a derived number as be-51's "observed" deflection** (persona finding L6).
+  It printed "observed 1.751639983367098 ± 0.000105 arcsec". VLBI measured PPN γ = 1 − (0.8 ±
+  1.2) × 10⁻⁴, not a solar-limb deflection to 16 digits. The "observed" value is the prediction
+  times (1 + γ)/2, reproduced to every printed digit. The residual, 0.67σ, was already right,
+  because it tests only γ. The line now reads "derived (1+γ)/2 × predicted = …", with a second
+  line "measured: PPN γ = 0.99992 ± 0.00012 (VLBI); the value above is derived from it, not
+  observed". The `value` outcome gains an optional `measured` field (additive), which `--json` and
+  `data/bridge-catalog.json` carry; the catalog was regenerated with `bun run catalog:json`. The
+  zero-tolerance confrontation golden (`tests/fixtures/confrontation-numbers.golden.json`) was NOT
+  regenerated. The two new input numbers, γ and σ, were added to it by hand, and every existing
+  number is unchanged.
 
 ### Added
 

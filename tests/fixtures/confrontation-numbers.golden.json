@@ -94,6 +94,10 @@
       "residualInSigma": 0.6666666666680373,
       "provenance": {
         "year": 2009
+      },
+      "measured": {
+        "value": 0.99992,
+        "sigma": 0.00012
       }
     }
   },
