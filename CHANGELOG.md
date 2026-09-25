@@ -8,6 +8,32 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.47.1] - 2026-09-25
+
+### Release summary
+
+A patch release from the outside-user re-test of the PUBLISHED 0.47.0 (21 of 24 earlier findings
+fixed; five new low-severity findings, N1–N5). No breaking change; no dependency change.
+
+- **N1 — one behaviour change a script can see.** A formula that uses a synonym of a canonical
+  variable (`velocity` for CE-kinetic-energy's `speed`) is now compared by dimension. A wrong
+  prefactor there exits 3 where it exited 0 with "prefactor NOT checked". The pairing is named in
+  the output, the target still matches by name only, and an ambiguous pairing is reported, not
+  guessed.
+- **N3, N2 + N5, N4 — clearer output, same exit codes.** A mismatch caused by an unknown name reads
+  UNKNOWN and names the placeholder. `map` and `explain` share one "did you mean?" ranking, by edit
+  distance with an adjacent swap as one edit (`lenght` → `length`). `map --equation` prints its
+  verdict before the linkage map.
+- **Additive API:** `suggestByDimension` takes the typed name as an optional fourth argument.
+  Without it, the order stays alphabetical.
+- **L9 residual — documented, not changed.** `ab-damped-massless` keeps δ = 3; the measured
+  supremum over its declared range is 0.524 (5.7× loose). No record or exported data changes.
+- **Repository only:** a push from a linked worktree can no longer make the test suite write to
+  the repository (hook and test-process scrub of git's repository-local variables).
+- **Dependency health, measured for this release:** `bun audit` finds 0 vulnerabilities in 135
+  packages. `bun outdated` lists `@types/node` and `fast-check` minor updates, vitest and
+  `@vitest/coverage-v8` 5 (a major), and the optional `@danielsimonjr/mathts-*` peers.
+
 ### Documented
 
 - **The massless-limit bound δ = 3 is 5.7× loose; this is recorded, not tightened** (0.47.0 persona
