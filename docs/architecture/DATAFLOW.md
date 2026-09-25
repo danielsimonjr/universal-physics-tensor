@@ -686,7 +686,7 @@ Caller runs `upt discover`
 │    │   a ratio the anchor probe (×1e3) cannot move is         │
 │    │   graph-fixed: an identity, shown as a grounding gap     │
 │    ├── axis gate — scale/force RegimeAttributes agreement;    │
-│    │   a clash → 'axis-clash' (an identity falsifier)         │
+│    │   a clash → 'axis-clash' (a regime-label prior, no test) │
 │    ├── structural signals — mergesComponents (union-find       │
 │    │   over the quantity graph), unlocksFromAnchor            │
 │    │   (forwardClosure), numericallyConsistent (retrodict     │

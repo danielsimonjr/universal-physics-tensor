@@ -78,3 +78,19 @@ describe('upt discover — consequence signal surfacing', () => {
     expect(promising.every((r: { consequence?: unknown }) => 'consequence' in r)).toBe(true);
   });
 });
+
+// Persona finding L4 (2026-09-25): the AXIS-CLASH header called 70 identifications
+// "falsified" while the funnel line on the same screen counted "0 contradictory
+// (falsified)". An axis clash compares stated scale/force LABELS; it runs no physical
+// test, so it is a prior, not a falsification. The verdict enum is unchanged.
+describe('upt discover — axis-clash is labelled a regime-label prior, not a falsification', () => {
+  it('the header and the funnel say what each verdict tested', async () => {
+    const cap = capture();
+    const code = await runCli(['discover'], cap.io);
+    expect(code).toBe(0);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/AXIS-CLASH \(stated scale\/force labels differ: a regime-label prior, not a physical test\)/);
+    expect(text).toMatch(/\d+ contradictory \(numerically falsified\)/);
+    expect(text).not.toMatch(/identification falsified/);
+  });
+});

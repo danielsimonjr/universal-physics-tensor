@@ -281,7 +281,7 @@ warning-silencing, not debug logging).
       - [x] L3: the discovery magnitude gate passes an anchor-invariant identity as evidence (λ_th(T_H) = 4π ℓ_P for every M).
       - [x] L5: `upt explain` calls two restatements of ONE bridge (be-42, be-42-via-rs) "independent derivations" and their agreement a consistency check.
       - [x] W1: `ab-kg-schrodinger` counterexample says "17% too high" (true excess 20.7%); the relative-error reference (the reduced model) is stated nowhere.
-      - [ ] L4: AXIS-CLASH is labelled "identification falsified" while the funnel counts 0 falsified; relabel as a regime-label prior (text only).
+      - [x] L4: AXIS-CLASH is labelled "identification falsified" while the funnel counts 0 falsified; relabel as a regime-label prior (text only).
       - [ ] L2: a user equation whose target and inputs match one canonical equation is compared with it at fixed points (prefactor agrees / differs by factor r / differs in FORM).
       - [ ] L6: `upt confront` be-51 shows a derived deflection as "observed"; show γ_obs ± σ as the observation.
       - [ ] L6b: BE-37/51/52 confrontations use G × 1.989e30 for GM☉; switch to the IAU 2015 nominal 1.3271244e20 m³ s⁻².

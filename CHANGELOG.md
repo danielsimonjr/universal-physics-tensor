@@ -53,6 +53,14 @@ from v0.1.0 onward.
   the value of the reduced model", `ApproximationBound.norm` documents the rule, and the
   counterexample states both numbers. `data/atlas/*.json` were regenerated with
   `bun run atlas:json`, and the `atlas-pendulum` golden changes by the norm line.
+- **`upt discover` called a label mismatch a falsification** (persona finding L4). The AXIS-CLASH
+  header read "identification falsified (stated regimes differ)" over 70 pairs, while the funnel
+  line on the same screen counted "0 contradictory (falsified)". An axis clash compares the stated
+  `scale`/`force` labels of the two quantities and computes nothing. The header now reads
+  "stated scale/force labels differ: a regime-label prior, not a physical test", and the funnel
+  reads "contradictory (numerically falsified)". The `discovery.ts` doc comments, `cli/README.md`
+  and `DATAFLOW.md` say the same. The verdict enum, counts and ranking are unchanged. Four
+  `discover` goldens change by those two lines.
 
 ## [0.46.0] - 2026-09-24
 

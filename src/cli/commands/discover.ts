@@ -196,7 +196,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   out(
     `  funnel:  ${withConsequence.length} candidates  →  ${promising.length} promising  ` +
       `·  ${inert.length} inert  ·  ${clash.length} magnitude-clash  ` +
-      `·  ${contra.length} contradictory (falsified)  ·  ${axisClash.length} axis-clash\n`
+      `·  ${contra.length} contradictory (numerically falsified)  ·  ${axisClash.length} axis-clash\n`
   );
   if (promising.length) {
     out('  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):');
@@ -243,7 +243,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
   }
   if (axisClash.length) {
-    out(`\n  AXIS-CLASH (identification falsified (stated regimes differ)):`);
+    out(`\n  AXIS-CLASH (stated scale/force labels differ: a regime-label prior, not a physical test):`);
     for (const r of axisClash) {
       out(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} ${r.axisClashes.join('; ')}`);
     }

@@ -3,7 +3,7 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
 ⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
   Each candidate hypothesises an identification a≡b and tests its consequences.
 
-  funnel:  132 candidates  →  7 promising  ·  35 inert  ·  20 magnitude-clash  ·  0 contradictory (falsified)  ·  70 axis-clash
+  funnel:  132 candidates  →  7 promising  ·  35 inert  ·  20 magnitude-clash  ·  0 contradictory (numerically falsified)  ·  70 axis-clash
 
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
     landauer-erasure-energy ≟ inflation-hubble-energy    [[energy]]  score 7
@@ -63,7 +63,7 @@ Discovery — link candidates VETTED through the inference suite  [source: catal
     mass-density ≟ lambda-mass-density                   [[L^-3 M]]
     time ≟ microscopic-relaxation-time                   [[time]]
 
-  AXIS-CLASH (identification falsified (stated regimes differ)):
+  AXIS-CLASH (stated scale/force labels differ: a regime-label prior, not a physical test):
     active-noise-energy ≟ inflation-hubble-energy        force: emergent ≠ gravitational; scale: mesoscopic ≠ cosmological
     active-noise-energy ≟ planck-mass-energy             force: emergent ≠ gravitational; scale: mesoscopic ≠ quantum
     barrier-height ≟ active-noise-energy                 scale: quantum ≠ mesoscopic

@@ -68,7 +68,7 @@ export const REGISTRY_ATTRIBUTES_BY_NAME: ReadonlyMap<string, RegimeAttributes> 
   return m;
 })();
 
-// The axes the D1 identity gate falsifies on are `GATE_AXES`, imported from the
+// The axes the D1 regime-label gate compares are `GATE_AXES`, imported from the
 // `axes.ts` registry (`AXES.filter(gated)`) at the top of this module. Currently
 // scale + force; the 2026-07-05 extensible-axis expansion added
 // symmetry/topology/statistics as UNGATED attributes (they only abstain until the
@@ -166,9 +166,10 @@ export interface VettedCandidate {
    *                       single-anchor graph cannot make). Checked first.
    * - `contradictory`   — breaks numerical consistency (a graph falsification).
    * - `axis-clash`      — the identification's stated `scale`/`force` regime
-   *                       attributes disagree (an IDENTITY falsifier — see D1
-   *                       module docs; "identification falsified, stated
-   *                       regimes differ", not "no connection possible").
+   *                       attributes disagree. A regime-LABEL prior against a
+   *                       literal identity (D1), not a physical test: it
+   *                       compares catalog labels and runs no computation, so
+   *                       it is never counted or described as a falsification.
    * - `promising`       — consistent AND connects disconnected physics AND
    *                       unlocks ≥1 quantity. Worth physicist review.
    * - `inert`           — consistent but structurally/numerically idle (a
@@ -507,8 +508,8 @@ function vetInContext(
 
   // Verdict precedence: a magnitude clash is the most decisive, most
   // interpretable falsification, checked before the graph contradiction;
-  // the qualitative identity falsifier (axis-clash) is weaker than both
-  // numeric falsifiers but still outranks promising/inert (D1).
+  // the regime-label prior (axis-clash) is weaker than both numeric
+  // falsifiers and is not one itself, but still outranks promising/inert (D1).
   let verdict: VettedCandidate['verdict'];
   if (magnitudeClash) verdict = 'magnitude-clash';
   else if (!numericallyConsistent) verdict = 'contradictory';
