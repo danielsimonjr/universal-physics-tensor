@@ -49,6 +49,59 @@ describe('upt path', () => {
     expect(text).toMatch(/ab-pendulum-linear: VIOLATED/);
   });
 
+  // Persona finding L1 (2026-09-25): at θ0 = 0.8 the path printed the bound and "all hold",
+  // although the bound's own regime is θ0 ≤ 0.5. The exact relative period error there is
+  // 2K(sin 0.4)/π − 1 = 0.0415 (AGM), 2.6 times the quoted 0.0159. A bound quoted outside the
+  // regime it is claimed in is the claim applied where it was never made.
+  it('outside the bound regime (θ0 = 0.8) the regime is reported VIOLATED, and the bound does not apply', async () => {
+    const cap = capture();
+    const code = await runCli(
+      ['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.8', 'T0=1', 't=1'],
+      cap.io,
+    );
+    expect(code).toBe(0);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/regimes at --at: VIOLATED/);
+    expect(text).toMatch(/ab-pendulum-linear: VIOLATED — theta0 <= 0\.5/);
+    expect(text).toMatch(/no bound on this path is claimed at this point/);
+  });
+
+  it('a path whose regimes state no inequality says VACUOUS, not "all hold"', async () => {
+    const cap = capture();
+    const code = await runCli(['path', 'model-spring', 'model-lc', '--at', 't=1'], cap.io);
+    expect(code).toBe(0);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/regimes: VACUOUS/);
+    expect(text).not.toMatch(/regimes at --at: all hold/);
+  });
+
+  it('--json carries each regime verdict and allRegimesHold', async () => {
+    const run = async (theta0: string) => {
+      const cap = capture();
+      const code = await runCli(
+        ['path', 'model-pendulum', 'model-spring', '--at', `theta0=${theta0}`, 'T0=1', 't=1', '--json'],
+        cap.io,
+      );
+      expect(code).toBe(0);
+      return JSON.parse(cap.lines.join('')).result;
+    };
+    const outside = await run('0.8');
+    expect(outside.allRegimesHold).toBe(false);
+    expect(outside.regimes).toEqual([
+      { bridgeId: 'ab-pendulum-linear', ok: false, violated: ['theta0 <= 0.5 (θ0 ≤ 0.5 rad)'], unchecked: [] },
+    ]);
+    const inside = await run('0.2');
+    expect(inside.allRegimesHold).toBe(true);
+  });
+
+  it('with no --at the regime is UNKNOWN, never a pass', async () => {
+    const cap = capture();
+    const code = await runCli(['path', 'model-pendulum', 'model-spring', '--json'], cap.io);
+    expect(code).toBe(0);
+    const result = JSON.parse(cap.lines.join('')).result;
+    expect(result.allRegimesHold).toBe('unknown');
+  });
+
   it("a no-composite-claim pair prints the phrase, carries no bound, and EXITS 0", async () => {
     const cap = capture();
     const code = await runCli(

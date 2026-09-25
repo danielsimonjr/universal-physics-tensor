@@ -66,7 +66,7 @@ export function parseAt(raw: readonly string[], command: string): Record<string,
 }
 
 /** Display form of one inequality — the alias when the record states one. */
-function showInequality(ineq: { group: string; op: string; bound: number; alias?: string }): string {
+export function showInequality(ineq: { group: string; op: string; bound: number; alias?: string }): string {
   const literal = `${ineq.group} ${ineq.op} ${ineq.bound}`;
   return ineq.alias === undefined ? literal : `${literal} (${ineq.alias})`;
 }

@@ -8,6 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Fixed
+
+- **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
+  L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and
+  "horizons all hold", although `ab-pendulum-linear` claims that bound only for θ0 ≤ 0.5. The
+  exact relative period error at θ0 = 0.8 is 2K(sin 0.4)/π − 1 = 0.0415 (AGM), which is 2.6 times the
+  printed bound. The command checked only each bound's time horizon, never its regime. It now
+  checks the regime of every bridge on the path at the `--at` point and prints `regimes at --at:
+  VIOLATED — no bound on this path is claimed at this point`. It prints UNKNOWN when a coordinate is
+  missing, and VACUOUS when no bridge states an inequality. `--json` gains `regimes` (per-bridge
+  `ok`, `violated`, `unchecked`) and `allRegimesHold` (`true`, `false` or `'unknown'`). Both fields
+  are additive. The help text states the regime check.
+
 ## [0.46.0] - 2026-09-24
 
 ### Release summary

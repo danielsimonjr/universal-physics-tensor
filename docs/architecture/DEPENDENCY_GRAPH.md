@@ -3164,7 +3164,7 @@ The codebase is organized into the following modules:
 | `../command.js` | `registerCommand, Command, CommandCtx` | Import |
 | `../errors.js` | `CliError` | Import |
 | `../output.js` | `emitJson` | Import |
-| `./regime.js` | `parseAt` | Import |
+| `./regime.js` | `parseAt, showInequality` | Import |
 
 **Exports:**
 - Constants: `command`
@@ -3247,7 +3247,7 @@ The codebase is organized into the following modules:
 | `../output.js` | `emitJson` | Import |
 
 **Exports:**
-- Functions: `parseAt`
+- Functions: `parseAt`, `showInequality`
 - Constants: `command`
 
 ---
@@ -6568,12 +6568,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 349 |
 | Total Modules | 11 |
-| Total Lines of Code | 69051 |
-| Total Exports | 2453 |
+| Total Lines of Code | 69097 |
+| Total Exports | 2454 |
 | Total Re-exports | 1232 |
 | Total Classes | 58 |
 | Total Interfaces | 360 |
-| Total Functions | 555 |
+| Total Functions | 556 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 485 |

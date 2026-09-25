@@ -16,12 +16,19 @@
  * Horizons are evaluated only when `--at` supplies a `t`. An unevaluated
  * horizon is reported as unevaluated, on the same rule that makes
  * `regimeHolds` tri-state.
+ *
+ * The REGIME of every bridge on the path is checked at the `--at` point too.
+ * A bound is claimed only inside its bridge's regime, so a horizon that holds
+ * says nothing when the point is outside the regime: this command once printed
+ * the pendulum bound and "all hold" at θ0 = 0.8, where the bound's own regime
+ * is θ0 ≤ 0.5 and the true error is 2.6 times the bound. An unchecked regime
+ * is reported as unknown, never as a pass.
  */
 import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { CliError } from '../errors.js';
 import { emitJson } from '../output.js';
-import { parseAt } from './regime.js';
+import { parseAt, showInequality } from './regime.js';
 
 const FLAGS: FlagSpec[] = [
   { name: '--at', valueStyle: 'either', repeatable: true },
@@ -30,9 +37,10 @@ const FLAGS: FlagSpec[] = [
 
 const HELP = `upt path <from> <to> [--at group=value ...] [--json]
         The chain of bridges from one model to another, the relation the chain
-        composes to, the composed (K, delta) with the norm it holds in, and
-        whether every horizon on the path still holds at --at (pass t=<time>
-        plus the horizon's parameters, e.g. --at theta0=0.2 T0=1 t=10).
+        composes to, the composed (K, delta) with the norm it holds in,
+        whether every bridge's REGIME holds at --at (the bound is claimed only
+        inside it), and whether every horizon still holds (pass t=<time> plus
+        the parameters, e.g. --at theta0=0.2 T0=1 t=10).
         When the composition table declines to compose the relations, the path
         carries NO bound: the command prints 'no composite claim' and exits 0.
         That refusal is the answer, and no number is invented in its place.
@@ -44,6 +52,13 @@ const EPISTEMICS =
 
 /** The literal phrase the no-composite-claim case must print. */
 const NO_COMPOSITE_PHRASE = 'no composite claim';
+
+interface RegimeReport {
+  bridgeId: string;
+  ok: boolean | 'unknown';
+  violated: string[];
+  unchecked: string[];
+}
 
 interface HorizonReport {
   bridgeId: string;
@@ -130,6 +145,21 @@ async function run(ctx: CommandCtx): Promise<number> {
     }));
   const allHold = horizons.every((h) => h.holds === true);
 
+  const regimes: RegimeReport[] = bridges.map((b) => {
+    const check = api.regimeHolds(b.regime, point);
+    return {
+      bridgeId: b.id,
+      ok: check.ok,
+      violated: check.violated.map(showInequality),
+      unchecked: check.unchecked.map(showInequality),
+    };
+  });
+  const allRegimesHold: boolean | 'unknown' = regimes.some((r) => r.ok === false)
+    ? false
+    : regimes.some((r) => r.ok === 'unknown')
+      ? 'unknown'
+      : true;
+
   if (wantJson) {
     emitJson(
       {
@@ -149,6 +179,8 @@ async function run(ctx: CommandCtx): Promise<number> {
                 terminal: result.terminal,
               }
             : { kind: 'no-claim', reason: result.reason, detail: result.detail, phrase: NO_COMPOSITE_PHRASE }),
+          regimes,
+          allRegimesHold,
           horizons,
           horizonsEvaluated: t !== undefined,
           allHorizonsHold: t === undefined ? null : allHold,
@@ -174,6 +206,19 @@ async function run(ctx: CommandCtx): Promise<number> {
     out(`    ${result.detail}`);
   }
   out('');
+  if (allRegimesHold === false) {
+    out('  regimes at --at: VIOLATED — no bound on this path is claimed at this point');
+  } else if (allRegimesHold === 'unknown') {
+    out('  regimes at --at: UNKNOWN (a coordinate was not supplied); an unchecked regime is not a passing one');
+  } else if (bridges.every((b) => b.regime.inequalities.length === 0)) {
+    out('  regimes: VACUOUS — no bridge on this path states an inequality; nothing was checked');
+  } else {
+    out('  regimes at --at: all hold');
+  }
+  for (const r of regimes) {
+    if (r.ok === false) out(`    ${r.bridgeId}: VIOLATED — ${r.violated.join('; ')}`);
+    else if (r.ok === 'unknown') out(`    ${r.bridgeId}: unknown — unchecked: ${r.unchecked.join('; ')}`);
+  }
   if (horizons.length === 0) {
     out('  horizons: none on this path (no step carries a bound)');
   } else if (t === undefined) {
