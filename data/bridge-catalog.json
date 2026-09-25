@@ -1,7 +1,7 @@
 {
   "$schema": "./bridge-catalog.schema.json",
   "schemaVersion": 2,
-  "packageVersion": "0.45.2",
+  "packageVersion": "0.46.0",
   "count": 55,
   "entries": [
     {

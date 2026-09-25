@@ -1,6 +1,6 @@
 {
   "name": "universal-physics-tensor",
-  "version": "0.45.2",
+  "version": "0.46.0",
   "description": "Computational framework for exploring unified physics through tensor formalism",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

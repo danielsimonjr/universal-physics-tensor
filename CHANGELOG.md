@@ -8,6 +8,39 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+## [0.46.0] - 2026-09-24
+
+### Release summary
+
+- **Deprecated: `BridgeEquations.crossingResidual`.** It is physically WRONG, and it will be REMOVED in
+  0.47.0. Use `crossingEquation`. The "Deprecated (2026-09-24)" entry below gives the detail.
+- **The model atlas, ROADMAP Phases 0–6, is delivered.** It holds typed relations between physical
+  models:
+  - three families (oscillators, diffusion, waves), with 24 models and 20 bridges over 6 relation types;
+  - regimes, and error bounds that carry their horizon;
+  - evidence tags that are derived, never set;
+  - one reviewed `formalRef`;
+  - the invalid-bridge benchmark, with 125 model-authored frozen items;
+  - the study.
+- **UPT is DONE** (owner, pre-registration Amendment 12). Every ROADMAP §7 criterion is measured and
+  reported: MET, NOT MET, amended or deferred. Two are NOT MET, and they are the study's findings:
+  - **Criterion 2, invalid-bridge rejection:** the atlas rejected 6/61 invalid items, and the best
+    local LLM (qwen3.8:27b) rejected 51/61. The atlas abstains on 116/125 and makes 1 wrong accept,
+    against 9 to 13 for the LLMs.
+  - **Criterion 3, retrieval of the established relation:** the typed structural search found 12/50,
+    and a local embedding model (qwen3-embedding:4b) found 49/50.
+  - **Amended or deferred:** human κ, the practical-value and curation-cost criteria, the independent
+    physicist review, and ≥ 5 reviewed `formalRef`s (1 of 5).
+- **Future work, not started:** hybrid retrieval, where embeddings find the candidates and the atlas
+  verifies them (ROADMAP §8).
+- **Dependency health, measured for this release:** `bun audit` finds 0 vulnerabilities in 129
+  packages. `bun outdated` shows:
+  - minor dev updates (`@types/node`, `@vitest/coverage-v8`, `fast-check`);
+  - vitest 5 available (a major);
+  - the optional `@danielsimonjr/mathts-*` peers behind their latest releases.
+
+  No dependency changes in this release.
+
 ### Changed (2026-09-24) — UPT is DONE: the owner accepts the measured verdicts (pre-registration Amendment 12)
 
 Mothership relayed the owner's words verbatim (21:29 CDT): "(a) for now. (b) as a future ROADMAP using embedding with Qwen3-embedding:4b."
