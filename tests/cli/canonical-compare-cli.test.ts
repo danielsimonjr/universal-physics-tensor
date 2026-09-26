@@ -97,6 +97,22 @@ describe('upt derive — a variable is a constant only when its name AND dimensi
   });
 });
 
+// 0.47.1 persona finding W2: catalog kebabs on the RHS were parsed as subtraction
+// (`planck-length` → planck − length → "Cannot subtract…").
+describe('W2: catalog kebabs on the RHS are identifiers', () => {
+  it('map: length = 2*planck-length is dimensionally consistent (exit 0)', async () => {
+    const t = await text(['map', '--equation', 'length = 2*planck-length']);
+    expect(t).toMatch(/✓ dimensionally consistent: \[length\]/);
+    expect(t).not.toMatch(/Cannot subtract/);
+  });
+
+  it('map: rest-energy = mass*speed-of-light^2 agrees with CE-mass-energy', async () => {
+    const t = await text(['map', '--equation', 'rest-energy = mass*speed-of-light^2']);
+    expect(t).toMatch(/✓ agrees with CE-mass-energy/);
+    expect(t).not.toMatch(/Cannot subtract/);
+  });
+});
+
 // 0.47.1 persona finding W1: writing the catalog name `speed_of_light` for CE-mass-energy's
 // constant `c` skipped the prefactor check (exit 0) while `2*mass*c^2` was caught (exit 3).
 describe('W1: speed-of-light must not disable the E=mc² prefactor check', () => {

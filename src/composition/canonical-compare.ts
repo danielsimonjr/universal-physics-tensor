@@ -364,8 +364,10 @@ export async function compareUserEquation(
   equation: string,
   catalogDims: ReadonlyMap<string, Dimension>,
 ): Promise<CanonicalComparison[]> {
-  const eq = await parseUserEquation(equation);
   const catalogNames = new Set(catalogDims.keys());
+  // W2: same kebab→underscore rewrite as analyzeUserEquation, so comparison and
+  // dimensional check see one formula.
+  const eq = await parseUserEquation(equation, catalogNames);
   const resolved = new Map(eq.sources.map((s) => [s, resolveToCatalogName(s, catalogNames) ?? s]));
   const target = resolveToCatalogName(eq.target, catalogNames) ?? eq.target;
   const dims: Record<string, Dimension> = {};
@@ -373,7 +375,7 @@ export async function compareUserEquation(
   for (const [s, r] of resolved) dims[s] = catalogDims.get(r) ?? DIMENSIONLESS;
   let expr: ExprNode;
   try {
-    expr = (await parsePhysics(equation.slice(equation.indexOf('=') + 1), dims)).expr;
+    expr = (await parsePhysics(eq.text.slice(eq.text.indexOf('=') + 1), dims)).expr;
   } catch {
     return [];
   }

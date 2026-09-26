@@ -14,10 +14,11 @@ import {
   suggestByDimension,
   equationLanding,
   analyzeUserEquation,
+  rewriteCatalogHyphens,
   UserEquationError,
 } from '../../src/composition/user-equation.js';
 import {
-  LENGTH, MASS, TIME, VELOCITY, ACCELERATION, ENERGY, FREQUENCY,
+  LENGTH, MASS, TIME, VELOCITY, ACCELERATION, ENERGY, FREQUENCY, ENTROPY, AREA,
 } from '../../src/dimensional/types.js';
 import { buildVizModel } from '../../src/composition/graph-viz.js';
 import type { VizJunction } from '../../src/composition/graph-viz.js';
@@ -68,6 +69,37 @@ describe('parseUserEquation', () => {
   it('rejects equations exceeding the length cap', async () => {
     const long = 'x = ' + 'a'.repeat(9000);
     await expect(parseUserEquation(long)).rejects.toThrow(/exceeds 8192/);
+  });
+});
+
+describe('W2: catalog kebabs are identifiers, not subtraction', () => {
+  const names = new Set(['planck-length', 'speed-of-light', 'bh-entropy', 'mass']);
+
+  it('rewriteCatalogHyphens turns kebabs into underscores, longest first', () => {
+    expect(rewriteCatalogHyphens('S = A/(4*planck-length^2)', names)).toBe(
+      'S = A/(4*planck_length^2)',
+    );
+    expect(rewriteCatalogHyphens('rest-energy = mass*speed-of-light^2', names)).toBe(
+      'rest-energy = mass*speed_of_light^2',
+    );
+  });
+
+  it('parseUserEquation with catalog names accepts planck-length on the RHS', async () => {
+    const e = await parseUserEquation('length = 2*planck-length', names);
+    expect([...e.sources].sort()).toEqual(['planck_length']);
+    expect(e.text).toBe('length = 2*planck_length');
+  });
+
+  it('analyzeUserEquation accepts length = 2*planck-length (no subtract error)', async () => {
+    const catalog = new Map([
+      ['length', LENGTH],
+      ['planck-length', LENGTH],
+    ]);
+    const a = await analyzeUserEquation('length = 2*planck-length', catalog);
+    expect(a.parseError).toBeNull();
+    expect(a.consistent).toBe(true);
+    // Junction sources resolve back to the catalog kebab form.
+    expect(a.junction.sources).toContain('planck-length');
   });
 });
 
