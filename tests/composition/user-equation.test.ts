@@ -174,8 +174,14 @@ describe('W3: formatConnectedSummary', () => {
     ];
     const model = {
       junctions,
-      clusters: [{ id: 'c0', size: junctions.length, anchored: true, junctionIds: junctions.map((j) => j.id) }],
-      filterStats: { kept: 0, droppedNoOverlay: 0, droppedNoMatch: 0 },
+      clusters: [{
+        size: junctions.length,
+        anchored: true,
+        junctionIds: junctions.map((j) => j.id),
+        quantities: ['length', 'gravity', 'period', 'temperature', 'peak-wavelength',
+          'decoherence-rate', 'thermal-wavelength', 'landauer-erasure-energy', 'relaxation-rate'],
+      }],
+      filterStats: { total: junctions.length, kept: junctions.length, droppedNotMatching: 0, droppedMissingMetadata: 0 },
       filterLegend: null,
       toMermaid: () => '',
       toDot: () => '',
