@@ -204,7 +204,19 @@ async function run(ctx: CommandCtx): Promise<number> {
   }
 
   const by = (v: string) => withConsequence.filter((r) => r.verdict === v);
-  const promising = by('promising');
+  // Q1: within PROMISING, spend the physicist's first minute on consequence-
+  // bearing / magnitude-backed rows before inconclusive + no-magnitude coincidences.
+  const consRank = (s: ConsequenceSignal | undefined): number =>
+    s === 'entailed' ? 0 : s === 'novel-consequence' ? 1 : 2;
+  const promising = [...by('promising')].sort((a, b) => {
+    const ca = consRank(a.consequence?.signal);
+    const cb = consRank(b.consequence?.signal);
+    if (ca !== cb) return ca - cb;
+    const magA = a.magnitudeChecked && a.magnitudeAnchorInvariant !== true ? 0 : 1;
+    const magB = b.magnitudeChecked && b.magnitudeAnchorInvariant !== true ? 0 : 1;
+    if (magA !== magB) return magA - magB;
+    return b.score - a.score || a.a.localeCompare(b.a) || a.b.localeCompare(b.b);
+  });
   const inert = by('inert');
   const contra = by('contradictory');
   const clash = by('magnitude-clash');
