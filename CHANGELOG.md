@@ -10,6 +10,11 @@ from v0.1.0 onward.
 
 ### Added
 
+- **CLI-only applied-physics audit archive** (2026-09-26): preserve the model-persona report,
+  original command evidence and maps under `docs/audit/`, including prioritized improvement
+  recommendations for applied users. This makes the user-requested audit reproducible and
+  reviewable in the repository; it changes no physics implementation or review status.
+
 - **CLI applied-physicist persona retest on 0.47.1 (post fix-batch)** (2026-09-26). Model persona
   dogfood after W1–Q2; findings in `docs/research/cli-physicist-persona-0.47.1-post-fix.md`. Prior
   fixes still hold. New open findings (no code in this commit): W4 Kepler/Schwarzschild prefactor

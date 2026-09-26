@@ -1,0 +1,42 @@
+{
+  "cli_version": "0.47.1",
+  "captured_invocations": 114,
+  "exit_counts": {
+    "0": 101,
+    "3": 3,
+    "2": 3,
+    "1": 7
+  },
+  "canonical_entries": 107,
+  "catalog_entries": 55,
+  "atlas_records": 20,
+  "scope": "CLI only; explicit-formula cross-checks share the CLI runtime; no external physics verification",
+  "files": {
+    "Universal_Physics_Tensor_CLI_Audit.md": {
+      "bytes": 126208,
+      "sha256": "0313d6ae74cbb2c3a512c0dd67e9314a33827a65e0eb0b4b251ddc3adf18108b"
+    },
+    "UPT_CLI_Transcript.md": {
+      "bytes": 703575,
+      "sha256": "4ebbf86f603d7badb890bcec7a13656f3ebf6ef43fc680caffe4187686234cda"
+    },
+    "upt-cli-session.jsonl": {
+      "bytes": 769750,
+      "sha256": "c3f645845cc141a7e8004989c6db31b07c05924ecd812160158e2c0d5e974ec0"
+    },
+    "canonical-physics-map.mmd": {
+      "bytes": 29439,
+      "sha256": "c73823a32bafdb037a2aa9e64ef4df701014c9beaef1981a8aded4908f353dc7"
+    },
+    "combined-physics-map.svg": {
+      "bytes": 353673,
+      "sha256": "818ff62713126abb5d729b9590ee7be1a1276800997de9b72011b12f71cbf92c"
+    },
+    "cli-json-capture.txt": {
+      "bytes": 481109,
+      "sha256": "a25b5be046647846e4882a8c2071b7b6eceb06683ec9d2f0b5851b95c70ec274"
+    }
+  },
+  "report_revision": "2026-09-26: added 20 prioritized applied-physicist CLI recommendations; no new physics invocations",
+  "improvement_recommendations": 20
+}

@@ -1,5 +1,9 @@
 # UPT TODO
 
+## CLI applied-physics audit publication
+
+- [x] Archive the CLI-only applied-physicist persona audit, evidence, maps, and 20 improvement recommendations under `docs/audit/`.
+
 ## TypeScript-on-Bun migration (in flight)
 
 - [x] **Bun as package manager + script driver; Node stays the runtime.** Same house pattern as

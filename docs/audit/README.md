@@ -1,0 +1,32 @@
+# CLI applied-physics audit archive
+
+This is an **AI model-persona audit**, not an independent human physicist review,
+peer review, or experimental validation. It records a CLI-only exploration of
+UPT 0.47.1 at commit `c2c9dfce905f14f2cce48526bab1417b38c62541` on 2026-09-26.
+
+Start with [the detailed report](Universal_Physics_Tensor_CLI_Audit.md).
+Section 14 contains 20 prioritized improvement recommendations with rationale,
+acceptance examples, and applied-physics benefits. These are recommendations,
+not implemented changes or a new commitment to extend the completed project.
+
+## Evidence
+
+- [Full readable transcript](UPT_CLI_Transcript.md)
+- [Machine-readable session](upt-cli-session.jsonl)
+- [File hashes and run counts](audit-manifest.json)
+- [Canonical map (Mermaid)](canonical-physics-map.mmd)
+- [Combined map (SVG)](combined-physics-map.svg)
+- [Raw JSON-oriented batch capture](cli-json-capture.txt)
+- [Original downloadable bundle](Universal_Physics_Tensor_CLI_Audit_Bundle.zip)
+
+The report and supporting artifacts are preserved byte-for-byte from the
+user-approved output. Absolute paths in the record describe that original
+execution environment; they are not paths required in a new checkout.
+The transcript preserves unsuccessful commands and negative controls.
+No physics source code, external literature, or proof artifacts were inspected
+to obtain the audit's physics findings. Setup/build operations and explicit-formula
+CLI cross-checks are distinguished from independent verification in the report.
+
+The archive is a dated observation, not a statement that every finding remains
+open on later versions. The surrounding repository's task and release records
+remain authoritative for implementation status.
