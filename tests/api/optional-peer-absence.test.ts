@@ -1,7 +1,7 @@
 /**
  * THE PUBLIC BARREL MUST NOT REACH AN OPTIONAL PEER.
  *
- * `CLAUDE.md` states the contract: the `@danielsimonjr/mathts-*` family and
+ * `MEMORY.md` (Stack) states the contract: the `@danielsimonjr/mathts-*` family and
  * `@viz-js/viz` are OPTIONAL dependencies, and "everything must degrade
  * gracefully when a peer is absent". Until now nothing exercised that.
  *
@@ -52,10 +52,14 @@ import { describe, it, expect } from 'vitest';
 
 /** Every optional dependency, read from package.json rather than hard-coded. */
 function optionalPeers(): string[] {
+  // The peers are optional peerDependencies (persona finding F3); npm installs
+  // optionalDependencies by default, so they no longer live there.
   const pkg = JSON.parse(readFileSync(resolve('package.json'), 'utf8')) as {
-    optionalDependencies?: Record<string, string>;
+    peerDependenciesMeta?: Record<string, { optional?: boolean }>;
   };
-  return Object.keys(pkg.optionalDependencies ?? {});
+  return Object.entries(pkg.peerDependenciesMeta ?? {})
+    .filter(([, meta]) => meta.optional === true)
+    .map(([name]) => name);
 }
 
 /** Resolve a relative specifier to a file inside dist/, or null if it leaves. */

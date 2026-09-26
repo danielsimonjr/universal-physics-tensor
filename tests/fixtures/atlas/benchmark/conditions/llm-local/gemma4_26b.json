@@ -1,0 +1,1002 @@
+{
+ "mb-oscillators-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-1-01\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 68952,
+  "attempts": []
+ },
+ "mb-oscillators-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-1-02\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 37014,
+  "attempts": []
+ },
+ "mb-oscillators-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-1-03\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 18941,
+  "attempts": []
+ },
+ "mb-oscillators-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 51910,
+  "attempts": []
+ },
+ "mb-oscillators-1-05": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 156541,
+  "attempts": []
+ },
+ "mb-oscillators-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-1-06\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 43110,
+  "attempts": []
+ },
+ "mb-oscillators-1-07": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 159687,
+  "attempts": []
+ },
+ "mb-oscillators-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-1-08\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 35137,
+  "attempts": []
+ },
+ "mb-oscillators-1-09": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 161035,
+  "attempts": []
+ },
+ "mb-oscillators-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 141214,
+  "attempts": []
+ },
+ "mb-oscillators-1-11": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 158031,
+  "attempts": []
+ },
+ "mb-oscillators-1-12": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153820,
+  "attempts": []
+ },
+ "mb-oscillators-1-13": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153631,
+  "attempts": []
+ },
+ "mb-oscillators-1-14": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-1-14\", \"outcome\": \"reject\", \"failureKind\": \"non-uniform-limit\"}",
+  "ms": 50695,
+  "attempts": []
+ },
+ "mb-oscillators-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 136743,
+  "attempts": []
+ },
+ "mb-oscillators-1-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\n  \"itemId\": \"mb-oscillators-1-16\",\n  \"outcome\": \"reject\",\n  \"failureKind\": \"analogy-promoted\"\n}",
+  "ms": 112582,
+  "attempts": []
+ },
+ "mb-oscillators-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-01\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 48394,
+  "attempts": []
+ },
+ "mb-oscillators-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 27175,
+  "attempts": []
+ },
+ "mb-oscillators-2-03": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152143,
+  "attempts": []
+ },
+ "mb-oscillators-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-04\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 111909,
+  "attempts": []
+ },
+ "mb-oscillators-2-05": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151436,
+  "attempts": []
+ },
+ "mb-oscillators-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-06\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 52966,
+  "attempts": []
+ },
+ "mb-oscillators-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-07\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 48856,
+  "attempts": []
+ },
+ "mb-oscillators-2-08": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152799,
+  "attempts": []
+ },
+ "mb-oscillators-2-09": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-09\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 112059,
+  "attempts": []
+ },
+ "mb-oscillators-2-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-10\", \"outcome\": \"reject\", \"failureKind\": \"domain-violation\"}",
+  "ms": 30844,
+  "attempts": []
+ },
+ "mb-oscillators-2-11": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-11\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 28781,
+  "attempts": []
+ },
+ "mb-oscillators-2-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-12\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 21735,
+  "attempts": []
+ },
+ "mb-oscillators-2-13": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153891,
+  "attempts": []
+ },
+ "mb-oscillators-2-14": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151292,
+  "attempts": []
+ },
+ "mb-oscillators-2-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-15\", \"outcome\": \"reject\", \"failureKind\": \"false-inverse\"}",
+  "ms": 75516,
+  "attempts": []
+ },
+ "mb-oscillators-2-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-16\", \"outcome\": \"reject\", \"failureKind\": \"analogy-promoted\"}",
+  "ms": 48026,
+  "attempts": []
+ },
+ "mb-diffusion-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 67735,
+  "attempts": []
+ },
+ "mb-diffusion-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-1-02\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 33994,
+  "attempts": []
+ },
+ "mb-diffusion-1-03": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153261,
+  "attempts": []
+ },
+ "mb-diffusion-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-1-04\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 46256,
+  "attempts": []
+ },
+ "mb-diffusion-1-05": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152569,
+  "attempts": []
+ },
+ "mb-diffusion-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-1-06\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 29492,
+  "attempts": []
+ },
+ "mb-diffusion-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-1-07\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 13976,
+  "attempts": []
+ },
+ "mb-diffusion-1-08": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152074,
+  "attempts": []
+ },
+ "mb-diffusion-1-10": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151441,
+  "attempts": []
+ },
+ "mb-diffusion-1-11": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152417,
+  "attempts": []
+ },
+ "mb-diffusion-1-12": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152610,
+  "attempts": []
+ },
+ "mb-diffusion-1-13": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152501,
+  "attempts": []
+ },
+ "mb-diffusion-1-14": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152008,
+  "attempts": []
+ },
+ "mb-diffusion-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 16634,
+  "attempts": []
+ },
+ "mb-diffusion-1-16": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152687,
+  "attempts": []
+ },
+ "mb-diffusion-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-2-01\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 24715,
+  "attempts": []
+ },
+ "mb-diffusion-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-2-02\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 31364,
+  "attempts": []
+ },
+ "mb-diffusion-2-03": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152121,
+  "attempts": []
+ },
+ "mb-diffusion-2-04": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152875,
+  "attempts": []
+ },
+ "mb-diffusion-2-05": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151008,
+  "attempts": []
+ },
+ "mb-diffusion-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 42440,
+  "attempts": []
+ },
+ "mb-diffusion-2-07": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151467,
+  "attempts": []
+ },
+ "mb-diffusion-2-08": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151874,
+  "attempts": []
+ },
+ "mb-diffusion-2-10": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152910,
+  "attempts": []
+ },
+ "mb-diffusion-2-11": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151415,
+  "attempts": []
+ },
+ "mb-diffusion-2-12": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152814,
+  "attempts": []
+ },
+ "mb-diffusion-2-13": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151974,
+  "attempts": []
+ },
+ "mb-diffusion-2-14": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152273,
+  "attempts": []
+ },
+ "mb-diffusion-2-15": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-2-15\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 25365,
+  "attempts": []
+ },
+ "mb-diffusion-2-16": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152477,
+  "attempts": []
+ },
+ "mb-waves-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\n  \"itemId\": \"mb-waves-1-01\",\n  \"outcome\": \"accept\",\n  \"failureKind\": null\n}",
+  "ms": 10840,
+  "attempts": []
+ },
+ "mb-waves-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-1-02\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 66173,
+  "attempts": []
+ },
+ "mb-waves-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-1-03\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 32162,
+  "attempts": []
+ },
+ "mb-waves-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 30942,
+  "attempts": []
+ },
+ "mb-waves-1-05": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152140,
+  "attempts": []
+ },
+ "mb-waves-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-1-06\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 96515,
+  "attempts": []
+ },
+ "mb-waves-1-07": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152848,
+  "attempts": []
+ },
+ "mb-waves-1-08": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152670,
+  "attempts": []
+ },
+ "mb-waves-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 151187,
+  "attempts": []
+ },
+ "mb-waves-1-11": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152415,
+  "attempts": []
+ },
+ "mb-waves-1-12": {
+  "outcome": "reject",
+  "failureKind": "notation-collision",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-1-12\", \"outcome\": \"reject\", \"failureKind\": \"notation-collision\"}",
+  "ms": 82133,
+  "attempts": []
+ },
+ "mb-waves-1-13": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153003,
+  "attempts": []
+ },
+ "mb-waves-1-14": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152520,
+  "attempts": []
+ },
+ "mb-waves-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-1-15\", \"outcome\": \"reject\", \"failureKind\": \"false-inverse\"}",
+  "ms": 113703,
+  "attempts": []
+ },
+ "mb-waves-1-16": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152599,
+  "attempts": []
+ },
+ "mb-waves-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-2-01\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 25226,
+  "attempts": []
+ },
+ "mb-waves-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 120706,
+  "attempts": []
+ },
+ "mb-waves-2-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 46060,
+  "attempts": []
+ },
+ "mb-waves-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-2-04\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 53289,
+  "attempts": []
+ },
+ "mb-waves-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 54318,
+  "attempts": []
+ },
+ "mb-waves-2-06": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152246,
+  "attempts": []
+ },
+ "mb-waves-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-2-07\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 46651,
+  "attempts": []
+ },
+ "mb-waves-2-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 35562,
+  "attempts": []
+ },
+ "mb-waves-2-09": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153589,
+  "attempts": []
+ },
+ "mb-waves-2-10": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-2-10\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 14411,
+  "attempts": []
+ },
+ "mb-waves-2-11": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152523,
+  "attempts": []
+ },
+ "mb-waves-2-12": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153930,
+  "attempts": []
+ },
+ "mb-waves-2-13": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153164,
+  "attempts": []
+ },
+ "mb-waves-2-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\n  \"itemId\": \"mb-waves-2-14\",\n  \"outcome\": \"reject\",\n  \"failureKind\": \"domain-violation\"\n}",
+  "ms": 110516,
+  "attempts": []
+ },
+ "mb-waves-2-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 89583,
+  "attempts": []
+ },
+ "mb-waves-2-16": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151578,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-1-01\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 76096,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-02": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152806,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-03": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152291,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-1-04\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 18638,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-05": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152450,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-06": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152465,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-1-07\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 32657,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-08": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153018,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-09": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-1-09\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 18676,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-10": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153813,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-11": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\n  \"itemId\": \"mb-fluid-statics-1-11\",\n  \"outcome\": \"reject\",\n  \"failureKind\": \"convention-mismatch\"\n}",
+  "ms": 134135,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-12": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 154007,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-13": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153970,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-14": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-14\",\"outcome\":\"reject\",\"failureKind\":\"non-uniform-limit\"}",
+  "ms": 68953,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-15": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153175,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-16": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 151464,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-2-01\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 15552,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-02": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152984,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-03": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152413,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-04": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-2-04\", \"outcome\": \"reject\", \"failureKind\": \"omitted-premise\"}",
+  "ms": 133356,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-05": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152398,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-06": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152482,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-07": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152077,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-08": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153477,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-09": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-09\",\"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 50578,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-10": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 154248,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-11": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152219,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-12": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\n  \"itemId\": \"mb-fluid-statics-2-12\",\n  \"outcome\": \"reject\",\n  \"failureKind\": \"non-uniform-limit\"\n}",
+  "ms": 59333,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-13": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-13\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 71455,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-14": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-2-14\", \"outcome\": \"reject\", \"failureKind\": \"omitted-premise\"}",
+  "ms": 47110,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-15": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 152205,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-16": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 153597,
+  "attempts": []
+ }
+}

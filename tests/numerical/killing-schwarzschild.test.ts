@@ -37,6 +37,9 @@ const r_s = schwarzschildRs(M_SUN); // ≈ 2954 m
 describe('verifyKillingEquation (Schwarzschild)', () => {
   // E-4 measure-then-lock: ∂_t residual = 0; ∂_φ max = 2.98e-8 (machine eps
   // × r²·sinθcosθ at π/3). Locked at 1e-7 (3.3× max observed).
+  // verifyKillingEquation ignores `tolerance` and returns the raw residual, so the
+  // comparison is made here. checkKillingEquation (killing-check.test.ts) is the
+  // API that applies a tolerance, on the relative residual.
   const TOL = 1e-7;
 
   const samplePoints: [number, number, number, number][] = [
@@ -67,7 +70,7 @@ describe('verifyKillingEquation (Schwarzschild)', () => {
         schwarzschildGFn(M_SUN),
         chrAt,
         x,
-        { tolerance: TOL, constantKilling: false, dMetricFn: dMetric },
+        { constantKilling: false, dMetricFn: dMetric },
       );
       expect(residual).toBeLessThan(TOL);
     },
@@ -82,7 +85,7 @@ describe('verifyKillingEquation (Schwarzschild)', () => {
         schwarzschildGFn(M_SUN),
         chrAt,
         x,
-        { tolerance: TOL, constantKilling: false, dMetricFn: dMetric },
+        { constantKilling: false, dMetricFn: dMetric },
       );
       expect(residual).toBeLessThan(TOL);
     },

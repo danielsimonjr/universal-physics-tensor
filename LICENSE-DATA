@@ -1,0 +1,25 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Copyright (c) 2025-2026 Daniel Simon Jr.
+
+The exported atlas DATA in this repository is licensed under the Creative Commons Attribution
+4.0 International License. The full legal code is at:
+
+    https://creativecommons.org/licenses/by/4.0/legalcode
+
+Covered files (the exported atlas data):
+
+    data/atlas/atlas.json
+    data/atlas/atlas.jsonld
+    data/atlas/oscillators.json
+    data/atlas/diffusion.json
+    data/atlas/waves.json
+    data/atlas/qudt-resolution.json
+    data/atlas/witness-results.json
+
+Everything else in this repository, including all source code, the JSON schemas under
+data/schemas/, data/bridge-catalog.json and the benchmark fixtures, is under the MIT License
+in LICENSE.
+
+Attribution: cite "universal-physics-tensor atlas data", the package version (the packageVersion
+field, where the file carries one), and https://github.com/danielsimonjr/universal-physics-tensor.

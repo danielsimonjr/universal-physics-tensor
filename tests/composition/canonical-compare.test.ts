@@ -1,0 +1,94 @@
+/**
+ * Compare a user formula with the canonical equation it restates (persona finding L2,
+ * 2026-09-25).
+ *
+ * `upt map --equation "period = pi*sqrt(length/gravity)"` and `upt derive … --formula
+ * "mass*velocity^2"` both answered "✓ consistent / MATCHES", although each is wrong by a
+ * constant. Dimensional analysis cannot see a prefactor, and the output did not say so. The
+ * comparison evaluates both sides at FIXED, documented points, so the output is identical on
+ * every run, and it tells a constant factor from a difference in form.
+ *
+ * The registry records some laws only up to a constant (CE-kinetic-energy's AST is m·v²) or only
+ * dimensionally (CE-pendulum-period is a monomial). For those the prefactor CANNOT be checked,
+ * and the comparison must say exactly that rather than report agreement.
+ */
+
+import { describe, expect, it } from 'vitest';
+import { compareWithCanonical } from '../../src/composition/canonical-compare.js';
+import { C_SI, G_SI, HBAR_SI, K_B_SI } from '../../src/core/constants.js';
+
+const hawking = (v: Record<string, number>) => (HBAR_SI * C_SI ** 3) / (8 * Math.PI * G_SI * v['mass']! * K_B_SI);
+const find = (rs: ReturnType<typeof compareWithCanonical>, id: string) => rs.find((r) => r.id === id);
+
+describe('compareWithCanonical — a fully quantitative entry', () => {
+  it('the exact Hawking temperature agrees with CE-hawking-temperature, prefactor included', () => {
+    const r = find(compareWithCanonical('hawking-temperature', ['mass'], hawking), 'CE-hawking-temperature');
+    expect(r?.kind).toBe('agrees');
+    expect(r?.ratio).toBeCloseTo(1, 12);
+  });
+
+  it('twice the Hawking temperature differs by the constant factor 2', () => {
+    const r = find(
+      compareWithCanonical('hawking-temperature', ['mass'], (v) => 2 * hawking(v)),
+      'CE-hawking-temperature',
+    );
+    expect(r?.kind).toBe('factor');
+    expect(r?.ratio).toBeCloseTo(2, 12);
+  });
+
+  it('a 1/M² law differs in FORM: the ratio is not constant across the fixed points', () => {
+    const r = find(
+      compareWithCanonical('hawking-temperature', ['mass'], (v) => hawking(v) / v['mass']!),
+      'CE-hawking-temperature',
+    );
+    expect(r?.kind).toBe('form');
+    expect(r?.ratio).toBeUndefined();
+  });
+
+  it('underscored names resolve like hyphenated ones', () => {
+    const r = find(compareWithCanonical('hawking_temperature', ['mass'], hawking), 'CE-hawking-temperature');
+    expect(r?.kind).toBe('agrees');
+  });
+});
+
+describe('compareWithCanonical — entries that record no prefactor', () => {
+  // CE-pendulum-period and CE-kinetic-energy now take their prefactors from the sourced table
+  // (tests/composition/canonical-prefactors.test.ts). These cases use entries it does not cover.
+  it('ω = 2√(k/m): same form as CE-simple-harmonic-frequency, prefactor NOT checked (dimensional only)', () => {
+    const r = find(
+      compareWithCanonical('angular-velocity', ['spring-constant', 'mass'], (v) => 2 * Math.sqrt(v['spring-constant']! / v['mass']!)),
+      'CE-simple-harmonic-frequency',
+    );
+    expect(r?.kind).toBe('prefactor-unchecked');
+    expect(r?.detail).toMatch(/dimensional form only/);
+  });
+
+  it('T ∝ ℓ/g differs in FORM from the CE-pendulum-period monomial', () => {
+    const r = find(
+      compareWithCanonical('period', ['length', 'gravity'], (v) => v['length']! / v['gravity']!),
+      'CE-pendulum-period',
+    );
+    expect(r?.kind).toBe('form');
+  });
+
+  it('E = k·A² has the form of CE-oscillator-energy, which the registry records only up to a constant', () => {
+    const r = find(
+      compareWithCanonical('oscillator-energy', ['spring-constant', 'amplitude'], (v) => v['spring-constant']! * v['amplitude']! ** 2),
+      'CE-oscillator-energy',
+    );
+    expect(r?.kind).toBe('prefactor-unchecked');
+    expect(r?.detail).toMatch(/up to a constant/);
+  });
+});
+
+describe('compareWithCanonical — scope and determinism', () => {
+  it('no entry shares the target and the variables → no comparison at all', () => {
+    expect(compareWithCanonical('period', ['length'], (v) => v['length']!)).toEqual([]);
+  });
+
+  it('two runs are identical (fixed points, no randomness)', () => {
+    const a = compareWithCanonical('hawking-temperature', ['mass'], (v) => 3 * hawking(v));
+    const b = compareWithCanonical('hawking-temperature', ['mass'], (v) => 3 * hawking(v));
+    expect(a).toEqual(b);
+  });
+});

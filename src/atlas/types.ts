@@ -157,7 +157,17 @@ export interface ApproximationBound {
    * tighter value at its own point.
    */
   readonly delta: number;
-  /** `'relative period'`, `'sup |x − x_reduced| for t ≥ 5 m/b'`, … */
+  /**
+   * `'relative period error, normalized by the value of the reduced model'`,
+   * `'sup |x − x_reduced| for t ≥ 5 m/b'`, …
+   *
+   * A RELATIVE norm divides |exact − reduced| by the REDUCED model's value, and
+   * says so in this string. The other reading, by the exact value, gives a
+   * different number: at x = ck/ω₀ = 1 the non-relativistic kinetic frequency
+   * exceeds the exact Klein–Gordon one by 20.7% of the exact value, and by
+   * 17.2% of its own value. `tests/atlas/relative-norm-convention.test.ts` recomputes
+   * every relative `delta` from closed-form physics and pins the convention.
+   */
   readonly norm: string;
   /** Where the bound holds. */
   readonly domain: string;
@@ -180,9 +190,27 @@ export interface ApproximationBound {
    * `approximation`, enforced at admission by `admitApproximation`.
    */
   readonly deltaAt?: (params: Readonly<Record<string, number>>) => number;
+  /**
+   * What `deltaAt` rests on. `'closed-form'`: it returns the EXACT error in
+   * closed form, so it is a proven bound, holding with equality. `'numerically-
+   * supported'`: a formula that witnesses support numerically but no proof
+   * covers. `upt path` prints a point bound only when every step is closed-form.
+   */
+  readonly deltaAtBasis?: 'closed-form' | 'numerically-supported';
   /** `'θ0 ≤ 0.5 rad'`. */
   readonly parameterRange?: string;
   readonly limitCharacter: LimitCharacter;
+  /**
+   * What the error is uniform in.
+   *
+   * `null` means NOT YET ANALYSED. That is a legitimate recorded state:
+   * `makeApproximation` accepts it, and the check lives at use (`boundPath`),
+   * not at construction. An empty array means the same thing — a universal
+   * over nothing must not count as analysed. A non-empty array names the
+   * scopes the error is uniform in. A variable a side condition says the
+   * error is NOT uniform in is not listed.
+   */
+  readonly uniformity: readonly string[] | null;
 }
 
 /** A named check that supports a record, and the test file that runs it. @public */

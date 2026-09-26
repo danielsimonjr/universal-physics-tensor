@@ -107,6 +107,11 @@ export interface TensorPartialDerivativeNode {
 
 // ── connection / curvature nodes ────────────────────────────────────────────
 
+/**
+ * AST node for the covariant derivative ∇_μ of a tensor expression.
+ *
+ * @public
+ */
 export interface CovariantDerivativeNode {
   readonly kind: 'covariant-derivative';
   readonly of: ExprNode;
@@ -124,11 +129,21 @@ export type RiemannTensorNode = CurvatureCompositeNode<'riemann-tensor', {
   readonly xCoord: TensorSymbolNode;
 }>;
 
+/**
+ * AST node for the Ricci tensor R_μν, built by `ricci`.
+ *
+ * @public
+ */
 export type RicciTensorNode = CurvatureCompositeNode<'ricci-tensor', {
-  /** The Riemann tensor whose first two slots are contracted. */
+  /** The Riemann tensor, contracted on its upper index and its second lower index: R_μν = R^λ_{μλν}. */
   readonly riemann: RiemannTensorNode;
 }>;
 
+/**
+ * AST node for the Einstein tensor G_μν, built by `einstein`.
+ *
+ * @public
+ */
 export type EinsteinTensorNode = CurvatureCompositeNode<'einstein-tensor', {
   /** The Riemann tensor whose contraction yields the inner Ricci R_μν. */
   readonly riemann: RiemannTensorNode;
@@ -138,6 +153,11 @@ export type EinsteinTensorNode = CurvatureCompositeNode<'einstein-tensor', {
   readonly gInverse: MetricTensorNode;
 }>;
 
+/**
+ * AST node for the cyclic second-Bianchi-identity residual, built by `bianchiResidual`.
+ *
+ * @public
+ */
 export type BianchiResidualNode = CurvatureCompositeNode<'bianchi-residual', {
   /** The Riemann tensor whose cyclic-derivative identity is checked. */
   readonly riemann: RiemannTensorNode;
@@ -154,6 +174,11 @@ export type WeylTensorNode = CurvatureCompositeNode<'weyl-tensor', {
   readonly componentDim: Dimension;
 }>;
 
+/**
+ * AST node for the Kretschmann scalar K = R_{ρσμν} R^{ρσμν}.
+ *
+ * @public
+ */
 export type KretschmannScalarNode = CurvatureCompositeNode<'kretschmann-scalar', {
   /** Riemann tensor R^ρ_{σμν}. */
   readonly riemann: RiemannTensorNode;
@@ -193,6 +218,11 @@ export interface CosmologicalConstantNode {
   readonly value?: number; // optional numeric value (e.g., 1.1056e-52 m⁻²)
 }
 
+/**
+ * AST node for the Einstein field equation G_μν + Λ g_μν = (8πG/c⁴) T_μν.
+ *
+ * @public
+ */
 export interface EinsteinFieldEquationNode {
   readonly kind: 'einstein-equation';
   readonly lhs: EinsteinTensorNode;

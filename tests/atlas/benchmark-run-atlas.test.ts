@@ -17,7 +17,6 @@ const speed: ExprNode = { kind: 'op', op: '/', args: [sym('x', L), sym('t', T)] 
 /** A fully-specified item that every instrument can run on and clear. */
 const CLEAN: BenchmarkItem = {
   id: 'clean',
-  kind: 'valid',
   premises: ['p'],
   conclusion: 'c',
   claimedRelation: 'exact-equivalence',
@@ -58,6 +57,25 @@ describe('accept — only when every instrument ran and cleared', () => {
     const v = runAtlasOnItem({ ...CLEAN, sideConditions: [] });
     expect(v.outcome).toBe('abstain');
     expect(v.reasons.some((r) => r.startsWith('QUESTION: division-unguarded'))).toBe(true);
+  });
+});
+
+describe('accept needs at least one instrument that RAN — never a vacuous accept', () => {
+  const TYPES_ONLY = { types: true, assumptions: false, dimensionsAndConventions: false, regimes: false };
+
+  it('types only, and the item claims no chain: nothing ran, so abstain rather than accept', () => {
+    const v = runAtlasOnItem(CLEAN, TYPES_ONLY);
+    expect(v.outcome).toBe('abstain');
+  });
+
+  it('CONTROL: types only, and the item claims a chain the table clears: that check ran, so accept', () => {
+    const chained: BenchmarkItem = { ...CLEAN, composedFrom: ['exact-equivalence', 'exact-equivalence'] };
+    expect(runAtlasOnItem(chained, TYPES_ONLY).outcome).toBe('accept');
+  });
+
+  it('every instrument off: abstain', () => {
+    const none = { types: false, assumptions: false, dimensionsAndConventions: false, regimes: false };
+    expect(runAtlasOnItem(CLEAN, none).outcome).toBe('abstain');
   });
 });
 

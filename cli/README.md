@@ -74,7 +74,7 @@ also accepts `--json` for a machine-readable envelope instead of text — see
 ### Graph analysis & discovery
 
 8 of these 9 commands (all but `coverage`) operate over a **composition
-graph**. Most default to the 44-bridge catalog graph; `map` and `connectors`
+graph**. Most default to the bridge-catalog graph; `map` and `connectors`
 default to the combined catalog + canonical graph instead, since they ask
 pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 
@@ -86,7 +86,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | `map` (`linkage`) | Connected components (clusters) of the graph by shared quantities — the anchored core, the link hubs, the isolated tail. With `--format=mermaid\|dot\|svg` it emits the **visual** map (quantities = nodes, equations = junctions colored by status, one subgraph per component); `svg` renders the dot layout via the optional `@viz-js/viz` peer (`npm i @viz-js/viz`). `--proposed` overlays the unadjudicated identity-consequence relations (gray dashed); `--out=PATH` writes to a file. `--equation "TARGET = EXPR"` injects **your own** equation as a violet `user` node, **dimensionally validates it** (✓ consistent / ⚠ mismatch vs the target's catalog dimension), reports where it lands (cluster / shared quantities), and gives a **dimension-based** "did you mean?" (inferring an unknown symbol's dimension) — falling back to name-similarity. A dimensionally non-homogeneous RHS exits non-zero. `--relation=TYPE` and `--evidence=TAG` filter the map by the Atlas overlay — see the note below, because filtering changes what a MISSING overlay means. |
 | `candidates` (`propose`) | Propose cross-cluster links (same-dimension quantities in different clusters) for **physicist review**. A coincidence-heavy surface, not discovered bridges. |
 | `predict` (`predictions`) | Project the catalog onto the (scale × force) regime plane and rank empty cells as undiscovered-connection hypotheses (triadic closure). |
-| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory / axis-clash (a stated `scale`/`force` regime mismatch — "identification falsified", not "no connection possible"). Each PROMISING candidate also carries a `[consequence: entailed\|novel-consequence\|inconclusive]` trailer (`src/composition/consequence.ts`) — a machine pre-classifier, not adjudication: `entailed` re-derives a known canonical equation, `novel-consequence` is a valid algebraic consequence with no canonical match, `inconclusive` means none was derivable. Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
+| `discover` (`discovery`) | **Vet** the link candidates through the inference suite: hypothesise each identification `a≡b` and test whether it merges disconnected physics, unlocks quantities, and stays numerically consistent. Ranks promising / inert / magnitude-clash / contradictory / axis-clash (a stated `scale`/`force` regime-label mismatch: a prior against a literal identity, not a physical test, and not "no connection possible"). Each PROMISING candidate also carries a `[consequence: entailed\|novel-consequence\|inconclusive]` trailer (`src/composition/consequence.ts`) — a machine pre-classifier, not adjudication: `entailed` re-derives a known canonical equation, `novel-consequence` is a valid algebraic consequence with no canonical match, `inconclusive` means none was derivable. Candidates a physicist has already adjudicated (`src/composition/adjudication.ts`) fold out of the printed PROMISING list by default; `--show-adjudicated` lists them again with their recorded verdict. |
 | `connectors` (`orphans`) | Of the isolated bridges, which could connect to the anchored core via a same-dimension identification? The structural frontier. |
 | `coverage` (`grounding`) | Audit the catalog's empirical grounding — data-confronted vs graph-computable vs encoded-only vs thin. |
 
@@ -94,7 +94,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 
 | Command (aliases) | What it does |
 |---|---|
-| `canonical` (`laws`) | List the canonical-equation registry — the textbook "answer key" L-layer, each entry's fidelity (L0/L1/L2), domain, bridge partners, and the coverage gap. |
+| `canonical` (`laws`) | List the canonical-equation registry — the textbook "answer key" L-layer, each entry's fidelity (L0/L1/L2), domain, bridge partners, and the coverage gap. `--vars` also prints each entry's target and governing variable names (the vocabulary for `map --equation` / `derive`). |
 | `recover` (`recovery`, `validate`) | Validate bridges against standard physics: classify each bridge↔canonical link as `restates-canonical` (F4 circularity — *not* a discovery), `recovers` (undeclared structural match), or `dimensional-only`. Prints one advisory line under a row whose canonical equation and bridge edge DECLARE conflicting sign/unit conventions; an undeclared convention is unknown, never a conflict, so no row triggers it today. |
 
 ### Symbolic composition
@@ -108,7 +108,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | Command (aliases) | What it does |
 |---|---|
 | `eval "<formula>" name=value …` (`calc`) | Evaluate **your own** scalar formula (safe — arithmetic only). Knows `pi`/`tau` and `sqrt`/`exp`/`ln`/`sin`/…; any other name must be supplied. |
-| `derive <target:dim> <var:dim> … [--formula "<expr>"]` (`dim`) | Derive **your own** equation's dimensional form, and (with `--formula`) verify it and recover the dimensionless prefactor. |
+| `derive <target:dim> <var:dim> … [--formula "<expr>"]` (`dim`) | Derive **your own** equation's dimensional form, and (with `--formula`) verify it and recover the dimensionless prefactor. `<dim>` may be a named dimension, a constant, a named product/quotient (`power/area`, `length*temperature`), or explicit bases (`L^3.M^-1.T^-2`). With `--formula` it also compares the formula with the canonical equation of the same target and variables, at fixed points: agrees, differs by a constant factor, differs in form, or the prefactor is NOT checked because the registry holds the law only up to a constant. `upt map --equation` reports the same comparison. |
 
 ### Data confrontation
 
@@ -116,7 +116,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 |---|---|
 | `confront [--bridge=be-XX] [--rigor=<tier>] [--frontier] [--sensitivity]` | Run the catalog's committed real-data confrontations — predicted vs observed, each tagged with its **rigor tier** (`[stringent\|moderate\|loose]`) and headed by the distribution ("NOT N equal confirmations"). `--bridge=be-XX` runs one; `--rigor=stringent\|moderate\|loose` filters to a tier; `--frontier` ranks the σ-tests by margin to exclusion (tightest = most at-risk under new data); `--sensitivity` adds the input-elasticity ranking (value-kind only). Not `--source`-parameterized. |
 | `axes` (`axis-audit`) | Axis-discrimination audit — which tensor classification axes GATE the discovery funnel (an axis gates only when it MEASURABLY fires). Reproduces the rank-7 measurement: scale+force gate; topology/statistics/symmetry classify but do not gate. |
-| `evaluate <be-NN> key=value …` | Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55…65) via its registered evaluator. With no bridge id, lists the evaluable bridges + their input keys. e.g. `upt evaluate be-63 mu_e=2` → M_Ch ≈ 1.44 M_⊙. |
+| `evaluate <be-NN> key=value …` | Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55…65) via its registered evaluator. With no bridge id, lists the evaluable bridges + their input keys. e.g. `upt evaluate be-63 mu_e=2` → M_Ch ≈ 1.456 M_⊙ (ideal degenerate gas, with m_u and M_⊙ = 1.989e30 kg). |
 | `ground <a> <b>` | The epistemic-grounding ledger for one discovery candidate a≡b: which falsifiers passed, which abstained (gaps), and the honest permanent ceiling (no mechanism test, no data test). |
 
 ### Atlas — regimes and routes between MODELS
@@ -146,7 +146,7 @@ Do not use `probe` to vet identifications; do not use `discover` to search expre
 
 | Command (aliases) | What it does |
 |---|---|
-| `probe <scan\|show\|run\|candidates\|falsify\|rank\|design\|reproduce>` | Bounded expression/residual search. `scan` / `show` list typed frontier gaps (`fg-*`); relation-link and regime-transition gaps are **not searchable** here — use `upt discover`. `run --problem=FILE` enumerates dimensional monomials under a search budget, fits a prefactor on exploratory data only, scores locked holdout, compares `normalForm` to the in-repo corpus, and never prints a status stronger than the stored lifecycle. `no-credible-candidate` is an honest abstention. Optional `--worker=PATH` spawns an NDJSON worker as `node PATH` (no shell, no vendored Python). Experimental subpath: `universal-physics-tensor/probe`. |
+| `probe <scan\|show\|run\|candidates\|falsify\|rank\|design\|reproduce>` | Bounded expression/residual search. `scan` defaults to **searchable** gaps only; when none exist it says so and points at `upt discover` (pass `--all` for Product A wrappers). `show` lists one gap (`fg-*`). Relation-link and regime-transition gaps are **not searchable** here — use `upt discover`. `run --problem=FILE` enumerates dimensional monomials under a search budget, fits a prefactor on exploratory data only, scores locked holdout, compares `normalForm` to the in-repo corpus, and never prints a status stronger than the stored lifecycle. `no-credible-candidate` is an honest abstention. Optional `--worker=PATH` spawns an NDJSON worker as `node PATH` (no shell, no vendored Python). Experimental subpath: `universal-physics-tensor/probe`. The `--problem` file format, with a minimal example, is in `upt help probe`. |
 
 ### Help
 
@@ -167,7 +167,7 @@ the analysis runs over: `discover`, `candidates`, `map`, `explain`,
 
 | Value | Graph |
 |---|---|
-| `catalog` | The 44-bridge catalog graph (8 established + 36 speculative bridges). |
+| `catalog` | The bridge-catalog graph (`CATALOG_GRAPH`); its banner label states the catalog size. |
 | `canonical` | The standard-physics **L-layer alone** — every canonical equation as an `established` law edge, **with the speculative bridges excluded**. |
 | `both` | The bridges **plus** the canonical established-physics backbone. |
 
@@ -298,6 +298,11 @@ node bin/upt.mjs map --source=both --proposed --format=mermaid
 # Inject YOUR OWN equation: dimensional check + where it lands in the graph:
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
 #   → ✓ dimensionally consistent: [time]; joins the anchored cluster via {gravity, length, period}
+#   → ✓ agrees with CE-pendulum-period, prefactor included (2π from the sourced prefactor table)
+node bin/upt.mjs map --source=canonical --equation "period = pi*sqrt(length/gravity)"
+#   → ⚠ differs from CE-pendulum-period by a constant factor: yours/canonical = 0.500000
+node bin/upt.mjs map --equation "hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)"
+#   → ⚠ differs from CE-hawking-temperature by a constant factor: yours/canonical = 2.00000
 node bin/upt.mjs map --source=canonical --equation "period = mass"
 #   → ⚠ dimensional MISMATCH: RHS is [mass] but the target is [time]
 node bin/upt.mjs map --source=canonical --equation "period = uu / gravity"
@@ -370,7 +375,7 @@ candidates.
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
 | `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |
-| `--equation "TARGET = EXPR"` | `map` | Inject your own equation as a violet `user` node; reports where it lands + a "did you mean?" hint. Multi-word quantities use underscores (`photon_energy` → `photon-energy`). |
+| `--equation "TARGET = EXPR"` | `map` | Inject your own equation as a violet `user` node; reports where it lands (nearest equations by shared-quantity overlap, not a full edge dump) + a "did you mean?" hint. Multi-word quantities may use underscores or the catalog's own hyphens (`planck-length` / `planck_length`). |
 | `--relation=TYPE` | `map` | Keep only edges whose recorded Atlas relation is `derivation`, `exact-equivalence`, `restriction`, `approximation`, `coarse-graining`, `analytic-continuation`, `structural-analogy` or `deformation-quantization`. An unknown value exits 1. |
 | `--evidence=TAG` | `map` | Keep only edges whose evidence set contains the tag. Evidence is **derived at read time** from the catalog row the edge names — it is never stored on a row or an edge, so no filter can be satisfied by an unchecked assertion. Tags: `proposed`, `reviewed`, `dimension-checked`, `convention-checked`, `symbolically-checked`, `numerically-supported`, `formally-proved`, `empirically-supported`, `contradicted`, `unresolved`. An unknown value exits 1. |
 | `--max-orders=N` | `discover`, `map` (with `--proposed`) | Tune the magnitude-clash threshold (default `3`); `map --proposed` shares `discover`'s parsing, so it reshapes the proposed overlay too. |
@@ -412,8 +417,9 @@ rather than as not matching.
 | Code | Meaning |
 |---|---|
 | `0` | Success. |
-| `1` | Bad `--source`/`--format` value, empty `--out=`, an invalid or unregistered `confront --bridge` value, an unknown `regime` family, an unknown `path` model id, a malformed `--at` assignment, the optional SVG renderer is missing, or the built package could not be loaded. **A `path` that carries no composite claim is NOT an error — it exits 0.** |
+| `1` | Bad `--source`/`--format` value, empty `--out=`, an invalid or unregistered `confront --bridge` value, an unknown `regime` family, an unknown `path` model id, an `explain` name that is not a quantity of the graph (NOT COVERED), a malformed `--at` assignment, the optional SVG renderer is missing, or the built package could not be loaded. **A `path` that carries no composite claim is NOT an error — it exits 0.** |
 | `2` | Usage error: missing required argument, parse error, unknown command, an **unknown/mistyped flag** (e.g. `--sourc=canonical`), a malformed or dimensionally non-homogeneous `--equation`, or combining `--json` with `map --format=mermaid\|dot\|svg`. |
+| `3` | **The command ran and its check came out negative** (since 0.47.0): `derive --formula` whose dimension differs from the target, that does not match the dimensional monomial, or that differs from the canonical equation by a factor or in form; `map --equation` with a dimension mismatch (every name resolved) or a canonical difference; `path` with a violated regime or horizon at the `--at` point. An UNKNOWN result, where a coordinate was not supplied or a name did not resolve, is not a failure and exits `0`. So does a survey command such as `regime`, whose report may list violated records. |
 
 ---
 

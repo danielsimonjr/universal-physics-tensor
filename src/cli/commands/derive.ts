@@ -9,7 +9,7 @@
 import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { emitJson } from '../output.js';
-import { UsageError } from '../errors.js';
+import { UsageError, EXIT_CHECK_FAILED } from '../errors.js';
 import type { Dimension } from '../../dimensional/types.js';
 
 const FLAGS: FlagSpec[] = [
@@ -21,8 +21,9 @@ const FLAGS: FlagSpec[] = [
 const HELP = `upt derive <target:dim> <var:dim> ... [--formula "<expr>"]
         Derive YOUR OWN equation's dimensional form. <dim> is a named
         dimension (length, time, mass, velocity, ...), a constant (hbar, c,
-        G, k_B, e), or explicit (L^3.M^-1.T^-2). With --formula, also verify
-        it and recover the dimensionless prefactor.
+        G, k_B, e), a named product/quotient (power/area, length*temperature),
+        or explicit (L^3.M^-1.T^-2). With --formula, also verify it and
+        recover the dimensionless prefactor.
         e.g.  upt derive period:time length:length gravity:acceleration \\
                        --formula "2*pi*sqrt(length/gravity)"`;
 
@@ -77,6 +78,9 @@ async function run(ctx: CommandCtx): Promise<number> {
   let full: ReturnType<typeof api.buckinghamPi> | undefined;
   let formulaCheck: ReturnType<Awaited<ReturnType<typeof api.getFormulaDimensionChecker>>['check']> | undefined;
   let mean: number | undefined;
+  let canonicalComparisons: ReturnType<typeof api.compareWithCanonical> | undefined;
+  // The formula's checks: dimension, monomial, canonical comparison. Any failure exits 3.
+  let failed = false;
 
   const emitEnvelope = (): void => {
     emitJson(
@@ -87,6 +91,7 @@ async function run(ctx: CommandCtx): Promise<number> {
           ...(full !== undefined ? { buckingham: full } : {}),
           ...(formulaCheck !== undefined ? { formulaCheck } : {}),
           ...(mean !== undefined ? { prefactor: mean } : {}),
+          ...(canonicalComparisons !== undefined ? { canonicalComparisons } : {}),
         },
       },
       ctx.write
@@ -112,9 +117,11 @@ async function run(ctx: CommandCtx): Promise<number> {
     const r = checker.check(formula, dims);
     formulaCheck = r;
     if (!r.ok) {
+      failed = true;
       textOut(`  formula dimensional check: ✗ ${r.error}`);
     } else {
       const matches = dimsEqualTol(r.dim!, target.dim);
+      if (!matches) failed = true;
       textOut(
         `  formula dimension: ${api.format(r.dim!)}`
           + (matches ? `  ✓ homogeneous, matches target` : `  ⚠ homogeneous but ≠ target ${api.format(target.dim)}`)
@@ -128,10 +135,39 @@ async function run(ctx: CommandCtx): Promise<number> {
       throw new UsageError('  formula parse error: ' + (e as Error).message);
     }
 
+    // Dimensions cannot see a prefactor: compare with the canonical equation this
+    // formula restates, when the registry holds one (persona finding L2). This
+    // needs no unique monomial, so it runs on both branches below. A variable
+    // named after a registered constant is that constant, as in `upt map --equation`.
+    const isConstant = (g: { name: string; dim: Dimension }): boolean => {
+      const c = api.CONSTANTS[g.name];
+      return c !== undefined && dimsEqualTol(c.dim, g.dim);
+    };
+    const variables = governing.filter((g) => !isConstant(g));
+    const compiled = cf;
+    canonicalComparisons = api.compareWithCanonical(
+      target.name,
+      variables.map((g) => ({ name: g.name, dim: g.dim })),
+      (values) =>
+        compiled.evaluate(
+          Object.fromEntries(
+            governing.map((g) => [
+              g.name,
+              isConstant(g) ? api.CONSTANTS[g.name]!.value : values[g.name.replace(/_/g, '-')]!,
+            ]),
+          ),
+        ),
+    );
+    const printComparisons = (): void => {
+      for (const line of api.describeComparisons(canonicalComparisons!)) textOut(`  ${line}`);
+    };
+    if (canonicalComparisons.some((c) => c.kind === 'factor' || c.kind === 'form')) failed = true;
+
     if (!det.determined) {
       textOut('  formula given, but with no unique monomial there is no single prefactor to recover.');
+      printComparisons();
       if (isJson) emitEnvelope();
-      return 0;
+      return failed ? EXIT_CHECK_FAILED : 0;
     }
 
     const ratios: number[] = [];
@@ -150,15 +186,17 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
     mean = ratios.reduce((a, b) => a + b, 0) / ratios.length;
     const cv = Math.sqrt(ratios.reduce((a, b) => a + (b - mean!) ** 2, 0) / ratios.length) / Math.abs(mean);
+    if (!(cv < 1e-9)) failed = true;
     textOut(
       cv < 1e-9
         ? `  formula MATCHES the dimensional form — recovered prefactor ≈ ${mean.toExponential(4)}`
         : `  formula does NOT match the dimensional monomial (different input-dependence — a decoy or different physics).`
     );
+    printComparisons();
   }
 
   if (isJson) emitEnvelope();
-  return 0;
+  return failed ? EXIT_CHECK_FAILED : 0;
 }
 
 export const command: Command = {

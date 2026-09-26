@@ -48,11 +48,24 @@ export const STEADY_MIN_FOURIER = 1;
 const regime = (
   parameters: readonly { name: string; dim: import('../../dimensional/types.js').Dimension }[],
   inequalities: AtlasBridge['regime']['inequalities'],
+): AtlasBridge['regime'] => regimeWithInputs(parameters, [], inequalities);
+
+/** A regime whose coordinates also include dimensionless model inputs (such as Re). */
+const regimeWithInputs = (
+  parameters: readonly { name: string; dim: import('../../dimensional/types.js').Dimension }[],
+  dimensionlessInputs: readonly string[],
+  inequalities: AtlasBridge['regime']['inequalities'],
 ): AtlasBridge['regime'] => ({
   family: DIFFUSION_FAMILY_NAME,
   inequalities,
-  groupDefinitions: deriveRegimeGroups(DIFFUSION_FAMILY_NAME, parameters, []),
+  groupDefinitions: deriveRegimeGroups(DIFFUSION_FAMILY_NAME, parameters, dimensionlessInputs),
 });
+
+/** Reynolds-number ceiling of the Stokes–Einstein derivation: a chosen threshold for Re ≪ 1. @internal */
+const STOKES_MAX_RE = 0.1;
+
+/** Ceiling of τ_p/t = m/(γt) for the overdamped limit: a chosen threshold for ≪ 1. @internal */
+const STOKES_MAX_TAU_RATIO = 0.01;
 
 /** Bridge: Langevin → Fick, the Einstein coarse-graining D = k_BT/γ. @internal */
 export const BRIDGE_LANGEVIN_DIFFUSION: AtlasBridge = {
@@ -131,16 +144,35 @@ export const BRIDGE_STOKES_EINSTEIN: AtlasBridge = {
   transformation: 'substitute γ = 6πηa into D = k_B T/γ: D = k_B T/(6πηa)',
   preserves: ['the long-time diffusion coefficient of a sphere'],
   doesNotPreserve: ['the particle mass (it drops out)', 'the shape beyond the radius a'],
-  sideConditions: ['creeping flow around the sphere, Re ≪ 1', 'no-slip boundary', 'overdamped times t ≫ m/γ'],
-  regime: regime(
+  sideConditions: [
+    'creeping flow around the sphere, Re ≪ 1 (machine form Re ≤ 0.1: a chosen threshold for "≪ 1")',
+    'no-slip boundary',
+    'overdamped times t ≫ m/γ (machine form m/(γt) ≤ 0.01: a chosen threshold for "≪ 1", as in ab-langevin-diffusion)',
+  ],
+  // The prose conditions were not machine-checked, so `upt regime` reported this
+  // bridge VACUOUS and "valid" at Re = 1000 (persona finding L8). Re is a
+  // dimensionless input of the flow; m/(γt) is listed first so its π-group key is
+  // the one ab-langevin-diffusion uses, and one --at value checks both bridges.
+  regime: regimeWithInputs(
     [
-      { name: 'kT', dim: ENERGY },
+      { name: 'm', dim: MASS },
       { name: 'gamma', dim: DAMPING },
+      { name: 't', dim: TIME },
+      { name: 'kT', dim: ENERGY },
       { name: 'eta', dim: VISCOSITY },
       { name: 'a', dim: LENGTH },
       { name: 'D', dim: DIFFUSIVITY },
     ],
-    [],
+    ['Re'],
+    [
+      { group: 'Re', op: '<=', bound: STOKES_MAX_RE, alias: 'Re ≪ 1 (machine form Re ≤ 0.1)' },
+      {
+        group: 'm · gamma^-1 · t^-1',
+        op: '<=',
+        bound: STOKES_MAX_TAU_RATIO,
+        alias: 'τ_p/t ≪ 1 (machine form m/(γt) ≤ 0.01)',
+      },
+    ],
   ),
   counterexamples: [],
   evidence: new Set(['proposed', 'numerically-supported']),
@@ -194,7 +226,8 @@ export const BRIDGE_TELEGRAPH_DIFFUSION: AtlasBridge = {
     delta: telegraphSlowRateRatio(TELEGRAPH_FICK_MAX_EPS, 1, 1) - 1,
     deltaAt: (p) =>
       telegraphSlowRateRatio(p['tau'] ?? Number.NaN, p['D'] ?? Number.NaN, p['q'] ?? Number.NaN) - 1,
-    norm: 'relative error of the slow-mode decay rate of a Fourier mode',
+    deltaAtBasis: 'closed-form',
+    norm: 'relative error of the slow-mode decay rate of a Fourier mode, normalized by the value of the reduced model',
     domain: 'ε = τDq² ≤ 0.05',
     horizon:
       'τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; ' +
@@ -209,6 +242,9 @@ export const BRIDGE_TELEGRAPH_DIFFUSION: AtlasBridge = {
     },
     parameterRange: 'ε = τDq² ≤ 0.05',
     limitCharacter: 'singular',
+    // A slow-mode decay-rate error. The horizon says that error accumulates,
+    // so time is not listed.
+    uniformity: ['slow-mode decay rate of one Fourier mode, for ε = τDq² ≤ 0.05'],
   }),
   regime: regime(
     [
@@ -267,7 +303,8 @@ export const BRIDGE_TELEGRAPH_WAVE: AtlasBridge = {
     delta: 1 - telegraphWaveFrequencyRatio(TELEGRAPH_WAVE_MIN_EPS, 1, 1),
     deltaAt: (p) =>
       1 - telegraphWaveFrequencyRatio(p['tau'] ?? Number.NaN, p['D'] ?? Number.NaN, p['q'] ?? Number.NaN),
-    norm: 'relative error of the oscillation frequency of a Fourier mode',
+    deltaAtBasis: 'closed-form',
+    norm: 'relative error of the oscillation frequency of a Fourier mode, normalized by the value of the reduced model',
     domain: 'ε = τDq² ≥ 25',
     horizon:
       't ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)',
@@ -278,6 +315,8 @@ export const BRIDGE_TELEGRAPH_WAVE: AtlasBridge = {
     },
     parameterRange: 'ε = τDq² ≥ 25',
     limitCharacter: 'regular',
+    // An oscillation-frequency error. The record says it is not uniform in time.
+    uniformity: ['oscillation frequency of one Fourier mode, for ε = τDq² ≥ 25'],
   }),
   regime: regime(
     [

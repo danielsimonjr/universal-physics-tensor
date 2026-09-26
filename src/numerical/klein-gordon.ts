@@ -99,7 +99,7 @@ export interface KGPlaneWaveVerifyResult {
  *
  * @example
  * ```typescript
- * import { evaluateKGDispersionResidual } from 'universal-physics-tensor/numerical/klein-gordon';
+ * import { evaluateKGDispersionResidual } from 'universal-physics-tensor';
  * import { C_SI } from 'universal-physics-tensor';
  *
  * // Massless field: ω = ck is exactly on shell.
@@ -159,7 +159,7 @@ export function evaluateKGDispersionResidual(
  *
  * @example
  * ```typescript
- * import { verifyKleinGordonPlaneWave } from 'universal-physics-tensor/numerical/klein-gordon';
+ * import { verifyKleinGordonPlaneWave } from 'universal-physics-tensor';
  *
  * // Electron-mass scalar at k = 1e10 m⁻¹.
  * const { omega_per_s, residual, withinTolerance } = verifyKleinGordonPlaneWave({

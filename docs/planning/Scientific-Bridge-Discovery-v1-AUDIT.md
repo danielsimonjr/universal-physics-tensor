@@ -41,6 +41,6 @@ The roadmap was reviewed twice. The first pass (commit `c9cac28`) treated the or
 
 ## Review outcome
 
-The corrected roadmap is suitable to drive a **Product B** implementation tranche subject to Phase 0A’s integration note and Adam+Eve review. Product A remains frozen. Strategic phases stay out of `docs/planning/ACTIVE.md` until a tranche is explicitly authorized.
+The corrected roadmap is suitable to drive a **Product B** implementation tranche subject to Phase 0A’s integration note and Adam+Eve review. Product A remains frozen. Strategic phases stay out of `ACTIVE.md` until a tranche is explicitly authorized.
 
 Nothing from the second-pass finding list was deferred: each item is a binding requirement in the plan text.

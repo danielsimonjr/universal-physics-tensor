@@ -10,6 +10,10 @@ import { CANONICAL_EQUATIONS } from '../../canonical/registry.js';
 import { normalForm } from '../../canonical/normal-form.js';
 import { BRIDGE_RHS_BY_ID } from '../../bridges/rhs-registry.js';
 import { monomialToExpr } from './generator.js';
+import { evalExpr } from '../expr-eval.js';
+import { equals } from '../../dimensional/algebra.js';
+import type { Dimension } from '../../dimensional/types.js';
+import { canonicalPrefactor } from '../canonical-prefactors.js';
 
 export interface CorpusMatch {
   readonly id: string;
@@ -55,6 +59,105 @@ export function compareToCorpus(expr: ExprNode, corpusVersion: string): CorpusCo
     algebraicMatches: algebraic,
     searchedAt: new Date().toISOString(),
   };
+}
+
+/**
+ * The symbols of an AST that carry a dimension, with that dimension. Numeric
+ * literals and named numbers (`8pi`) are dimensionless and left out; so is a
+ * dimensionless variable, which then makes the ratio vary and returns no prefactor.
+ */
+function dimensionedSymbols(node: ExprNode, out: Map<string, Dimension>): Map<string, Dimension> {
+  if (node.kind === 'symbol') {
+    if (Object.values(node.dim).some((e) => e !== 0)) out.set(node.name, node.dim);
+    return out;
+  }
+  for (const a of (node as { args?: readonly ExprNode[] }).args ?? []) dimensionedSymbols(a, out);
+  return out;
+}
+
+/**
+ * The corpus prefactor k of a fully quantitative canonical entry against a
+ * candidate body: `scalarAst / candidate`, which must be constant. Symbols align
+ * by name, then by a dimension exactly one candidate symbol carries. Evaluated at
+ * three points where variable i takes (1.7 + i)^p, p = 1, 1.3, 1.6. `null` when
+ * the symbols do not align or the ratio is not constant.
+ */
+function corpusPrefactor(ast: ExprNode, candidate: ExprNode): number | null {
+  const astSyms = dimensionedSymbols(ast, new Map());
+  const candSyms = dimensionedSymbols(candidate, new Map());
+  if (astSyms.size !== candSyms.size) return null;
+  const toCand = new Map<string, string>();
+  const free = new Set(candSyms.keys());
+  for (const s of astSyms.keys()) if (free.has(s)) (toCand.set(s, s), free.delete(s));
+  for (const [s, d] of astSyms) {
+    if (toCand.has(s)) continue;
+    const hits = [...free].filter((c) => equals(candSyms.get(c)!, d));
+    if (hits.length !== 1) return null;
+    toCand.set(s, hits[0]!);
+    free.delete(hits[0]!);
+  }
+  const names = [...candSyms.keys()].sort();
+  const ratios = [1, 1.3, 1.6].map((p) => {
+    const vals = Object.fromEntries(names.map((n, i) => [n, Math.pow(1.7 + i, p)]));
+    const astVals = Object.fromEntries([...toCand].map(([s, c]) => [s, vals[c]!]));
+    return evalExpr(ast, astVals) / evalExpr(candidate, vals);
+  });
+  const k = ratios[0]!;
+  return Number.isFinite(k) && ratios.every((r) => Math.abs(r / k - 1) <= 1e-9) ? k : null;
+}
+
+/**
+ * Compare a FITTED prefactor with the prefactor of each corpus relation the
+ * candidate is algebraically equivalent to. `normalForm` matches up to a
+ * constant, so an equivalent candidate can still carry the wrong constant: a
+ * pendulum fitted on finite-amplitude data gives ĉ = 7.39, not 2π. Only a fully
+ * quantitative canonical entry records a prefactor; for any other match the
+ * note says the fitted value is not compared. `tolerance` is relative (the
+ * holdout tolerance of the run).
+ *
+ * @internal
+ */
+export function corpusPrefactorNotes(
+  result: CorpusComparisonResult,
+  candidate: ExprNode,
+  fitted: number,
+  tolerance: number,
+): string[] {
+  const c = fitted.toPrecision(4);
+  return result.algebraicMatches.map((m) => {
+    const entry = m.layer === 'canonical' ? CANONICAL_EQUATIONS.find((e) => e.id === m.id) : undefined;
+    let k: number | null = null;
+    // Fully quantitative entries carry their prefactor; others may take it from
+    // the sourced table, applied to the entry's AST or, lacking one, its monomial.
+    const tabled = entry && entry.epistemicStatus !== 'fully-quantitative' ? canonicalPrefactor(entry.id) : undefined;
+    const body =
+      entry?.epistemicStatus === 'fully-quantitative'
+        ? entry.scalarAst
+        : tabled === undefined
+          ? undefined
+          : (entry?.scalarAst ??
+            (entry?.dimensional.monomial
+              ? monomialToExpr(entry.dimensional.monomial, [entry.dimensional.target, ...entry.dimensional.governing])
+              : undefined));
+    if (body !== undefined) {
+      try {
+        const base = corpusPrefactor(body, candidate);
+        k = base === null ? null : (tabled ?? 1) * base;
+      } catch {
+        k = null;
+      }
+    }
+    if (k === null) return `${m.id} records no prefactor, so the fitted ĉ=${c} is not compared with it`;
+    const rel = fitted / k - 1;
+    if (Math.abs(rel) <= tolerance) {
+      return `fitted ĉ=${c} agrees with ${m.id}'s prefactor ${k.toPrecision(4)} (within the holdout tolerance ${tolerance})`;
+    }
+    const pct = `${rel > 0 ? '+' : ''}${Math.round(rel * 100)}%`;
+    return (
+      `fitted ĉ=${c} contradicts ${m.id}'s prefactor ${k.toPrecision(4)} (${pct}): ` +
+      "the data may lie outside that relation's regime"
+    );
+  });
 }
 
 /** Allowed automated novelty sentence. @internal */

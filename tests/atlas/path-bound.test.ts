@@ -35,8 +35,18 @@ import { propagateUncertainty } from '../../src/composition/uncertainty.js';
 import type { BridgeEdge } from '../../src/composition/edge.js';
 import { DIMENSIONLESS } from '../../src/dimensional/types.js';
 
-/** A bound with the mandatory fields filled, for algebra-only assertions. */
-function bound(K: number, delta: number, norm: string): ApproximationBound {
+/**
+ * A bound with the mandatory fields filled, for algebra-only assertions.
+ *
+ * `uniformity` defaults to a non-empty marker so these helpers stay analysed.
+ * A dedicated case passes `null` or `[]` — both mean not yet analysed.
+ */
+function bound(
+  K: number,
+  delta: number,
+  norm: string,
+  uniformity: readonly string[] | null = ['test'],
+): ApproximationBound {
   return {
     K,
     delta,
@@ -45,6 +55,7 @@ function bound(K: number, delta: number, norm: string): ApproximationBound {
     horizon: 'test horizon',
     horizonHolds: () => true,
     limitCharacter: 'regular',
+    uniformity,
   };
 }
 
@@ -150,6 +161,54 @@ describe('boundPath — the refusals', () => {
   it('throws on an empty path rather than returning the identity', () => {
     expect(() => boundPath([])).toThrow(RangeError);
   });
+
+  it('refuses a coarse-graining whose uniformity is null, and returns no numeric bound', () => {
+    const result = boundPath([
+      bridgeOf('cg-unanalysed', 'coarse-graining', bound(2, 0.1, 'relative period error', null)),
+    ]);
+    expect(result.kind).toBe('no-claim');
+    if (result.kind !== 'no-claim') throw new Error('unreachable');
+    expect(result.reason).toBe('uniformity-unanalysed');
+    expect(result.detail).toContain('cg-unanalysed');
+    // The refusal is structural: there is no `bound` property to read at all.
+    expect(Object.hasOwn(result, 'bound')).toBe(false);
+    expect((result as { bound?: unknown }).bound).toBeUndefined();
+  });
+
+  it('refuses the same bridge shape when uniformity is an empty array', () => {
+    const result = boundPath([
+      bridgeOf('cg-empty', 'coarse-graining', bound(2, 0.1, 'relative period error', [])),
+    ]);
+    expect(result.kind).toBe('no-claim');
+    if (result.kind !== 'no-claim') throw new Error('unreachable');
+    expect(result.reason).toBe('uniformity-unanalysed');
+    expect(Object.hasOwn(result, 'bound')).toBe(false);
+  });
+
+  it('CONTROL: the same bridge shape with a stated scope is not uniformity-unanalysed', () => {
+    // The refusal above must be able to fail. An analysed bound of the same
+    // shape composes to a number; if this also returned uniformity-unanalysed,
+    // the gate would be a check that cannot fail.
+    const result = boundPath([
+      bridgeOf('cg-analysed', 'coarse-graining', bound(2, 0.1, 'relative period error', ['stated scope'])),
+    ]);
+    expect(result.kind).toBe('bound');
+    if (result.kind !== 'bound') throw new Error('unreachable');
+    expect(result.bound).toEqual({ K: 2, delta: 0.1 });
+  });
+
+  it('a no-composite-claim path still reports that reason when a bound is unanalysed', () => {
+    // Relation is the first gate. This path fails BOTH the relation cell and
+    // the uniformity check; the reported reason must stay the relation.
+    expect(composeRelation('approximation', 'exact-equivalence')).toBe('no-composite-claim');
+    const result = boundPath([
+      bridgeOf('approx-unanalysed', 'approximation', bound(1, 0.01, 'relative period error', null)),
+      bridgeOf('ex-bare', 'exact-equivalence', undefined),
+    ]);
+    expect(result.kind).toBe('no-claim');
+    if (result.kind !== 'no-claim') throw new Error('unreachable');
+    expect(result.reason).toBe('no-composite-claim');
+  });
 });
 
 describe('propagateUncertainty — the optional bound is strictly additive', () => {
@@ -228,7 +287,7 @@ describe('boundPath — the arithmetic, where a claim is actually licensed', () 
     expect(result.kind).toBe('bound');
     if (result.kind !== 'bound') throw new Error('unreachable');
     expect(result.relation).toBe('approximation');
-    expect(result.norm).toBe('relative period error');
+    expect(result.norm).toBe('relative period error, normalized by the value of the reduced model');
     // The bridge's delta is now the EXACT relative period error at the edge of
     // its declared range, θ0 = 0.5, not the series term 0.5²/16 = 0.015625 —
     // which is 1.456% below the error it was supposed to bound. A single-edge

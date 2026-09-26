@@ -1,7 +1,7 @@
 {
   "$schema": "./bridge-catalog.schema.json",
   "schemaVersion": 2,
-  "packageVersion": "0.45.2",
+  "packageVersion": "0.47.1",
   "count": 55,
   "entries": [
     {
@@ -864,7 +864,13 @@
       "formula_latex": "\\langle O_1(x_1) O_2(x_2) O_3(x_3) O_4(x_4) \\rangle = \\sum_{\\Delta,\\ell} C_{12}^O C_{34}^O g_{\\Delta,\\ell}(u,v)",
       "source_part": "II",
       "source_section": "Part-II Category J",
-      "known_issues": [],
+      "known_issues": [
+        {
+          "severity": "other",
+          "description": "The single-block residual R = C²·[g_block(u,v) − g_block(v,u)] (BridgeEquations.crossingResidual) had no v^Δφ / u^Δφ prefactors and was written for ONE conformal block; crossing holds only for the full four-point function g = 1 + Σ_O λ_O² g_O with the prefactors (Rattazzi et al. 2008, eq. 4.3). It was deprecated in 0.46.0 and REMOVED in 0.47.0; the encoded relation is BridgeEquations.crossingEquation.",
+          "fixable": "spec-edit"
+        }
+      ],
       "references": [
         "Rattazzi, Rychkov, Tonni & Vichi 2008 *JHEP* 0812:031 (arXiv:0807.0004; modern conformal-bootstrap revival, foundational)",
         "Poland, Rychkov & Vichi 2019 *Rev. Mod. Phys.* 91:015002 (arXiv:1805.04405; comprehensive bootstrap review)",
@@ -873,17 +879,17 @@
       ],
       "dependencies": [],
       "dimensional_signature": "[1]",
-      "encoded_form": "Crossing-symmetry residual R_cross = C²·[g_block(u,v) − g_block(v,u)] (a single dimensionless scalar measuring violation of crossing symmetry between u- and v-channels); reduced from the full four-point CFT correlator + conformal-block decomposition shown in formula_latex.",
+      "encoded_form": "Crossing equation R_cross = v^Δφ·g(u,v) − u^Δφ·g(v,u) for four identical scalars of dimension Δφ (Rattazzi et al. 2008, eq. 4.3), with g the full reduced four-point function 1 + Σ_O λ_O² g_O (identity plus the sum over exchanged operators); a single dimensionless scalar, zero in a consistent CFT. Reduced from the four-point correlator and its conformal-block decomposition in formula_latex.",
       "tractability_class": "numerical-tractable",
-      "notes": "Encoded 2026-05-07 (Wave Z): Tier-5 AST encoding for the conformal-bootstrap crossing-symmetry residual landed (src/bridges/equations/be-35-conformal-bootstrap.ts). dimensional_signature null → '[1]'. The original 4-pt-function expansion ⟨O₁O₂O₃O₄⟩ = Σ_{Δ,ℓ} C₁₂^O C₃₄^O g_{Δ,ℓ}(u,v) is operator-valued and admits no scalar reduction without committing to specific operator dimensions; AST encodes OpenAI's reduction R_cross = C²·[g_block(u,v) − g_block(v,u)] which is identically zero at the crossing-symmetric point u=v=1/4 for any consistent CFT. Honest-claude scope notes: single-block reduction (the real bootstrap programme sums an infinite (Δ,ℓ) tower with positivity / unitarity constraints — that spectrum-fitting is the load-bearing numerical content of bootstrap papers and is NOT captured here); OPE coefficients C are scheme-dependent normalizations (assumed unit-normalized so C is dimensionless); conformal-block functions g_{Δ,ℓ}(u,v) encoded as dimensionless symbol stubs (analytic forms exist in 2D/4D Dolan-Osborn but live outside AST grammar — no hypergeometric-function node). Gemini-Pro-confirmed second-opinion 2026-05-07: \"sharp and canonical representation of the conformal bootstrap philosophy\", AST-grammar-compliant via dimensionless-stub. | see source | status_text: Established. The conformal bootstrap crossing-symmetry equation is well established in CFT and has produced rigorous bounds on critical exponents for the 3D Ising model and other theories (Rattazzi-Ry... | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown classification applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): NOT-A-BRIDGE. HIGH NOT-A-BRIDGE: pure-CFT internal-consistency result; single regime. The bridges array remains [unknown, unknown] as the structural marker for not actually a regime-spanning bridge. Future v0.8+ restructuring may move this entry to a separate LAW_EQUATIONS registry.",
+      "notes": "Encoded 2026-05-07 (Wave Z): Tier-5 AST encoding for the conformal-bootstrap crossing-symmetry residual landed (src/bridges/equations/be-35-conformal-bootstrap.ts). dimensional_signature null → '[1]'. The original 4-pt-function expansion ⟨O₁O₂O₃O₄⟩ = Σ_{Δ,ℓ} C₁₂^O C₃₄^O g_{Δ,ℓ}(u,v) is operator-valued and admits no scalar reduction without committing to specific operator dimensions; AST encodes OpenAI's reduction R_cross = C²·[g_block(u,v) − g_block(v,u)] which is identically zero at the crossing-symmetric point u=v=1/4 for any consistent CFT. Honest-claude scope notes: single-block reduction (the real bootstrap programme sums an infinite (Δ,ℓ) tower with positivity / unitarity constraints — that spectrum-fitting is the load-bearing numerical content of bootstrap papers and is NOT captured here); OPE coefficients C are scheme-dependent normalizations (assumed unit-normalized so C is dimensionless); conformal-block functions g_{Δ,ℓ}(u,v) encoded as dimensionless symbol stubs (analytic forms exist in 2D/4D Dolan-Osborn but live outside AST grammar — no hypergeometric-function node). Gemini-Pro-confirmed second-opinion 2026-05-07: \"sharp and canonical representation of the conformal bootstrap philosophy\", AST-grammar-compliant via dimensionless-stub. | see source | status_text: Established. The conformal bootstrap crossing-symmetry equation is well established in CFT and has produced rigorous bounds on critical exponents for the 3D Ising model and other theories (Rattazzi-Ry... | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown classification applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): NOT-A-BRIDGE. HIGH NOT-A-BRIDGE: pure-CFT internal-consistency result; single regime. The bridges array remains [unknown, unknown] as the structural marker for not actually a regime-spanning bridge. Future v0.8+ restructuring may move this entry to a separate LAW_EQUATIONS registry. | Corrected 2026-09-24 (citation census finding F1): the Wave Z residual C²·[g_block(u,v) − g_block(v,u)] had no v^Δφ / u^Δφ prefactors and was written for one block, and neither is crossing symmetric. Its stated check, \"identically zero at the crossing-symmetric point u=v=1/4\", holds for ANY function at u = v and so tested nothing. The encoded relation is now the crossing equation v^Δφ·g(u,v) − u^Δφ·g(v,u) for the full four-point function (BE35_CROSSING_EQUATION_RHS, BridgeEquations.crossingEquation), checked exactly against the generalized free field g = 1 + u^Δ + (u/v)^Δ away from u = v. The old evaluator stays, deprecated, as public API.",
       "relation": {
         "type": "exact-equivalence",
-        "transformation": "s-channel OPE decomposition of <O1 O2 O3 O4> -> t-channel decomposition, i.e. the cross-ratio swap (u, v) -> (v, u)",
+        "transformation": "s-channel OPE decomposition of <phi phi phi phi> (four identical scalars of dimension d) -> t-channel decomposition: the crossing relation v^d g(u, v) = u^d g(v, u) (Rattazzi et al. 2008, eq. 4.3), i.e. the cross-ratio swap (u, v) -> (v, u) with those prefactors",
         "inverse": "(v, u) -> (u, v) - the swap is an involution and is its own inverse"
       },
       "counterexamples": [
         {
-          "description": "Not a regime-crossing bridge: the crossing-symmetry constraint is internal to a CFT operator algebra - a consistency condition within one QFT regime, not a relation between regimes.",
+          "description": "The crossing-symmetry constraint is internal to a CFT’s operator algebra — a consistency condition within one QFT regime, not a relation between regimes.",
           "witness": "src/bridges/rejected.ts - REJECTED_BRIDGE_ADJUDICATIONS, beId 35"
         }
       ]
@@ -1335,7 +1341,7 @@
     },
     {
       "id": 48,
-      "name": "GRW mass-amplified localization rate (CSL extension)",
+      "name": "GRW mass-amplified localization rate",
       "category": "O",
       "category_name": "Quantum Foundations",
       "bridges": [
@@ -1343,22 +1349,22 @@
         "classical"
       ],
       "status": "speculative",
-      "context": "GRW / CSL mass-amplified spontaneous-localization rate λ_GRW(m) = λ_0 · (m/m_0): a particle of mass m localizes at rate proportional to m/m_0, where m_0 is the nucleon mass and λ_0 ≈ 10⁻¹⁶ /s is the canonical GRW 1986 single-nucleon rate. The full Lindblad master equation is the framing; the scalar rate is the AST-encoded bridge content.",
+      "context": "GRW mass-amplified spontaneous-localization rate λ_GRW(m) = λ_0 · (m/m_0), the GRW (QMSL) centre-of-mass amplification λ_macro = N λ_micro (Bassi & Ghirardi 2003 §6.4); in CSL the macroscopic rate is γ D_0 n_out instead (§8.3). A particle of mass m localizes at rate proportional to m/m_0, where m_0 is the nucleon mass and λ_0 ≈ 10⁻¹⁶ /s is the canonical GRW 1986 single-nucleon rate. The full Lindblad master equation is the framing; the scalar rate is the AST-encoded bridge content.",
       "formula_latex": "\\lambda_{\\text{GRW}}(m) = \\lambda_0 \\cdot \\frac{m}{m_0}, \\quad \\lambda_0 \\approx 10^{-16}\\,\\text{s}^{-1}, \\quad m_0 = m_{\\text{nucleon}}",
       "source_part": "II",
       "source_section": "Part-II Category O",
       "known_issues": [
         {
           "severity": "phenomenological-ansatz",
-          "description": "[Reformulated 2026-05-07, Wave Y] The mass-amplified localization rate λ_GRW(m) = λ_0 · (m/m_0) is canonical CSL physics (Pearle 1989 *Phys. Rev. A* 39:2277; Ghirardi-Pearle-Rimini 1990 *Phys. Rev. A* 42:78; Bassi-Ghirardi 2003 *Phys. Rep.* 379:257 review §2.1). The original BE-48 entry encoded the full GRW Lindblad master equation dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}] which is operator-valued and has no clean scalar AST encoding. The Wave Y reformulation encodes only the scalar rate, parallel to BE-11's encoding of the Caldeira-Leggett rate γ_k(λ) (not the full Lindblad master equation). The bridge framing — using GRW / CSL mass-amplification as a UPT quantum-foundations bridge between standard QM and a possible objective-collapse modification of QM — is the speculative element documented here. λ_0 = 10⁻¹⁶ /s is the canonical 1986 GRW value (Ghirardi-Rimini-Weber Phys. Rev. D 34:470); experimental constraints (Adler 2007 *J. Phys. A* 40:2935; cold-atom interferometry; X-ray emission tests) bound it. The phenomenological-ansatz tag is for the bridge framing, not for the canonical λ_GRW = λ_0(m/m_0) rate itself.",
+          "description": "[Reformulated 2026-05-07, Wave Y] The mass-amplified localization rate λ_GRW(m) = λ_0 · (m/m_0) is the GRW (QMSL) centre-of-mass amplification λ_macro = N λ_micro (Bassi-Ghirardi 2003 *Phys. Rep.* 379:257 review §6.4), with N = m/m_0 this repository's identification; CSL gives γ D_0 n_out instead (review §8.3). The original BE-48 entry encoded the full GRW Lindblad master equation dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}] which is operator-valued and has no clean scalar AST encoding. The Wave Y reformulation encodes only the scalar rate, parallel to BE-11's encoding of the Caldeira-Leggett rate γ_k(λ) (not the full Lindblad master equation). The bridge framing — using GRW / CSL mass-amplification as a UPT quantum-foundations bridge between standard QM and a possible objective-collapse modification of QM — is the speculative element documented here. λ_0 = 10⁻¹⁶ /s is the canonical 1986 GRW value (Ghirardi-Rimini-Weber Phys. Rev. D 34:470); experimental constraints (Adler 2007 *J. Phys. A* 40:2935; cold-atom interferometry; X-ray emission tests) bound it. The phenomenological-ansatz tag is for the bridge framing, not for the canonical λ_GRW = λ_0(m/m_0) rate itself.",
           "fixable": "reformulation"
         }
       ],
       "references": [
         "Ghirardi, Rimini & Weber 1986 *Phys. Rev. D* 34:470 (original GRW objective-collapse master equation; canonical 3D form; λ_0 ≈ 10⁻¹⁶ /s)",
-        "Pearle 1989 *Phys. Rev. A* 39:2277 (Continuous Spontaneous Localization extension; mass-density-coupled noise)",
-        "Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (CSL with mass-amplification mechanism: rate λ ∝ m/m_0 for composite systems)",
-        "Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (arXiv:quant-ph/0302164; Dynamical reduction models — comprehensive review §2.1 covers the mass-amplification rate)",
+        "Pearle 1989 *Phys. Rev. A* 39:2277 (Continuous Spontaneous Localization; not seen)",
+        "Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (the CSL paper; metadata only)",
+        "Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (arXiv:quant-ph/0302164; Dynamical reduction models — review; §6.4 gives the GRW/QMSL centre-of-mass amplification λ_macro = N λ_micro, §8.3 the CSL rate γ D_0 n_out)",
         "Bassi, Lochan, Satin, Singh & Ulbricht 2013 *Rev. Mod. Phys.* 85:471 (arXiv:1204.4325; Models of wave-function collapse, underlying theories, and experimental tests)",
         "Adler 2007 *J. Phys. A* 40:2935 (CSL parameter constraints from cosmic-ray-induced ionization rates)"
       ],
@@ -1366,10 +1372,10 @@
       "dimensional_signature": "[frequency]",
       "encoded_form": "Localization rate λ_GRW (a single scalar frequency), reduced from the full nonlinear stochastic Schrödinger evolution shown in formula_latex.",
       "tractability_class": "closed-form",
-      "notes": "Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the mass-amplified GRW localization rate λ_GRW(m) = λ_0 · (m/m_0) landed (src/bridges/equations/be-48-grw-localization.ts). dimensional_signature was orphan '[frequency]' (R0 audit pin); now backed by an AST module. The full Lindblad master equation is preserved as the bridge framing / context; the scalar rate is the encoded bridge content (parallel to BE-11 encoding only the Caldeira-Leggett rate γ_k(λ), not the full Lindblad). Numerical bracket: λ_GRW(electron) ≈ 5×10⁻²⁰ /s (negligible for individual electrons); λ_GRW(macroscopic 1 g) ≈ 6×10⁷ /s (rapid collapse, no Schrödinger-cat states). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued master equations with their canonical scalar reductions). Replaced the operator-valued Lindblad master-equation form (dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}]) with the canonical mass-amplification rate λ_GRW(m) = λ_0 · (m/m_0). Status changed from 'established' to 'speculative' because the bridge framing — using GRW / CSL mass-amplification as a UPT bridge between standard QM and a possible objective-collapse modification — is the speculative element (the rate formula itself is canonical, but the existence of the GRW / CSL effect as a real physical mechanism is the conjectural content). Same pattern as BE-22, BE-26, BE-38 (Kitaev-Preskill / WKB / Milgrom canonical, UPT bridge framing speculative). | Earlier history: Corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value. Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review. | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown naming applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): [quantum, classical]. Rationale (HIGH: CSL-extension maps quantum superposition -> classical localization).",
+      "notes": "Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the mass-amplified GRW localization rate λ_GRW(m) = λ_0 · (m/m_0) landed (src/bridges/equations/be-48-grw-localization.ts). dimensional_signature was orphan '[frequency]' (R0 audit pin); now backed by an AST module. The full Lindblad master equation is preserved as the bridge framing / context; the scalar rate is the encoded bridge content (parallel to BE-11 encoding only the Caldeira-Leggett rate γ_k(λ), not the full Lindblad). Numerical bracket: λ_GRW(electron) ≈ 5×10⁻²⁰ /s (negligible for individual electrons); λ_GRW(macroscopic 1 g) ≈ 6×10⁷ /s (rapid collapse, no Schrödinger-cat states). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued master equations with their canonical scalar reductions). Replaced the operator-valued Lindblad master-equation form (dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}]) with the canonical mass-amplification rate λ_GRW(m) = λ_0 · (m/m_0). Status changed from 'established' to 'speculative' because the bridge framing — using GRW / CSL mass-amplification as a UPT bridge between standard QM and a possible objective-collapse modification — is the speculative element (the rate formula itself is canonical, but the existence of the GRW / CSL effect as a real physical mechanism is the conjectural content). Same pattern as BE-22, BE-26, BE-38 (Kitaev-Preskill / WKB / Milgrom canonical, UPT bridge framing speculative). | Earlier history: Corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value. Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review. | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown naming applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): [quantum, classical]. Rationale (HIGH: CSL-extension maps quantum superposition -> classical localization). | Corrected 2026-09-24 (citation census finding F2): the name said \"(CSL extension)\" and the context said \"GRW / CSL\", crediting the linear law λ_0 (m/m_0) to CSL. Bassi & Ghirardi 2003 give it for GRW/QMSL (§6.4, λ_macro = N λ_micro) and give CSL a different macroscopic rate, γ D_0 n_out (§8.3). The name and context now say GRW; the earlier text above is kept as history.",
       "relation": {
         "type": "derivation",
-        "transformation": "single-nucleon GRW localization rate lambda_0 at reference mass m_0 -> composite-mass rate lambda_GRW(m) = lambda_0 (m/m_0) by CSL amplification"
+        "transformation": "single-nucleon GRW localization rate lambda_0 at reference mass m_0 -> composite-mass rate lambda_GRW(m) = lambda_0 (m/m_0) by the GRW (QMSL) centre-of-mass amplification lambda_macro = N lambda_micro"
       }
     },
     {
@@ -1454,8 +1460,8 @@
       "known_issues": [],
       "references": [
         "Dyson, Eddington & Davidson 1920 Phil. Trans. R. Soc. A 220:291 (original 1919 eclipse expedition)",
-        "Einstein 1915 Preuss. Akad. Wiss. 844 (GR prediction of 4GM/(Rc²) deflection)",
-        "Carroll 2004 Spacetime and Geometry §8.5 (standard GR textbook derivation)",
+        "Einstein 1915 Preuss. Akad. Wiss. 831 (the perihelion paper: the doubled deflection 2α/Δ, 1.7″ at the Sun's limb, p. 834; 4GM/(Rc²) needs α = 2GM/c², which is this repository's identification)",
+        "Carroll 2004 Spacetime and Geometry (not seen: cited as the standard textbook; no section or content verified)",
         "Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)"
       ],
       "dependencies": [],
@@ -1516,7 +1522,7 @@
       "references": [
         "Einstein 1915 Preuss. Akad. Wiss. 831 (GR prediction of perihelion advance)",
         "Le Verrier 1859 (original anomalous Mercury precession observation, 43\"/century)",
-        "Carroll 2004 Spacetime and Geometry §7.4 (standard GR textbook derivation)",
+        "Carroll, Lecture Notes on General Relativity (gr-qc/9712019), eq. (7.56) (the apsidal frequency ω_a; refers to Weinberg for the derivation)",
         "Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)"
       ],
       "dependencies": [],
@@ -1533,7 +1539,7 @@
           {
             "group": "r_s · r^-1",
             "op": "<=",
-            "bound": 6.421581202732011e-8,
+            "bound": 6.419934159745687e-8,
             "alias": "r_s/r <= r_s(M)/(a(1-e)) at Mercury perihelion"
           },
           {
@@ -1747,7 +1753,7 @@
         "classical"
       ],
       "status": "established",
-      "context": "A Josephson junction biased at DC voltage V emits radiation at f = K_J·V, with the Josephson constant K_J = 2e/h = 483597.8484 GHz/V (exact, post-2019 SI). The factor 2e is the Cooper-pair charge — the effect is macroscopic quantum coherence of a BOSONIC condensate. It is the quantum standard of the volt; with BE-55 (R_K = h/e², the ohm) and BE-58 (k_B via Johnson noise) it completes the quantum metrology triangle. Josephson 1962 (Nobel 1973).",
+      "context": "A Josephson junction biased at DC voltage V emits radiation at f = K_J·V, with the Josephson constant K_J = 2e/h, exact in the post-2019 SI (483597.8484 GHz/V to 10 significant figures). The factor 2e is the Cooper-pair charge — the effect is macroscopic quantum coherence of a BOSONIC condensate. It is the quantum standard of the volt; with BE-55 (R_K = h/e², the ohm) and BE-58 (k_B via Johnson noise) it completes the quantum metrology triangle. Josephson 1962 (Nobel 1973).",
       "formula_latex": "f = \\frac{2e}{h} V, \\quad K_J = \\frac{2e}{h}",
       "source_part": "III",
       "source_section": "PI-instrument condensed-matter cluster (2026-07-05) — established data-confrontable bridge",
@@ -2063,10 +2069,10 @@
       "kind": "value",
       "outcome": {
         "kind": "value",
-        "predicted": 1.7517100517691688,
-        "observed": 1.751639983367098,
-        "sigma": 0.00010510260310615013,
-        "residualInSigma": 0.6666666666680373,
+        "predicted": 1.751190325559984,
+        "observed": 1.7511202779469617,
+        "sigma": 0.00010507141953359905,
+        "residualInSigma": 0.6666666666669404,
         "withinObserved": true,
         "units": "arcsec (solar-limb deflection)",
         "provenance": {
@@ -2074,6 +2080,13 @@
           "year": 2009,
           "retrieved": "2026-07-04",
           "note": "BE-51 encodes the gamma=1 GR deflection alpha=4GM/(bc^2); predicted is the solar-limb deflection from evaluateGravitationalLensing(M_sun, R_sun). Observed = measured (1+gamma)/2 applied to that same limb baseline (the baseline is pure physical constants, not GR theory), so this is a genuine test of gamma vs 1 via deflection — complementary to be-37 (gamma via Shapiro delay)."
+        },
+        "measured": {
+          "quantity": "PPN γ",
+          "value": 0.99992,
+          "sigma": 0.00012,
+          "source": "VLBI",
+          "derivation": "(1+γ)/2 × predicted"
         }
       }
     },
@@ -2083,10 +2096,10 @@
       "kind": "value",
       "outcome": {
         "kind": "value",
-        "predicted": 42.99158858487129,
+        "predicted": 42.98056186229095,
         "observed": 43.11,
         "sigma": 0.45,
-        "residualInSigma": 0.2631364780638042,
+        "residualInSigma": 0.2876403060201148,
         "withinObserved": true,
         "units": "arcsec/century",
         "provenance": {

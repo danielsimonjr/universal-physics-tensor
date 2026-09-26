@@ -51,6 +51,7 @@
   deliberately not bumped (release-sized optional-dep sweep; zero hard-dep
   breakage risk). Revisit as a dedicated MathTS-alignment release, not a gap-fix
   drive-by.
+  - [x] Dependabot ignores `@danielsimonjr/mathts-*` until that release (PRs #178–181 closed by Mothership 2026-09-22).
 
 ## v0.44.3 released 2026-08-28
 
@@ -274,7 +275,70 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] **Atlas Sprint 6 — study, scoped release, discovery hypothesis (IN FLIGHT).** **S6.1** — study
+- [ ] **0.47.1 CLI applied-physicist persona retest triage (2026-09-26).** After the W1–Q2 fix batch;
+  findings in `docs/research/cli-physicist-persona-0.47.1-post-fix.md`. Open: W4 (Kepler/Schwarzschild
+  monomial binds G/c as 1), W5 (Planck all-constant RHS refused), W6 (`a`→perihelion), W7 (Landauer
+  `ln(2)` vs `ln2`), L5–L8, Q3–Q4, I5–I8. Docs-only pass; Mothership to order fixes.
+
+- [x] **0.47.1 CLI applied-physicist persona pass + fix batch (2026-09-26).** Findings in
+  `docs/research/cli-physicist-persona-0.47.1.md`. Fixed: W1 (c vs speed-of-light), W2 (RHS kebabs),
+  W3/I3 (landing summary), L1 (named dim products), L2/I1 (`canonical --vars`), L3/I4 (probe
+  searchable-only default), L4 (T→temperature), Q1 (PROMISING sort), Q2 (CONTRIBUTING 55).
+
+- [x] **0.47.1 patch batch from the 0.47.0 persona re-test (Mothership ruling 2026-09-25).** After the hermetic-tests fix; one PR per item, in this order. Findings: `C:\dogfood\upt-persona-047\FINDINGS.md`.
+      - [x] N1 (limits): the prefactor check matches variable names exactly; `kinetic_energy = mass*velocity^2` reports "prefactor NOT checked" and exits 0, because CE-kinetic-energy names its variable `speed`. Resolve names through the CLI's synonym/alias layer; test velocity AND speed, plus one name that must stay unresolved.
+      - [x] N3 (clarity): with an unknown name, `map --equation` prints "dimensional MISMATCH" and exits 0 (the UNKNOWN rule). Say on the mismatch line that it involves the unresolved placeholder; keep the exit code.
+      - [x] N2 + N5: ONE name suggester for `map` and `explain`, ranked by edit distance first (`lenght` → `length`; `hawkng-temperature` → `hawking-temperature` first).
+      - [x] N4: `map --equation` prints the verdict first and the 40-component map after it (or behind a flag). No exit-code change.
+      - [x] Release prep PR for 0.47.1 (Mothership order 2026-09-25): version bump, CHANGELOG `[0.47.1]` with a summary, version-stamped artifacts regenerated, full gate counts in the PR body. The tag, npm publish and GitHub release are Mothership's.
+      - [x] L9 residual: ab-damped-massless states δ = 3 for x0 = 1; the measured worst case over its domain is 0.523. Fix only if small; otherwise document it.
+
+- [x] **The git-spawning gate tests are not hermetic** (Mothership report 2026-09-25; fix AFTER the 0.47.0 persona re-test). When the pre-push hook runs from a LINKED git worktree, git exports GIT_DIR to the hook. `tests/tools/pushed-head.test.ts` (3 tests) and `tests/tools/untracked-gate-inputs.test.ts` (15 tests) spawn `git init` and `git commit` in temp dirs, inherit GIT_DIR, and act on the REAL repository. On the 0.47.0 release push they set `core.bare = true` in the main `.git/config` and committed "a" by t@example.invalid onto the worktree HEAD (repaired; nothing reached the remote). Fix: the tests' git helper removes GIT_DIR, GIT_WORK_TREE, GIT_INDEX_FILE and GIT_COMMON_DIR from the child env, and the hook unsets GIT_* before it runs the suite. Proof: a test that runs the gate from a linked worktree and checks that the main repo is unchanged.
+
+- [ ] **After 0.47.0: one release per tier, each DESIGNED and approved by Mothership before any code**
+      (owner order 2026-09-25). No code before the design is approved.
+      - [ ] After the criterion 3 study closes: switch the product's typed structural search (`rankByStructure` callers) to the residual-form canonical corpus, so user claims in residual form can match. Blocked while the Amendment 8 pins are live.
+      - [ ] Tier 8 → 0.48.0 also: C1, probe-searchable frontier gaps (today `upt probe scan` lists 232 gaps, none searchable).
+      - [ ] Tier 10 → 0.49.0: C3, cross-family `upt path`, with bound composition across families.
+      - [ ] Tier 11 → 0.50.0: ROADMAP §8 hybrid retrieval: optional out-of-process embedding backend (qwen3-embedding:4b via Ollama), zero hard deps, fallback to atlas search, deterministic tests with a stub embedder plus the frozen study vectors; the live GPU evaluation waits for LLMBench's reservation to end.
+
+- [x] **0.47.0 batch from the persona pass (Mothership ruling 2026-09-25).** One finding per commit;
+      STOP and report before any release (0.47.0 is Mothership's).
+      - [x] P: canonical prefactor table OUTSIDE the pinned `src/canonical` tree (entry id, exact prefactor, source quote + locator); L2 and L7 read it, so π-for-2π and a missing ½ report "differs by factor".
+      - [x] D1: README links docs, `cli/README.md`, `examples/`, `data/bridge-catalog.json` that the npm package does not ship.
+      - [x] D2: the `upt probe run --problem` file format is documented nowhere a user can read (types are `@internal`).
+      - [x] D4: `upt evaluate` help says "~1.44 M_sun"; the output is 1.4559 (m_u, M☉ = 1.989e30).
+      - [x] D5: `discover --derive` example values use 300 for every free variable, whatever its dimension.
+      - [x] D6: `ab-spring-lc` states the m↔L, k↔1/C map only in witness text; its counterexample's L/C = 16 is unstated.
+      - [x] F1: `--at` ignores unknown keys silently, and composite groups must be typed as the exact display string.
+      - [x] F2: failed checks exit 0 (derive/map dimension mismatch, path with a violated horizon or regime, explain of an unknown name). BREAKING CLI change.
+      - [x] F3: the default install pulls 36 packages / 48 MB through `optionalDependencies` for a "zero hard dependencies" package.
+      - [x] Remove the deprecated `BridgeEquations.crossingResidual` (BE-35 single-block residual, no prefactors; superseded by `crossingEquation` in the F1 fix). A breaking change to the public API, so it waits for Mothership's release call.
+      - [x] C2: probe with a dimensionless governing variable says "no dimensionally valid candidates", which is false.
+      - [x] C4: `upt explain` answers an unknown name and a real uncovered quantity alike, and exits 0; say "not covered" plainly.
+      - [x] C5: `upt probe falsify` prints no falsification batteries: find out whether it is a bug (fix) or not (defer).
+      - [x] Tracker hygiene (owner order 2026-09-25, item 1): tick S6, the 2026-07-04 NEXT umbrella and the BRIDGE-PHYSICS-AUDIT row if every sub-item is done; re-scope or close "v0.11 headline"; close be-12 as won't-do; correct the stale Dependabot and Sprint-0 lines in NOTES.md. Leave the owner-kept groups open.
+      - [x] C1, C3: record in ROADMAP §8 Future (probe scan has nothing searchable; `path` cannot cross families). Deferred by ruling.
+      - [x] Release prep PR for 0.47.0 (Mothership order 2026-09-25): version bump, CHANGELOG `[0.47.0]` with a MIGRATION section, version-stamped artifacts regenerated. The tag, npm publish and GitHub release are Mothership's.
+
+- [x] **Outside-user persona pass on 0.46.0 (2026-09-25): fix W1 and L1–L9 by severity** (Mothership;
+      findings in the persona's `FINDINGS.md`, rulings by inbox 2026-09-25). One finding per commit.
+      - [x] L1: `upt path` quotes a bound and "all hold" outside the bound's own regime (pendulum at θ0 = 0.8: bound 1.59%, true error 4.15%).
+      - [x] L3: the discovery magnitude gate passes an anchor-invariant identity as evidence (λ_th(T_H) = 4π ℓ_P for every M).
+      - [x] L5: `upt explain` calls two restatements of ONE bridge (be-42, be-42-via-rs) "independent derivations" and their agreement a consistency check.
+      - [x] W1: `ab-kg-schrodinger` counterexample says "17% too high" (true excess 20.7%); the relative-error reference (the reduced model) is stated nowhere.
+      - [x] L4: AXIS-CLASH is labelled "identification falsified" while the funnel counts 0 falsified; relabel as a regime-label prior (text only).
+      - [x] L2: a user equation whose target and inputs match one canonical equation is compared with it at fixed points (prefactor agrees / differs by factor r / differs in FORM).
+      - [x] L6: `upt confront` be-51 shows a derived deflection as "observed"; show γ_obs ± σ as the observation.
+      - [x] L6b: BE-37/51/52 confrontations use G × 1.989e30 for GM☉; switch to the IAU 2015 nominal 1.3271244e20 m³ s⁻².
+      - [x] L7: probe marks a corpus-equivalent candidate "not novel" without comparing its fitted prefactor with the corpus one.
+      - [x] L8: `ab-stokes-einstein` states Re ≪ 1 and t ≫ m/γ in prose only; add machine inequalities (conditional: no frozen hash may move).
+      - [x] L9: `upt path --at` prints only the domain supremum; add `deltaAt(point)` as "bound at this point", tested ≥ the exact error.
+      - [x] Found during L7 (2026-09-25), NOT investigated, outside the W1/L1–L9 scope: `bun run test:probe-coverage` reports 0% on every file and "AssertionError: coverageFilesDirectory is required". Not in CI. Whether it also fails at the commit before L7 was not measured.
+      - [ ] tree-sitter reports `src/cli/commands/path.ts` as UNPARSED ("parse error (tree-sitter reported ERROR nodes)"), and does so on master too. tsc compiles it. An unparsed file is invisible to the code-docs and dependency tooling, so their counts are silently incomplete. Found 2026-09-25 during F2. Fix after the 0.47.0 batch (Mothership).
+      - [ ] Probe coverage is 94.53% statements against the 95% gate (measured 2026-09-25, once the provider was fixed). Lines 97.25%, functions 98.18%, branches 86.36% pass. Below 95% statements: generator.ts 82%, pipeline.ts 90%, residual.ts 90%, limits.ts 92%, metadata.ts 86%, fingerprint.ts 94%, problem.ts 94%, backend-protocol.ts 94%. Most predate this session; the gate went unmeasured while the provider was broken. Do NOT lower the threshold.
+
+- [x] **Atlas Sprint 6 — study, scoped release, discovery hypothesis (IN FLIGHT).** **S6.1** — study
       orchestration (`bun run atlas:study`); refuses (exit 3) on the empty frozen set.
       **S6.2** — ablation: four cumulative configurations, paired step statistics.
       **S6.3** — link prediction: ONE result, hypothesis NOT supported (typed 0.70 vs text 0.80 recall@10).
@@ -292,9 +356,98 @@ warning-silencing, not debug logging).
         Mothership 16:43; each must be able to FAIL.
       - [x] Search the 8 Sprint 4 closure bridges against Physlib (were unsearched at S4.6): keyword search
         + NavierStokes.lean read, no counterpart.
-      - [ ] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
+      - [x] Fresh-environment reproduction (Phase 6 exit criterion): clean clone OUTSIDE the working tree, install, build, test, regenerate every published artifact, compare byte for byte; report every mismatch.
+      - [x] Tier 1 ADR record: decision note in docs/, amend the ROADMAP "only if the study justifies it" sentence, and audit README + public docs for any claim that the atlas rejects invalid bridges better than alternatives (one commit).
+      - [x] Master CI red at 0ae8cbf (PR #184): the `atlas-pendulum` CLI golden lacked the new `uniformity:` line; regenerated with `golden-capture.mjs`.
+      - [x] Owner decision: a separate licence for the exported atlas DATA (today it falls under the repo's MIT `LICENSE`).
+      - [x] Owner decision: sole maintainership across all atlas families accepted explicitly (governance note §1).
+      - [x] Owner decision: the hosted frontier-LLM condition is NOT run and is out of scope (pre-registration Amendment 5; ROADMAP Phase 6).
+      - [x] Owner decision: the "reviewer time reported" exit criterion is amended to NOT MEASURED (no independent human reviewers).
+      - [x] `repo_map.py check . --docs docs/architecture` fails: hand-written counts in API, ARCHITECTURE, COMPONENTS, DATAFLOW, duplicate-symbols, FILE_INVENTORY and OVERVIEW are stale (e.g. 710 source files claimed, 842 actual), and COMPONENTS.md has no atlas section.
+      - [x] Add the architecture-docs check (`repo_map.py check`) to CI under a name that matches its scope; prove it RED on master before fixing the docs.
+      - [x] Drop `totalLinesOfCode` from the gated Verification table (Mothership 2026-09-23, option b); prove the gate passes a code edit without a docs touch-up and still fails on a structural claim.
+      - [x] The architecture-docs gate runs in the pre-push hook only. CI cannot read `repo_map.py` (private `skills` repo) without a credential; the credential decision is with Mothership / the owner.
+      - [x] `docs/architecture/` still carries release versions, "Currently" counts and 691 Simplified-Technical-English findings (`ste_check.py`) that the skill forbids; the ungated prose needs a full one-writer pass.
+        - [x] Mark the 45 dated historical records with `<!-- ste:historical-record -->` (separate commit; never a canonical doc).
+        - [x] FILE_INVENTORY.md to 0 STE findings, stateless.
+        - [x] duplicate-symbols.md to 0 STE findings, stateless.
+        - [x] DATAFLOW.md stale facts in diagrams and headings corrected against measurement (fact-fix commit, before the STE commit).
+        - [x] Stale source JSDoc found during the DATAFLOW fact fix: `src/numerical/gl4-integrator.ts` header says "types + Butcher constants only" and `GL4Options` "lands in Task 3"; the `findPerihelion` `@example` calls `integrateGeodesicGL4` with a signature that does not exist.
+        - [x] DATAFLOW.md to 0 STE findings, stateless.
+        - [x] API.md: the `@public-new` tier aligned to the source — every such symbol is `@public` (Mothership decision (a), own commit).
+        - [x] API.md stale facts corrected against measurement (fact-fix commit, before the STE commit).
+        - [x] Stale source JSDoc found during the API.md fact fix: `inferDimensionForBridge` says bridge ids "11..50"; the catalog runs to 65.
+        - [x] CODE QUESTION for Mothership: `KillingEquationOptions.tolerance` is documented as "Maximum tolerated residual ... Default 1e-10" but `verifyKillingEquation` never reads it (it returns the raw residual). Remove the option, or make the function use it?
+        - [x] Add `checkKillingEquation` → `{ residual, withinTolerance }` honouring `KillingEquationOptions.tolerance` (default 1e-10); `verifyKillingEquation` unchanged; fix the tolerance docs (Mothership decision (c)).
+        - [x] Stale source JSDoc found during the DATAFLOW audit: `lowerCurvature` (`src/numerical/lowering.ts`) says `CURVATURE_KIND_REGISTRY[node.kind]` supplies the per-kind spec; the code never reads the registry.
+        - [x] DATAFLOW.md follow-up fact fix: the 17 FALSE claims from the full-claim audit, each re-verified against source (likely bugs filed as code questions).
+        - [x] API.md to 0 STE findings, stateless.
+        - [x] API.md fact fix: `DuplicateCoordinateWarning` is documented as appearing in `NumericalResult.warnings`; validation throws `MetricSignatureError` by default and emits the warning (a process warning) only with `UPT_ALLOW_COORD_SHADOW=1`.
+        - [x] Stale test header: `tests/bridges/dimensional-signature-catalog.test.ts` says only BE-11 and BE-14 have AST encodings; `BRIDGE_RHS_BY_ID` holds 42.
+        - [x] `tools/create-dependency-graph`: an opt-in per-export API-surface report (signature, async, stability tag, root reachability) in its own module, with tests; existing outputs byte-identical without the flag.
+        - [x] OVERVIEW.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
+        - [x] OVERVIEW.md to 0 STE findings, stateless.
+        - [x] `src/cli/graphs.ts` labels the catalog source `catalog (44-bridge)`; the catalog holds 55 (user-visible CLI string; check the goldens).
+        - [x] ARCHITECTURE.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
+        - [x] ARCHITECTURE.md to 0 STE findings, stateless.
+        - [x] Stale source comments found by the ARCHITECTURE audit: `src/dimensional/validator.ts:10-11` says special-function arguments are not yet checked (line ~653 checks them); `src/dimensional/metric.ts:35-39` says `'computed'` auto-differentiates the metric (lowering treats it as constant).
+        - [x] COMPONENTS.md fact fix: full-claim audit against source (fact-fix commit, before the STE commit).
+        - [x] COMPONENTS.md to 0 STE findings, stateless.
+        - [x] DEPENDENCY_GRAPH.md findings fixed at the SOURCE module doc comments, then regenerated.
+        - [x] The 5 living docs (PHYSICS_MAP, benchmarks, bridge-gradient-tutorial, intelligent-index-tutorial, archive/README): full-claim audit, fact fix and STE pass each.
+      - [x] Rename the `@internal` atlas `AdjudicationVerdict` (a bridge-membership verdict) so it no longer shares a name with the public composition `AdjudicationVerdict` (`duplicate-symbols.md`).
+      - [x] `repo_map` files `tests/tools/plan-doc-audit.test.ts` in the `tools` zone because the path contains `tools/`; report to the `skills` repo owner.
+      - [x] Found by EVO custody (Starship): the Physlib `formalRef` review for `ab-pendulum-linear` rests on two probe files that no repo holds — `AxiomProbe.lean` (`#print axioms` over six theorems) and `HoleProbe.lean` (the deliberate-`sorry` positive control). Each was untracked in `%TEMP%\physlib-src` at `physlib@5ad56e24`; a copy is in `~/Dropbox/_fleet/reviews/physlib-probes-20260922/`. Commit both probes, with the re-run recipe, into this repo so the review can be repeated.
+      - [x] Local gates and generators read UNTRACKED files: an untracked `tests/tmp/differential.test.ts` (a PR #133 differential check whose writer is not on this machine) broke the pre-push typecheck (`tsconfig.tests.json` compiles `tests/**/*`), and `bun run docs:deps` recorded it in `test-coverage.json` and `TEST_COVERAGE.md`, so a commit's generated docs disagreed with the tracked tree and with CI. Make `create-dependency-graph` enumerate tracked files (`git ls-files`, as `repo_map` does) and keep scratch out of the typecheck (gitignore and exclude a scratch dir, or move the convention out of `tests/`); prove each RED with a stray file first.
+      - [x] Found by the formalRef-gate review: `formal/physlib/HoleProbe.lean` puts its `sorry` in the probe file, so the control shows the gate detects a hole in the file it runs, not a hole inside an imported prebuilt module (where every probed theorem lives). Add a second control that compiles a small module with a `sorry` and imports it, then prove the gate goes red on it.
+      - [x] Shapiro delay is the FOURTH classic GR test, not one of three: fix the Phase 2 exit-criterion wording in `ROADMAP.md`, `OVERVIEW.md` and `docs/research/README.md`, add a correction note to the dated `docs/research/pi-instrument-results.md`, and document what the public `'rank-3-lower'` tag means (Mothership 2026-09-23).
+      - [x] Record the owner-delegated amendments (Mothership, 2026-09-23): curation cost per bridge NOT MEASURED, model cost reported as model cost (Phase 0, Phase 4, C6); kappa reported is MODEL agreement, human kappa NOT MEASURED; C5 human time NOT MEASURED. Write them as ROADMAP section 7 updates and pre-registration Amendment 6. No threshold, item or hash change.
+      - [x] Phase 0 review of the five pilot contracts through the CONTRIBUTING.md review surface by a Fable physicist persona (approved by Mothership), recorded as "model-persona review (Fable), not a human physicist".
+        - [x] Phase 0 persona finding D1: `ab-spring-lc` / `ab-spring-rlc` `preserves: natural frequency` is false as written; state the spring→LC map. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D2: `dampedOffsetBoundAt` ignores `k` and `x0`; violated 22x at `k = 100` inside the declared regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D3: the cubic-spring rejection reason overreaches W3; add an isochrony (period-vs-amplitude) witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D4: `error-algebra.ts` header writes `f̃(x)` for `f̃(x̃)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D5: chain→wave `preserves: 'linearity'` has no witness. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D6: the cubic-spring rejection lists `model-lc` as both premise and conclusion. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D7: Phase 0 design note states a stale composite bound `(1, θ0²/16)`. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding D8: the pendulum `horizonHolds` uses the series where the exact period function exists. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-a: W1b tests `x0·u/x0 = u` and cannot fail. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-b: W9 compares two formulas and never integrates the chain. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-c: the pendulum bound `K = 1` is declared, not derived. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-d: the damped-massless domain is the overdamped set, not the asymptotic regime. Disposition in `docs/research/phase-0-model-persona-review.md`.
+        - [x] Phase 0 persona finding Q-e: the pendulum horizon uses the π/2-drift time, a quarter of the full-lap time. Disposition in `docs/research/phase-0-model-persona-review.md`.
+      - [x] Phase 1 citation spot-check of a random sample of `// source:` citations against the CITED SOURCES by an Opus agent with the papers (approved by Mothership), recorded as "model check with source access".
+        - [x] Phase 1 citation finding C1: BE-11 comment attributes "a coarse-graining, not a limit" to Breuer & Petruccione, who frame it as a weak-coupling limit. Disposition in `docs/research/phase-1-citation-check.md`.
+        - [x] Phase 1 citation finding C2: BE-21 comment says KSS state the bound in ħ = k_B = 1; KSS state it with units restored, give the SI value, and call it a conjecture. Disposition in `docs/research/phase-1-citation-check.md`.
+        - [x] Phase 1 citation finding C3: BE-52 comment says Einstein derived Δφ from the Schwarzschild orbit equation (he used successive approximation); `references[]` Carroll §7.4 is lecture-notes numbering. Disposition in `docs/research/phase-1-citation-check.md`.
+        - [x] Phase 1 citation finding C4: BE-55 comment says σ_xy = Ce²/h does not carry over to Gaussian units; it does. Disposition in `docs/research/phase-1-citation-check.md`.
+        - [x] Phase 1 citation finding C5: BE-58 comment says Nyquist states the result for SI quantities; the paper states no units. Disposition in `docs/research/phase-1-citation-check.md`.
+        - [x] Phase 1 citation finding C6: BE-59 Josephson 1962 could not be read (paywall); only the Nobel Lecture was checked. Disposition in `docs/research/phase-1-citation-check.md`.
+        - [x] Phase 1 citation finding X1: BE-51 cites Einstein 1915 p. 844 (the field-equations paper) for light deflection, which is on p. 831ff. Disposition in `docs/research/phase-1-citation-check.md`.
+        - [x] Phase 1 citation finding X2: BE-21 catalog name says "universal lower bound"; KSS call it a conjecture (name is verbatim spec text). Disposition in `docs/research/phase-1-citation-check.md`.
+      - [x] Check the 9 unsampled `// source:` comments in `src/bridges/index.ts` against their sources (the sample found 5 of 6 overclaiming; Mothership to decide).
+      - [x] Mechanical quote-match pass (Mothership ruling 2026-09-24): every quoted span in the 15 `// source:` comments exact-matched against the downloaded source text (whitespace and hyphenation normalised only), every page and equation number confirmed, BE-11 marked snippet-only and C6 marked unread; a re-runnable script, its output stored with `docs/research/phase-1-citation-check.md`; then record Phase 1 "zero fabricated assumptions" MET or fix and rerun.
+      - [x] Criterion 3 step 1 (Mothership 2026-09-24; spec Dropbox/_fleet/specs/2026-09-24-upt-criterion3-design.md §3, §4, §9): export the blind-labeler inputs `corpus.json` (canonical L-layer at a pinned commit; text = name + domain + assumptions, expr = scalarAst; no partnerBridges/restatesBridge/model or other atlas-naming field) and `queries.json` (the 125 frozen items; text = premises + conclusion, expr; no verdict, split, authorship or source), a leakage report, SHA-256 freeze, the export script with tests, and a copy to Dropbox/_fleet/c3/. No labelling, no condition run, no amendment.
+      - [x] Criterion 3 step 3 (after Mothership returns the blind labels): write the pre-registration amendment with the corpus hash, label hash, exclusions and embedding model BEFORE any condition runs. Per Mothership's ruling (2026-09-24), it must disclose in one sentence that all 3 query texts containing the word "valid" are valid items; the verdict is never a label and never scored, so the frozen text stays untouched.
+      - [x] Census finding F1: BE-35's encoded residual `R_cross = C²·[g_block(u,v) − g_block(v,u)]` (`src/bridges/equations/be-35-conformal-bootstrap.ts`) omits the `v^d` / `u^d` prefactors of the crossing relation (Rattazzi et al. 2008, eq. 4.3), and crossing holds for the SUM over exchanged operators, not for one block. Decide: re-encode, or state in `known_issues` that the residual is a schematic stub.
+      - [x] Phase 4 formalRef SCOPING REPORT (Mothership 2026-09-24; no code): reconcile the ROADMAP formalRef definition (external checked statement, reviewed fidelity, proof out of tree) with the §7 row's "the proofs need PhysJS"; the existing reviewed formalRef; what PhysJS is; per bridge (all 20), whether an external checked statement already exists (Physlib, Mathlib, other) with theorem and version, or none found and where looked; fidelity-review cost for the best 4+; say plainly if fewer than 4. Write docs/research/phase-4-formalref-scoping.md, commit, CI, summary to Mothership.
+      - [x] Criterion 3 EMBEDDING condition (Mothership 2026-09-24 20:17, GPU free): pre-registration Amendment 11 registers the model (qwen3-embedding:4b, LLMBench class 6 best on search), its digest, the query instruction, the pinned code and the frozen vector-file hash BEFORE any score; then score, a second embedding pass for variance (disclosed, not scored), and the §6 item 3 verdict.
+      - [x] Amendment 12: record the owner's DONE decision (2026-09-24 21:29: accept the NOT MET verdicts; hybrid retrieval as future work), the §7 header line, and a ROADMAP Future entry.
+      - [x] Prepare release 0.46.0 (Mothership 2026-09-24; no tag, no GitHub release, no publish): bump every version site, CHANGELOG [0.46.0], full gate plus npm pack --dry-run, commit, push, CI.
+      - [x] Pre-push gate refused every ANNOTATED tag (Mothership 2026-09-24, found when the v0.46.0 tag push was refused): it compared the raw local sha from stdin with HEAD, and an annotated tag arrives as its TAG-OBJECT sha. Moved the check to `tools/gate-inputs/pushed-head.ts`, which peels each sha to its commit; 4 tests, proved RED by reverting to the raw comparison. This row was filed with the fix, not before it.
+      - [x] CHANGELOG "Deprecated" entry for `evaluateCrossingResidual` / `BridgeEquations.crossingResidual` (Mothership ruling 2026-09-24): say it is physically WRONG (it tests nothing), keep it deprecated for the next release, and name the release after that as the removal release.
+      - [x] Rewrite the spec Part-II BE-35 sum-rule text to Rattazzi's F, a crossing combination of one block (Mothership ruling 2026-09-24; do it with F2).
+      - [x] Criterion 3 step 4 (Mothership 2026-09-24): AFTER the step-3 amendment is committed and CI green, run the three in-process conditions (text retrieval, symbol matching, typed structural search) on PRIMARY (n=50) and SECONDARY (n=64); recall@10 with Wilson intervals, per family, fluid statics (held out) separately; write docs/research/atlas-study-results.md marked INTERIM (no criterion verdict: the embedding condition waits for LLMBench).
+      - [x] Criterion 3 EXPLORATORY corrected structural condition (Mothership ruling 2026-09-24 (b)): normalise both sides to residual form (query lhs − rhs as stored; canonical target − scalarAst) in the code, TDD RED first; no symbol-alias map (the naming gap is a stated limitation); Amendment 9 (POST HOC, EXPLORATORY, pins the corrected code, same truth sets and pool, reported beside the criterion and never substituted) committed and CI green BEFORE the condition runs; then run on PRIMARY and SECONDARY and add it to atlas-study-results under INTERIM, separated.
+      - [x] Census finding F2: BE-48's `name` ("CSL extension", verbatim spec heading) and `context` ("GRW / CSL mass-amplified") credit the linear law λ_0 (m/m_0) to CSL; Bassi & Ghirardi 2003 give it for GRW/QMSL (§6.4) and a different CSL rate (§8.3). `notes` carry the same framing as history.
+      - [x] Triage the stale open rows outside the atlas roadmap (lines 654, 658, 830-844, 943, 985 and the optional rows); tick parents whose children are all done, box only.
+      - [x] Found by the COMPONENTS.md review: `src/numerical/lowering.ts:395-396` holds an orphaned doc comment ("Lower a validated ExprNode to an EngineTensor. @internal") that documents `DeferredEvaluatorEntry` instead of `lowerNode`. It describes `lowerNode` (line 447), which has no doc comment and so no `@internal` tag; move the comment back onto `lowerNode`.
+      - [x] Found by the COMPONENTS.md review: `src/composition/bridge-prediction.ts:190` writes two raw NUL bytes inside template literals as a pair-key separator, so grep prints 'Binary file … matches' instead of the matching lines, and ripgrep skips the file. Write the separator as an escape (`\u0000`).
+      - [x] Flaky test CAPTURED (2026-09-23, pre-push gate for `e1b7bea`): `coverage-backfill.test.ts` "reports worker stderr on nonzero exit" gives `runBackendWorker` a 1000 ms budget that includes spawning `node`; a bare spawn measured 843–4307 ms on the loaded host, so the timeout fires first. The exit-path siblings in `backend.test.ts` use 5000 ms and race the same clock. Remove the race (a timeout far above spawn cost on exit-path tests, or a timeout that starts after spawn), then prove it RED under load and GREEN after. Details in `NOTES.md`.
+      - [x] Found by the living-docs review: the header comment of `bench/be37-eikonal.bench.ts` (lines 10–14) still describes the BE-37 stub that `src/` replaced with a GL4 integration.
+      - [x] Found by the COMPONENTS.md audit, source comments that contradict the code: `ast-types.ts:139` (`RicciTensorNode` "first two slots are contracted", but `ricci()` computes R^λ_{μλν}); `einstein-equation.ts:136` example uses kind `'stress-energy-tensor'` (real kind `'stress-energy'`); `curvature-composite.ts:31` says Bianchi is "rank-5 lower" (its registry says `'rank-3-lower'`); `klein-gordon.ts:102` imports a subpath `package.json` does not export; `BridgeEquationEntry.id` documented as "11-50".
 
-- [ ] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
+- [x] **Atlas Sprint 5 — the invalid-bridge benchmark (CODE COMPLETE; κ criterion open).** Promoted in `docs/planning/ACTIVE.md`
       2026-09-22; design note `docs/planning/Atlas-Phase-5-Design.md`. **S5.1** — schema, loader,
       leakage checks (renamed variants keyed by dimension; held-out family corrected to FLUID STATICS).
       **S5.2** — atlas condition runner (accept only when every instrument ran and cleared).
@@ -303,11 +456,27 @@ warning-silencing, not debug logging).
       **S5.5** — pre-registration REGISTERED (thresholds + held-out family frozen; empty-set hash bound by test).
       - [x] Check `pairedDifferenceInterval` (Newcombe method 10) against a PUBLISHED worked example;
         today it is pinned by properties only.
-      - [ ] **Frozen item set needs INDEPENDENT human authors and two named κ raters.** No agent may
+      - [x] **Frozen item set needs INDEPENDENT human authors and two named κ raters.** No agent may
         author a frozen item; until authors exist, Phase 5's "κ reported" exit criterion cannot be met
         by code. Route to the user via Mothership.
+      - [x] Model-authored frozen set (owner 2026-09-22: "use a fable model"): isolated atlas-blind author, label-blind encoder.
+      - [x] Two independent model raters (separate isolated instances) and Cohen's kappa, reported as MODEL agreement.
+      - [x] Freeze the set; the empty-set hash test must go RED before the note is amended.
+      - [x] First run of the study success path on the non-empty set; fix what breaks.
+      - [x] Criterion 2 on LOCAL models only (user 2026-09-22: "$0"): pre-register the run config (Amendment 4) and commit it BEFORE any call.
+      - [x] Run the local LLM baselines (qwen3.8:27b, gemma4:26b, gpt-oss:20b) on the frozen public items; score atlas vs the pre-registered best baseline.
+      - [x] gemma4:26b returned an EMPTY answer on 64/125 items under the frozen `num_ctx` 8192 (its reasoning filled the context). Decide with Mothership whether a clearly-labelled secondary run with a larger context is worth an amendment; the primary result stands as run.
+      - [x] Fix the code-docs M3 at `src/bridges/equations/_be-helpers.ts` (`validateBEDimensions` documents `equationLabel`; the parameter is `_equationLabel`) and lower the ratchet baseline.
+      - [x] Criterion 3 (recall@10 vs embeddings) cannot run on the set as built: it needs a reference corpus and atlas-blind correct-reference labels. Design the task first.
+      - [x] DEFECT: the PUBLIC item schema carries the answer (`kind`, `failureKind` in `BenchmarkItem`), against its own
+        "never the answer" docstring. The atlas condition never reads them; an LLM or embedding condition fed
+        `public/items.json` would see the key. Fix before any out-of-process condition runs: move both to the scorer half.
+      - [x] `CLAUDE.md` is 21 KB and holds law, procedure and stateless facts that now have homes in `AGENTS.md`,
+        `WORKFLOWS.md`, `TOOLS.md` and `MEMORY.md`. Move each duplicated fact to its one home and leave `CLAUDE.md` a thin loader.
+      - [x] Move `docs/planning/ACTIVE.md` (an authorization register, status by nature) out of `docs/planning/`; fix every inbound link in the same commit.
+      - Closed by pre-registration Amendment 6 (2026-09-23): κ amended. The reported κ is MODEL agreement; human κ is NOT MEASURED.
 
-- [ ] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
+- [x] **Atlas Sprint 4 — verification workflow and checked bridges (CODE COMPLETE; formalRef exit OPEN at 1/5).** Promoted in
       `docs/planning/ACTIVE.md` 2026-09-22; design note `docs/planning/Atlas-Phase-4-Design.md`.
       Eighteen tasks assigned to this lane: **S4.1–S4.6, S5.1–S5.5, S6.1–S6.7.**
       **Done so far: S4.1** — `src/atlas/applicability.ts`, the applicability checker (dimensions,
@@ -330,12 +499,14 @@ warning-silencing, not debug logging).
         holds no further real counterpart (S4.6 table in the Phase 4 design note). Closing it needs
         proofs authored OUT OF TREE, meaning a new repository, which is outward-facing: escalated to
         Mothership.
+        - deferred - owner 2026-09-24 15:02 (pre-registration Amendment 10; the PhysJS proofs with it).
       **Standing trap for anyone picking this up:** the plan says the canonical-equation count
       "lives only in `CHANGELOG.md`, `ROADMAP.md` and the architecture docs". **It is in 22
       files.** `tests/canonical/canonical-count-prose.test.ts` DISCOVERS them; trust the gate,
       never the list.
+      - Closed by pre-registration Amendment 10 (2026-09-24): the formalRef exit criterion is deferred by the owner, at 1 of 5.
 
-- [ ] **Atlas Phase 0 — two exit criteria OPEN; the code is done.** Shipped 2026-09-20 on
+- [x] **Atlas Phase 0 — two exit criteria OPEN; the code is done.** Shipped 2026-09-20 on
       `master`: `src/atlas/` (nine models, five typed bridges, one rejection, fifteen witnesses),
       126 atlas tests inside 384 files / 3,959 tests exit 0, deterministic JSON under
       `data/atlas/`, nothing on `src/index.ts`. **What is NOT done, and neither is code:**
@@ -591,7 +762,10 @@ warning-silencing, not debug logging).
             publishable coincidence-rejection catalog + a legible frontier map
             (what physics hasn't connected + what would test it).
 
-- [ ] 🟢 **NEXT — active work (as of 2026-07-04, post-v0.36.0).** The
+- [ ] **BE-53 Yang–Mills β-function confrontation** (re-homed 2026-09-25 from the closed 2026-07-04
+      NEXT umbrella): PDG α_s(M_Z) = 0.1179 running, open data, value/consistency kind. Needs its own
+      design → Adam/Eve vet → Task-0 gate. Optional backlog.
+- [x] 🟢 **NEXT — active work (as of 2026-07-04, post-v0.36.0).** The
       discovery-hardening program is COMPLETE (results:
       `docs/research/v0.33.0-discovery-hardening-results.md`) and the canonical
       L-layer is done for now (monomial + L1-sum = **103** equations). Remaining
@@ -613,6 +787,9 @@ warning-silencing, not debug logging).
       - **L2 field-equation tier: NOT recommended** (Einstein-only node +
         `fieldEquation` read-by-nothing = the E-layer inert-metadata trap; would
         need its own tensor-level consumer to be worth building).
+      - CLOSED 2026-09-25 (tracker hygiene): BE-21 KSS is confronted (`src/bridges/be21-kss-confrontation.ts`);
+        be-16, be-23 and be-38 are tracked as their own data-pending rows; BE-53, the one live item, is
+        re-homed as its own row above.
 
 - [x] ✅ **L1-sum tier + BE-51 confrontation — RELEASED v0.35.0 (2026-07-04,
       registry-verified `dist-tags.latest=0.35.0`).** Two programs off the
@@ -777,13 +954,14 @@ warning-silencing, not debug logging).
                   Blocked on whether the deep-MOND-limit confrontation is a
                   genuine test vs an a₀-reproduction tautology (Task-0 gate #1
                   special case) — not a data-availability block.
-            - [ ] **be-12 confrontation DEFERRED (design-time drop):** the
+            - [x] **be-12 confrontation DEFERRED (design-time drop):** the
                   bridge encodes `λ_T=h/√(2πmkT)` (a length of m,T); the
                   BEC-onset criterion `nλ³≈2.612` needs density `n` the
                   bridge doesn't encode, and a bare `λ_T` value isn't a
                   directly-measured observable (computing it = reproduction,
                   not confrontation — G-3). Revisit only if a many-body
                   coherence BE entry is added (the module's own known_issue).
+                  WON'T DO (owner, 2026-09-25): the reason above stands; a bare λ_T is not an observable.
       - [x] ✅ **Phase 4 (v0.34.0) — P2, consequence propagation (Unit A) —
             EXECUTED.** Design r5 FINAL (Adam GREEN + Eve YELLOW; Task-0
             measured): `docs/superpowers/specs/2026-07-03-discovery-hardening-
@@ -876,7 +1054,7 @@ warning-silencing, not debug logging).
             Capstone: `docs/research/v0.33.0-discovery-hardening-results.md`
             §"Program status — complete". The discipline (design→vet→Task-0)
             prevented 4 low-value/unsound features while keeping integrity.
-      - [ ] **P10 (parallel) — collaboration surface.**
+      - [x] **P10 (parallel) — collaboration surface.**
             - [x] **Honest research note — DONE 2026-07-03** (PE-authored):
                   `docs/research/v0.33.0-discovery-hardening-results.md` — the
                   consolidated Phase 1–4 results (0/8 genuine, contradictory=0,
@@ -918,7 +1096,7 @@ warning-silencing, not debug logging).
             diagnosis task groups tracked in the next entry (dead-exports
             group closed there).
 
-- [ ] **DGT diagnosis 2026-07-02 (pre-v0.32.0 release; regenerated at HEAD
+- [x] **DGT diagnosis 2026-07-02 (pre-v0.32.0 release; regenerated at HEAD
       `846796d`+fix: 224 files / 1491 exports / cycles 0+0 / coverage 88.4% /
       0 unused files / 8 flagged exports).** Structure is healthy (no cycles;
       hubs — `dimensional/types.ts` o:110, `index.ts` i:117,
@@ -1304,7 +1482,7 @@ warning-silencing, not debug logging).
             physical kind (`M`/`mass`, `T`/`temperature`, Newton's `m_1`/`m_2`) —
             canonical-only `discover`/`map` surface these as candidates/separate
             nodes. Unify the governing names in `src/canonical/entries/*` if desired.
-      - [ ] (follow-up, optional) `docs/architecture/COMPONENTS.md` header is stale
+      - [x] (follow-up, optional) `docs/architecture/COMPONENTS.md` header is stale
             at v0.10.0 (pre-existing, beyond this change); only the file/export
             counts were refreshed here. Full refresh is a separate doc task.
 
@@ -1444,10 +1622,14 @@ warning-silencing, not debug logging).
 - [ ] **Frontier (research-level):** ensemble averages (BE-29 `⟨…⟩`) and
       interpolation-function stubs (BE-26 `f()`, BE-38 `ν(z)`) remain non-closed-form;
       `bridgeGradientNumerical` (FD) serves them. No clean lever — large/open scope.
-- [ ] **v0.11 headline: full 44-edge catalog→graph migration** + the
+- [x] **v0.11 headline: full 44-edge catalog→graph migration** + the
       per-edge quantity-NAMESPACING design (the aliasing finding in the
       Phase-D report is the forcing function), + O-4 flat migration,
       + C2/C3 calibration targets, + second data confrontation.
+      - CLOSED 2026-09-25 (tracker hygiene): the v0.11 namespacing gate shipped; O-4 was executed on
+        2026-06-11 (its row below); the confrontations number 19. The catalog→graph migration stops at
+        41 edges by design: 17 of the 55 bridges have no graph edge, 13 of them because they have no AST.
+        The C2/C3 calibration targets remain on the standing physicist-review surface in NOTES.md.
 
 ## Open & pending — consolidated 3-agent audit, 2026-06-11
 

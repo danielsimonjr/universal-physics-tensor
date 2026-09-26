@@ -42,11 +42,96 @@ describe('upt path', () => {
       ['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.2', 'T0=1', 't=1000'],
       cap.io,
     );
-    expect(code).toBe(0);
+    expect(code).toBe(3); // a violated horizon or regime is a failed check (0.47.0)
     const text = cap.lines.join('');
     // Machine horizon is t < 4 T0/θ0² = 100, so 1000 is outside it.
     expect(text).toMatch(/horizons at t=1000: NOT all hold/);
     expect(text).toMatch(/ab-pendulum-linear: VIOLATED/);
+  });
+
+  // Persona finding L1 (2026-09-25): at θ0 = 0.8 the path printed the bound and "all hold",
+  // although the bound's own regime is θ0 ≤ 0.5. The exact relative period error there is
+  // 2K(sin 0.4)/π − 1 = 0.0415 (AGM), 2.6 times the quoted 0.0159. A bound quoted outside the
+  // regime it is claimed in is the claim applied where it was never made.
+  it('outside the bound regime (θ0 = 0.8) the regime is reported VIOLATED, and the bound does not apply', async () => {
+    const cap = capture();
+    const code = await runCli(
+      ['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.8', 'T0=1', 't=1'],
+      cap.io,
+    );
+    expect(code).toBe(3); // a violated horizon or regime is a failed check (0.47.0)
+    const text = cap.lines.join('');
+    expect(text).toMatch(/regimes at --at: VIOLATED/);
+    expect(text).toMatch(/ab-pendulum-linear: VIOLATED — theta0 <= 0\.5/);
+    expect(text).toMatch(/no bound on this path is claimed at this point/);
+  });
+
+  it('a path whose regimes state no inequality says VACUOUS, not "all hold"', async () => {
+    const cap = capture();
+    const code = await runCli(['path', 'model-spring', 'model-lc', '--at', 't=1'], cap.io);
+    expect(code).toBe(0);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/regimes: VACUOUS/);
+    expect(text).not.toMatch(/regimes at --at: all hold/);
+  });
+
+  it('--json carries each regime verdict and allRegimesHold', async () => {
+    const run = async (theta0: string) => {
+      const cap = capture();
+      const code = await runCli(
+        ['path', 'model-pendulum', 'model-spring', '--at', `theta0=${theta0}`, 'T0=1', 't=1', '--json'],
+        cap.io,
+      );
+      expect(code).toBe(Number(theta0) > 0.5 ? 3 : 0); // outside θ0 ≤ 0.5 the regime is violated
+      return JSON.parse(cap.lines.join('')).result;
+    };
+    const outside = await run('0.8');
+    expect(outside.allRegimesHold).toBe(false);
+    expect(outside.regimes).toEqual([
+      { bridgeId: 'ab-pendulum-linear', ok: false, violated: ['theta0 <= 0.5 (θ0 ≤ 0.5 rad)'], unchecked: [] },
+    ]);
+    const inside = await run('0.2');
+    expect(inside.allRegimesHold).toBe(true);
+  });
+
+  it('with no --at the regime is UNKNOWN, never a pass', async () => {
+    const cap = capture();
+    const code = await runCli(['path', 'model-pendulum', 'model-spring', '--json'], cap.io);
+    expect(code).toBe(0);
+    const result = JSON.parse(cap.lines.join('')).result;
+    expect(result.allRegimesHold).toBe('unknown');
+  });
+
+  // Persona finding L9 (2026-09-25): the path printed only the domain supremum (0.0159 for the
+  // pendulum at any θ0). Where deltaAt is PROVEN (closed-form, the exact error), the bound at the
+  // --at point is printed beside it; at θ0 = 0.2 the exact period error is 0.0025057 (AGM).
+  it('prints the proven bound at the --at point beside the domain supremum', async () => {
+    const cap = capture();
+    await runCli(['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.2', 'T0=1', 't=10'], cap.io);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/bound at this point: K = 1 · delta = 0\.00250574\d* \(closed-form: the exact error; the composed bound above is the supremum over the bridge's domain\)/);
+    const json: string[] = [];
+    await runCli(['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.2', 'T0=1', 't=10', '--json'], {
+      out: () => {}, err: () => {}, write: (s: string) => json.push(s),
+    });
+    const r = JSON.parse(json.join('')).result;
+    // AGM and the θ0 series both give 0.00250574422860 (independent check).
+    expect(r.pointBound.delta).toBeCloseTo(0.0025057442286, 12);
+  });
+
+  it('no point bound outside the regime, and none from a numerically supported deltaAt', async () => {
+    const out = async (args: string[]) => {
+      const cap = capture();
+      await runCli(args, cap.io);
+      return cap.lines.join('');
+    };
+    const outside = await out(['path', 'model-pendulum', 'model-spring', '--at', 'theta0=0.8', 'T0=1', 't=1']);
+    expect(outside).toMatch(/bound at this point: none — a regime on the path is violated or unchecked/);
+    const damped = await out([
+      'path', 'model-damped-spring', 'model-first-order',
+      '--at', 'm · b^-2 · k=0.01', 'm=0.01', 'b=1', 'k=1', 'x0=1', 'v0=0', 't=1',
+    ]);
+    expect(damped).toMatch(/bound at this point: none — ab-damped-massless's point bound is numerically supported, not proven/);
   });
 
   it("a no-composite-claim pair prints the phrase, carries no bound, and EXITS 0", async () => {

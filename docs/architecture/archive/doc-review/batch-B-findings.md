@@ -1,4 +1,6 @@
 # Batch B — root docs — Doc Integrity Findings
+
+<!-- ste:historical-record -->
 **Reviewer**: opus subagent. **Date**: 2026-05-20. **Files**: README.md, CLAUDE.md, CHANGELOG.md, todo.md, docs/README.md.
 
 ## Summary

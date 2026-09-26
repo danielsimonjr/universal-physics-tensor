@@ -35,7 +35,8 @@ function normalize(text) {
 // in bin/upt.mjs: blank lines, `  ✓/⚠/·/●` lines, `     connects to:`
 // continuations) — environment-dependent optional-peer warnings (WASM-fallback
 // noise embedding absolute paths) must not be pinned.
-const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+// Landing continuations: former `connects to:`, W3 `nearest equations:` / caveat.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     (?:connects to:|nearest equations:|\(shared-quantity)/u;
 
 function filterReportLines(text) {
   return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');
@@ -57,9 +58,9 @@ function run(args) {
   };
 }
 
-for (const { name, args, pinStderr } of GOLDEN_CASES) {
+for (const { name, args, pinStderr, exitCode } of GOLDEN_CASES) {
   const result = run(args);
-  if (result.status !== 0) {
+  if (result.status !== (exitCode ?? 0)) {
     console.error(`FAILED (exit ${result.status}): ${name} — args=${JSON.stringify(args)}`);
     console.error(result.stderr);
     process.exitCode = 1;

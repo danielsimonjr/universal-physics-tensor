@@ -29,7 +29,8 @@ function normalize(text: string): string {
 // continuations) — environment-dependent optional-peer warnings (WASM-fallback
 // noise embedding absolute paths) must not be pinned. Keep in sync with
 // golden-capture.mjs.
-const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+// Landing continuations: former `connects to:`, W3 `nearest equations:` / caveat.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     (?:connects to:|nearest equations:|\(shared-quantity)/u;
 
 function filterReportLines(text: string): string {
   return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');
@@ -68,9 +69,9 @@ describe('upt CLI — golden corpus (pre-port pin)', () => {
   // 180s per case: these SPAWN the built CLI; the map --format=mermaid/svg cases
   // run 35–55s and time out at the 60s default under full-suite parallel load on
   // Windows (a recurring flake). They pass comfortably in isolation.
-  it.each(ungated)('$name', ({ name, args, pinStderr }) => {
+  it.each(ungated)('$name', ({ name, args, pinStderr, exitCode }) => {
     const result = run(args);
-    expect(result.status).toBe(0);
+    expect(result.status).toBe(exitCode ?? 0);
     expect(normalize(result.stdout)).toBe(readGolden(name));
     if (pinStderr) {
       expect(filterReportLines(normalize(result.stderr))).toBe(readStderrGolden(name));
@@ -79,9 +80,9 @@ describe('upt CLI — golden corpus (pre-port pin)', () => {
 });
 
 describe.skipIf(!peerPresent)('upt CLI — golden corpus (peer-gated)', () => {
-  it.each(gated)('$name', ({ name, args, pinStderr }) => {
+  it.each(gated)('$name', ({ name, args, pinStderr, exitCode }) => {
     const result = run(args);
-    expect(result.status).toBe(0);
+    expect(result.status).toBe(exitCode ?? 0);
     expect(normalize(result.stdout)).toBe(readGolden(name));
     if (pinStderr) {
       expect(filterReportLines(normalize(result.stderr))).toBe(readStderrGolden(name));

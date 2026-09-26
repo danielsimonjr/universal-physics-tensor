@@ -17,6 +17,7 @@
  */
 
 import { evaluatePerihelionPrecession } from './perihelion-precession.js';
+import { GM_SUN_SI, G_SI } from '../core/constants.js';
 
 /**
  * A perihelion-precession observation record for a planet.
@@ -47,7 +48,9 @@ export interface PerihelionObservation {
  * @public
  */
 export const MERCURY: PerihelionObservation = {
-  central_mass_kg: 1.98892e30,
+  // GM☉/G: G·M is then the IAU 2015 nominal (GM)☉ exactly. The former
+  // 1.98892e30 kg gave G·M 2.6e-4 high.
+  central_mass_kg: GM_SUN_SI / G_SI,
   semi_major_axis_m: 5.79091e10,
   eccentricity: 0.205630,
   period_yr: 0.2408467, // 87.969 d / 365.25

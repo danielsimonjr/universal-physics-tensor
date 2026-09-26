@@ -8,7 +8,11 @@
  *      `temperature`, `entropy`, `charge`, `area`, `dimensionless`;
  *   2. a fundamental constant by name — `hbar`/`ℏ`, `c`, `G`, `k_B`/`kB`,
  *      `e` (its SI dimension);
- *   3. explicit base exponents — `L^3.M^-1.T^-2` (bases L M T I Theta/Θ N J,
+ *   3. a product/quotient of named dimensions or constants — `power/area`,
+ *      `length*temperature` (persona finding L1); parentheses group a
+ *      denominator or factor, e.g. `power/(area*temperature^4)` is NOT yet
+ *      accepted (declare the compound with explicit bases instead);
+ *   4. explicit base exponents — `L^3.M^-1.T^-2` (bases L M T I Theta/Θ N J,
  *      separated by `.`, `*`, or spaces; `^` optional; fractional exponents
  *      like `T^1/2` allowed).
  *
@@ -33,6 +37,7 @@ import {
   ENTROPY,
   CHARGE,
 } from './types.js';
+import { multiply, divide } from './algebra.js';
 
 /** A bad dimension spec. */
 export class DimensionSpecError extends Error {
@@ -108,6 +113,42 @@ function parseExponent(raw: string): number {
   return v;
 }
 
+/** Resolve one atom: constant (exact case) or named dimension (case-insensitive). */
+function resolveAtom(raw: string): Dimension | null {
+  const s = raw.trim();
+  if (!s) return null;
+  if (CONST_DIMS[s]) return CONST_DIMS[s]!;
+  const named = NAMED_DIMS[s.toLowerCase()];
+  return named ?? null;
+}
+
+/**
+ * Parse a product/quotient of named dims and constants: `power/area`,
+ * `length*temperature`, `L*Theta` is NOT this path (bases go to step 4).
+ * Only `*` and `/` as top-level operators; no parentheses, no `^` on names.
+ * Returns `null` when the string is not this form (so the base-exponent path
+ * can try).
+ */
+function parseNamedProductQuotient(s: string): Dimension | null {
+  if (!/[*\/]/.test(s) || /[()]/.test(s)) return null;
+  // Split on * and / keeping the operators. Reject if any atom looks like a
+  // base-exponent token we should leave to step 4 (e.g. L^3.M^-1).
+  const tokens = s.split(/([*/])/).map((t) => t.trim()).filter((t) => t.length > 0);
+  if (tokens.length < 3 || tokens.length % 2 === 0) return null;
+  const first = resolveAtom(tokens[0]!);
+  if (first === null) return null;
+  let acc: Dimension = first;
+  for (let i = 1; i < tokens.length; i += 2) {
+    const op = tokens[i]!;
+    const atom = resolveAtom(tokens[i + 1]!);
+    if (atom === null) return null;
+    if (op === '*') acc = multiply(acc, atom);
+    else if (op === '/') acc = divide(acc, atom);
+    else return null;
+  }
+  return acc;
+}
+
 /** Parse a dimension spec string into a {@link Dimension}. @internal */
 export function parseDimensionSpec(spec: string): Dimension {
   const s = spec.trim();
@@ -119,7 +160,11 @@ export function parseDimensionSpec(spec: string): Dimension {
   const named = NAMED_DIMS[s.toLowerCase()];
   if (named) return named;
 
-  // (3) explicit base exponents.
+  // (3) product/quotient of named dims / constants (persona L1).
+  const compound = parseNamedProductQuotient(s);
+  if (compound !== null) return compound;
+
+  // (4) explicit base exponents.
   const out = d();
   const parts = s.split(/[.*\s]+/).filter(Boolean);
   for (const part of parts) {
@@ -129,7 +174,7 @@ export function parseDimensionSpec(spec: string): Dimension {
     if (!baseKey) {
       throw new DimensionSpecError(
         `unknown base dimension '${m[1]}' (use L M T I Theta N J, a named ` +
-          `dimension, or a constant name)`,
+          `dimension, a constant name, or a named product/quotient like power/area)`,
       );
     }
     out[baseKey] += parseExponent(m[2] ?? '');

@@ -13,11 +13,13 @@ import {
   suggestQuantities,
   suggestByDimension,
   equationLanding,
+  formatConnectedSummary,
   analyzeUserEquation,
+  rewriteCatalogHyphens,
   UserEquationError,
 } from '../../src/composition/user-equation.js';
 import {
-  LENGTH, MASS, TIME, VELOCITY, ACCELERATION, ENERGY, FREQUENCY,
+  LENGTH, MASS, TIME, VELOCITY, ACCELERATION, ENERGY, FREQUENCY, ENTROPY, AREA,
 } from '../../src/dimensional/types.js';
 import { buildVizModel } from '../../src/composition/graph-viz.js';
 import type { VizJunction } from '../../src/composition/graph-viz.js';
@@ -71,12 +73,48 @@ describe('parseUserEquation', () => {
   });
 });
 
+describe('W2: catalog kebabs are identifiers, not subtraction', () => {
+  const names = new Set(['planck-length', 'speed-of-light', 'bh-entropy', 'mass']);
+
+  it('rewriteCatalogHyphens turns kebabs into underscores, longest first', () => {
+    expect(rewriteCatalogHyphens('S = A/(4*planck-length^2)', names)).toBe(
+      'S = A/(4*planck_length^2)',
+    );
+    expect(rewriteCatalogHyphens('rest-energy = mass*speed-of-light^2', names)).toBe(
+      'rest-energy = mass*speed_of_light^2',
+    );
+  });
+
+  it('parseUserEquation with catalog names accepts planck-length on the RHS', async () => {
+    const e = await parseUserEquation('length = 2*planck-length', names);
+    expect([...e.sources].sort()).toEqual(['planck_length']);
+    expect(e.text).toBe('length = 2*planck_length');
+  });
+
+  it('analyzeUserEquation accepts length = 2*planck-length (no subtract error)', async () => {
+    const catalog = new Map([
+      ['length', LENGTH],
+      ['planck-length', LENGTH],
+    ]);
+    const a = await analyzeUserEquation('length = 2*planck-length', catalog);
+    expect(a.parseError).toBeNull();
+    expect(a.consistent).toBe(true);
+    // Junction sources resolve back to the catalog kebab form.
+    expect(a.junction.sources).toContain('planck-length');
+  });
+});
+
 describe('resolveToCatalogName', () => {
-  const names = new Set(['photon-energy', 'impact_parameter', 'mass']);
+  const names = new Set(['photon-energy', 'impact_parameter', 'mass', 'temperature']);
   it('matches a literal name', () => {
     expect(resolveToCatalogName('mass', names)).toBe('mass');
     expect(resolveToCatalogName('photon-energy', names)).toBe('photon-energy');
     expect(resolveToCatalogName('impact_parameter', names)).toBe('impact_parameter');
+  });
+
+  it('L4: latex T resolves to temperature when temperature is in the catalog', () => {
+    expect(resolveToCatalogName('T', names)).toBe('temperature');
+    expect(resolveToCatalogName('T', new Set(['mass']))).toBeNull();
   });
   it('matches via the _<->- swap (both directions)', () => {
     expect(resolveToCatalogName('photon_energy', names)).toBe('photon-energy');
@@ -119,6 +157,49 @@ describe('suggestByDimension', () => {
   it('excludes non-matching dimensions and respects k', () => {
     expect(suggestByDimension(ENERGY, cat, 1)).toEqual(['erasure-energy']);
     expect(suggestByDimension(MASS, cat)).toEqual(['mass']);
+  });
+});
+
+describe('W3: formatConnectedSummary', () => {
+  it('ranks by shared-quantity overlap so the restated law leads, and caps the rest', () => {
+    const junctions: VizJunction[] = [
+      { id: 'user-equation', label: 'user', status: 'user', sources: ['length', 'gravity'], target: 'period' },
+      { id: 'CE-pendulum-period', label: 'pendulum', status: 'law', sources: ['length', 'gravity'], target: 'period' },
+      { id: 'CE-wien', label: 'wien', status: 'law', sources: ['temperature'], target: 'peak-wavelength' },
+      { id: 'be-11-zurek', label: 'zurek', status: 'speculative', sources: ['temperature'], target: 'decoherence-rate' },
+      { id: 'CE-kepler-third', label: 'kepler', status: 'law', sources: ['gravity'], target: 'period' },
+      { id: 'be-12', label: 'be12', status: 'speculative', sources: ['temperature'], target: 'thermal-wavelength' },
+      { id: 'be-16', label: 'be16', status: 'speculative', sources: ['temperature'], target: 'landauer-erasure-energy' },
+      { id: 'be-23', label: 'be23', status: 'speculative', sources: ['temperature'], target: 'relaxation-rate' },
+    ];
+    const model = {
+      junctions,
+      clusters: [{
+        size: junctions.length,
+        anchored: true,
+        junctionIds: junctions.map((j) => j.id),
+        quantities: ['length', 'gravity', 'period', 'temperature', 'peak-wavelength',
+          'decoherence-rate', 'thermal-wavelength', 'landauer-erasure-energy', 'relaxation-rate'],
+      }],
+      filterStats: { total: junctions.length, kept: junctions.length, droppedNotMatching: 0, droppedMissingMetadata: 0 },
+      filterLegend: null,
+      toMermaid: () => '',
+      toDot: () => '',
+    };
+    const landing = {
+      isolated: false,
+      clusterSize: junctions.length,
+      anchored: true,
+      sharedQuantities: ['gravity', 'length', 'period'],
+      connectedJunctionIds: junctions.filter((j) => j.id !== 'user-equation').map((j) => j.id),
+    };
+
+    const lines = formatConnectedSummary(model, landing, 3);
+    expect(lines[0]).toMatch(/^     nearest equations: CE-pendulum-period/);
+    expect(lines[0]).toMatch(/CE-kepler-third/);
+    expect(lines[0]).toMatch(/\(\+4 more\)/);
+    expect(lines[1]).toBe('     (shared-quantity connectivity, not a physics claim)');
+    expect(lines.join('\n')).not.toMatch(/be-23/);
   });
 });
 

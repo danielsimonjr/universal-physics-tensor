@@ -17,13 +17,14 @@ import type { FlagSpec, ParsedArgs } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { resolveGraph } from '../graphs.js';
 import { emitJson } from '../output.js';
-import { UsageError, CliError } from '../errors.js';
+import { UsageError, CliError, EXIT_CHECK_FAILED } from '../errors.js';
 import { parseDiscoveryOpts } from './_discovery-opts.js';
 import type { BridgeEdge } from '../../composition/edge.js';
 import type { VizJunction, VizModel } from '../../composition/graph-viz.js';
 import type { EvidenceTag, RelationType } from '../../atlas/types.js';
 import type { SourceName } from '../graphs.js';
 import type { EquationAnalysis } from '../../composition/user-equation.js';
+import type { CanonicalComparison } from '../../composition/canonical-compare.js';
 
 const FLAGS: FlagSpec[] = [
   { name: '--source', valueStyle: 'attached' },
@@ -66,9 +67,10 @@ const HELP = `upt map [--source=catalog|canonical|both|poster] [--format=text|me
         identity-consequence relations (gray dashed). --out writes to a file
         (default stdout).
         --equation "TARGET = EXPR" injects YOUR OWN equation as a violet 'user'
-        node and reports where it lands (which cluster / shared quantities), with
-        a "did you mean?" hint for names that miss the catalog vocabulary. Use
-        underscores for multi-word quantities (photon_energy -> photon-energy).
+        node, dimensionally checks it, compares with the canonical registry, and
+        reports nearest equations by shared-quantity overlap (not a full edge
+        dump). Multi-word names may use underscores or catalog hyphens
+        (planck_length / planck-length). Unknown names get a "did you mean?".
         --relation=TYPE keeps only edges whose recorded Atlas relation is that
         type; --evidence=TAG keeps only edges whose evidence set, DERIVED from
         the catalog row at read time, contains that tag.
@@ -150,12 +152,16 @@ async function analyzeEquation(
   api: CommandCtx['api'],
   equation: string,
   graph: readonly BridgeEdge[]
-): Promise<EquationAnalysis> {
+): Promise<{ user: EquationAnalysis; comparisons: CanonicalComparison[] }> {
   const catalogDims = new Map<string, import('../../dimensional/types.js').Dimension>();
   for (const e of graph) {
     for (const q of [...e.sources, e.target]) catalogDims.set(q.name, q.dim);
   }
-  return api.analyzeUserEquation(equation, catalogDims);
+  const user = await api.analyzeUserEquation(equation, catalogDims);
+  // Dimensions cannot see a prefactor: compare with the canonical equation the
+  // user's one restates, when the registry holds one (persona finding L2).
+  const comparisons = user.parseError ? [] : await api.compareUserEquation(equation, catalogDims);
+  return { user, comparisons };
 }
 
 // Print the dimensional verdict, where the equation landed, and any hints.
@@ -164,11 +170,21 @@ function printEquationReport(
   api: CommandCtx['api'],
   model: VizModel,
   user: EquationAnalysis,
-  out: (line?: string) => void
+  out: (line?: string) => void,
+  comparisons: readonly CanonicalComparison[] = [],
 ): void {
   out('');
   if (user.consistent === true) {
     out(`  ✓ dimensionally consistent: ${api.format(user.rhsDimension!)}`);
+  } else if (user.consistent === false && (user.hints ?? []).length > 0) {
+    // An unknown name is checked as a dimensionless placeholder, so this mismatch is not a real
+    // check and does not fail the command (exit 0). Say so on the line itself (persona finding N3).
+    const names = user.hints!.map((h) => `'${h.name}'`).join(', ');
+    out(
+      `  · UNKNOWN: RHS is ${api.format(user.rhsDimension!)} but the target is ${api.format(user.targetDimension!)}; ` +
+        `the mismatch involves the unresolved placeholder${user.hints!.length > 1 ? 's' : ''} ${names} ` +
+        `(taken as dimensionless), so it is not a failed check`,
+    );
   } else if (user.consistent === false) {
     out(
       `  ⚠ dimensional MISMATCH: RHS is ${api.format(user.rhsDimension!)} but the target is ${api.format(
@@ -178,6 +194,7 @@ function printEquationReport(
   } else if (user.rhsDimension) {
     out(`  · RHS dimension: ${api.format(user.rhsDimension)} (target not in the catalog, so no comparison)`);
   }
+  for (const line of api.describeComparisons(comparisons)) out(`  ${line}`);
   const L = api.equationLanding(model, 'user-equation');
   if (L.isolated) {
     out('  ⚠ your equation is ISOLATED — it shares no quantity with this graph.');
@@ -185,7 +202,9 @@ function printEquationReport(
     out(
       `  ● your equation joins ${L.anchored ? 'the ANCHORED cluster' : 'a cluster'} of ${L.clusterSize} via {${L.sharedQuantities.join(', ')}}`
     );
-    if (L.connectedJunctionIds.length) out(`     connects to: ${L.connectedJunctionIds.join(', ')}`);
+    // W3/I3: do not dump ~100 edge ids — that made shared length/temperature look
+    // like a physics claim. Summarise nearest equations by shared-quantity overlap.
+    for (const line of api.formatConnectedSummary(model, L)) out(line);
   }
   for (const h of user.hints ?? []) {
     if (!h.suggestions.length) {
@@ -249,6 +268,7 @@ async function run(ctx: CommandCtx): Promise<number> {
 
   // --equation injects a user-supplied "TARGET = EXPR" as a 'user' junction.
   let user: EquationAnalysis | null = null;
+  let comparisons: CanonicalComparison[] = [];
   const equationValues = args.flags.get('equation');
   const equation = equationValues && equationValues.length > 0 ? equationValues[equationValues.length - 1] : null;
   if (equation != null) {
@@ -256,7 +276,7 @@ async function run(ctx: CommandCtx): Promise<number> {
       throw new UsageError('upt: --equation requires "TARGET = EXPR"');
     }
     try {
-      user = await analyzeEquation(api, equation, graph); // throws UserEquationError on malformed structure
+      ({ user, comparisons } = await analyzeEquation(api, equation, graph)); // throws UserEquationError on malformed structure
     } catch (e) {
       throw new UsageError('upt: ' + (e && (e as Error).message ? (e as Error).message : String(e)));
     }
@@ -264,6 +284,17 @@ async function run(ctx: CommandCtx): Promise<number> {
       throw new UsageError('upt: ' + user.parseError); // dimensionally malformed RHS
     }
   }
+
+  // A user equation whose dimension mismatches, or that differs from its
+  // canonical equation, is a failed check: exit 3 (persona finding F2). A
+  // mismatch counts only when every name resolved: an unknown name is checked
+  // as a dimensionless placeholder, so its "mismatch" is not a real check.
+  const exitCode =
+    user !== null &&
+    ((user.consistent === false && (user.hints ?? []).length === 0) ||
+      comparisons.some((c) => c.kind === 'factor' || c.kind === 'form'))
+      ? EXIT_CHECK_FAILED
+      : 0;
 
   const overlay = (extra: VizJunction[]): VizJunction[] => [
     // Ranked from the UNFILTERED graph: the proposal set is a property of the
@@ -294,6 +325,7 @@ async function run(ctx: CommandCtx): Promise<number> {
         rhsDimension: user.rhsDimension,
         targetDimension: user.targetDimension,
         hints: user.hints,
+        canonicalComparisons: comparisons,
       };
     }
     emitJson(
@@ -309,7 +341,7 @@ async function run(ctx: CommandCtx): Promise<number> {
       },
       write
     );
-    return 0;
+    return exitCode;
   }
 
   if (fmt === 'mermaid' || fmt === 'dot' || fmt === 'svg') {
@@ -349,8 +381,8 @@ async function run(ctx: CommandCtx): Promise<number> {
     // source. The diagram itself also carries the legend (see `buildVizModel`).
     if (posterNote !== null) err(`upt: ${posterNote}`);
     if (model.filterLegend !== null) err(`upt: ${model.filterLegend}`);
-    if (user) printEquationReport(api, model, user, err);
-    return 0;
+    if (user) printEquationReport(api, model, user, err, comparisons);
+    return exitCode;
   }
   if (fmt !== 'text') {
     throw new CliError(`upt: unknown --format='${fmt}' (expected: text | mermaid | dot | svg)`);
@@ -377,9 +409,21 @@ Poster index — statements and the derivations between them  [source: ${label}]
     if (user) {
       out(`
 Your equation:  ${user.junction.label}`);
-      printEquationReport(api, model, user, out);
+      printEquationReport(api, model, user, out, comparisons);
     }
-    return 0;
+    return exitCode;
+  }
+
+  // --equation: the verdict on the user's equation is the answer asked for, so it
+  // comes BEFORE the linkage map, not after ~45 lines of it (persona finding N4).
+  if (user) {
+    const model = api.buildVizModel(fullGraph, {
+      title: `UPT physics map — ${label}`,
+      extraJunctions: overlay([user.junction]),
+      ...filterOpts,
+    });
+    out(`\nYour equation:  ${user.junction.label}`);
+    printEquationReport(api, model, user, out, comparisons);
   }
 
   const m = api.linkageMap(graph);
@@ -399,18 +443,7 @@ Your equation:  ${user.junction.label}`);
   out(`  ○ isolated (${m.isolated.length}) — share no quantity with any other edge:`);
   out(`     ${m.isolated.join(', ')}`);
   out('\n  (a structural map — shared-quantity connectivity, NOT a credibility signal)');
-
-  // --equation: where does the user's equation land in this graph?
-  if (user) {
-    const model = api.buildVizModel(fullGraph, {
-      title: `UPT physics map — ${label}`,
-      extraJunctions: overlay([user.junction]),
-      ...filterOpts,
-    });
-    out(`\nYour equation:  ${user.junction.label}`);
-    printEquationReport(api, model, user, out);
-  }
-  return 0;
+  return exitCode;
 }
 
 export const command: Command = {

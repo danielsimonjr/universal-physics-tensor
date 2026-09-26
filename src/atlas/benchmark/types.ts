@@ -64,12 +64,16 @@ export const HELD_OUT_MARKERS: readonly string[] = [
   'fluid statics',
 ];
 
-/** One benchmark item, as its PUBLIC half carries it — never the answer. @internal */
+/**
+ * One benchmark item, as its PUBLIC half carries it — never the answer. Whether
+ * the item is valid, and which failure kind it has, live only in the scorer
+ * half (`ItemLabel` in `study.ts`), so a condition that reads the public file
+ * cannot read the key.
+ *
+ * @internal
+ */
 export interface BenchmarkItem {
   readonly id: string;
-  readonly kind: 'valid' | 'invalid';
-  /** REQUIRED iff `kind === 'invalid'`. */
-  readonly failureKind?: FailureKind;
   readonly premises: readonly string[];
   readonly conclusion: string;
   readonly claimedRelation: RelationType;

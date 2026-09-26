@@ -1,10 +1,10 @@
 {
   "metadata": {
     "name": "universal-physics-tensor",
-    "version": "0.45.2",
-    "totalFiles": 348,
+    "version": "0.47.1",
+    "totalFiles": 351,
     "totalModules": 11,
-    "totalExports": 2445
+    "totalExports": 2475
   },
   "entryPoints": [
     {
@@ -217,7 +217,6 @@
           {
             "file": "./types.js",
             "imports": [
-              "FAILURE_KINDS",
               "HELD_OUT_FAMILY"
             ]
           },
@@ -351,6 +350,12 @@
           {
             "file": "./types.js",
             "imports": [
+              "FAILURE_KINDS"
+            ]
+          },
+          {
+            "file": "./types.js",
+            "imports": [
               "FailureKind"
             ],
             "typeOnly": true
@@ -373,6 +378,7 @@
           }
         ],
         "exports": [
+          "validateLabels",
           "scoreCondition",
           "pairedRejection",
           "scoreAblation"
@@ -380,11 +386,13 @@
         "interfaces": [
           "ConditionAnswer",
           "ItemLabel",
+          "LabelProblem",
           "ConditionMetrics",
           "PairedRejection",
           "AblationRow"
         ],
         "functions": [
+          "validateLabels",
           "scoreCondition",
           "pairedRejection",
           "scoreAblation"
@@ -1110,9 +1118,9 @@
           {
             "file": "./derive-evidence.js",
             "imports": [
-              "AdjudicationVerdict",
               "CounterexampleLike",
               "EvidenceInput",
+              "MembershipVerdict",
               "RejectionLike",
               "WitnessLike"
             ],
@@ -1717,9 +1725,9 @@
           "AtlasRejection",
           "FormalFidelity",
           "FormalRef",
-          "AdjudicationVerdict",
           "CounterexampleLike",
           "EvidenceInput",
+          "MembershipVerdict",
           "RejectionLike",
           "WitnessLike",
           "CompositionResult",
@@ -1813,9 +1821,9 @@
           "deriveEvidence",
           "deriveEvidenceForVerdict",
           "NO_PASSING_WITNESSES",
-          "AdjudicationVerdict",
           "CounterexampleLike",
           "EvidenceInput",
+          "MembershipVerdict",
           "RejectionLike",
           "WitnessLike",
           "composeRelation",
@@ -3861,6 +3869,13 @@
             "imports": [
               "evaluateGravitationalLensing"
             ]
+          },
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "GM_SUN_SI",
+              "G_SI"
+            ]
           }
         ],
         "exports": [
@@ -3887,6 +3902,13 @@
             "file": "./perihelion-precession.js",
             "imports": [
               "evaluatePerihelionPrecession"
+            ]
+          },
+          {
+            "file": "../core/constants.js",
+            "imports": [
+              "GM_SUN_SI",
+              "G_SI"
             ]
           }
         ],
@@ -4661,7 +4683,7 @@
           {
             "file": "./equations/be-35-conformal-bootstrap.js",
             "imports": [
-              "evaluateCrossingResidual"
+              "evaluateCrossingEquation"
             ]
           },
           {
@@ -6609,7 +6631,7 @@
         ]
       },
       "src/bridges/equations/be-35-conformal-bootstrap.ts": {
-        "description": "Bridge Equation 35 — Conformal Bootstrap (crossing-symmetry residual).",
+        "description": "Bridge Equation 35 — Conformal Bootstrap (the crossing equation).",
         "externalDependencies": [],
         "nodeDependencies": [],
         "internalDependencies": [
@@ -6637,18 +6659,14 @@
           }
         ],
         "exports": [
-          "BE35_FORWARD_BLOCK",
-          "BE35_CROSSED_BLOCK",
-          "BE35_CROSSING_RESIDUAL_RHS",
-          "evaluateCrossingResidual"
+          "BE35_CROSSING_EQUATION_RHS",
+          "evaluateCrossingEquation"
         ],
         "functions": [
-          "evaluateCrossingResidual"
+          "evaluateCrossingEquation"
         ],
         "constants": [
-          "BE35_FORWARD_BLOCK",
-          "BE35_CROSSED_BLOCK",
-          "BE35_CROSSING_RESIDUAL_RHS"
+          "BE35_CROSSING_EQUATION_RHS"
         ]
       },
       "src/bridges/equations/be-36-gw-speed-bound.ts": {
@@ -7377,7 +7395,7 @@
         ]
       },
       "src/bridges/equations/be-48-grw-localization.ts": {
-        "description": "Bridge Equation 48 — GRW mass-amplified localization rate",
+        "description": "Bridge Equation 48 — GRW mass-amplified localization rate (post Wave Y",
         "externalDependencies": [],
         "nodeDependencies": [],
         "internalDependencies": [
@@ -8361,7 +8379,7 @@
           {
             "file": "./equations/be-35-conformal-bootstrap.js",
             "imports": [
-              "BE35_CROSSING_RESIDUAL_RHS"
+              "BE35_CROSSING_EQUATION_RHS"
             ]
           },
           {
@@ -9374,6 +9392,33 @@
           "CANONICAL_BY_ID"
         ]
       },
+      "src/canonical/residual.ts": {
+        "description": "Residual form of a canonical equation: `target − scalarAst`.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/ast-types.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          }
+        ],
+        "exports": [
+          "canonicalResidual"
+        ],
+        "functions": [
+          "canonicalResidual"
+        ]
+      },
       "src/canonical/seed-l-layer.ts": {
         "description": "Seed the canonical-equation registry into the tensor's L-layer (Π = L + B + E)",
         "externalDependencies": [],
@@ -9849,7 +9894,8 @@
           {
             "file": "../errors.js",
             "imports": [
-              "UsageError"
+              "UsageError",
+              "EXIT_CHECK_FAILED"
             ]
           },
           {
@@ -10057,7 +10103,8 @@
           {
             "file": "../errors.js",
             "imports": [
-              "UsageError"
+              "UsageError",
+              "CliError"
             ]
           }
         ],
@@ -10299,7 +10346,8 @@
             "file": "../errors.js",
             "imports": [
               "UsageError",
-              "CliError"
+              "CliError",
+              "EXIT_CHECK_FAILED"
             ]
           },
           {
@@ -10344,6 +10392,13 @@
               "EquationAnalysis"
             ],
             "typeOnly": true
+          },
+          {
+            "file": "../../composition/canonical-compare.js",
+            "imports": [
+              "CanonicalComparison"
+            ],
+            "typeOnly": true
           }
         ],
         "exports": [
@@ -10376,7 +10431,8 @@
           {
             "file": "../errors.js",
             "imports": [
-              "CliError"
+              "CliError",
+              "EXIT_CHECK_FAILED"
             ]
           },
           {
@@ -10388,7 +10444,9 @@
           {
             "file": "./regime.js",
             "imports": [
-              "parseAt"
+              "parseAt",
+              "resolveAtPoint",
+              "showInequality"
             ]
           }
         ],
@@ -10603,10 +10661,14 @@
         ],
         "exports": [
           "command",
-          "parseAt"
+          "parseAt",
+          "resolveAtPoint",
+          "showInequality"
         ],
         "functions": [
-          "parseAt"
+          "parseAt",
+          "resolveAtPoint",
+          "showInequality"
         ],
         "constants": [
           "command"
@@ -10654,17 +10716,21 @@
         ]
       },
       "src/cli/errors.ts": {
-        "description": "Typed error classes for the UPT CLI.",
+        "description": "Typed error classes and exit codes for the UPT CLI.",
         "externalDependencies": [],
         "nodeDependencies": [],
         "internalDependencies": [],
         "exports": [
+          "EXIT_CHECK_FAILED",
           "UsageError",
           "CliError"
         ],
         "classes": [
           "UsageError",
           "CliError"
+        ],
+        "constants": [
+          "EXIT_CHECK_FAILED"
         ]
       },
       "src/cli/graphs.ts": {
@@ -10818,8 +10884,17 @@
               "renderDotToSvg",
               "equationLanding",
               "analyzeUserEquation",
+              "resolveToCatalogName",
+              "suggestQuantities",
               "buckinghamPi",
               "dimensionallyDetermines"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/user-equation.js",
+            "imports": [
+              "formatConnectedSummary"
             ],
             "reExport": true
           },
@@ -10862,6 +10937,13 @@
             "file": "./composition/discovery.js",
             "imports": [
               "rankDiscoveries"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./bridges/index.js",
+            "imports": [
+              "BRIDGE_EQUATIONS"
             ],
             "reExport": true
           },
@@ -11082,6 +11164,37 @@
             "reExport": true
           },
           {
+            "file": "./composition/representative-values.js",
+            "imports": [
+              "REPRESENTATIVE_VALUES"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/canonical-compare.js",
+            "imports": [
+              "compareWithCanonical",
+              "compareUserEquation",
+              "describeComparison",
+              "describeComparisons"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/canonical-compare.js",
+            "imports": [
+              "CanonicalComparison"
+            ],
+            "reExport": true
+          },
+          {
+            "file": "./composition/symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./composition/grounding.js",
             "imports": [
               "CandidateGrounding"
@@ -11184,8 +11297,11 @@
           "renderDotToSvg",
           "equationLanding",
           "analyzeUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
           "buckinghamPi",
           "dimensionallyDetermines",
+          "formatConnectedSummary",
           "bridgePriority",
           "attemptDerivation",
           "dimensionalFreedom",
@@ -11198,6 +11314,7 @@
           "parseDimensionSpec",
           "predictMissingBridges",
           "rankDiscoveries",
+          "BRIDGE_EQUATIONS",
           "auditCoverage",
           "CONFRONTATIONS",
           "listConfrontations",
@@ -11244,6 +11361,12 @@
           "checkConventions",
           "unknownConventionKeys",
           "describeGrounding",
+          "REPRESENTATIVE_VALUES",
+          "compareWithCanonical",
+          "compareUserEquation",
+          "describeComparison",
+          "describeComparisons",
+          "CONSTANTS",
           "OSCILLATOR_FAMILY",
           "ATLAS_FAMILIES",
           "deriveEvidence",
@@ -11267,6 +11390,7 @@
           "ConsequenceSignal",
           "ConsequenceEvidence",
           "ConventionKey",
+          "CanonicalComparison",
           "CandidateGrounding",
           "AtlasFamily",
           "RegimeCheck",
@@ -11295,8 +11419,11 @@
           "renderDotToSvg",
           "equationLanding",
           "analyzeUserEquation",
+          "resolveToCatalogName",
+          "suggestQuantities",
           "buckinghamPi",
           "dimensionallyDetermines",
+          "formatConnectedSummary",
           "bridgePriority",
           "attemptDerivation",
           "dimensionalFreedom",
@@ -11309,6 +11436,7 @@
           "parseDimensionSpec",
           "predictMissingBridges",
           "rankDiscoveries",
+          "BRIDGE_EQUATIONS",
           "auditCoverage",
           "CONFRONTATIONS",
           "listConfrontations",
@@ -11369,6 +11497,13 @@
           "unknownConventionKeys",
           "ConventionKey",
           "describeGrounding",
+          "REPRESENTATIVE_VALUES",
+          "compareWithCanonical",
+          "compareUserEquation",
+          "describeComparison",
+          "describeComparisons",
+          "CanonicalComparison",
+          "CONSTANTS",
           "CandidateGrounding",
           "OSCILLATOR_FAMILY",
           "ATLAS_FAMILIES",
@@ -11644,6 +11779,98 @@
           "predictMissingBridges"
         ]
       },
+      "src/composition/canonical-compare.ts": {
+        "description": "Compare a user's formula with the canonical (textbook) equation it restates.",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [
+          {
+            "file": "../dimensional/validator.js",
+            "imports": [
+              "ExprNode"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../dimensional/algebra.js",
+            "imports": [
+              "equals"
+            ]
+          },
+          {
+            "file": "../canonical/registry.js",
+            "imports": [
+              "CANONICAL_EQUATIONS"
+            ]
+          },
+          {
+            "file": "../canonical/canonical-equation.js",
+            "imports": [
+              "CanonicalEquation"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "./symbolic-constants.js",
+            "imports": [
+              "CONSTANTS"
+            ]
+          },
+          {
+            "file": "./expr-eval.js",
+            "imports": [
+              "evalExpr"
+            ]
+          },
+          {
+            "file": "./canonical-prefactors.js",
+            "imports": [
+              "canonicalPrefactor"
+            ]
+          },
+          {
+            "file": "./user-equation.js",
+            "imports": [
+              "parseUserEquation",
+              "resolveToCatalogName"
+            ]
+          },
+          {
+            "file": "../numerical/formula-registry.js",
+            "imports": [
+              "parsePhysics"
+            ]
+          },
+          {
+            "file": "../dimensional/types.js",
+            "imports": [
+              "DIMENSIONLESS"
+            ]
+          }
+        ],
+        "exports": [
+          "compareWithCanonical",
+          "compareUserEquation",
+          "describeComparisons",
+          "describeComparison"
+        ],
+        "interfaces": [
+          "CanonicalComparison"
+        ],
+        "functions": [
+          "compareWithCanonical",
+          "compareUserEquation",
+          "describeComparisons",
+          "describeComparison"
+        ]
+      },
       "src/composition/canonical-graph.ts": {
         "description": "Canonical-only graph — project the standard-physics L-layer",
         "externalDependencies": [],
@@ -11730,6 +11957,25 @@
         "constants": [
           "CANONICAL_CONSTANTS",
           "CANONICAL_GRAPH"
+        ]
+      },
+      "src/composition/canonical-prefactors.ts": {
+        "description": "Exact prefactors for canonical equations that `src/canonical` records only",
+        "externalDependencies": [],
+        "nodeDependencies": [],
+        "internalDependencies": [],
+        "exports": [
+          "CANONICAL_PREFACTORS",
+          "canonicalPrefactor"
+        ],
+        "interfaces": [
+          "CanonicalPrefactor"
+        ],
+        "functions": [
+          "canonicalPrefactor"
+        ],
+        "constants": [
+          "CANONICAL_PREFACTORS"
         ]
       },
       "src/composition/catalog-graph.ts": {
@@ -14301,7 +14547,8 @@
         "interfaces": [
           "BackendRequest",
           "BackendCandidate",
-          "BackendResponse"
+          "BackendResponse",
+          "WorkerProcess"
         ],
         "functions": [
           "runBackendWorker"
@@ -14373,10 +14620,36 @@
             "imports": [
               "monomialToExpr"
             ]
+          },
+          {
+            "file": "../expr-eval.js",
+            "imports": [
+              "evalExpr"
+            ]
+          },
+          {
+            "file": "../../dimensional/algebra.js",
+            "imports": [
+              "equals"
+            ]
+          },
+          {
+            "file": "../../dimensional/types.js",
+            "imports": [
+              "Dimension"
+            ],
+            "typeOnly": true
+          },
+          {
+            "file": "../canonical-prefactors.js",
+            "imports": [
+              "canonicalPrefactor"
+            ]
           }
         ],
         "exports": [
           "compareToCorpus",
+          "corpusPrefactorNotes",
           "corpusRelativeWording"
         ],
         "interfaces": [
@@ -14385,6 +14658,7 @@
         ],
         "functions": [
           "compareToCorpus",
+          "corpusPrefactorNotes",
           "corpusRelativeWording"
         ]
       },
@@ -14728,7 +15002,8 @@
           {
             "file": "../../dimensional/buckingham.js",
             "imports": [
-              "dimensionallyDetermines"
+              "dimensionallyDetermines",
+              "DimensionalDeterminationResult"
             ]
           },
           {
@@ -14755,13 +15030,15 @@
           }
         ],
         "exports": [
-          "monomialToExpr"
+          "monomialToExpr",
+          "nativeDetermination"
         ],
         "interfaces": [
           "RawCandidate"
         ],
         "functions": [
-          "monomialToExpr"
+          "monomialToExpr",
+          "nativeDetermination"
         ]
       },
       "src/composition/probe/index.ts": {
@@ -15477,6 +15754,7 @@
             "file": "./generator.js",
             "imports": [
               "generateNative",
+              "nativeDetermination",
               "RawCandidate"
             ]
           },
@@ -15492,6 +15770,7 @@
             "file": "./corpus.js",
             "imports": [
               "compareToCorpus",
+              "corpusPrefactorNotes",
               "corpusRelativeWording",
               "CorpusComparisonResult"
             ]
@@ -16869,11 +17148,14 @@
           }
         ],
         "exports": [
+          "rewriteCatalogHyphens",
+          "hyphenSubtractHint",
           "parseUserEquation",
           "resolveToCatalogName",
           "suggestQuantities",
           "suggestByDimension",
           "equationLanding",
+          "formatConnectedSummary",
           "analyzeUserEquation",
           "UserEquationError"
         ],
@@ -16887,11 +17169,14 @@
           "EquationAnalysis"
         ],
         "functions": [
+          "rewriteCatalogHyphens",
+          "hyphenSubtractHint",
           "parseUserEquation",
           "resolveToCatalogName",
           "suggestQuantities",
           "suggestByDimension",
           "equationLanding",
+          "formatConnectedSummary",
           "analyzeUserEquation"
         ]
       }
@@ -16998,6 +17283,8 @@
           "T_P_SI",
           "H0_SI",
           "M_SUN_SI",
+          "GM_SUN_SI",
+          "GM_SUN_SOURCE",
           "M_E_SI",
           "B_WIEN_SI"
         ],
@@ -17014,6 +17301,8 @@
           "T_P_SI",
           "H0_SI",
           "M_SUN_SI",
+          "GM_SUN_SI",
+          "GM_SUN_SOURCE",
           "M_E_SI",
           "B_WIEN_SI"
         ]
@@ -18088,6 +18377,13 @@
               "TEMPERATURE",
               "ENTROPY",
               "CHARGE"
+            ]
+          },
+          {
+            "file": "./algebra.js",
+            "imports": [
+              "multiply",
+              "divide"
             ]
           }
         ],
@@ -19560,6 +19856,7 @@
             "file": "./numerical/killing.js",
             "imports": [
               "verifyKillingEquation",
+              "checkKillingEquation",
               "evaluateConservedCharge"
             ],
             "reExport": true
@@ -19568,6 +19865,7 @@
             "file": "./numerical/killing.js",
             "imports": [
               "KillingEquationOptions",
+              "KillingEquationCheck",
               "ChristoffelAccess"
             ],
             "reExport": true
@@ -20770,6 +21068,7 @@
           "einstein",
           "bianchiResidual",
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge",
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
@@ -21017,6 +21316,7 @@
           "EinsteinTensorNode",
           "BianchiResidualNode",
           "KillingEquationOptions",
+          "KillingEquationCheck",
           "ChristoffelAccess",
           "TracableTensorNode",
           "TensorTraceNode",
@@ -21327,8 +21627,10 @@
           "bianchiResidual",
           "BianchiResidualNode",
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge",
           "KillingEquationOptions",
+          "KillingEquationCheck",
           "ChristoffelAccess",
           "integrateGeodesic",
           "type GeodesicIntegratorInputs",
@@ -22794,6 +23096,12 @@
             ]
           },
           {
+            "file": "./input-validation.js",
+            "imports": [
+              "validateFiniteInputs"
+            ]
+          },
+          {
             "file": "../tests/fixtures/schwarzschild.js",
             "imports": []
           },
@@ -22806,13 +23114,16 @@
         ],
         "exports": [
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge"
         ],
         "interfaces": [
-          "KillingEquationOptions"
+          "KillingEquationOptions",
+          "KillingEquationCheck"
         ],
         "functions": [
           "verifyKillingEquation",
+          "checkKillingEquation",
           "evaluateConservedCharge"
         ]
       },
@@ -22820,7 +23131,7 @@
         "description": "Klein-Gordon dispersion-relation numerical evaluator (G-7 debt closure).",
         "externalDependencies": [
           {
-            "package": "universal-physics-tensor/numerical/klein-gordon",
+            "package": "universal-physics-tensor",
             "imports": [
               "evaluateKGDispersionResidual"
             ]
@@ -22832,7 +23143,7 @@
             ]
           },
           {
-            "package": "universal-physics-tensor/numerical/klein-gordon",
+            "package": "universal-physics-tensor",
             "imports": [
               "verifyKleinGordonPlaneWave"
             ]
@@ -23686,6 +23997,7 @@
           "src/canonical/linkage.ts",
           "src/canonical/normal-form.ts",
           "src/canonical/registry.ts",
+          "src/canonical/residual.ts",
           "src/canonical/seed-l-layer.ts"
         ]
       },
@@ -23739,7 +24051,9 @@
           "src/composition/axis-audit.ts",
           "src/composition/bridge-analysis.ts",
           "src/composition/bridge-prediction.ts",
+          "src/composition/canonical-compare.ts",
           "src/composition/canonical-graph.ts",
+          "src/composition/canonical-prefactors.ts",
           "src/composition/catalog-graph.ts",
           "src/composition/compose-surface.ts",
           "src/composition/compose-symbolic.ts",
@@ -23920,18 +24234,18 @@
     ]
   },
   "statistics": {
-    "totalTypeScriptFiles": 348,
+    "totalTypeScriptFiles": 351,
     "totalModules": 11,
-    "totalLinesOfCode": 68562,
-    "totalExports": 2445,
+    "totalLinesOfCode": 70485,
+    "totalExports": 2475,
     "totalClasses": 58,
-    "totalInterfaces": 357,
-    "totalFunctions": 551,
+    "totalInterfaces": 362,
+    "totalFunctions": 566,
     "totalTypeGuards": 4,
     "totalEnums": 0,
-    "totalConstants": 606,
-    "totalReExports": 1229,
-    "totalTypeOnlyImports": 483,
+    "totalConstants": 608,
+    "totalReExports": 1242,
+    "totalTypeOnlyImports": 490,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
     "unusedFilesCount": 1,

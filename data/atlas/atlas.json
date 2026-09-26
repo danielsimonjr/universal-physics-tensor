@@ -1,6 +1,6 @@
 {
   "schemaVersion": "0",
-  "packageVersion": "0.45.2",
+  "packageVersion": "0.47.1",
   "families": [
     {
       "$schema": "../schemas/atlas-record.v0.json",
@@ -515,10 +515,10 @@
             "model-spring"
           ],
           "conclusion": "model-lc",
-          "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+          "transformation": "force–voltage analogy m ↔ L, k ↔ 1/C, x ↔ q (so ω0² = k/m ↔ 1/(LC)); u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_LC t / ω_s)",
           "inverse": "x = x0 u, t = τ/ω0",
           "preserves": [
-            "natural frequency",
+            "the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)",
             "energy up to scale",
             "phase portrait"
           ],
@@ -549,7 +549,7 @@
           },
           "counterexamples": [
             {
-              "description": "adding R to bridge 1 breaks it: the same L, C with R = 4 has ζ_RLC = 0.5, which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π",
+              "description": "adding R to bridge 1 breaks it: the circuit L = 2, C = 0.125 of witness W2b with R = 4 has ζ_RLC = (R/2)√(C/L) = 0.5, which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π",
               "witness": "W2b"
             }
           ],
@@ -574,7 +574,7 @@
               "id": "W1b",
               "kind": "numeric",
               "test": "tests/atlas/oscillators-exact.test.ts",
-              "tolerance": "round-trip within 1e-12"
+              "tolerance": "inverse-mapped trajectory solves m x″ + k x = 0 within 1e-8; a 1% wrong ω0 fails"
             },
             {
               "id": "W2b",
@@ -602,10 +602,10 @@
             "model-damped-spring"
           ],
           "conclusion": "model-rlc",
-          "transformation": "u = x/x0 or q/q0, τ = ω0 t",
+          "transformation": "force–voltage analogy m ↔ L, k ↔ 1/C, b ↔ R, x ↔ q; u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_RLC t / ω_mech)",
           "inverse": "x = x0 u, t = τ/ω0",
           "preserves": [
-            "natural frequency",
+            "the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)",
             "damping ratio",
             "phase portrait"
           ],
@@ -707,11 +707,14 @@
           "bound": {
             "K": 1,
             "delta": 0.015852531101436806,
-            "norm": "relative period error",
+            "norm": "relative period error, normalized by the value of the reduced model",
             "domain": "θ0 ≤ 0.5 rad",
             "horizon": "t ≪ 16 T0/θ0²; machine form t < 4 T0/θ0², the π/2-drift time",
             "parameterRange": "θ0 ≤ 0.5 rad",
-            "limitCharacter": "regular"
+            "limitCharacter": "regular",
+            "uniformity": [
+              "one period, for θ0 in the stated domain"
+            ]
           },
           "regime": {
             "family": "oscillators",
@@ -808,7 +811,11 @@
             "domain": "t ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1",
             "horizon": "t ≥ 5 m/b (outside the boundary layer)",
             "parameterRange": "m k / b² < 1/4, |v0| ≤ 5; with b = k = 1 this is m < 1/4",
-            "limitCharacter": "singular"
+            "limitCharacter": "singular",
+            "uniformity": [
+              "t ≥ 5 m/b, overdamped, at the witness normalisation b = k = 1",
+              "m k / b² < 1/4, |v0| ≤ 5"
+            ]
           },
           "regime": {
             "family": "oscillators",
@@ -931,6 +938,12 @@
               "kind": "numeric",
               "test": "tests/atlas/oscillators-coarse.test.ts",
               "tolerance": "relative dispersion error matches (qa)²/24 within 0.5% of itself"
+            },
+            {
+              "id": "W9b",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-coarse.test.ts",
+              "tolerance": "ring of 64 masses integrated: ω matches the lattice dispersion within 1e-9 and the coarse error (qa)²/24 within 1%; superposition within 1e-10 (linearity); a 10% wrong κ and a cubic on-site force each fail"
             }
           ],
           "citations": [
@@ -945,14 +958,13 @@
           "id": "ax-cubic-spring-lc",
           "claimedRelation": "exact-equivalence",
           "premises": [
-            "model-cubic-spring",
-            "model-lc"
+            "model-cubic-spring"
           ],
           "conclusion": "model-lc",
-          "reason": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity. The LC variable set is dimensionally independent and has no group to match it, so no change of variables can make the two models exactly equivalent. A nonlinear oscillator cannot be an exact image of a linear one.",
+          "reason": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity, and the LC variable set has none (W3). A surviving group is necessary evidence, not sufficient. The decisive fact is isochrony: the LC period is the same at every amplitude, the cubic spring period is not (W3b), and a change of variables that rescales time by a constant multiplies every period by the same factor. So no such change of variables makes the two models exactly equivalent.",
           "survivingGroup": "β x0² / k",
           "counterexample": {
-            "description": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity. The LC variable set is dimensionally independent and has no group to match it, so no change of variables can make the two models exactly equivalent. A nonlinear oscillator cannot be an exact image of a linear one."
+            "description": "The cubic spring retains one dimensionless group, β x0² / k, that measures its nonlinearity, and the LC variable set has none (W3). A surviving group is necessary evidence, not sufficient. The decisive fact is isochrony: the LC period is the same at every amplitude, the cubic spring period is not (W3b), and a change of variables that rescales time by a constant multiplies every period by the same factor. So no such change of variables makes the two models exactly equivalent."
           },
           "witnesses": [
             {
@@ -960,6 +972,12 @@
               "kind": "symbolic",
               "test": "tests/atlas/oscillators-coarse.test.ts",
               "tolerance": "exact integer π-group exponents; LC verdict dimensionally-independent"
+            },
+            {
+              "id": "W3b",
+              "kind": "numeric",
+              "test": "tests/atlas/oscillators-coarse.test.ts",
+              "tolerance": "linear period 2π within 1e-6 at A = 0.5, 1, 2; cubic-spring periods spread by more than 10% at β x0²/k = 0.1"
             }
           ]
         }
@@ -1678,33 +1696,91 @@
             "the shape beyond the radius a"
           ],
           "sideConditions": [
-            "creeping flow around the sphere, Re ≪ 1",
+            "creeping flow around the sphere, Re ≪ 1 (machine form Re ≤ 0.1: a chosen threshold for \"≪ 1\")",
             "no-slip boundary",
-            "overdamped times t ≫ m/γ"
+            "overdamped times t ≫ m/γ (machine form m/(γt) ≤ 0.01: a chosen threshold for \"≪ 1\", as in ab-langevin-diffusion)"
           ],
           "regime": {
             "family": "diffusion",
-            "inequalities": [],
+            "inequalities": [
+              {
+                "group": "Re",
+                "op": "<=",
+                "bound": 0.1,
+                "alias": "Re ≪ 1 (machine form Re ≤ 0.1)"
+              },
+              {
+                "group": "m · gamma^-1 · t^-1",
+                "op": "<=",
+                "bound": 0.01,
+                "alias": "τ_p/t ≪ 1 (machine form m/(γt) ≤ 0.01)"
+              }
+            ],
             "groupDefinitions": {
-              "gamma · eta^-1 · a^-1": {
+              "Re": {
                 "exponents": {
                   "D": 0,
-                  "a": -1,
-                  "eta": -1,
-                  "gamma": 1,
-                  "kT": 0
+                  "Re": 1,
+                  "a": 0,
+                  "eta": 0,
+                  "gamma": 0,
+                  "kT": 0,
+                  "m": 0,
+                  "t": 0
                 },
-                "formula": "gamma · eta^-1 · a^-1"
+                "formula": "Re"
               },
-              "kT · gamma^-1 · D^-1": {
+              "gamma · kT^-1 · D": {
                 "exponents": {
-                  "D": -1,
+                  "D": 1,
+                  "Re": 0,
+                  "a": 0,
+                  "eta": 0,
+                  "gamma": 1,
+                  "kT": -1,
+                  "m": 0,
+                  "t": 0
+                },
+                "formula": "gamma · kT^-1 · D"
+              },
+              "m · gamma^-1 · t^-1": {
+                "exponents": {
+                  "D": 0,
+                  "Re": 0,
                   "a": 0,
                   "eta": 0,
                   "gamma": -1,
-                  "kT": 1
+                  "kT": 0,
+                  "m": 1,
+                  "t": -1
                 },
-                "formula": "kT · gamma^-1 · D^-1"
+                "formula": "m · gamma^-1 · t^-1"
+              },
+              "m · gamma^-2 · kT · a^-2": {
+                "exponents": {
+                  "D": 0,
+                  "Re": 0,
+                  "a": -2,
+                  "eta": 0,
+                  "gamma": -2,
+                  "kT": 1,
+                  "m": 1,
+                  "t": 0
+                },
+                "formula": "m · gamma^-2 · kT · a^-2"
+              },
+              "m · gamma^-4 · kT · eta^2": {
+                "exponents": {
+                  "D": 0,
+                  "Re": 0,
+                  "a": 0,
+                  "eta": 2,
+                  "gamma": -4,
+                  "kT": 1,
+                  "m": 1,
+                  "t": 0
+                },
+                "formula": "m · gamma^-4 · kT · eta^2"
               }
             }
           },
@@ -1757,11 +1833,14 @@
           "bound": {
             "K": 1,
             "delta": 0.055728090000841446,
-            "norm": "relative error of the slow-mode decay rate of a Fourier mode",
+            "norm": "relative error of the slow-mode decay rate of a Fourier mode, normalized by the value of the reduced model",
             "domain": "ε = τDq² ≤ 0.05",
             "horizon": "τ ≪ t ≪ 1/(δ D q²): after the initial layer and before the decay-rate error accumulates; machine form 5τ < t < 0.1/(δ D q²)",
             "parameterRange": "ε = τDq² ≤ 0.05",
-            "limitCharacter": "singular"
+            "limitCharacter": "singular",
+            "uniformity": [
+              "slow-mode decay rate of one Fourier mode, for ε = τDq² ≤ 0.05"
+            ]
           },
           "regime": {
             "family": "diffusion",
@@ -1837,11 +1916,14 @@
           "bound": {
             "K": 1,
             "delta": 0.005012562893380035,
-            "norm": "relative error of the oscillation frequency of a Fourier mode",
+            "norm": "relative error of the oscillation frequency of a Fourier mode, normalized by the value of the reduced model",
             "domain": "ε = τDq² ≥ 25",
             "horizon": "t ≪ τ: before damping e^{−t/(2τ)} removes 10% of the amplitude; machine form t < 2τ ln(10/9)",
             "parameterRange": "ε = τDq² ≥ 25",
-            "limitCharacter": "regular"
+            "limitCharacter": "regular",
+            "uniformity": [
+              "oscillation frequency of one Fourier mode, for ε = τDq² ≥ 25"
+            ]
           },
           "regime": {
             "family": "diffusion",
@@ -2507,11 +2589,14 @@
           "bound": {
             "K": 1,
             "delta": 0.00498756211208895,
-            "norm": "relative phase-velocity error of a Fourier mode",
+            "norm": "relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model",
             "domain": "ω₀/(c k) ≤ 0.1",
             "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 c k δ(ω₀, c, k))",
             "parameterRange": "ω₀/(c k) ≤ 0.1",
-            "limitCharacter": "regular"
+            "limitCharacter": "regular",
+            "uniformity": [
+              "phase velocity of one Fourier mode, for ω₀/(ck) ≤ 0.1"
+            ]
           },
           "regime": {
             "family": "waves",
@@ -2587,11 +2672,14 @@
           "bound": {
             "K": 1,
             "delta": 0.0024875775822101875,
-            "norm": "relative error of the kinetic frequency ω − ω₀",
+            "norm": "relative error of the kinetic frequency ω − ω₀, normalized by the value of the reduced model",
             "domain": "x = ck/ω₀ ≤ 0.1",
             "horizon": "t ≪ π/(δ ω₀ x²): the kinetic-phase drift reaches π/2; machine form t < π/(δ ω₀ x²)",
             "parameterRange": "x = ck/ω₀ ≤ 0.1",
-            "limitCharacter": "regular"
+            "limitCharacter": "regular",
+            "uniformity": [
+              "kinetic frequency of one mode, for x = ck/ω₀ ≤ 0.1"
+            ]
           },
           "regime": {
             "family": "waves",
@@ -2628,7 +2716,7 @@
           },
           "counterexamples": [
             {
-              "description": "At x = ck/ω₀ = 1 the non-relativistic kinetic frequency is 17% too high: the limit is a long-wavelength statement.",
+              "description": "At x = ck/ω₀ = 1 the non-relativistic kinetic frequency ω₀/2 is 20.7% above the exact ω₀(√2 − 1), which is 17.2% of its own value (the normalization of delta): the limit is a long-wavelength statement.",
               "witness": "WS5b"
             }
           ],
@@ -2647,7 +2735,7 @@
               "id": "WS5b",
               "kind": "numeric",
               "test": "tests/atlas/closure.test.ts",
-              "tolerance": "relative error 3 − 2√2 = 0.1716 at x = 1"
+              "tolerance": "relative error 3 − 2√2 = 0.1716 at x = 1, normalized by the reduced value"
             }
           ],
           "citations": [
@@ -2730,11 +2818,14 @@
           "bound": {
             "K": 1,
             "delta": 0.00498756211208895,
-            "norm": "relative phase-velocity error of a Fourier mode",
+            "norm": "relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model",
             "domain": "β = EIk²/F ≤ 0.01",
             "horizon": "t ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 √(F/μ) k δ)",
             "parameterRange": "β = EIk²/F ≤ 0.01",
-            "limitCharacter": "regular"
+            "limitCharacter": "regular",
+            "uniformity": [
+              "phase velocity of one Fourier mode, for β = EIk²/F ≤ 0.01"
+            ]
           },
           "regime": {
             "family": "waves",

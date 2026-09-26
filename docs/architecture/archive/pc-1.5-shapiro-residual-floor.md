@@ -1,5 +1,7 @@
 # PC-1.5 — BE-37 Shapiro Residual Floor Investigation
 
+<!-- ste:historical-record -->
+
 **Status**: Phase 1 finding (v0.6.0).
 **Date**: 2026-05-19.
 **Carry-forward from**: v0.5.1's refuted PC-1 hypothesis (`docs/planning/v0.6.0-Brainstorm.md` §"v0.5.1 Empirical Findings").

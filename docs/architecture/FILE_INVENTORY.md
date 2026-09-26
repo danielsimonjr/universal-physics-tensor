@@ -13,7 +13,7 @@ them, not because a directory name was guessed. This matters: an earlier version
 filesystem and counted a gitignored scratch file under `.remember/tmp/` as source, and reported
 it as dead code.
 
-This is the **whole-repository** scope. The `src`-only figures quoted elsewhere in these
+The scope of this document is the **whole repository**. The `src`-only figures in the other
 documents come from this repository's own generator (`npm run docs:deps`) and are smaller by
 construction. Both are correct; each states its scope.
 
@@ -21,29 +21,28 @@ construction. Both are correct; each states its scope.
 
 | Zone | Files | What lives here |
 |---|---|---|
-| `tests` | 368 | The vitest suite |
-| `src` | 268 | The library, the CLI, and the physics catalog |
+| `tests` | 505 | The vitest suite |
+| `src` | 353 | The library, the CLI, and the physics catalog |
 | `benchmarks` | 15 | `bench/*.bench.ts` plus their fixture, run by `npm run bench` |
-| `tools` | 5 | The dependency-graph generator and `scripts/` |
+| `tools` | 23 | Repository tooling under `tools/` and `scripts/` |
 | `examples` | 1 | The smoke entry |
 | `config` | 1 | A `*.config.*` file |
-| **Total** | **658** | |
+| **Total** | **898** | |
 
-**Tests outnumber source files.** 368 test files against 268 source files is the shape of a
-repository whose claims are physical, where a wrong number is a wrong prediction rather than a
-cosmetic defect.
+**Tests outnumber source files: 505 against 353.** The ratio fits a repository whose claims are
+physical: a wrong number is a wrong prediction, not a cosmetic defect.
 
 ## By disposition
 
 | Disposition | Files | Meaning |
 |---|---|---|
-| `test` | 368 | In the test zone |
-| `reachable` | 255 | Reached from an entry root |
+| `test` | 505 | In the test zone |
+| `reachable` | 332 | Reached from an entry root |
 | `bench` | 15 | A benchmark; nothing imports it, `npm run bench` runs it |
-| `test-only` | 5 | Reached only from a test |
+| `test-only` | 11 | Reached only from a test |
 | `orphan` | 5 | Reached from nothing the tool can follow |
-| `tool` | 5 | Meta-tooling, excluded from reachability |
-| `build-entry` | 3 | A declared entry root |
+| `tool` | 23 | Meta-tooling, excluded from reachability |
+| `build-entry` | 5 | A declared entry root |
 | `config` | 1 | Configuration |
 | `example` | 1 | An example |
 
@@ -60,10 +59,13 @@ which is not the same as a file nothing runs.
 | `src/numerical/mathts-tensor.ambient.d.ts` | Same. | **Live.** |
 | `test-example.js` | The `npm run smoke` entry, invoked by script name. | **Live.** |
 
-**Zero of the five are dead code.** That is the useful result, and it took two tool fixes to
-reach it. Before them the same repository reported **50** orphans: 28 were the entire `src/cli/`
-subtree, lost because the launcher's entry could not be resolved, and 15 more were benchmarks
-filed under `src` because only `benchmarks/` was matched and this repository uses `bench/`.
+**Zero of the five are dead code.** Two reading errors would make the count much worse, and the
+tool avoids both:
+
+- If the launcher's entry cannot be resolved, the whole `src/cli/` subtree looks orphaned. The
+  tool recovers `src/cli/main.ts` as a root from `bin/upt.mjs` (see the `bin/upt.mjs` row above).
+- If only `benchmarks/` is matched, every benchmark under `bench/` falls into `src` and looks
+  orphaned. The tool also matches `bench/`, so those files get the `bench` disposition.
 
 ## Verification
 
@@ -72,13 +74,13 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| totalSourceFiles | 710 | dependency-graph.json |
+| totalSourceFiles | 898 | dependency-graph.json |
 | orphanedFiles | 5 | dependency-graph.json |
-| reachableFiles | 282 | dependency-graph.json |
-| testOnlyFiles | 5 | dependency-graph.json |
-| entryRoots | 4 | dependency-graph.json |
+| reachableFiles | 337 | dependency-graph.json |
+| testOnlyFiles | 11 | dependency-graph.json |
+| entryRoots | 5 | dependency-graph.json |
 
 **Claims the gate cannot hold.** The per-zone and per-disposition tables come from
 `file-inventory.json`'s `byArea` and `byDisposition` blocks, which the gate does not read. The
-verdict column is a reading of each file and of how it is invoked, not a metric — `tsc` include
-semantics and an npm script name are outside any dependency graph.
+verdict column comes from a reading of each file and of how it is invoked, not from a metric.
+`tsc` include semantics and an npm script name are outside any dependency graph.

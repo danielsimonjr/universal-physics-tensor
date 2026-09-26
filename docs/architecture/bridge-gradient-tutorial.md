@@ -1,59 +1,59 @@
-# Bridge-Gradient Tutorial (v0.9 Proposal 8)
+# Bridge-Gradient Tutorial
 
 <!-- repo-map:no-verification -->
 
-> **No `## Verification` block, deliberately.** This document is a tutorial. It teaches an API through worked examples and asserts nothing about the size or shape of the repository.
-> The drift gate treats a missing Verification section as a failure, so the opt-out is
-> stated here explicitly rather than left to be inferred from its absence.
+> **No `## Verification` block, deliberately.** This document is a tutorial. The tutorial teaches an API through worked examples. It asserts nothing about the size or shape of the repository.
+> The drift gate treats a missing Verification section as a failure. This document states
+> the opt-out here, so a reader does not have to infer it from its absence.
 
-> Phase 4 deliverable of v0.9 Proposal 8 (Bridge Parameter
-> Differentiation via `mathts-autograd`). Five-minute walkthrough
-> for differentiating UPT catalog bridges with respect to their
-> input parameters.
+> Five-minute walkthrough for differentiating UPT catalog bridges
+> with respect to their input parameters.
 
 ## What it does
 
-UPT's 44-bridge catalog contains many closed-form scalar formulas
+UPT's 55-bridge catalog contains many closed-form scalar formulas
 (Hawking temperature ∝ 1/M, Shapiro delay ∝ log(R_far/R_near), …).
-`bridgeGradient` computes the gradient of any registered bridge
-spec with respect to a chosen subset of its inputs, using
-reverse-mode automatic differentiation via `MathTSEngine` (which
-in turn uses the optional `@danielsimonjr/mathts-autograd` peer).
+Four functions compute the gradient of a bridge with respect to
+its inputs:
 
-Engine-agnostic surface, single error path: missing AD support →
-`EngineCapabilityError`.
+- `bridgeGradientNumerical(spec, params, opts?)` — central finite
+  differences over a registered bridge spec. No engine and no
+  optional peer. This function is the supported path for the
+  catalog's plain-JS evaluators.
+- `bridgeGradientAST(rhs, varName, bindings)` and
+  `bridgeGradientASTById(bridgeId, varName, bindings)` — exact
+  reverse-mode AD over a bridge's symbolic RHS AST, through the
+  optional `@danielsimonjr/mathts-autograd` peer (with `@danielsimonjr/mathts-tensor`).
+- `bridgeGradient(spec, engine, params)` — engine AD. It works only
+  for functions written in engine ops. The catalog evaluators use
+  plain JS `Math.*`, so `bridgeGradient` cannot trace them. With a
+  real engine it throws `NumericalBackendError`. With an engine
+  that lacks AD methods it throws `EngineCapabilityError`.
 
 ## Five-minute walkthrough
 
 ```typescript
 import {
-  bridgeGradient,
-  gradientToNamed,
+  bridgeGradientNumerical,
   BE42_HAWKING_DIFF,
-} from '@danielsimonjr/universal-physics-tensor';
-import { MathTSEngine } from '@danielsimonjr/universal-physics-tensor/numerical/mathts-engine';
+} from 'universal-physics-tensor';
 
-const engine = new MathTSEngine();
 const SUN_KG = 1.989e30;
 
-// Forward evaluation (no AD needed):
+// Forward evaluation:
 const T_sun = BE42_HAWKING_DIFF.evaluate({ M_kg: SUN_KG });
-// → ~6e-8 K
+// → ~6.17e-8 K
 
-// Reverse-mode gradient:
-const { value, gradient } = await bridgeGradient(
+// Gradient by central finite differences:
+const { value, gradient } = bridgeGradientNumerical(
   BE42_HAWKING_DIFF,
-  engine,
   { M_kg: SUN_KG },
 );
 // value === T_sun
-// gradient: rank-1 EngineTensor of shape [1], with d(T_H)/d(M_kg)
-
-const named = gradientToNamed(BE42_HAWKING_DIFF, gradient, engine);
-// → { M_kg: -3e-38 }   (dT/dM is negative — bigger BH = colder)
+// gradient → { M_kg: -3.10e-38 }   (dT/dM is negative — bigger BH = colder)
 ```
 
-## Shipped bridge specs (v0.9 closed-form subset)
+## Shipped bridge specs (closed-form subset)
 
 | Bridge spec | Differentiable params | Output |
 |---|---|---|
@@ -67,31 +67,32 @@ array are `@public`.
 
 ## Honest limitations
 
-- **`Float64ReferenceEngine` cannot AD-trace bridge evaluators.**
-  Float64's dual-number AD only traces engine-traced operations
-  (`engine.add`, `engine.mul`, ...). Bridge evaluators use plain
-  JS `Math.*` calls, which strip the dual-number tracking. Pass
-  a `MathTSEngine` instance instead.
+- **Engine AD cannot trace the bridge evaluators.** Engine AD traces
+  only engine operations (`engine.add`, `engine.mul`, ...). The
+  bridge evaluators use plain JS `Math.*` calls, so `bridgeGradient`
+  fails on them with either engine. Use `bridgeGradientNumerical`,
+  or `bridgeGradientAST` for an exact gradient.
 
-- **Optional peer required.** `mathts-autograd` is in
-  `optionalDependencies`. Run
-  `npm install --include=optional` to install. Without it,
-  `bridgeGradient` throws `EngineCapabilityError`.
+- **Optional peer for exact AD.** `mathts-autograd` is an optional peer
+  dependency, which a default install leaves out. Run
+  `npm install @danielsimonjr/mathts-autograd @danielsimonjr/mathts-tensor`
+  to install it. `bridgeGradientAST` needs both; `bridgeGradientNumerical`
+  does not.
 
 - **Scalar output only.** Bridges returning structs (e.g.,
   `PerihelionPrecessionResult` with 6 fields) need a selector
   function that extracts a single scalar (the BE52 spec extracts
-  `dphi_rad_per_orbit`). Multi-output AD is out of v0.9 scope.
+  `dphi_rad_per_orbit`). Multi-output gradients are not supported.
 
 - **Non-smooth branches not supported.** Bridges with `Math.abs`,
   `Math.max`, conditional branches based on input value, etc.,
   may produce gradients that are technically defined as
-  subgradients. v0.9 ships no smoothing layer.
+  subgradients. There is no smoothing layer.
 
 ## Adding a new differentiable bridge
 
 ```typescript
-import type { BridgeDiffSpec } from '@danielsimonjr/universal-physics-tensor';
+import type { BridgeDiffSpec } from 'universal-physics-tensor';
 import { evaluateMyBridge, type MyInputs } from './my-bridge.js';
 
 export const MY_BRIDGE_DIFF: BridgeDiffSpec<MyInputs> = {
@@ -103,12 +104,12 @@ export const MY_BRIDGE_DIFF: BridgeDiffSpec<MyInputs> = {
 };
 ```
 
-Then call `bridgeGradient(MY_BRIDGE_DIFF, engine, { p1, p2 })`.
+Then call `bridgeGradientNumerical(MY_BRIDGE_DIFF, { p1, p2 })`.
 No registration step required — specs are passed by reference.
 
 ## See also
 
-- `docs/architecture/v0.7-p8-bridge-gradient-audit.md` — Phase 3
-  audit + engine-capability matrix + acceptance criteria status.
+- `docs/architecture/archive/v0.7-p8-bridge-gradient-audit.md` —
+  the engine-capability audit (a dated record).
 - `docs/planning/v0.7-Proposal-8-Design.md` — full design with
   Adam+Eve review notes.

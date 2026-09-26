@@ -4,7 +4,7 @@
  */
 
 import { describe, expect, it } from 'vitest';
-import { pairedRejection, scoreCondition } from '../../src/atlas/benchmark/study.js';
+import { pairedRejection, scoreCondition, validateLabels } from '../../src/atlas/benchmark/study.js';
 import type { ConditionAnswer, ItemLabel } from '../../src/atlas/benchmark/study.js';
 
 const LABELS: ItemLabel[] = [
@@ -69,5 +69,34 @@ describe('pairedRejection — the pre-registered comparison', () => {
 
   it('refuses a key with no invalid items', () => {
     expect(() => pairedRejection('a', [], 'b', [], [{ itemId: 'v', kind: 'valid' }])).toThrow(/no invalid items/);
+  });
+});
+
+describe('validateLabels — the answer key, checked where it lives', () => {
+  it('CONTROL: a key that labels every item once, correctly, has no problems', () => {
+    expect(validateLabels(['v1', 'v2', 'i1', 'i2', 'i3'], LABELS)).toEqual([]);
+  });
+
+  it('flags a missing label, a label for an unknown item, and a duplicate', () => {
+    const problems = validateLabels(['a', 'b'], [
+      { itemId: 'a', kind: 'valid' },
+      { itemId: 'a', kind: 'valid' },
+      { itemId: 'ghost', kind: 'valid' },
+    ]);
+    expect(problems.map((p) => [p.id, p.problem])).toEqual([
+      ['a', 'duplicate label'],
+      ['ghost', 'label for an item not in the set'],
+      ['b', 'no label'],
+    ]);
+  });
+
+  it('an invalid label must name a known failure kind; a valid one must not name any', () => {
+    const problems = validateLabels(['n', 'u', 'v', 'ok'], [
+      { itemId: 'n', kind: 'invalid' },
+      { itemId: 'u', kind: 'invalid', failureKind: 'made-up' as never },
+      { itemId: 'v', kind: 'valid', failureKind: 'domain-violation' },
+      { itemId: 'ok', kind: 'invalid', failureKind: 'analogy-promoted' },
+    ]);
+    expect(problems.map((p) => p.id)).toEqual(['n', 'u', 'v']);
   });
 });

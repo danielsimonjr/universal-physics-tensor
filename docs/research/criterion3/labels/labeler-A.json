@@ -1,0 +1,783 @@
+{
+ "labeler": "A",
+ "model": "claude-opus-5-5",
+ "queries_sha256": "dea19d47606ca6c59eb5e73fb2487a111c9d38cca17a0e0603dc39c38cc367f0",
+ "corpus_sha256": "232062ff9fd0e6c1f3fcc56d489c0c1de92c4db6370c8696eb42b4463a4f2fcc",
+ "labels": {
+  "q-001": {
+   "ids": [],
+   "relation": "none",
+   "why": "Waveguide versus Klein-Gordon dispersion; no corpus relation matches."
+  },
+  "q-002": {
+   "ids": [],
+   "relation": "none",
+   "why": "Heat kernel continued to free propagator; correct, no corpus relation."
+  },
+  "q-003": {
+   "ids": [],
+   "relation": "none",
+   "why": "First-order inharmonicity used at B n^2 = 4; stiff-string relation absent from corpus."
+  },
+  "q-004": {
+   "ids": [],
+   "relation": "none",
+   "why": "Analytic continuation of damped oscillator to overdamped case; not in corpus."
+  },
+  "q-005": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "restates",
+   "why": "Isothermal barometric density profile; rho proportional to p via ideal gas law."
+  },
+  "q-006": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "restates",
+   "why": "Lapse-rate pressure profile from hydrostatics plus ideal gas law; correct."
+  },
+  "q-007": {
+   "ids": [
+    "CE-hydrostatic-pressure",
+    "CE-laplace-pressure"
+   ],
+   "relation": "misuses",
+   "why": "Flat-surface hydrostatics in 0.1 mm tube omits capillary Laplace pressure."
+  },
+  "q-008": {
+   "ids": [
+    "CE-stokes-einstein"
+   ],
+   "relation": "misuses",
+   "why": "One-sided/two-sided spectrum mix gives D = 2kT/gamma; Einstein relation factor 2 wrong."
+  },
+  "q-009": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "misuses",
+   "why": "Molar R used in p = rho R T; scale height 244 m wrong."
+  },
+  "q-010": {
+   "ids": [
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "misuses",
+   "why": "Natural frequency sqrt(k/m) substituted for driving frequency."
+  },
+  "q-011": {
+   "ids": [],
+   "relation": "none",
+   "why": "Pressure doubling quadruples intensity (6 dB); decibel/intensity relation absent."
+  },
+  "q-012": {
+   "ids": [
+    "CE-string-wave-speed",
+    "CE-lorentz-factor"
+   ],
+   "relation": "misuses",
+   "why": "String waves have a rest frame; Lorentz invariance wrongly claimed for medium speed."
+  },
+  "q-013": {
+   "ids": [
+    "CE-wave-speed"
+   ],
+   "relation": "misuses",
+   "why": "Shape-preserving soliton does not imply linear dispersion omega = c k; false inverse."
+  },
+  "q-014": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "misuses",
+   "why": "Molar gas constant used in p = rho R T; scale height wrong."
+  },
+  "q-015": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "misuses",
+   "why": "Isothermal approximation claimed uniform in z; fails above T0/Gamma."
+  },
+  "q-016": {
+   "ids": [
+    "CE-wave-speed",
+    "CE-string-wave-speed"
+   ],
+   "relation": "misuses",
+   "why": "Period T confused with tension T when combining v = lambda/T and sqrt(T/mu)."
+  },
+  "q-017": {
+   "ids": [],
+   "relation": "none",
+   "why": "Kelvin cable diffusion equation; correct, no corpus relation."
+  },
+  "q-018": {
+   "ids": [
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "misuses",
+   "why": "Small-oscillation period applied without small-amplitude premise."
+  },
+  "q-019": {
+   "ids": [],
+   "relation": "none",
+   "why": "Kinematic viscosity wrongly used as solute diffusivity; no corpus relation fits."
+  },
+  "q-020": {
+   "ids": [],
+   "relation": "none",
+   "why": "Ito-Stratonovich drift conversion; correct, not in corpus."
+  },
+  "q-021": {
+   "ids": [
+    "CE-mass-energy",
+    "CE-lorentz-factor"
+   ],
+   "relation": "misuses",
+   "why": "String quanta given rest energy m c_s^2 and Lorentz invariance; medium has rest frame."
+  },
+  "q-022": {
+   "ids": [],
+   "relation": "none",
+   "why": "Spherical wave reduction r p; correct, not in corpus."
+  },
+  "q-023": {
+   "ids": [
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "restates",
+   "why": "p - p0 = rho g h as small-compressibility limit; correct."
+  },
+  "q-024": {
+   "ids": [],
+   "relation": "none",
+   "why": "Smoluchowski equation for harmonic potential; correct, not in corpus."
+  },
+  "q-025": {
+   "ids": [],
+   "relation": "none",
+   "why": "Diffusion equation does not imply fixed-step walk; false inverse, relation absent."
+  },
+  "q-026": {
+   "ids": [],
+   "relation": "none",
+   "why": "LC ladder dispersion by analogy; correct, lattice dispersion not in corpus."
+  },
+  "q-027": {
+   "ids": [
+    "CE-inductor-energy",
+    "CE-kinetic-energy"
+   ],
+   "relation": "mixed",
+   "why": "Coil inductance equated to electron kinetic inductance; magnetic energy ignored."
+  },
+  "q-028": {
+   "ids": [],
+   "relation": "none",
+   "why": "Lorentzian near-resonance approximation; correct, not in corpus."
+  },
+  "q-029": {
+   "ids": [
+    "CE-work"
+   ],
+   "relation": "misuses",
+   "why": "Stored elastic energy taken as p V; pressure not constant, true energy p^2 V/(2K)."
+  },
+  "q-030": {
+   "ids": [
+    "CE-thermal-diffusivity"
+   ],
+   "relation": "misuses",
+   "why": "Heat equation does not imply Fourier's law; false inverse."
+  },
+  "q-031": {
+   "ids": [],
+   "relation": "none",
+   "why": "Master equation to diffusion limit with correction term; correct."
+  },
+  "q-032": {
+   "ids": [
+    "CE-sound-speed"
+   ],
+   "relation": "restates",
+   "why": "Linearised temperature dependence of sound speed; correct."
+  },
+  "q-033": {
+   "ids": [
+    "CE-lc-resonance"
+   ],
+   "relation": "restates",
+   "why": "Quantized LC circuit levels hbar omega0 (n+1/2), omega0 = 1/sqrt(LC)."
+  },
+  "q-034": {
+   "ids": [],
+   "relation": "none",
+   "why": "Parallel RLC quality factor by analogy; correct, not in corpus."
+  },
+  "q-035": {
+   "ids": [
+    "CE-string-wave-speed"
+   ],
+   "relation": "misuses",
+   "why": "Long-wavelength group velocity tends to zero, not c; foundation dominates."
+  },
+  "q-036": {
+   "ids": [],
+   "relation": "none",
+   "why": "Klein-Gordon eikonal gives relativistic Hamilton-Jacobi; correct."
+  },
+  "q-037": {
+   "ids": [],
+   "relation": "none",
+   "why": "Undamped driven transient never decays; limit claim false, not in corpus."
+  },
+  "q-038": {
+   "ids": [],
+   "relation": "none",
+   "why": "Telegraph equation from persistent random walk; correct."
+  },
+  "q-039": {
+   "ids": [],
+   "relation": "none",
+   "why": "Overdamped solution via omega_d = i kappa; correct."
+  },
+  "q-040": {
+   "ids": [],
+   "relation": "none",
+   "why": "Exponential substitution removes damping term; correct."
+  },
+  "q-041": {
+   "ids": [
+    "CE-pressure-definition"
+   ],
+   "relation": "misuses",
+   "why": "Hydraulic press pressures are equal; p = F/A contradicts p2 = (A2/A1) p1."
+  },
+  "q-042": {
+   "ids": [
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "restates",
+   "why": "Anti-phase mode of equal coupled masses, omega^2 = (k+2 kappa)/m."
+  },
+  "q-043": {
+   "ids": [
+    "CE-buoyant-force",
+    "CE-density-definition"
+   ],
+   "relation": "mixed",
+   "why": "Floating fraction gives mean density, not porous cell-wall material density."
+  },
+  "q-044": {
+   "ids": [],
+   "relation": "none",
+   "why": "Weak-stratification limit valid only for N t << 1; not at all times."
+  },
+  "q-045": {
+   "ids": [
+    "CE-wave-speed"
+   ],
+   "relation": "misuses",
+   "why": "Phase velocity taken as signal velocity; signals cannot exceed c."
+  },
+  "q-046": {
+   "ids": [
+    "CE-string-wave-speed",
+    "CE-wave-speed"
+   ],
+   "relation": "misuses",
+   "why": "Wave propagation speed confused with transverse particle speed A omega."
+  },
+  "q-047": {
+   "ids": [
+    "CE-pressure-definition",
+    "CE-torque"
+   ],
+   "relation": "restates",
+   "why": "Press and lever force ratios; correct correspondence."
+  },
+  "q-048": {
+   "ids": [],
+   "relation": "none",
+   "why": "Canonical quantization of string modes; correct, not in corpus."
+  },
+  "q-049": {
+   "ids": [
+    "CE-pressure-definition",
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "restates",
+   "why": "Pascal's principle at equal heights gives F2 = F1 A2/A1."
+  },
+  "q-050": {
+   "ids": [],
+   "relation": "none",
+   "why": "Evanescent decay constant below cutoff; correct, not in corpus."
+  },
+  "q-051": {
+   "ids": [
+    "CE-stokes-einstein"
+   ],
+   "relation": "misuses",
+   "why": "One-axis MSD 2Dt used for 3D displacement; should be 6Dt."
+  },
+  "q-052": {
+   "ids": [],
+   "relation": "none",
+   "why": "High-Q damped-frequency approximation used at Q = 1/2 (critical damping)."
+  },
+  "q-053": {
+   "ids": [],
+   "relation": "none",
+   "why": "Metric signature mixed; tachyonic sign error in Klein-Gordon dispersion."
+  },
+  "q-054": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "restates",
+   "why": "Isothermal barometric approximation within small L z/T0; correct."
+  },
+  "q-055": {
+   "ids": [
+    "CE-pendulum-period"
+   ],
+   "relation": "misuses",
+   "why": "Small-angle error not uniform in time; phase drift accumulates."
+  },
+  "q-056": {
+   "ids": [],
+   "relation": "none",
+   "why": "Wavepacket spreading is ballistic, not diffusive hbar t/m; not in corpus."
+  },
+  "q-057": {
+   "ids": [
+    "CE-stokes-einstein"
+   ],
+   "relation": "misuses",
+   "why": "Diffusive MSD used at 1 ns, below momentum relaxation time ~100 ns."
+  },
+  "q-058": {
+   "ids": [],
+   "relation": "none",
+   "why": "Caldeira-Leggett to Kramers classical limit; correct."
+  },
+  "q-059": {
+   "ids": [],
+   "relation": "none",
+   "why": "Peak formula gives negative omega^2 for these values; no peak exists."
+  },
+  "q-060": {
+   "ids": [
+    "CE-string-wave-speed"
+   ],
+   "relation": "restates",
+   "why": "Traveling wave kinetic and potential densities equal via c^2 = T/mu."
+  },
+  "q-061": {
+   "ids": [],
+   "relation": "none",
+   "why": "Characteristic coordinates reduce wave equation to u_xi_eta = 0; correct."
+  },
+  "q-062": {
+   "ids": [],
+   "relation": "none",
+   "why": "Q convention mismatch gives factor-2 error in energy decay."
+  },
+  "q-063": {
+   "ids": [
+    "CE-buoyant-force"
+   ],
+   "relation": "misuses",
+   "why": "Buoyant force averages density over sphere; pointwise inversion is false."
+  },
+  "q-064": {
+   "ids": [
+    "CE-string-wave-speed"
+   ],
+   "relation": "restates",
+   "why": "Continuum limit of beaded string gives omega = sqrt(T/mu) k; correct."
+  },
+  "q-065": {
+   "ids": [
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "restates",
+   "why": "Hydrostatics with g = 0 gives uniform pressure (Pascal); correct."
+  },
+  "q-066": {
+   "ids": [
+    "CE-lc-resonance"
+   ],
+   "relation": "restates",
+   "why": "Quantized LC levels hbar (n+1/2)/sqrt(LC); correct."
+  },
+  "q-067": {
+   "ids": [],
+   "relation": "none",
+   "why": "Evanescent solution below cutoff; correct, not in corpus."
+  },
+  "q-068": {
+   "ids": [],
+   "relation": "none",
+   "why": "r_t - c r_x = 0 is left-moving, not right-moving; relation absent."
+  },
+  "q-069": {
+   "ids": [],
+   "relation": "none",
+   "why": "Evanescent decay constant misread as wavenumber; no wavelength exists."
+  },
+  "q-070": {
+   "ids": [
+    "CE-string-wave-speed"
+   ],
+   "relation": "restates",
+   "why": "Continuum limit: T a/m = T/mu string wave equation; correct."
+  },
+  "q-071": {
+   "ids": [
+    "CE-string-wave-speed"
+   ],
+   "relation": "misuses",
+   "why": "Amplitude comparable to wavelength; small-slope linearisation invalid."
+  },
+  "q-072": {
+   "ids": [
+    "CE-buoyant-force",
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "restates",
+   "why": "Pressure difference over top and bottom faces gives rho g V; standard buoyancy."
+  },
+  "q-073": {
+   "ids": [
+    "CE-thermal-diffusivity"
+   ],
+   "relation": "misuses",
+   "why": "Thermal depth uses alpha, not nu; Prandtl number ignored."
+  },
+  "q-074": {
+   "ids": [
+    "CE-normal-distribution"
+   ],
+   "relation": "misuses",
+   "why": "Telegraph solution vanishes beyond v t; Gaussian not uniform in x."
+  },
+  "q-075": {
+   "ids": [
+    "CE-stokes-einstein"
+   ],
+   "relation": "misuses",
+   "why": "Diffusive law used at short times; MSD ballistic, initial slope zero."
+  },
+  "q-076": {
+   "ids": [
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "restates",
+   "why": "Gravity shifts equilibrium only; omega = sqrt(k/m) unchanged; correct."
+  },
+  "q-077": {
+   "ids": [],
+   "relation": "none",
+   "why": "Correlation time is half the mean reversal time; D off by 2."
+  },
+  "q-078": {
+   "ids": [],
+   "relation": "none",
+   "why": "Taylor-Aris dispersion; correct, not in corpus."
+  },
+  "q-079": {
+   "ids": [],
+   "relation": "none",
+   "why": "Formal analogy wrongly makes coupled pendulums a quantum two-level system."
+  },
+  "q-080": {
+   "ids": [],
+   "relation": "none",
+   "why": "Stiff-string dispersion expansion; correct, not in corpus."
+  },
+  "q-081": {
+   "ids": [],
+   "relation": "none",
+   "why": "Green-Kubo relation for D; correct, not in corpus."
+  },
+  "q-082": {
+   "ids": [
+    "CE-buoyant-force",
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "mixed",
+   "why": "No water under block; net pressure force is downward, not rho g V upward."
+  },
+  "q-083": {
+   "ids": [],
+   "relation": "none",
+   "why": "Fourier's law with bulk k used in ballistic 20 nm film."
+  },
+  "q-084": {
+   "ids": [],
+   "relation": "none",
+   "why": "Amplitude resonance omega_r^2 = omega0^2 - 2 beta^2; correct."
+  },
+  "q-085": {
+   "ids": [],
+   "relation": "none",
+   "why": "Stokes first problem erfc profile by analogy; correct."
+  },
+  "q-086": {
+   "ids": [
+    "CE-boltzmann-factor"
+   ],
+   "relation": "restates",
+   "why": "Classical limit gives Boltzmann barometric density; correct."
+  },
+  "q-087": {
+   "ids": [],
+   "relation": "none",
+   "why": "Displacement reflection coefficient on joined strings; correct."
+  },
+  "q-088": {
+   "ids": [
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "misuses",
+   "why": "Unequal masses possible; normal-mode frequencies assume equal masses."
+  },
+  "q-089": {
+   "ids": [
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "restates",
+   "why": "Settling suspension pressure uses mixture density; correct."
+  },
+  "q-090": {
+   "ids": [
+    "CE-hydrostatic-pressure",
+    "CE-centripetal-force"
+   ],
+   "relation": "restates",
+   "why": "Rotating liquid free surface paraboloid; correct."
+  },
+  "q-091": {
+   "ids": [
+    "CE-ideal-gas",
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "mixed",
+   "why": "Boyle's law applied with gauge pressure; absolute ratio gives 1.5."
+  },
+  "q-092": {
+   "ids": [],
+   "relation": "none",
+   "why": "Ornstein-Uhlenbeck velocity autocorrelation; correct."
+  },
+  "q-093": {
+   "ids": [],
+   "relation": "none",
+   "why": "Cycle-averaged decay law wrongly applied to instantaneous energy."
+  },
+  "q-094": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "restates",
+   "why": "Hypsometric equation from hydrostatics and ideal gas; correct."
+  },
+  "q-095": {
+   "ids": [],
+   "relation": "none",
+   "why": "Amplitude decay rate used for energy rate; Q off by 2."
+  },
+  "q-096": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "misuses",
+   "why": "Tropospheric lapse-rate profile extrapolated to 40 km; outside regime."
+  },
+  "q-097": {
+   "ids": [],
+   "relation": "none",
+   "why": "Lifson-Jackson effective diffusivity; correct."
+  },
+  "q-098": {
+   "ids": [],
+   "relation": "none",
+   "why": "Galilean co-moving frame removes advection; correct."
+  },
+  "q-099": {
+   "ids": [
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "restates",
+   "why": "Compressibility-corrected hydrostatic pressure; correct."
+  },
+  "q-100": {
+   "ids": [],
+   "relation": "none",
+   "why": "Tensionless beam dispersion; correct, not in corpus."
+  },
+  "q-101": {
+   "ids": [
+    "CE-boltzmann-factor",
+    "CE-kinetic-pressure",
+    "CE-ideal-gas"
+   ],
+   "relation": "restates",
+   "why": "Kinetic pressure n kT with Boltzmann density gives barometric law; correct."
+  },
+  "q-102": {
+   "ids": [
+    "CE-string-wave-speed"
+   ],
+   "relation": "restates",
+   "why": "Transmission line and string analogy; speed and impedance map correctly."
+  },
+  "q-103": {
+   "ids": [
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "misuses",
+   "why": "Natural frequency substituted for arbitrary driving frequency."
+  },
+  "q-104": {
+   "ids": [
+    "CE-ideal-gas"
+   ],
+   "relation": "restates",
+   "why": "Barometric and Beer-Lambert exponentials map under z to x; correct."
+  },
+  "q-105": {
+   "ids": [
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "misuses",
+   "why": "Pressure is not stored elastic energy density; true u = p^2/(2K)."
+  },
+  "q-106": {
+   "ids": [],
+   "relation": "none",
+   "why": "Energy beating in coupled pendulums; correct."
+  },
+  "q-107": {
+   "ids": [
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "misuses",
+   "why": "Granular silo stress saturates by wall friction (Janssen); liquid law invalid."
+  },
+  "q-108": {
+   "ids": [],
+   "relation": "none",
+   "why": "Critical resistance is 2 sqrt(L/C); dimensional argument misses factor 2."
+  },
+  "q-109": {
+   "ids": [
+    "CE-string-wave-speed"
+   ],
+   "relation": "misuses",
+   "why": "Continuum mode formula applied to highest mode n = N; outside regime."
+  },
+  "q-110": {
+   "ids": [],
+   "relation": "none",
+   "why": "High-temperature limit of quantum FDT; correct."
+  },
+  "q-111": {
+   "ids": [
+    "CE-ideal-gas",
+    "CE-hydrostatic-pressure"
+   ],
+   "relation": "mixed",
+   "why": "Boyle's law with gauge pressure; absolute pressures give V2 = 1.5 V1."
+  },
+  "q-112": {
+   "ids": [],
+   "relation": "none",
+   "why": "Driven oscillator at resonance: amplitude F0/(b omega0), quarter-period lag; correct."
+  },
+  "q-113": {
+   "ids": [
+    "CE-oscillator-energy"
+   ],
+   "relation": "restates",
+   "why": "Cycle-averaged energy (1/2) k A0^2 exp(-2 beta t); correct."
+  },
+  "q-114": {
+   "ids": [],
+   "relation": "none",
+   "why": "Imaginary diffusivity does not give diffusive spreading; not in corpus."
+  },
+  "q-115": {
+   "ids": [
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "misuses",
+   "why": "Periodicity does not imply simple harmonic motion; false inverse."
+  },
+  "q-116": {
+   "ids": [],
+   "relation": "none",
+   "why": "Thermal wave penetration depth sqrt(2 alpha/omega); correct."
+  },
+  "q-117": {
+   "ids": [
+    "CE-stokes-einstein"
+   ],
+   "relation": "misuses",
+   "why": "Decay rate should be gamma/m; D = kT/(m gamma) dimensionally wrong."
+  },
+  "q-118": {
+   "ids": [],
+   "relation": "none",
+   "why": "Klein-Gordon v_p v_g = c^2; correct, not in corpus."
+  },
+  "q-119": {
+   "ids": [],
+   "relation": "none",
+   "why": "Taylor-Aris effective diffusivity; correct."
+  },
+  "q-120": {
+   "ids": [],
+   "relation": "none",
+   "why": "Logarithmic decrement 2 pi gamma/omega_d; correct."
+  },
+  "q-121": {
+   "ids": [],
+   "relation": "none",
+   "why": "Light-damping peak amplitude approximation; correct."
+  },
+  "q-122": {
+   "ids": [
+    "CE-buoyant-force",
+    "CE-simple-harmonic-frequency"
+   ],
+   "relation": "restates",
+   "why": "Buoyancy restoring force gives N^2 = -(g/rho0) drho/dz; correct."
+  },
+  "q-123": {
+   "ids": [
+    "CE-rc-time-constant"
+   ],
+   "relation": "misuses",
+   "why": "Series RLC envelope time constant is 2L/R, not RC."
+  },
+  "q-124": {
+   "ids": [
+    "CE-hydrostatic-pressure",
+    "CE-centripetal-force"
+   ],
+   "relation": "restates",
+   "why": "Continued rotating-fluid pressure equals inward body-force hydrostatics; consistent."
+  },
+  "q-125": {
+   "ids": [],
+   "relation": "none",
+   "why": "Free-free string has same spectrum; boundary conditions not uniquely inferred."
+  }
+ }
+}

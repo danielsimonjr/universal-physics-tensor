@@ -66,6 +66,32 @@ describe('explainQuantity — controlled fixtures', () => {
     expect(x.summary).toMatch(/agree|consistency/);
   });
 
+  // Persona finding L5 (2026-09-25): be-42 and be-42-via-rs are ONE bridge (BE-42) written in M
+  // and in r_s = 2GM/c². Their agreement is algebra, so calling them "independent derivations"
+  // and their agreement "a passing consistency check" claimed a test that never ran.
+  it('routes that restate ONE bridge are not independent, and their agreement is not a check', () => {
+    const x = explainQuantity(FULL_GRAPH, 'hawking-temperature', { mass: M_SUN_KG });
+    expect(x.identifiability.verdict).toBe('over-determined');
+    expect(x.derivations.map((d) => d.beId)).toEqual([42, 42]);
+    expect(x.summary).toMatch(/2 derivation routes \(be-42, be-42-via-rs\) restate ONE bridge \(BE-42\)/);
+    expect(x.summary).toMatch(/agreement by construction, not an independent check/);
+    expect(x.summary).not.toMatch(/independent derivations/);
+    expect(x.summary).not.toMatch(/passing consistency check/);
+  });
+
+  it('two edges with the same beId read as one bridge; distinct edges stay independent', () => {
+    const same = [
+      { ...edge('e1', ['a'], 't', (i) => i['a'] * 2), beId: 7 },
+      { ...edge('e2', ['b'], 't', (i) => i['b'] * 3), beId: 7 },
+    ];
+    const x = explainQuantity(same, 't', { a: 3, b: 2 });
+    expect(x.summary).toMatch(/restate ONE bridge \(BE-7\)/);
+    const distinct = [edge('e1', ['a'], 't', (i) => i['a'] * 2), edge('e2', ['b'], 't', (i) => i['b'] * 3)];
+    const y = explainQuantity(distinct, 't', { a: 3, b: 2 });
+    expect(y.summary).toMatch(/2 independent derivations \(e1, e2\)/);
+    expect(y.summary).toMatch(/a passing consistency check/);
+  });
+
   it('over-determined + DISAGREEING values: summary flags the falsification', () => {
     const edges = [
       edge('e1', ['a'], 't', (i) => i['a'] * 2), // 6

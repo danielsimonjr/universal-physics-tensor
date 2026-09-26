@@ -5,6 +5,7 @@ import { describe, it, expect } from 'vitest';
 import { fileURLToPath } from 'node:url';
 import { dirname, join } from 'node:path';
 import { runBackendWorker } from '../../../src/composition/probe/backend-protocol.js';
+import { REAL_WORKER_HANG_GUARD_MS } from './worker-hang-guard.js';
 
 const here = dirname(fileURLToPath(import.meta.url));
 const workers = join(here, '../../fixtures/discovery-workers');
@@ -25,7 +26,7 @@ describe('runBackendWorker', () => {
 
   it('parses echo-worker NDJSON', async () => {
     const r = await runBackendWorker([process.execPath, join(workers, 'echo-worker.mjs')], req, {
-      timeoutMs: 5000,
+      timeoutMs: REAL_WORKER_HANG_GUARD_MS,
     });
     expect(r.ok).toBe(true);
     expect(r.candidates.length).toBe(1);
@@ -34,7 +35,7 @@ describe('runBackendWorker', () => {
 
   it('parses prefactor and note fields', async () => {
     const r = await runBackendWorker([process.execPath, join(workers, 'rich-worker.mjs')], req, {
-      timeoutMs: 5000,
+      timeoutMs: REAL_WORKER_HANG_GUARD_MS,
     });
     expect(r.ok).toBe(true);
     expect(r.candidates[0]!.prefactor).toBe(2.5);
@@ -43,7 +44,7 @@ describe('runBackendWorker', () => {
 
   it('rejects malformed NDJSON', async () => {
     const r = await runBackendWorker([process.execPath, join(workers, 'malformed-worker.mjs')], req, {
-      timeoutMs: 5000,
+      timeoutMs: REAL_WORKER_HANG_GUARD_MS,
     });
     expect(r.ok).toBe(false);
     expect(r.error).toMatch(/malformed/);

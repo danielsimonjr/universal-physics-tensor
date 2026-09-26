@@ -120,8 +120,8 @@ in prose and with their qualifying assumptions:
 
 - **all fifteen typed bridge lines** — `10 → 9` restriction; `11 → momentum conservation` for
   isolated particle systems, converse failing; `1 ↔ energy conservation` via Noether for autonomous
-  models; `8 → 12` approximation (weak field, slow motion, near-stationary, negligible Λ) then
-  restriction to a point source; `16 → 5, 10` in `v/c`; `7 ↔ 16` **association** for the historical
+  models; the line `ROADMAP.md` writes between entries 8 and 12, whose recorded form is below;
+  `16 → 5, 10` in `v/c`; `7 ↔ 16` **association** for the historical
   link only; `5, 16 → 8` constrain-but-not-determine; `6 ↔ 15`; `4` from the commutator and
   Cauchy–Schwarz; `13 ↔ 4` where a Gaussian *family* saturates; `6 ↔ 13` analytic continuation with
   Gaussian kernel only when `V = 0`; `2 → 13` by two routes; `2 → 1`; `6 → 10` Ehrenfest;
@@ -130,6 +130,13 @@ in prose and with their qualifying assumptions:
   the Lorentz group, the central limit theorem
 - **several per-entry qualifications** — entry 11 fails naively when fields carry momentum, entry 13
   needs `σ > 0`, entries 3 and 14 are `Association` only
+
+**Recorded form of the line between entries 8 and 12.** The tree records ONE approximation, id
+`d-8-to-12`, with side conditions weak field, slow motion, near-stationary, negligible Λ, and
+"THEN restriction to a point source", because the intermediate weak-field statement is neither a
+poster entry nor one of the five named hidden nodes, and inventing it is forbidden. The arrow's direction is UNRESOLVED: Blueprint v2 Appendix
+A is not in the repo, so this note does not pick a direction and does not claim the roadmap's
+direction was verified.
 
 **What is NOT in the repo is the sixteen entries' number → name mapping.** Blueprint v2's Appendix A
 is cited by `ROADMAP.md:12-24` and not vendored, and no file here maps number to name. Much of that
@@ -172,7 +179,7 @@ an empty or partial graph must say why in the same way.
 
 ## 7. Boundaries
 
-- Every new symbol is `@internal` and stays off `src/index.ts` before Phase 6.
+- Phase 6's API review promoted Tier 1 only, as the `atlas` namespace ([`Atlas-API-Review.md`](Atlas-API-Review.md)).
 - **NEVER THE BARREL.** `src/bridges/` and `src/composition/` must not import `src/atlas/index.ts`.
   The stricter rule stated elsewhere — "types only, from `src/atlas/types.ts`" — does not describe
   this tree: value imports exist at `bridges/index.ts:40`, `composition/compose.ts:46-47` and

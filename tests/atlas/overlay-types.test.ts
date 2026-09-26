@@ -62,6 +62,7 @@ const bound: ApproximationBound = {
   horizon: 't ≪ 16 T0/θ0²',
   horizonHolds: (t) => t < 16,
   limitCharacter: 'regular',
+  uniformity: ['test'],
 };
 
 describe('overlay fields are optional (a)', () => {
@@ -182,6 +183,7 @@ describe('a missing bound is a COMPILE error, not a runtime one (c)', () => {
       domain: 'all',
       horizon: 'unstated',
       limitCharacter: 'regular',
+      uniformity: ['test'],
     };
     expect(noHorizon.K).toBe(1);
   });

@@ -68,6 +68,21 @@ export const H0_SI = 67.4e3 / 3.0857e22;
 export const M_SUN_SI = 1.989e30;
 
 /**
+ * Nominal solar gravitational parameter (GM)☉ (m³ s⁻²), IAU 2015 Resolution B3.
+ *
+ * The product GM☉ is known to about 10 significant digits, while G alone is
+ * known to about 5, so a confrontation that needs GM☉ takes this value rather
+ * than `G_SI × M_SUN_SI`: that product is 3.0e-4 too high, five times the VLBI
+ * 1σ on the solar-limb deflection. A mass that some evaluator requires in kg
+ * is `GM_SUN_SI / G_SI`, which reproduces G·M = GM☉ exactly.
+ * @internal
+ */
+export const GM_SUN_SI = 1.3271244e20;
+
+/** Where {@link GM_SUN_SI} comes from. @internal */
+export const GM_SUN_SOURCE = 'IAU 2015 Resolution B3, nominal solar mass parameter (GM)☉ = 1.3271244e20 m³ s⁻²';
+
+/**
  * Electron mass (kg), CODATA 2018. Added for the v0.11 namespacing
  * gate's criterion-3 pin (λ_T of an electron at the Hawking
  * temperature — see the Adam vet A-5).

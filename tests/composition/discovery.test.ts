@@ -271,6 +271,26 @@ describe('rankDiscoveries — real CATALOG_GRAPH funnel', () => {
     expect(mp?.magnitudeUsedAnchor).toBe(true);
   });
 
+  // Persona finding L3 (2026-09-25): thermal-wavelength ≟ planck-length "passed" the magnitude
+  // gate at 1.1 orders. At the anchor the temperature is the Hawking temperature of the anchor
+  // mass, and h/√(2π M k_B T_H) = 4π ℓ_P EXACTLY for every M (log10 4π = 1.099), so the match is
+  // an identity of the graph, not evidence. Checked at M = 1 kg, 1e12 kg and M_sun: ratio 12.566.
+  it('an anchor-invariant magnitude ratio is flagged, not counted as a pass', () => {
+    const tp = find('thermal-wavelength', 'planck-length');
+    expect(tp?.magnitudeUsedAnchor).toBe(true);
+    // 3 decimals: planck-length comes from the representative-value table as 1.616e-35, and
+    // log10(1.616255 / 1.616) = 6.9e-5 decades is that rounding, not a physics difference.
+    expect(tp?.ordersApart).toBeCloseTo(Math.log10(4 * Math.PI), 3);
+    expect(tp?.magnitudeAnchorInvariant).toBe(true);
+  });
+
+  it('control: an anchor-derived ratio that MOVES with the anchor is not flagged', () => {
+    // r_s ∝ M while ℓ_P is a constant: rescaling the anchor moves the ratio.
+    const sp = find('schwarzschild-radius', 'planck-length');
+    expect(sp?.magnitudeUsedAnchor).toBe(true);
+    expect(sp?.magnitudeAnchorInvariant).toBe(false);
+  });
+
   it('generic↔specialization identifications are barred from promising', () => {
     const rm = find('mass', 'reference-mass');
     expect(rm?.subsuming).toBe(true);

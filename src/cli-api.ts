@@ -31,9 +31,13 @@ export {
   renderDotToSvg,
   equationLanding,
   analyzeUserEquation,
+  resolveToCatalogName,
+  suggestQuantities,
   buckinghamPi,
   dimensionallyDetermines,
 } from './index.js';
+// Landing-report summariser (persona W3) — internal, not on the public barrel.
+export { formatConnectedSummary } from './composition/user-equation.js';
 
 // Internal analysis surface (bridge-analysis.ts).
 export {
@@ -54,6 +58,7 @@ export {
 export { parseDimensionSpec } from './dimensional/dimension-spec.js';
 export { predictMissingBridges } from './composition/bridge-prediction.js';
 export { rankDiscoveries } from './composition/discovery.js';
+export { BRIDGE_EQUATIONS } from './bridges/index.js';
 export { auditCoverage } from './bridges/confrontation-coverage.js';
 export {
   CONFRONTATIONS,
@@ -142,6 +147,16 @@ export { checkConventions, unknownConventionKeys } from './atlas/conventions.js'
 export type { ConventionKey } from './atlas/conventions.js';
 
 export { describeGrounding } from './composition/grounding.js';
+export { REPRESENTATIVE_VALUES } from './composition/representative-values.js';
+// User formula vs the canonical equation it restates (persona finding L2).
+export {
+  compareWithCanonical,
+  compareUserEquation,
+  describeComparison,
+  describeComparisons,
+} from './composition/canonical-compare.js';
+export type { CanonicalComparison } from './composition/canonical-compare.js';
+export { CONSTANTS } from './composition/symbolic-constants.js';
 export type { CandidateGrounding } from './composition/grounding.js';
 
 // Atlas Phase 2 CLI surface (`upt regime`, `upt path`). Regime admission and

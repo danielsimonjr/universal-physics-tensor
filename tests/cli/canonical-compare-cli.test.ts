@@ -1,0 +1,212 @@
+/**
+ * `upt map --equation` and `upt derive --formula` report how a user formula compares with the
+ * canonical equation it restates (persona finding L2, 2026-09-25). In-process against the built
+ * CLI (dist/cli/main.js). The comparison itself is pinned in
+ * tests/composition/canonical-compare.test.ts; this file pins what the user sees.
+ */
+import { describe, it, expect } from 'vitest';
+import { runCli } from '../../dist/cli/main.js';
+
+function capture() {
+  const lines: string[] = [];
+  const sink = (s?: string) => lines.push((s ?? '') + '\n');
+  return { lines, io: { out: sink, err: sink, write: (s: string) => lines.push(s) } };
+}
+
+/** Runs the CLI and checks the exit code: 3 when the formula's check fails (0.47.0), else 0. */
+async function text(args: string[], expected = 0): Promise<string> {
+  const cap = capture();
+  const code = await runCli(args, cap.io);
+  expect(code).toBe(expected);
+  return cap.lines.join('');
+}
+
+describe('upt map --equation — the canonical comparison', () => {
+  it('a Hawking temperature with 4π for 8π differs from CE-hawking-temperature by the factor 2', async () => {
+    const t = await text(['map', '--equation', 'hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)'], 3);
+    expect(t).toMatch(
+      /⚠ differs from CE-hawking-temperature \(Hawking temperature\) by a constant factor: yours\/canonical = 2\.00000 at 3 fixed points/,
+    );
+  });
+
+  it('the exact Hawking temperature agrees, prefactor included', async () => {
+    const t = await text(['map', '--equation', 'hawking_temperature = hbar*c^3/(8*pi*G*mass*k_B)']);
+    expect(t).toMatch(/✓ agrees with CE-hawking-temperature \(Hawking temperature\), prefactor included/);
+  });
+
+  it('the persona example T = π√(ℓ/g) differs from CE-pendulum-period by the factor 0.5', async () => {
+    const t = await text(['map', '--equation', 'period = pi*sqrt(length/gravity)'], 3);
+    expect(t).toMatch(
+      /⚠ differs from CE-pendulum-period \(Pendulum period\) by a constant factor: yours\/canonical = 0\.500000 at 3 fixed points/,
+    );
+  });
+
+  it('--json carries the comparisons', async () => {
+    const cap = capture();
+    await runCli(['map', '--equation', 'hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)', '--json'], cap.io);
+    const parsed = JSON.parse(cap.lines.join(''));
+    const cmp = JSON.stringify(parsed);
+    expect(cmp).toMatch(/"canonicalComparisons":\[\{"id":"CE-hawking-temperature","name":"Hawking temperature","kind":"factor","ratio":2/);
+  });
+});
+
+describe('upt derive --formula — the canonical comparison', () => {
+  it('derive reports the same comparison for a pendulum formula', async () => {
+    const t = await text([
+      'derive', 'period:time', 'length:length', 'gravity:acceleration', '--formula', 'pi*sqrt(length/gravity)',
+    ], 3);
+    expect(t).toMatch(/formula MATCHES the dimensional form — recovered prefactor ≈ 3\.1416e\+0/);
+    expect(t).toMatch(/⚠ differs from CE-pendulum-period \(Pendulum period\) by a constant factor: yours\/canonical = 0\.500000/);
+  });
+});
+
+describe('upt derive / map — the prefactor is never silently unchecked', () => {
+  it('with no matching canonical entry, derive says dimensions cannot check the prefactor', async () => {
+    const t = await text(['derive', 'energy:energy', 'mass:mass', 'velocity:velocity', '--formula', 'mass*velocity^2']);
+    expect(t).toMatch(/· no canonical equation has this target and these variables, so the prefactor is NOT checked/);
+  });
+
+  it('derive compares even when the monomial is not unique (constants passed as variables)', async () => {
+    const t = await text([
+      'derive', 'hawking_temperature:temperature', 'mass:mass', 'hbar:hbar', 'c:c', 'G:G', 'k_B:k_B',
+      '--formula', 'hbar*c^3/(4*pi*G*mass*k_B)',
+    ], 3);
+    expect(t).toMatch(/⚠ differs from CE-hawking-temperature \(Hawking temperature\) by a constant factor: yours\/canonical = 2\.00000/);
+  });
+
+  it('map --equation with a catalog target and no canonical match says the same', async () => {
+    // This used `mass*velocity^2`, the N1 defect itself: velocity now pairs with CE-kinetic-energy's
+    // speed by dimension (see the N1 block below). Three variables match no kinetic-energy entry.
+    const t = await text(['map', '--equation', 'kinetic_energy = mass*acceleration*displacement']);
+    expect(t).toMatch(/· no canonical equation has this target and these variables, so the prefactor is NOT checked/);
+  });
+});
+
+describe('upt derive — a variable is a constant only when its name AND dimension match', () => {
+  it('c:length is a length called c, not the speed of light', async () => {
+    const cap = capture();
+    await runCli(
+      ['derive', 'period:time', 'length:length', 'gravity:acceleration', 'c:length', '--formula', 'pi*sqrt(c/gravity)', '--json'],
+      cap.io,
+    );
+    const result = JSON.parse(cap.lines.join('')).result;
+    // As a length, c is a third variable, and no canonical entry has {length, gravity, c}.
+    // Taken by name alone for the speed of light, c would drop out, the variables would match
+    // CE-pendulum-period, and the formula would be evaluated with c = 299792458 m/s.
+    expect(result.canonicalComparisons).toEqual([]);
+  });
+});
+
+// 0.47.1 persona finding L4: Wien's latex uses T, but typing T was an unknown
+// dimensionless placeholder while `temperature` matched CE-wien.
+describe('L4: latex T resolves to temperature for Wien', () => {
+  it('map: peak-wavelength = b/T agrees with CE-wien', async () => {
+    const t = await text(['map', '--equation', 'peak-wavelength = b/T']);
+    expect(t).toMatch(/✓ agrees with CE-wien/);
+    expect(t).not.toMatch(/UNKNOWN/);
+  });
+
+  it('map: peak-wavelength = 2*b/T differs by the factor 2', async () => {
+    const t = await text(['map', '--equation', 'peak-wavelength = 2*b/T'], 3);
+    expect(t).toMatch(/⚠ differs from CE-wien .* yours\/canonical = 2\.00000/);
+  });
+});
+
+// 0.47.1 persona finding W2: catalog kebabs on the RHS were parsed as subtraction
+// (`planck-length` → planck − length → "Cannot subtract…").
+describe('W2: catalog kebabs on the RHS are identifiers', () => {
+  it('map: length = 2*planck-length is dimensionally consistent (exit 0)', async () => {
+    const t = await text(['map', '--equation', 'length = 2*planck-length']);
+    expect(t).toMatch(/✓ dimensionally consistent: \[length\]/);
+    expect(t).not.toMatch(/Cannot subtract/);
+  });
+
+  it('map: rest-energy = mass*speed-of-light^2 agrees with CE-mass-energy', async () => {
+    const t = await text(['map', '--equation', 'rest-energy = mass*speed-of-light^2']);
+    expect(t).toMatch(/✓ agrees with CE-mass-energy/);
+    expect(t).not.toMatch(/Cannot subtract/);
+  });
+});
+
+// 0.47.1 persona finding W1: writing the catalog name `speed_of_light` for CE-mass-energy's
+// constant `c` skipped the prefactor check (exit 0) while `2*mass*c^2` was caught (exit 3).
+describe('W1: speed-of-light must not disable the E=mc² prefactor check', () => {
+  it('map: E = 2 m speed_of_light² differs by the factor 2 and exits 3', async () => {
+    const t = await text(['map', '--equation', 'rest_energy = 2*mass*speed_of_light^2'], 3);
+    expect(t).toMatch(
+      /⚠ differs from CE-mass-energy \(Mass–energy equivalence; your speed-of-light as its c, paired by dimension\) by a constant factor: yours\/canonical = 2\.00000/,
+    );
+  });
+
+  it('map: E = m speed_of_light² agrees', async () => {
+    const t = await text(['map', '--equation', 'rest_energy = mass*speed_of_light^2']);
+    expect(t).toMatch(
+      /✓ agrees with CE-mass-energy \(Mass–energy equivalence; your speed-of-light as its c, paired by dimension\)/,
+    );
+  });
+
+  it('derive: speed_of_light:velocity is paired the same way', async () => {
+    const t = await text(
+      ['derive', 'rest-energy:energy', 'mass:mass', 'speed_of_light:velocity', '--formula', '2*mass*speed_of_light^2'],
+      3,
+    );
+    expect(t).toMatch(/differs from CE-mass-energy \(Mass–energy equivalence; your speed-of-light as its c, paired by dimension\)/);
+  });
+});
+
+// 0.47.0 persona finding N1: CE-kinetic-energy names its variable `speed`, and `velocity` (the
+// name CE-lorentz-factor uses) switched the check off with "prefactor NOT checked" and exit 0.
+describe('N1: a velocity/speed synonym no longer switches the prefactor check off', () => {
+  it('map: K = m·velocity² differs from CE-kinetic-energy by the factor 2, and the pairing is named', async () => {
+    const t = await text(['map', '--equation', 'kinetic_energy = mass*velocity^2'], 3);
+    expect(t).toMatch(
+      /⚠ differs from CE-kinetic-energy \(Kinetic energy; your velocity as its speed, paired by dimension\) by a constant factor: yours\/canonical = 2\.00000/,
+    );
+  });
+
+  it('map: the true law with velocity agrees', async () => {
+    const t = await text(['map', '--equation', 'kinetic_energy = 0.5*mass*velocity^2']);
+    expect(t).toMatch(/✓ agrees with CE-kinetic-energy \(Kinetic energy; your velocity as its speed, paired by dimension\)/);
+  });
+
+  it('derive: velocity:velocity is paired the same way', async () => {
+    const t = await text(['derive', 'kinetic-energy:energy', 'mass:mass', 'velocity:velocity', '--formula', 'mass*velocity^2'], 3);
+    expect(t).toMatch(/differs from CE-kinetic-energy \(Kinetic energy; your velocity as its speed, paired by dimension\)/);
+  });
+
+  it('map: an unresolved name stays unresolved, and the prefactor is NOT checked', async () => {
+    const t = await text(['map', '--equation', 'kinetic_energy = mass*vel^2']);
+    expect(t).toMatch(/no canonical equation has this target and these variables, so the prefactor is NOT checked/);
+  });
+});
+
+// 0.47.0 persona finding N3: an unknown name is checked as a dimensionless placeholder, so its
+// "mismatch" is not a real check and exits 0 (F2). The line said "⚠ dimensional MISMATCH" anyway,
+// which reads as a failed check with a success exit. It now says UNKNOWN and names the placeholder.
+describe('N3: a mismatch caused by an unresolved placeholder is reported as UNKNOWN', () => {
+  it('map: `lenght` is named as the placeholder, the line says UNKNOWN, and the exit stays 0', async () => {
+    const t = await text(['map', '--equation', 'period = 2*pi*sqrt(lenght/gravity)']);
+    expect(t).toMatch(
+      /· UNKNOWN: RHS is \[L\^-0\.5 T\] but the target is \[time\]; the mismatch involves the unresolved placeholder 'lenght' \(taken as dimensionless\), so it is not a failed check/,
+    );
+    expect(t).not.toMatch(/dimensional MISMATCH/);
+  });
+
+  it('control: with every name resolved, a mismatch is still a MISMATCH and exits 3', async () => {
+    const t = await text(['map', '--equation', 'period = 2*pi*sqrt(gravity/length)'], 3);
+    expect(t).toMatch(/⚠ dimensional MISMATCH: RHS is \[frequency\] but the target is \[time\]/);
+  });
+});
+
+// 0.47.0 persona finding N4: the verdict on the user's equation came after the whole linkage map
+// (about 45 lines), so the answer the user asked for was the last thing printed.
+describe('N4: map --equation prints the verdict before the linkage map', () => {
+  it('the "Your equation" block comes first, and the linkage map follows it', async () => {
+    const t = await text(['map', '--equation', 'period = 2*pi*sqrt(length/gravity)']);
+    const verdict = t.indexOf('Your equation:');
+    const map = t.indexOf('Linkage map');
+    expect(verdict).toBeGreaterThanOrEqual(0);
+    expect(map).toBeGreaterThan(verdict);
+    expect(t.slice(verdict, map)).toMatch(/✓ agrees with CE-pendulum-period/);
+  });
+});

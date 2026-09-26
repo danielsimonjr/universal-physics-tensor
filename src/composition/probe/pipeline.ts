@@ -21,9 +21,14 @@ import type {
 } from './types.js';
 import { DEFAULT_SEARCH_BUDGET, SCHEMA_VERSION } from './types.js';
 import { openBudget, budgetStopReason, type BudgetState } from './search-budget.js';
-import { generateNative, type RawCandidate } from './generator.js';
+import { generateNative, nativeDetermination, type RawCandidate } from './generator.js';
 import { fingerprintExpr, complexityOf, bodyExpression } from './fingerprint.js';
-import { compareToCorpus, corpusRelativeWording, type CorpusComparisonResult } from './corpus.js';
+import {
+  compareToCorpus,
+  corpusPrefactorNotes,
+  corpusRelativeWording,
+  type CorpusComparisonResult,
+} from './corpus.js';
 import { fitPrefactor, type FitResult } from './fit.js';
 import { runFalsification, type FalsifyResult } from './falsify.js';
 import { applyStatus, ProbeCandidateStore } from './candidate-store.js';
@@ -50,6 +55,11 @@ export interface ProbeSearchResult {
   readonly fits: Readonly<Record<string, FitResult>>;
   readonly falsifications: Readonly<Record<string, FalsifyResult>>;
   readonly corpus: Readonly<Record<string, CorpusComparisonResult>>;
+  /**
+   * For a candidate equivalent to a corpus relation, the fitted prefactor
+   * against that relation's prefactor (see `corpusPrefactorNotes`).
+   */
+  readonly prefactorNotes: Readonly<Record<string, readonly string[]>>;
   readonly wording: readonly string[];
   readonly stopReason: SearchStopReason;
 }
@@ -78,6 +88,7 @@ function abstain(
     fits: {},
     falsifications: {},
     corpus: {},
+    prefactorNotes: {},
     wording,
     stopReason: reason,
   };
@@ -188,11 +199,19 @@ export async function runProbeSearch(
   const fits: Record<string, FitResult> = {};
   const falsifications: Record<string, FalsifyResult> = {};
   const corpus: Record<string, CorpusComparisonResult> = {};
+  const prefactorNotes: Record<string, string[]> = {};
   const wording: string[] = [];
   const seenHash = new Set<string>();
   let seq = 0;
 
   const raws: RawCandidate[] = [];
+  const { unsearched } = nativeDetermination(problem);
+  if (unsearched.length > 0) {
+    wording.push(
+      `the monomial is taken from the dimensioned inputs; an unknown function of the ` +
+        `dimensionless input(s) {${unsearched.join(', ')}} is not searched`,
+    );
+  }
   for (const raw of generateNative(problem, state)) {
     raws.push(raw);
     const stop = budgetStopReason(state);
@@ -372,6 +391,14 @@ export async function runProbeSearch(
     store.replace(rec);
 
     if (known) {
+      // Equivalent up to a constant is not equal: compare the fitted constant
+      // with the corpus one where the corpus records it (persona finding L7).
+      prefactorNotes[rec.id] = corpusPrefactorNotes(
+        corp,
+        bodyExpression(rec.body),
+        fit.prefactor,
+        opts.holdoutTol ?? 0.15,
+      );
       rec = applyStatus(rec, 'equivalent-known', corpusRelativeWording(corp), runId, at);
       store.replace(rec);
       continue;
@@ -416,7 +443,15 @@ export async function runProbeSearch(
     stopReason = budgetStop;
   } else if (all.length === 0) {
     stopReason = 'no-credible-candidate';
-    wording.push('enumerator produced no dimensionally valid candidates');
+    // Say WHY (persona finding C2): "no dimensionally valid candidates" was
+    // printed even when the real reason was a non-unique monomial.
+    const { det } = nativeDetermination(problem);
+    wording.push(
+      det.determined
+        ? 'enumerator produced no dimensionally valid candidates'
+        : `the target is not a unique monomial of the inputs (${det.reason}); ` +
+            'the native enumerator searches unique monomials only',
+    );
   } else if (
     hasAnyData(problem) &&
     all.every(
@@ -440,6 +475,7 @@ export async function runProbeSearch(
     fits,
     falsifications,
     corpus,
+    prefactorNotes,
     wording,
     stopReason,
   };

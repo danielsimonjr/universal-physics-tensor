@@ -7,13 +7,22 @@ honest about scope. The collection spans the composition/linkage analyses,
 the bridges-vs-canonical map, the canonical-only baseline, and the
 adjudication/calibration notes that close out the discovery pipeline
 (proposed equations + orphan connectors → 0 promoted; precision calibration).
+- **`cli-physicist-persona-0.47.1-post-fix.md` — retest after the W1–Q2 batch (2026-09-26).**
+  Model persona again on built `upt` at 0.47.1 (`a9eff31`). Prior fixes hold. New
+  open findings: W4 (Kepler/Schwarzschild monomial constants→1), W5 (Planck
+  all-constant RHS refused), W6 (`a`→perihelion), W7 (Landauer `ln(2)` vs `ln2`),
+  L5–L8, Q3–Q4, I5–I8.
+- **`cli-physicist-persona-0.47.1.md` — CLI dogfood pass as an applied physicist (2026-09-26).**
+  Model persona on the built `upt` CLI at 0.47.1; not a human reviewer. W1–W3,
+  L1–L4, Q1–Q2 and I1–I4 fixed in the follow-up patch batch (dispositions in the
+  note).
 - **`pi-instrument-results.md` — the flagship PI-facing output (2026-07-04).**
   UPT read as an honest FALSIFICATION INSTRUMENT: a trustworthy *no*, an
   extraordinary *yes*. Consolidates the three first-class outputs — the
   **null-result catalog** (132 → 7 promising · 0 contradictory · 90 falsified;
   0/8 ever genuine, each promising verdict now carrying its grounding ledger of
   passed-vs-gap falsifiers), the **evidence spine** (9 real-data confrontations;
-  all three classic GR tests within 1σ — Mercury 0.26σ, Shapiro 0.91σ, lensing
+  three GR tests within 1σ — Mercury 0.26σ, Shapiro 0.91σ, lensing
   0.67σ — plus the QGP nearly saturating the KSS bound, the 3D-Ising bootstrap ν
   at 0.015σ, and parameter-free collisional decoherence within ~15%), and the
   **frontier** (11 truly-unconnected isolated bridges) — plus the honest ceilings

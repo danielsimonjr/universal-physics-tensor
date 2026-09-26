@@ -58,7 +58,8 @@ Usage:
   upt explain <quantity> [name=value | name] ...
         Explain how the graph determines a quantity: the identifiability
         verdict, recovered value, derivation chains, and whether the inputs
-        are dimensionally sufficient.
+        are dimensionally sufficient. A name that is not a quantity of the
+        graph is reported NOT COVERED, with near names, and exits 1.
         e.g.  upt explain hawking-temperature mass=1.989e30
 
   upt priority
@@ -174,7 +175,8 @@ Usage:
   upt evaluate <be-NN> key=value ...
         Numerically evaluate a closed-form / spacetime bridge (BE-51/52/55..65).
         With no bridge id, lists the evaluable bridges and their input keys.
-        e.g.  upt evaluate be-63 mu_e=2   → Chandrasekhar mass ~1.44 M_sun
+        e.g.  upt evaluate be-63 mu_e=2   → Chandrasekhar mass ≈ 1.456 M_sun
+              (ideal degenerate gas, with m_u and M_sun = 1.989e30 kg)
 
   upt ground <quantityA> <quantityB>
         The epistemic-grounding ledger for one discovery candidate a=b: which
@@ -185,13 +187,16 @@ Usage:
         model reads valid, VIOLATED (naming the failed inequality), or UNKNOWN
         — a coordinate --at never supplied is NOT a pass. Also prints the
         pairwise regime overlap and, over the box --at states, the uncovered
-        points.
+        points. A group can be given by name (spaces ignored, * for ·) or
+        through its parameters (--at tau=1 D=1 q=1 gives tau · D · q^2 = 1);
+        a key no record uses is named and ignored.
         e.g.  upt regime oscillators --at theta0=0.2
 
   upt path <from> <to> [--at group=value ...]
         The chain of bridges between two models, the relation it composes to,
-        the composed (K, delta) with its norm, and whether every horizon still
-        holds at --at. When the composition table declines to compose, the path
+        the composed (K, delta) with its norm, and whether every bridge's regime
+        and every horizon still holds at --at (a bound outside its regime is
+        not claimed). When the composition table declines to compose, the path
         carries no bound: it prints 'no composite claim' and exits 0.
         e.g.  upt path model-pendulum model-spring --at theta0=0.2 T0=1 t=10
 

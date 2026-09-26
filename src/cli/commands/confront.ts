@@ -133,9 +133,16 @@ async function run(ctx: CommandCtx): Promise<number> {
     switch (outcome.kind) {
       case 'value': {
         const margin = wantFrontier ? ` · margin ${(1 - outcome.residualInSigma).toFixed(2)}σ to exclusion` : '';
+        // A derived "observed" value is labelled derived, and the quantity that
+        // was actually measured is shown beside it (persona finding L6).
+        const m = outcome.measured;
+        const observedLabel = m ? `derived ${m.derivation} =` : 'observed';
         out(
-          `    predicted ${outcome.predicted} · observed ${outcome.observed} ± ${outcome.sigma} ${outcome.units} · residual ${outcome.residualInSigma.toFixed(2)}σ · ${outcome.withinObserved ? 'within 1σ ✓' : 'outside 1σ'}${margin}`
+          `    predicted ${outcome.predicted} · ${observedLabel} ${outcome.observed} ± ${outcome.sigma} ${outcome.units} · residual ${outcome.residualInSigma.toFixed(2)}σ · ${outcome.withinObserved ? 'within 1σ ✓' : 'outside 1σ'}${margin}`
         );
+        if (m) {
+          out(`    measured: ${m.quantity} = ${m.value} ± ${m.sigma} (${m.source}); the value above is derived from it, not observed`);
+        }
         if (wantSensitivity) {
           const ranked = api.decidingMeasurement(bridgeId);
           if (ranked.length) {

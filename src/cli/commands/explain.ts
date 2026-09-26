@@ -16,7 +16,7 @@ import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
 import { resolveGraph } from '../graphs.js';
 import { emitJson } from '../output.js';
-import { UsageError } from '../errors.js';
+import { UsageError, CliError } from '../errors.js';
 
 const FLAGS: FlagSpec[] = [
   { name: '--source', valueStyle: 'attached' },
@@ -26,7 +26,8 @@ const FLAGS: FlagSpec[] = [
 const HELP = `upt explain <quantity> [name=value | name] ...
         Explain how the graph determines a quantity: the identifiability
         verdict, recovered value, derivation chains, and whether the inputs
-        are dimensionally sufficient.
+        are dimensionally sufficient. A name that is not a quantity of the
+        graph is reported NOT COVERED, with near names, and exits 1.
         e.g.  upt explain hawking-temperature mass=1.989e30`;
 
 /**
@@ -117,8 +118,22 @@ async function run(ctx: CommandCtx): Promise<number> {
   }
 
   const { graph, source } = resolveGraph(api, args.flags);
+  // A name that is not a quantity of this graph is NOT COVERED (persona finding
+  // C4). It used to get the same "no derivation path" answer as a real quantity
+  // the inputs cannot reach, and exit 0. Underscores resolve like hyphens.
+  const names = new Set(graph.flatMap((e) => [e.target.name, ...e.sources.map((s) => s.name)]));
+  const resolvedTarget = api.resolveToCatalogName(target, names);
+  if (resolvedTarget === null) {
+    const near = api.suggestQuantities(target, names, 5);
+    throw new CliError(
+      `upt explain: '${target}' is not a quantity in the ${source} graph: NOT COVERED.` +
+        (near.length > 0
+          ? ` did you mean: ${near.join(', ')}?`
+          : ' `upt canonical` and `upt map` list the vocabulary.'),
+    );
+  }
   const known = parseKnown(rest);
-  const x = api.explainQuantity(graph, target, known);
+  const x = api.explainQuantity(graph, resolvedTarget, known);
 
   if (args.flags.has('json')) {
     emitJson({ command: 'explain', source, result: x }, ctx.write);

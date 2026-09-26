@@ -18,7 +18,15 @@
 
 import { existsSync, mkdirSync, readdirSync, readFileSync, statSync, writeFileSync } from 'fs';
 import { dump as dumpYaml } from 'js-yaml';
-import { basename, dirname, join, relative } from 'path';
+import { basename, dirname, join, relative, resolve as resolvePathAbs } from 'path';
+import { isTracked, trackedFiles } from './tracked-files.js';
+import {
+  buildApiSurfaceReport,
+  createTsResolver,
+  DEFAULT_STABILITY_TAGS,
+  extractExportDetails,
+  resolveSurface,
+} from './api-surface.js';
 
 // Types
 interface Dependency {
@@ -120,6 +128,11 @@ interface PackageJson {
 interface CLIOptions {
   root: string;
   includeTests: boolean;
+  /** Opt-in: write the per-export API-surface report to this file (see api-surface.ts). */
+  apiSurface: string | null;
+  /** Entry file for the API surface, relative to the root. */
+  apiEntry: string;
+  stabilityTags: readonly string[];
 }
 
 // Constants - support CLI argument or current working directory for portability
@@ -128,6 +141,9 @@ function parseCliOptions(): CLIOptions {
   const options: CLIOptions = {
     root: process.cwd(),
     includeTests: false,
+    apiSurface: null,
+    apiEntry: 'src/index.ts',
+    stabilityTags: DEFAULT_STABILITY_TAGS,
   };
 
   for (const arg of args) {
@@ -135,6 +151,12 @@ function parseCliOptions(): CLIOptions {
       options.root = arg.slice(7);
     } else if (arg === '--include-tests' || arg === '-t') {
       options.includeTests = true;
+    } else if (arg.startsWith('--api-surface=')) {
+      options.apiSurface = arg.slice('--api-surface='.length);
+    } else if (arg.startsWith('--api-entry=')) {
+      options.apiEntry = arg.slice('--api-entry='.length);
+    } else if (arg.startsWith('--stability-tags=')) {
+      options.stabilityTags = arg.slice('--stability-tags='.length).split(',').map((t) => t.trim()).filter(Boolean);
     } else if (arg === '--help' || arg === '-h') {
       console.log(`
 Dependency Graph Generator
@@ -146,6 +168,15 @@ Options:
   --root=<path>      Project root directory (default: current directory)
   --include-tests    Include test files in dependency analysis
   -t                 Short form of --include-tests
+  --api-surface=<file>
+                     Also write a per-export API-surface report (JSON) to <file>:
+                     signature, async, stability tag, JSDoc summary, and the
+                     entry file's re-export-resolved public surface. Opt-in;
+                     the standard outputs are unchanged by it.
+  --api-entry=<path> Entry file for --api-surface (default: src/index.ts)
+  --stability-tags=a,b,c
+                     Tags counted as stability markers (default:
+                     public,internal,experimental,beta,alpha)
   --help, -h         Show this help
 
 Examples:
@@ -170,6 +201,8 @@ function getProjectRoot(): string {
 
 const ROOT_DIR = getProjectRoot();
 const SRC_DIR = join(ROOT_DIR, 'src');
+// The git index, not the disk: an untracked scratch file must not enter the committed docs.
+const TRACKED = trackedFiles(ROOT_DIR);
 const OUTPUT_DIR = join(ROOT_DIR, 'docs', 'architecture');
 
 // Read package.json for version and name
@@ -205,7 +238,7 @@ function getAllTsFiles(dir: string, files: string[] = []): string[] {
 
     if (stat.isDirectory()) {
       getAllTsFiles(fullPath, files);
-    } else if (entry.endsWith('.ts') && !entry.endsWith('.test.ts') && !entry.endsWith('.spec.ts')) {
+    } else if (entry.endsWith('.ts') && !entry.endsWith('.test.ts') && !entry.endsWith('.spec.ts') && isTracked(TRACKED, fullPath)) {
       files.push(fullPath);
     }
   }
@@ -238,7 +271,7 @@ function getAllTestFiles(dir: string, files: string[] = []): string[] {
 
     if (stat.isDirectory()) {
       getAllTestFiles(fullPath, files);
-    } else if (entry.endsWith('.test.ts') || entry.endsWith('.spec.ts')) {
+    } else if ((entry.endsWith('.test.ts') || entry.endsWith('.spec.ts')) && isTracked(TRACKED, fullPath)) {
       files.push(fullPath);
     }
   }
@@ -1340,6 +1373,40 @@ function generateMermaidDiagram(modules: ModuleMap, files: ParsedFile[]): string
 /**
  * Generate Markdown output
  */
+/**
+ * An export list longer than this renders as a fenced `text` block under its label instead of an
+ * inline list of code spans. An identifier list is data, not prose: a long inline list reads as a
+ * run-on sentence to a prose checker and to a reader. Lists at or under the threshold keep the
+ * inline form.
+ */
+const LONG_EXPORT_LIST_THRESHOLD = 8;
+/** Target line width inside the fenced block. */
+const EXPORT_LIST_WRAP_WIDTH = 100;
+
+function renderExportList(lines: string[], label: string, names: readonly string[]): void {
+  if (names.length === 0) return;
+  if (names.length <= LONG_EXPORT_LIST_THRESHOLD) {
+    lines.push(`- ${label}: \`${names.join('`, `')}\``);
+    return;
+  }
+  lines.push(`- ${label}:`);
+  lines.push('');
+  lines.push('  ```text');
+  let row = '';
+  names.forEach((name, i) => {
+    const piece = i < names.length - 1 ? `${name},` : name;
+    if (row !== '' && row.length + 1 + piece.length > EXPORT_LIST_WRAP_WIDTH) {
+      lines.push(`  ${row}`);
+      row = piece;
+    } else {
+      row = row === '' ? piece : `${row} ${piece}`;
+    }
+  });
+  if (row !== '') lines.push(`  ${row}`);
+  lines.push('  ```');
+  lines.push('');
+}
+
 function generateMarkdown(files: ParsedFile[], modules: ModuleMap, stats: Statistics, circularDeps: CircularDependencyResult, matrix: DependencyMatrix): string {
   const lines: string[] = [];
   const projectName = packageJson.name || 'Project';
@@ -1443,24 +1510,12 @@ function generateMarkdown(files: ParsedFile[], modules: ModuleMap, stats: Statis
       // Exports
       if (file.exports.named.length > 0 || file.exports.default || file.exports.reExported.length > 0) {
         lines.push('**Exports:**');
-        if (file.exports.classes.length > 0) {
-          lines.push(`- Classes: \`${file.exports.classes.join('`, `')}\``);
-        }
-        if (file.exports.interfaces.length > 0) {
-          lines.push(`- Interfaces: \`${file.exports.interfaces.join('`, `')}\``);
-        }
-        if (file.exports.enums.length > 0) {
-          lines.push(`- Enums: \`${file.exports.enums.join('`, `')}\``);
-        }
-        if (file.exports.functions.length > 0) {
-          lines.push(`- Functions: \`${file.exports.functions.join('`, `')}\``);
-        }
-        if (file.exports.constants.length > 0) {
-          lines.push(`- Constants: \`${file.exports.constants.join('`, `')}\``);
-        }
-        if (file.exports.reExported.length > 0) {
-          lines.push(`- Re-exports: \`${file.exports.reExported.join('`, `')}\``);
-        }
+        renderExportList(lines, 'Classes', file.exports.classes);
+        renderExportList(lines, 'Interfaces', file.exports.interfaces);
+        renderExportList(lines, 'Enums', file.exports.enums);
+        renderExportList(lines, 'Functions', file.exports.functions);
+        renderExportList(lines, 'Constants', file.exports.constants);
+        renderExportList(lines, 'Re-exports', file.exports.reExported);
         if (file.exports.default) {
           lines.push(`- Default: \`${file.exports.default}\``);
         }
@@ -1939,6 +1994,21 @@ async function main(): Promise<void> {
 
     writeFileSync(join(OUTPUT_DIR, 'test-coverage.json'), JSON.stringify(testCoverageJson, null, 2));
     console.log('Written: docs/architecture/test-coverage.json');
+  }
+
+  if (cliOptions.apiSurface !== null) {
+    const load = (p: string): string | null => {
+      const abs = join(ROOT_DIR, p);
+      return existsSync(abs) && statSync(abs).isFile() ? readFileSync(abs, 'utf-8') : null;
+    };
+    const resolver = createTsResolver((p) => load(p) !== null);
+    const opts = { stabilityTags: cliOptions.stabilityTags };
+    const surface = resolveSurface(cliOptions.apiEntry.split('\\').join('/'), load, resolver, opts);
+    const files = parsedFiles.map((f) => ({ path: f.path, exports: extractExportDetails(load(f.path) ?? '', opts) }));
+    const report = buildApiSurfaceReport(surface, files, cliOptions.stabilityTags);
+    const outPath = resolvePathAbs(cliOptions.apiSurface);
+    writeFileSync(outPath, JSON.stringify(report, null, 2) + '\n');
+    console.log(`Written: ${outPath} (${surface.symbols.length} surface symbols, ${surface.unresolved.length} unresolved)`);
   }
 
   console.log('\nDependency graph generation complete!');

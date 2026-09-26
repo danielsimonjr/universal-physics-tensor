@@ -1,5 +1,7 @@
 # Bridge Audit — Deeper Check on 3 Contested Physics-Content Disputes
 
+<!-- ste:historical-record -->
+
 **Date:** 2026-05-20. Focused second pass on BE-31, BE-33, BE-34 — the disputes the first audit pass could not resolve. Each sent to Adam (Gemini 2.5 Pro) and Eve (OpenAI o3) with the dispute stated neutrally (no "Adam said / Eve said" attribution).
 
 ---

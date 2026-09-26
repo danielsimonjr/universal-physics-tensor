@@ -88,16 +88,22 @@ export const BRIDGE_SPRING_LC: AtlasBridge = {
   relation: 'exact-equivalence',
   premises: ['model-spring'],
   conclusion: 'model-lc',
-  transformation: 'u = x/x0 or q/q0, τ = ω0 t',
+  // Two nondimensionalizations, each with its own ω0; composed, the spring→LC map is
+  // q(t) = (q0/x0)·x(ω_LC t / ω_s). The dimensioned frequencies differ (W1a: ω_s = 2,
+  // ω_LC = 2√2); what is preserved is the frequency in units of ω0.
+  transformation:
+    'force–voltage analogy m ↔ L, k ↔ 1/C, x ↔ q (so ω0² = k/m ↔ 1/(LC)); ' +
+    'u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_LC t / ω_s)',
   inverse: 'x = x0 u, t = τ/ω0',
-  preserves: ['natural frequency', 'energy up to scale', 'phase portrait'],
+  preserves: ['the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)', 'energy up to scale', 'phase portrait'],
   doesNotPreserve: ['physical interpretation', 'units'],
   sideConditions: ['m, k, L, C > 0', 'lossless', 'unforced', 'x0, q0 nonzero'],
   regime: bridgeRegime('model-spring', 'model-lc'),
   counterexamples: [
     {
       description:
-        'adding R to bridge 1 breaks it: the same L, C with R = 4 has ζ_RLC = 0.5, ' +
+        'adding R to bridge 1 breaks it: the circuit L = 2, C = 0.125 of witness W2b with R = 4 has ' +
+        'ζ_RLC = (R/2)√(C/L) = 0.5, ' +
         'which no lossless spring matches — the trajectories separate by more than 1e-2 at τ = π',
       witness: 'W2b',
     },
@@ -120,7 +126,12 @@ export const BRIDGE_SPRING_LC: AtlasBridge = {
       test: TEST,
       tolerance: '|u_spring − u_lc| < 1e-8; each within 1e-8 of cos τ',
     },
-    { id: 'W1b', kind: 'numeric', test: TEST, tolerance: 'round-trip within 1e-12' },
+    {
+      id: 'W1b',
+      kind: 'numeric',
+      test: TEST,
+      tolerance: 'inverse-mapped trajectory solves m x″ + k x = 0 within 1e-8; a 1% wrong ω0 fails',
+    },
     { id: 'W2b', kind: 'numeric', test: TEST, tolerance: 'separation > 1e-2 at τ = π' },
     {
       id: 'W1s',
@@ -148,9 +159,11 @@ export const BRIDGE_DAMPED_RLC: AtlasBridge = {
   relation: 'exact-equivalence',
   premises: ['model-damped-spring'],
   conclusion: 'model-rlc',
-  transformation: 'u = x/x0 or q/q0, τ = ω0 t',
+  transformation:
+    'force–voltage analogy m ↔ L, k ↔ 1/C, b ↔ R, x ↔ q; ' +
+    'u = x/x0 or q/q0, τ = ω0 t; composed, q(t) = (q0/x0)·x(ω_RLC t / ω_mech)',
   inverse: 'x = x0 u, t = τ/ω0',
-  preserves: ['natural frequency', 'damping ratio', 'phase portrait'],
+  preserves: ['the natural frequency in units of ω0 (ω = 1 in τ = ω0 t)', 'damping ratio', 'phase portrait'],
   doesNotPreserve: ['physical interpretation', 'units'],
   sideConditions: [
     'b/√(mk) = R√(C/L), equivalently ζ_mech = b/(2√(mk)) equals ζ_RLC = (R/2)√(C/L)',

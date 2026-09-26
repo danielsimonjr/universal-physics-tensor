@@ -1,4 +1,6 @@
 # Batch A — v0.6.0-cycle docs — Doc Integrity Findings
+
+<!-- ste:historical-record -->
 **Reviewer**: opus subagent. **Date**: 2026-05-20. **Files**: `docs/planning/v0.6.0-Brainstorm.md`, `docs/planning/v0.6.0-Design.md`, `docs/planning/v0.6.0-Implementation-Plan.md`, `docs/planning/v0.6.0-Review-Findings.md`, `docs/planning/v0.6.0-Plan-Review-Findings.md`, `docs/architecture/pc-1.5-shapiro-residual-floor.md`.
 
 ## Summary

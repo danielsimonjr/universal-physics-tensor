@@ -1,6 +1,6 @@
 # Atlas Phase 5 — design note (L5.1): the invalid-bridge benchmark
 
-Authorized by the Sprint 5 entry in [`ACTIVE.md`](ACTIVE.md). Briefs:
+Authorized by the Sprint 5 entry in [`ACTIVE.md`](../../ACTIVE.md). Briefs:
 [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md) §Sprint 5.
 
 ## 0. The independence wall — read this first
@@ -13,11 +13,14 @@ The loader refuses any frozen item whose authorship is not `'independent'`.
 
 The consequence must be stated before any code exists, or the harness will be mistaken for
 the study. **ROADMAP Phase 5's exit criteria are "κ reported; held-out family fixed;
-thresholds frozen in a pre-registration note before any condition is run".** Two of the three
-need people: κ needs two named human raters, and a frozen item set needs independent authors.
-The harness can fix the held-out family, freeze the thresholds and make everything else
-mechanical. It cannot supply the items. The repo cannot enforce independence, so the
-pre-registration note names the raters and authors, and Eve checks the note.
+thresholds frozen in a pre-registration note before any condition is run".** κ needs two
+raters, and a frozen item set needs authors, none of whom has read `src/atlas/`. The harness
+fixes the held-out family, freezes the thresholds and makes everything else mechanical; it
+cannot supply the items or the ratings. Authors and raters may be people, or model instances
+launched with no tools, no repository access and no shared context
+(`scripts/atlas-benchmark-models.mjs`). Model roles are recorded as models, per call, with the
+launch's isolation record, and model-rater κ is reported as model agreement, never as human
+inter-rater reliability. The pre-registration note names who authored and rated the set.
 
 ## 1. The eight failure kinds
 
@@ -39,10 +42,8 @@ so none of them may be frozen.
 ## 2. The item schema
 
 ```ts
-interface BenchmarkItem {
+interface BenchmarkItem {          // the PUBLIC half: no answer
   id: string;
-  kind: 'valid' | 'invalid';
-  failureKind?: FailureKind;        // REQUIRED iff kind === 'invalid'
   premises: string[];               // model descriptions, prose
   conclusion: string;
   claimedRelation: RelationType;
@@ -52,6 +53,12 @@ interface BenchmarkItem {
   renamedVariant?: string;          // id of the item this one renames
   authorship: 'independent' | 'contested-draft';
   source: string;                   // where the item came from (erratum, misconception, textbook)
+}
+
+interface ItemLabel {               // the SCORER half: the answer
+  itemId: string;
+  kind: 'valid' | 'invalid';
+  failureKind?: FailureKind;        // REQUIRED iff kind === 'invalid'
 }
 ```
 
@@ -93,11 +100,10 @@ aside by judgement, because it borders `model-stokes-drag` and `model-euler-line
 no keyword matches.
 
 `tests/atlas/benchmark.test.ts` pins the absence by scanning every model id, dynamics string and
-bridge id across `ATLAS_FAMILIES`. A **positive control** (limitation disclosed 2026-09-22: its marker was chosen after the answer was
-known, so it proves the matcher fires, not that the original marker list would have caught the
-leakage; pre-registration Amendment 1) runs the same scan with the ORIGINAL
-family's markers and confirms it finds `model-first-order`, so the scan is shown to fire on
-exactly the defect it caught here. **Fluid statics must never be added to `src/atlas/` while the
+bridge id across `ATLAS_FAMILIES`. A **positive control** runs the same scan with the ORIGINAL
+family's marker and confirms it finds `model-first-order`. That marker was chosen after the leak
+was known, so the control proves that the matcher fires; it does not prove that the original
+marker list would have caught the leak. **Fluid statics must never be added to `src/atlas/` while the
 benchmark is live.**
 
 ## 5. Pre-registration
@@ -106,9 +112,9 @@ The template lives at `docs/research/atlas-benchmark-preregistration.md` (S5.5).
 Blueprint §7.3 criteria are written there before any condition runs: false promotion = 0;
 invalid-bridge rejection against the best LLM baseline, with a paired 95% interval excluding
 zero; recall at depth 10 against embeddings; abstention reported; practical value; and
-curation cost. The note is committed with the hash of the frozen item set. **While no
-independent items exist, the note records the EMPTY set's hash and says so.** No condition
-may be scored against an empty set and reported as a result.
+curation cost. The note is committed with the hash of the frozen item set, and every change to
+the set is an amendment that records the new hash. No condition may be scored against an empty
+set and reported as a result.
 
 ## 6. The atlas condition (S5.2) — as built
 
@@ -164,16 +170,14 @@ computed independently of the code:**
 - Cohen's κ on [[20, 5], [10, 15]] = 0.4, hand-computed.
 
 **Newcombe's method 10** (Statistics in Medicine 17, 1998, 2635) gives the PAIRED difference
-interval that the pre-registered "95% interval excluding zero" criterion needs. It was first
-pinned by properties only. The interval contains
-the point difference. It is antisymmetric when the two methods swap. With φ = 0 it reduces
-exactly to the unpaired square-and-add of the two Wilson intervals. It separates a clearly
-better method on 60 paired items and does not separate an even split. **CLOSED 2026-09-22:** it is
-also checked against all 18 rows of the paper's Table III. 17 rows match to half a unit in the
-fourth decimal. The remaining row (1/97/1/1) matches to one unit, because the table disagrees with
-itself there by one unit. Two controls show that the check can fail: method 8's values, and a
-wrong z. The four properties alone did NOT detect a mutant with the φ continuity correction
-removed; the published values did.
+interval that the pre-registered "95% interval excluding zero" criterion needs. It is checked
+against all 18 rows of the paper's Table III, to half a unit in the fourth decimal. Row 1/97/1/1
+is held to one unit, because there the table disagrees with its own definition by one unit. Two
+controls show the check can fail: method 8's values, and a wrong z. It is also pinned by
+properties: the interval contains the point difference; it is antisymmetric when the two methods
+swap; with φ = 0 it reduces exactly to the unpaired square-and-add of the two Wilson intervals;
+and it separates a clearly better method on 60 paired items but not an even split. The properties
+alone do not detect a mutant with the φ continuity correction removed. The published values do.
 
 **The power report is the honest line.** At 0.8 accuracy, 60 items per class give ±10.0 points
 and 200 give ±5.5. Unpaired intervals therefore cannot separate methods closer than about 20 or
@@ -192,17 +196,21 @@ McNemar), and writes `docs/research/atlas-study-results.md` with its reproducer 
   `scoreCondition` throws on an empty key for the same reason.
 - Unanswered items are COUNTED as wrong, never dropped. A wrong-kind rejection counts as rejected
   but not as kind-correct. Wrong accepts, abstentions and non-answers are separate columns.
-- **Out-of-process conditions are not run.** The worker protocol and shapes exist, but no
-  embedding or LLM worker exists in the repository. The results file states that it holds no
-  paired comparison and does not score a condition that never ran.
+- `scripts/atlas-benchmark-llm-local.mjs` runs local models from
+  `tests/fixtures/atlas/benchmark/conditions/llm-local.config.json`.
+- `scripts/run-atlas-study.mjs` scores a model's answers only when the file exists and covers
+  every frozen item. A missing file or an unfinished item is not scored.
+- Embeddings still have no in-repo worker.
+- The numeric outcome of criterion 2 lives in `docs/research/atlas-study-results.md` and `NOTES.md`.
 
 ## 10. The ablation (Phase 6, S6.2) — as built
 
 There are four cumulative configurations of the atlas runner (`ABLATION_CONFIGS`): **types only**,
 **+ assumptions**, **+ dimensions & conventions**, and **+ regimes**. An applicability finding is
-assigned to the instrument that produced it, so each layer switches on independently. Accept
-requires every ENABLED instrument to have run and cleared. A types-only run therefore accepts
-whatever the composition table does not flag, which is the baseline an ablation must expose.
+assigned to the instrument that produced it, so each layer switches on independently. Accept only
+when every enabled instrument ran and cleared and at least one instrument ran. If no enabled
+instrument applies, the outcome is abstain.
+
 `scoreAblation` scores each row and pairs it against the row before it on the same invalid items.
 The tests pin that four items, each built to be caught by exactly one layer, are rejected
 cumulatively as 1, 2, 3 and 4.

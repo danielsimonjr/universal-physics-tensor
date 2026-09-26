@@ -4,12 +4,11 @@
  * round-trip through the dimensional analyzer back to the registered
  * string.
  *
- * Today (Tier 4 / early Tier 5) only BE-11 and BE-14 have AST encodings;
- * BE-18, BE-29, BE-47, BE-48 have hand-written `dimensional_signature`
- * values but no AST. The test iterates the registered AST modules and
- * asserts the round-trip invariant; as Tier-5 lands more encodings, the
- * iteration auto-extends — adding a new AST module is the only thing
- * required to bring it under test.
+ * Bridges without an AST carry a hand-written `dimensional_signature` and
+ * are not covered here. The test iterates every entry of
+ * `BRIDGE_RHS_BY_ID` and asserts the round-trip invariant; adding a new
+ * AST module to that registry is the only thing required to bring it
+ * under test.
  *
  * Source: test-analyzer F12.
  */

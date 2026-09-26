@@ -6,18 +6,18 @@ Names that more than one `src` file exports.
 
 ## Read this first
 
-**2 names out of 1,180 are exported by more than one file.** For a repository of 268 source
-files that is unusually clean, and it is the headline result: this codebase does not have a
-naming-collision problem.
+**2 names out of 1,657 are exported by more than one file.** For a repository of 350 source
+files, that count is unusually low. The count is the headline result: this codebase does not
+have a naming-collision problem.
 
-The tool groups **by name only**. It does not compare bodies, so a group means "more than one
-place uses this name", never "these definitions conflict". Both groups below were read.
+The tool groups **by name only**. The tool does not compare bodies, so a group means "more than
+one place uses this name", never "these definitions conflict". Both groups below were read.
 
 ## The two groups
 
-### `command` — 18 files. Not a defect.
+### `command` — 22 files. Not a defect.
 
-Every module under `src/cli/commands/` exports a `command`. That is the CLI's registration
+Every module under `src/cli/commands/` exports a `command`. This export is the CLI's registration
 convention: `command.ts` defines the shape, the registry collects one per module, and each is
 reached through `CommandCtx`. Renaming them would break the pattern that makes the command tree
 uniform. **No action.**
@@ -29,15 +29,15 @@ uniform. **No action.**
 | `src/bridges/equations/be-20-vacuum-energy.ts` | A bridge's own dimensional symbol |
 | `src/composition/quantities/_dims.ts` | The shared dimension table for composition quantities |
 
-These sit either side of the boundary between the bridge catalog and the composition graph — the
-one seam in this repository where two definitions of the same physical quantity would actually
-have to agree. A mass density is `M·L⁻³` in both places or the two layers disagree about physics,
-not merely about a name.
+The two files sit on either side of the boundary between the bridge catalog and the composition
+graph. That boundary is the one seam in this repository where two definitions of the same
+physical quantity must agree. A mass density is `M·L⁻³` in both places, or the two layers disagree
+about physics, not merely about a name.
 
-**This is a question to answer, not a defect to report.** The two may be identical, in which case
-the bridge could take the shared definition; or the bridge may intend a narrower local symbol, in
-which case the duplication is deliberate and a comment should say so. The artifact cannot tell
-them apart, and neither can this document without a reading of both files.
+**The duplicate is a question to answer, not a defect to report.** If the two are identical, the
+bridge can take the shared definition. If the bridge intends a narrower local symbol, the
+duplication is deliberate, and a comment should say so. The artifact cannot tell the two cases
+apart, and this document cannot either without a reading of both files.
 
 ## Verification
 
@@ -47,9 +47,9 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 | Claim | Value | Source |
 |---|---|---|
 | duplicateCount | 2 | duplicate-symbols.json |
-| totalSourceFiles | 710 | dependency-graph.json |
+| totalSourceFiles | 898 | dependency-graph.json |
 
-**Claims the gate cannot hold.** The `totalSymbols` figure of 1,180 and the per-group file lists
+**Claims the gate cannot hold.** The `totalSymbols` figure of 1,657 and the per-group file lists
 come from `duplicate-symbols.json`. The judgement about each group comes from reading the source.
-The artifact states in its own note that it does **not** classify a group as a true duplicate or a
-legitimate one; this document makes no stronger claim than the reading behind it.
+The artifact states in its own note that it does **not** classify a group as a true duplicate or
+a legitimate one. This document makes no stronger claim than the reading behind it.

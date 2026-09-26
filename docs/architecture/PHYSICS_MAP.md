@@ -6,12 +6,13 @@
 > The drift gate treats a missing Verification section as a failure, so the opt-out is
 > stated here explicitly rather than left to be inferred from its absence.
 
-UPT's bridge/law catalog is a **graph**: round nodes are *quantities*
-(`mass`, `temperature`, `photon-energy`, …) and box nodes are *equations* —
-laws, bridges, or machine-derived proposals — each an n-ary junction whose
-source quantities point in and whose target points out. `upt map` renders that
-graph as Mermaid or Graphviz-DOT **source text** straight from the live data
-(`CATALOG_GRAPH` / `CANONICAL_GRAPH` / `PROPOSED_BRIDGES`).
+UPT's bridge/law catalog is a **graph**. Round nodes are *quantities*
+(`mass`, `temperature`, `photon-energy`, …). Box nodes are *equations* —
+laws, bridges, or machine-derived proposals. Each one is an n-ary
+junction whose source quantities point in and whose target points out.
+`upt map` renders that graph straight from the live data
+(`CATALOG_GRAPH` / `CANONICAL_GRAPH` / `PROPOSED_BRIDGES`), as Mermaid
+or Graphviz-DOT **source text**, or as rendered SVG.
 
 > **Read this map honestly.** It is *deliberately disjointed*. The catalog is
 > sparse — one anchored cluster hubbed on a few quantities, plus a long tail of
@@ -24,20 +25,19 @@ graph as Mermaid or Graphviz-DOT **source text** straight from the live data
 
 ## The standard-physics (canonical) layer
 
-The textbook L-layer alone — every node a `law` (blue). Even established physics
-is only loosely connected: an 82-law core hubbed on `mass`, `temperature`,
-`length`, `force`, and other widely-shared quantities; two small two-law clusters
-(`radioactive-decay ↔ half-life` on the decay constant, and `thomson-cross-section
-↔ classical-electron-radius`, both formed by the v0.34–0.36 additions); and 17
-isolated laws (the Planck units, the Bohr radius and magneton, the Einstein field
-equation, Friedmann, Lorentz force, Hubble distance, Rydberg energy, plus the
-v0.35–0.36 L1-sum laws Carnot efficiency, the Rydberg formula, and Snell's &
-Malus's laws) that the catalog has not yet linked to anything else.
+The textbook L-layer alone — every node a `law` (blue). Even established
+physics is only loosely connected. The layer has an 83-law core hubbed on
+`mass`, `temperature`, `length`, `force`, and other widely-shared quantities.
+The layer also has two small two-law clusters (`radioactive-decay ↔ half-life`
+on the decay constant, and `thomson-cross-section
+↔ classical-electron-radius`). It also has 20 isolated laws, listed in the
+map's `isolated` group below, that share no quantity with any other law in
+this layer.
 
 ```mermaid
 flowchart LR
 %% UPT physics map — canonical (standard-physics L-layer, bridges excluded)
-  subgraph cl_0["anchored cluster (82)"]
+  subgraph cl_0["anchored cluster (83)"]
     direction LR
     j_CE_pendulum_period["Pendulum period"]:::law
     q_length(["length"]):::qty
@@ -525,6 +525,12 @@ flowchart LR
     q_scattering_angle --> j_CE_compton_shift
     q_compton_wavelength_shift(["compton-wavelength-shift"]):::qty
     j_CE_compton_shift --> q_compton_wavelength_shift
+    j_CE_boltzmann_entropy["Boltzmann entropy"]:::law
+    q_boltzmann_constant --> j_CE_boltzmann_entropy
+    q_microstate_count(["microstate-count"]):::qty
+    q_microstate_count --> j_CE_boltzmann_entropy
+    q_boltzmann_entropy(["boltzmann-entropy"]):::qty
+    j_CE_boltzmann_entropy --> q_boltzmann_entropy
   end
   subgraph cl_1["anchored cluster (2)"]
     direction LR
@@ -552,7 +558,7 @@ flowchart LR
     q_remaining_nuclei(["remaining-nuclei"]):::qty
     j_CE_radioactive_decay --> q_remaining_nuclei
   end
-  subgraph cl_iso["isolated (17)"]
+  subgraph cl_iso["isolated (20)"]
     direction LR
     j_CE_bekenstein_hawking["Bekenstein–Hawking entropy"]:::law
     q_A(["A"]):::qty
@@ -577,6 +583,13 @@ flowchart LR
     q_stress_energy_density --> j_CE_einstein_field_eq
     q_efe_curvature(["efe-curvature"]):::qty
     j_CE_einstein_field_eq --> q_efe_curvature
+    j_CE_first_law_thermodynamics["First law of thermodynamics"]:::law
+    q_heat_added(["heat-added"]):::qty
+    q_heat_added --> j_CE_first_law_thermodynamics
+    q_work_done_by_system(["work-done-by-system"]):::qty
+    q_work_done_by_system --> j_CE_first_law_thermodynamics
+    q_internal_energy_change(["internal-energy-change"]):::qty
+    j_CE_first_law_thermodynamics --> q_internal_energy_change
     j_CE_friedmann["Friedmann equation (flat, matter-dominated)"]:::law
     q_rho(["rho"]):::qty
     q_rho --> j_CE_friedmann
@@ -610,6 +623,13 @@ flowchart LR
     q_polarization_angle --> j_CE_malus_law
     q_transmitted_intensity(["transmitted-intensity"]):::qty
     j_CE_malus_law --> q_transmitted_intensity
+    j_CE_normal_distribution["Normal (Gaussian) distribution"]:::law
+    q_standard_deviation(["standard-deviation"]):::qty
+    q_standard_deviation --> j_CE_normal_distribution
+    q_deviation_from_mean(["deviation-from-mean"]):::qty
+    q_deviation_from_mean --> j_CE_normal_distribution
+    q_normal_probability_density(["normal-probability-density"]):::qty
+    j_CE_normal_distribution --> q_normal_probability_density
     j_CE_planck_einstein["Planck–Einstein relation"]:::law
     q_nu(["nu"]):::qty
     q_nu --> j_CE_planck_einstein
@@ -645,6 +665,9 @@ flowchart LR
     q_angle_of_refraction --> j_CE_snell_law
     q_refracted_index(["refracted-index"]):::qty
     j_CE_snell_law --> q_refracted_index
+    j_CE_uncertainty_principle["Heisenberg uncertainty principle"]:::law
+    q_position_momentum_uncertainty_product(["position-momentum-uncertainty-product"]):::qty
+    j_CE_uncertainty_principle --> q_position_momentum_uncertainty_product
   end
   classDef law fill:#cfe3f7,stroke:#3a6ea5
   classDef qty fill:#ffffff,stroke:#999999
@@ -652,20 +675,21 @@ flowchart LR
 
 ## The bridge catalog and the full map
 
-The 44-bridge catalog (`--source=catalog`, 41 edges → 23 components) and the
-combined laws-plus-bridges graph (`--source=both`, 144 edges → 37 components, after
-the canonical L-layer grew to 103 laws) are larger and more disjointed — better
-viewed as rendered SVG than inline. Both the
-DOT sources and the rendered SVGs are committed under [`maps/`](./maps/):
+Two larger, more disjointed graphs exist. One is the 55-bridge catalog
+(`--source=catalog`, 41 edges → 23 components). The other is the combined
+laws-plus-bridges graph (`--source=both`, 148 edges → 40 components, over
+the 107-law canonical L-layer). Rendered SVG shows them better than the
+inline view. Both the DOT sources and the rendered SVGs are committed
+under [`maps/`](./maps/):
 
 - catalog — [`maps/catalog.svg`](./maps/catalog.svg) · [`maps/catalog.dot`](./maps/catalog.dot)
-- canonical (103-law L-layer) — [`maps/canonical.svg`](./maps/canonical.svg) · [`maps/canonical.dot`](./maps/canonical.dot)
+- canonical (107-law L-layer) — [`maps/canonical.svg`](./maps/canonical.svg) · [`maps/canonical.dot`](./maps/canonical.dot)
 - laws + bridges — [`maps/both.svg`](./maps/both.svg) · [`maps/both.dot`](./maps/both.dot)
 
 **`upt map` defaults to `--source=both`** — a pure connectivity question gets
-the honest, all-known-physics answer by default, so "laws + bridges" above is
-what a bare `upt map` now shows. `--source=catalog` still renders the
-bridge-catalog-only view (kept alongside, not removed).
+the honest, all-known-physics answer by default. A bare `upt map` prints the text
+linkage for that source; `--format=mermaid|dot|svg` renders the "laws + bridges"
+graphic above. `--source=catalog` renders the bridge-catalog-only view.
 
 `upt map --format=svg` renders the graphic in one step via the optional
 `@viz-js/viz` peer (`npm i @viz-js/viz`):
@@ -685,31 +709,38 @@ only with `--equation`.
 ## Place your own equation on the map
 
 `upt map --equation "TARGET = EXPR"` injects a user-supplied equation as a
-**violet `user` junction**, **dimensionally validates it**, and reports where it
-lands — which cluster it joins and the quantities that connect it — without ever
-writing it into the catalog. The left of `=` is the target quantity; the
-right-hand symbols (minus constants like `pi`/`hbar`/`c` and functions) are the
-sources. It connects by **shared quantity name**, so use the catalog vocabulary
-(multi-word names with underscores, e.g. `photon_energy` → `photon-energy`).
+**violet `user` junction** and **dimensionally validates it**. It reports where
+the equation lands — which cluster it joins and the quantities that connect
+it — without ever writing it into the catalog. The left of `=` is the target
+quantity. The right-hand symbols, minus constants like `pi`/`hbar`/`c` and
+functions, are the sources. The equation connects by **shared quantity
+name**, so use the catalog vocabulary (multi-word names with underscores,
+e.g. `photon_energy` → `photon-energy`).
 
-The equation is parsed to a dimensional `ExprNode` (via `parsePhysics`, over the
-catalog's dimensions, with physics constants carrying their real dimensions), so
-the CLI reports whether the RHS is **dimensionally consistent** with the target,
-and — for a single unknown symbol — **infers its dimension** to give a
-dimension-based "did you mean?" (falling back to name-similarity).
+`parsePhysics` parses the equation to a dimensional `ExprNode`, over the
+catalog's dimensions, with physics constants carrying their real dimensions.
+The CLI then reports whether the RHS is **dimensionally consistent** with the
+target. For a single unknown symbol, the CLI also **infers its dimension**.
+The CLI uses the inferred dimension to select the "did you mean?"
+candidates. When it cannot infer the dimension, it uses all catalog names.
+One ranking orders both sets: edit distance to the typed name first, where a
+swap of two adjacent letters counts as one edit (`lenght` → `length`).
+`upt explain` uses the same ranking.
 
 ```bash
 node bin/upt.mjs map --source=canonical --equation "period = 2*pi*sqrt(length/gravity)"
 #   ✓ dimensionally consistent: [time]
-#   ● your equation joins the ANCHORED cluster of 53 via {gravity, length, period}
+#   ● your equation joins the ANCHORED cluster of 84 via {gravity, length, period}
 node bin/upt.mjs map --source=canonical --equation "period = mass"
 #   ⚠ dimensional MISMATCH: RHS is [mass] but the target is [time]
 node bin/upt.mjs map --source=canonical --equation "period = uu / gravity"
-#   ⚠ 'uu' is unknown — by its inferred dimension, did you mean: speed, v, velocity?
+#   · UNKNOWN: RHS is [L^-1 T^2] but the target is [time]; the mismatch involves the unresolved placeholder 'uu' (taken as dimensionless), so it is not a failed check
+#   ⚠ 'uu' is unknown — by its inferred dimension, did you mean: v, speed, velocity, sound-speed, flow-velocity?
 ```
 
-The free variables are extracted by the active formula parser — the MathTS
-expression parser when the optional peer is installed, else the built-in one.
+The active formula parser extracts the free variables. That parser is the
+MathTS expression parser when the optional peer is installed, and the
+built-in parser otherwise.
 
 ## Regenerating
 

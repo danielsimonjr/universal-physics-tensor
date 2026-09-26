@@ -1,7 +1,7 @@
 # UPT Roadmap — from bridge catalog to verified physics atlas
 
 **Status:** strategic direction, not a release-blocking backlog. Release-blocking work
-stays in [`docs/planning/ACTIVE.md`](docs/planning/ACTIVE.md); cross-session task state
+stays in [`ACTIVE.md`](ACTIVE.md); cross-session task state
 stays in [`todo.md`](todo.md). A phase below becomes engineering work only when it is
 promoted into `ACTIVE.md` with a design note, a plan, and an Adam+Eve review, per the
 conventions in `todo.md` §Conventions. Nothing here is authorized by being written here.
@@ -37,6 +37,8 @@ the repo invariant wins and the deviation is recorded in §3 below.
 
 ## 1. Where UPT stands against the proposal
 
+This inventory is the 2026-09-20 baseline, from before `src/atlas/` landed. Later phase state is in [`NOTES.md`](NOTES.md).
+
 UPT already has the dimension layer, the firewall, the L-layer, and quantitative
 confrontation; it lacks relation types, regimes, hyperedges, models, and formal references.
 The inventory, so no phase rebuilds what exists:
@@ -69,7 +71,8 @@ Two things the proposal asks for that UPT already answers better than the propos
   (`docs/research/pi-instrument-results.md`). That coincidence-rejecting discipline transfers,
   but it answers `a ≡ b`, not relation validity: no existing gate tests the eight failure kinds
   the proposal's "invalid-bridge rejection versus best LLM baseline" headline needs. That is
-  Phase 5's job.
+  Phase 5's job. The test has since run, and the atlas did NOT beat the LLM baselines
+  (`docs/research/atlas-study-results.md`).
 - **Quantitative confrontation.** Nineteen real-data confrontations with a declared rigor
   hierarchy (`upt confront`). The proposal's "empirically supported (with regime)" tag has a
   numeric backing here that the proposal does not require.
@@ -260,11 +263,11 @@ conventions record, and the composition table, without replacing any existing ty
 - `RelationType` union (eight members) and per-type required-content interfaces. Adds an
   optional `relation?: RelationContract` to `BridgeEdge`; existing 41 edges stay `undefined`.
 - `EvidenceTag` union and `evidenceTags?: ReadonlySet<EvidenceTag>` beside (never instead of)
-  `EdgeConfidence` / `BridgeEquationStatus`. A derived-tag rule maps existing surfaces
-  truthfully: a passing `dimensional-signature-catalog.test.ts` pin ⇒ `dimension-checked`; a
-  `CONFRONTATIONS` entry ⇒ `empirically-supported` with the confrontation's rigor tier as the
-  regime note; a `RejectedBridgeAdjudication` ⇒ `contradicted` with the counterexample linked.
-  Nothing else is inferred.
+  `EdgeConfidence` / `BridgeEquationStatus`. Tags come only from artifacts on the record
+  (`src/atlas/derive-evidence.ts`). `dimension-checked` needs a witness of kind `dimensional`,
+  which `Witness` does not have, so it does not fire. `empirically-supported`, `reviewed`, and
+  `unresolved` are in the union and are not emitted. `contradicted` comes from an unresolved
+  counterexample, and a `not-a-bridge` verdict does not force it.
 - `Conventions` record (heat/work sign, metric signature, Fourier normalization, unit system,
   capacitor sign) on `CanonicalEquation` and `AtlasBridge`; a convention-mismatch check that
   fires on composition and on `upt recover`.
@@ -282,8 +285,9 @@ conventions record, and the composition table, without replacing any existing ty
   derivation: transport only for statements written entirely in preserved structure";
   "exact ∘ approximation needs `K` for the exact map"), and "limit ∘ quantization is never
   the identity" is a statement about the composite, not that it is undefined. The matrix
-  returns `'no-composite-claim'` for all of these until Phase 2 supplies the edge data, and
-  the table's test is a test of that conservative reading, not of "every row of §4.2".
+  returns `'no-composite-claim'` for all of these. Phase 2 did not widen the table. `norm`
+  already existed as a mandatory string. Widening remains a reviewed act, and the table's
+  test is a test of that conservative reading, not of "every row of §4.2".
 - Reconciliation of the discovery plan §3 `ScientificRelationRecord` sketch with this overlay
   into one type, recorded in the design note, so Product B and the atlas share it.
 
@@ -302,11 +306,13 @@ query, and make path error a computed bound.
 - `Regime` as inequalities on named dimensionless groups, per model family, each group
   traceable to the family's dimension matrix. `ValidityDomain.predicate` remains for edges
   that have not been re-expressed; a `regime?: Regime` field is added beside it.
-- Uniformity fields on approximation edges: norm, domain, time horizon, parameter range,
-  limit character (`regular | singular | unknown`). Admission rejects an approximation bound
-  without a horizon.
-- `(K, δ)` on approximation edges; `propagateUncertainty` extended so a path returns a computed
-  bound and refuses a chain with a `K`-less edge in the middle.
+- `ApproximationBound.uniformity` is required (`readonly string[] | null`). `boundPath`
+  returns `uniformity-unanalysed` and no number when any bound on the path has `null` or
+  `[]`. Construction does not throw. `norm` is a mandatory string; it was not added here as
+  an optional field. Admission rejects an approximation bound without a horizon.
+- `(K, δ)` on approximation edges. A path bound is `boundPath`, not `propagateUncertainty`.
+  `propagateUncertainty` does not implement the uniformity gate. The composition table was
+  not widened.
 - Regime overlap analysis per family: uncovered regions, overlaps where two models disagree.
   Reported via `upt regime <family> [--at group=value …]` and `upt path <from> <to>` (new flat
   verbs, `--json` envelope, exit 2 on unknown flags).
@@ -314,7 +320,7 @@ query, and make path error a computed bound.
 
 **Exit criteria.** The oscillator family's regime space renders from the CLI; the pendulum
 bridge's horizon is enforced (a query past `16T₀/θ₀²` returns the bound as invalid); the GR
-evidence spine's three classic tests are re-expressible as regime inequalities on
+evidence spine's three tests (perihelion, light deflection, Shapiro delay) are re-expressible as regime inequalities on
 `r_s/r` and `v/c` without changing their confrontation numbers.
 
 ### Phase 3 — Hyperedges, models, and the poster as a typed index (target: v0.51–v0.52)
@@ -427,7 +433,9 @@ note under `docs/research/` before any condition is run.
 **Deliverables.**
 
 - Seven conditions: text retrieval; symbol matching; contextual equation embeddings; typed
-  structural search; frontier LLM alone; LLM with a CAS tool; LLM with the atlas. LLM and
+  structural search; LLM alone; LLM with a CAS tool; LLM with the atlas. A hosted frontier LLM
+  is NOT in scope: the owner declined the spend. Local models stand in as the LLM baselines, and
+  every result states that they are weaker baselines than a frontier model. LLM and
   embedding conditions run out of process and log their versions. Ablation: types only; plus
   assumptions; plus dimensions and conventions; plus regimes.
 - The discovery hypothesis, tested once and stated once: held-out known bridges are recovered
@@ -439,14 +447,18 @@ note under `docs/research/` before any condition is run.
   kinds where they resolve; PROV-O-shaped provenance.
 - Explorer = `upt map` + `upt regime` + `upt path` + a per-bridge `upt atlas <id>` report with
   every qualification visible. No in-package web UI.
-- Experimental API review; promotion of the atlas subpath to `src/index.ts` only if the study
-  justifies it. `package.json` stays `0.x`.
+- Experimental API review. A symbol whose value depends on a benchmark claim is promoted to
+  `src/index.ts` only if the study justifies that claim. A symbol selected on API-quality grounds
+  alone (a stable contract, independent tests, no coupling to repository data, closure under type
+  references) does not wait on the study. `package.json` stays `0.x`. The decision that applied
+  this reading is `docs/decisions/atlas-tier1-namespace.md`.
 - Governance: named maintainers per model family; a written policy for contested entries;
   contribution by small reviewable PRs.
 
-**Exit criteria.** A fresh environment reproduces every published check; paired statistics,
-abstention, and reviewer time reported in `docs/research/`; all qualifications remain visible
-in every output.
+**Exit criteria.** A fresh environment reproduces every published check; paired statistics and
+abstention are reported in `docs/research/`; all qualifications remain visible in every output.
+Reviewer time is NOT MEASURED: there are no independent human reviewers, and a model's or an
+agent's time is not a reviewer's time. The owner amended this criterion; it is not an unmet box.
 
 ---
 
@@ -489,15 +501,17 @@ in every output.
 
 ## 7. Phase status
 
+**UPT is DONE (owner, 2026-09-24; pre-registration Amendment 12).** DONE means that every criterion below is MEASURED and REPORTED: MET, NOT MET, amended or deferred. It does not mean that every criterion is met. Study criteria 2 and 3 are NOT MET, and they are the study's findings.
+
 | Phase | Status | Pointer |
 |---|---|---|
-| 0 — Oscillator pilot | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 0 — nine models, five bridges, one rejection. Its box is held open deliberately: per-bridge curation cost is still unmeasured, and that measurement is what Phase 4 and Phase 5 scope is cut against |
-| 1 — Relation contracts overlay | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 1 — additive overlay; relation and evidence fields land as `undefined` / `not-yet-audited` rather than fabricated |
-| 2 — Regimes and error-carrying paths | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 2 — tri-state `regimeHolds`, `boundPath` gating by TYPE, the 8×8 composition table with 56 `no-composite-claim` cells |
-| 3 — Hyperedges, models, poster index | shipped | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 3 — `Model`, `Statement`, `Derivation`, multicategory composition, the sixteen poster entries with their hidden nodes, and `upt map --source=poster` |
-| 4 — Verification workflow, checked bridges | delivered; one exit criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 4 — 20 bridges across 6 relation types (MET); ≥ 5 reviewed `formalRef` is OPEN at 1 of 5 |
-| 5 — Invalid-bridge benchmark | harness delivered; κ criterion open | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 5 — pre-registration registered, held-out family fixed; the frozen item set and κ need independent human authors and raters |
-| 6 — Study and scoped release | in progress | [`ACTIVE.md`](docs/planning/ACTIVE.md) Sprint 6 — promoted 2026-09-22; the study refuses to run on the empty frozen set |
+| 0 — Oscillator pilot | code delivered; exit criteria closed by amendment | Independent human physicist review NOT MEASURED (no human reviewer); a model-persona review (Fable) was run on 2026-09-24, 13 findings, each with its disposition in [`docs/research/phase-0-model-persona-review.md`](docs/research/phase-0-model-persona-review.md) (pre-registration Amendment 7). Per-bridge curation cost AMENDED to NOT MEASURED (Amendment 6). [`NOTES.md`](NOTES.md) |
+| 1 — Relation contracts overlay | overlay shipped; "zero fabricated assumptions" MET (Mothership's ruling, after a mechanical quote check) | Every quoted span in the 15 `// source:` comments matches its source exactly (`bun run atlas:quote-check`: 43 MATCH, 44 negative controls held). Disclosed by name: BE-11 checked on search-snippet access, not full text; C6 (Josephson 1962, paywalled) unverifiable; two equation numbers not confirmed by machine, von Klitzing eq. 4 (publisher bot wall) and Shapiro's printed label (1) (not machine-readable), both deferred by the owner on 2026-09-24 (they were for the owner to check in a browser). [`docs/research/phase-1-citation-check.md`](docs/research/phase-1-citation-check.md) |
+| 2 — Regimes and error-carrying paths | shipped | Uniformity gate on `boundPath` (reason `uniformity-unanalysed`). The table was not widened. [`NOTES.md`](NOTES.md) |
+| 3 — Hyperedges, models, poster index | shipped | `8 → 12` is one approximation (`d-8-to-12`) and its direction is unresolved. [`NOTES.md`](NOTES.md) |
+| 4 — Verification workflow, checked bridges | 20 bridges / 6 types delivered | Reviewed `formalRef` is 1 of 5: DEFERRED by the owner (pre-registration Amendment 10), so it no longer blocks DONE. Scoping: [`docs/research/phase-4-formalref-scoping.md`](docs/research/phase-4-formalref-scoping.md). Per-bridge cost AMENDED to NOT MEASURED; model cost is reported. [`NOTES.md`](NOTES.md) |
+| 5 — Invalid-bridge benchmark | harness and model-authored frozen set exist | κ AMENDED: the reported κ is MODEL agreement (0.984 / 0.978); human κ NOT MEASURED. Criteria 5 and 6 AMENDED to NOT MEASURED / model cost. All three in pre-registration Amendment 6. [`NOTES.md`](NOTES.md) |
+| 6 — Study and scoped release | study has run on the non-empty set | Criterion 2 (local LLM) is NOT MET. Criterion 3 is NOT MET (pre-registration Amendment 11): embeddings (qwen3-embedding:4b, frozen vectors) 49/50 = 98.0% against typed structural search 12/50 = 24.0% [14.3%, 37.4%]. Typed structural search scored 24% on PRIMARY and never matched on structure (query residuals vs corpus right-hand sides). An EXPLORATORY, post hoc residual-form rerun (Amendment 9) also scored 24%, with 4 key matches in 11,125 pairs. The empty-set refusal still exists for an empty set. [`NOTES.md`](NOTES.md), [`docs/research/atlas-study-results.md`](docs/research/atlas-study-results.md) |
 
 > **This table is updated at the END of every sprint, and the risk register above is why.** Its own
 > last row names the failure — *"this document drifts like the old `CLAUDE.md` release section
@@ -506,6 +520,14 @@ in every output.
 > Phases 0–2 had shipped and Phase 3 was under way. A stale status table is worse than no status
 > table: it answers the question "what is left?" confidently and wrongly, and it is the one
 > document a reader consults before deciding whether to proceed or ask.
+
+## 8. Future (not started)
+
+**Hybrid retrieval** (owner, 2026-09-24; pre-registration Amendment 12). An embedding model finds the candidate canonical relations for a claim, and the atlas verifies them. Each part is used where the study measured it strong. qwen3-embedding:4b retrieved the correct relation for 49/50 claims, and the atlas's typed search for 12/50 (criterion 3, Amendment 11). The atlas made 1 wrong accept, and the local LLMs made 9 to 13 (criterion 4, Amendment 4). No design exists yet.
+
+**Probe-searchable frontier gaps** (persona finding C1; owner order 2026-09-25, designed and approved before any code). `upt probe scan` lists relation-link and regime-transition gaps that the probe cannot search, so the scan offers a user nothing to run. Make at least one gap kind searchable, or have the scan say which kinds it can serve.
+
+**Cross-family `upt path`** (persona finding C3; owner order 2026-09-25, designed and approved before any code). Atlas bridges already cross families (Klein–Gordon → wave, telegraph → wave, Klein–Gordon → Schrödinger), but a route is searched inside one family. Search across families, and compose the bounds across them.
 
 Subagent-driven execution plan for all seven phases:
 [`docs/planning/Atlas-Roadmap-Implementation-Plan.md`](docs/planning/Atlas-Roadmap-Implementation-Plan.md).

@@ -80,7 +80,8 @@ function readStderrGolden(name: string): string {
 // lines, `  ✓/⚠/·/●` lines, `     connects to:` continuations) — the CLI's
 // own stderr output. Environment-dependent optional-peer warnings must not
 // be pinned.
-const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+// Landing continuations: former `connects to:`, W3 `nearest equations:` / caveat.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     (?:connects to:|nearest equations:|\(shared-quantity)/u;
 
 function filterReportLines(text: string): string {
   return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');
@@ -90,7 +91,7 @@ const cases = GOLDEN_CASES.filter((c) => INPROCESS_READY.includes(c.name));
 const ungated = cases.filter((c) => !c.peerGated);
 const gated = cases.filter((c) => c.peerGated);
 
-async function runCase(name: string, args: string[], pinStderr?: boolean): Promise<void> {
+async function runCase(name: string, args: string[], pinStderr?: boolean, exitCode = 0): Promise<void> {
   // A single interleaved stdout stream: `write` (raw diagram source, no
   // newline) and `out` (console.log semantics) both append here in emission
   // order, matching what a spawned process's real stdout would show.
@@ -104,7 +105,7 @@ async function runCase(name: string, args: string[], pinStderr?: boolean): Promi
 
   const status = await runCli(args, io);
 
-  expect(status).toBe(0);
+  expect(status).toBe(exitCode);
   expect(normalize(stdout.join(''))).toBe(readGolden(name));
   if (pinStderr) {
     expect(filterReportLines(normalize(stderr.join('')))).toBe(readStderrGolden(name));
@@ -116,13 +117,13 @@ describe('src/cli port — in-process golden corpus', () => {
     expect(cases.length).toBe(INPROCESS_READY.length);
   });
 
-  it.each(ungated)('$name', async ({ name, args, pinStderr }) => {
-    await runCase(name, args, pinStderr);
+  it.each(ungated)('$name', async ({ name, args, pinStderr, exitCode }) => {
+    await runCase(name, args, pinStderr, exitCode);
   });
 });
 
 describe.skipIf(!peerPresent)('src/cli port — in-process golden corpus (peer-gated)', () => {
-  it.each(gated)('$name', async ({ name, args, pinStderr }) => {
-    await runCase(name, args, pinStderr);
+  it.each(gated)('$name', async ({ name, args, pinStderr, exitCode }) => {
+    await runCase(name, args, pinStderr, exitCode);
   });
 });

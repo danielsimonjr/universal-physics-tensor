@@ -9,7 +9,7 @@
  * @module tests/cli/upt-map-format
  */
 import { describe, it, expect } from 'vitest';
-import { execFileSync } from 'node:child_process';
+import { execFileSync, spawnSync } from 'node:child_process';
 import { existsSync, readFileSync, rmSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 import { dirname, resolve, join } from 'node:path';
@@ -82,9 +82,11 @@ describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
     });
 
     it('dot: renders the user junction with the user (violet) color', () => {
+      // A dimensionally consistent equation: since 0.47.0 a mismatch exits 3, and
+      // this test is about the rendering, not the verdict.
       const out = run([
         'map', '--source=canonical', '--format=dot',
-        '--equation', 'period = length / gravity',
+        '--equation', 'period = 2*pi*sqrt(length/gravity)',
       ]);
       expect(out).toMatch(/^digraph /m);
       expect(out).toContain('#e9d8fd'); // the 'user' status fill
@@ -98,12 +100,12 @@ describe.skipIf(!existsSync(distIndex))('upt map --format', () => {
       expect(out).toMatch(/dimensionally consistent/i);
     });
 
-    it('flags a dimensional mismatch', () => {
-      const out = run([
-        'map', '--source=canonical',
-        '--equation', 'period = mass', // [mass] ≠ [time]
-      ]);
-      expect(out).toMatch(/mismatch/i);
+    it('flags a dimensional mismatch, and exits 3 (a failed check, 0.47.0)', () => {
+      const r = spawnSync('node', [cli, 'map', '--source=canonical', '--equation', 'period = mass'], {
+        encoding: 'utf8',
+      }); // [mass] ≠ [time]
+      expect(r.status).toBe(3);
+      expect(r.stdout).toMatch(/mismatch/i);
     });
 
     it('prints a dimension-based "did you mean?" for an inferable unknown', () => {

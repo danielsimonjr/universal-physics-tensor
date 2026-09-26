@@ -3,9 +3,24 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
 ⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
   Each candidate hypothesises an identification a≡b and tests its consequences.
 
-  funnel:  345 candidates  →  49 promising  ·  286 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)  ·  1 axis-clash
+  funnel:  345 candidates  →  49 promising  ·  286 inert  ·  9 magnitude-clash  ·  0 contradictory (numerically falsified)  ·  1 axis-clash
 
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
+    erasure-energy ≟ photon-energy                       [[energy]]  score 7
+        unlocks: photon-energy
+        [consequence: novel-consequence]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
+        [adjudicated: decoy — Dimensional coincidence; no mechanism. Landauer's k_B·T·ln2 is a statistical lower bound on heat dissipated to a reservoir; equating it to a single photon's hν has no universal mechanism — it rewrites thermal energy in frequency units.]
+    rest-energy ≟ photon-energy                          [[energy]]  score 7
+        unlocks: photon-energy
+        [consequence: novel-consequence]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
+        [adjudicated: entailed — Real physics, already entailed by the L-layer via CE-planck-einstein (E=hν) and CE-mass-energy (E=mc²); not a new link. Both Adam and Eve agree it is not a new discovery.]
+    hubble-distance ≟ peak-wavelength                    [[length]]  score 6
+        unlocks: hubble-distance
+        [consequence: novel-consequence]
+        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
+        [adjudicated: decoy — Dimensional coincidence; no mechanism. A blackbody peak wavelength equated with the cosmological horizon — disparate domains, no mechanism; numerically off by ~10²⁹ for the CMB. The clearest "coincidence, not physics" case.]
     a ≟ classical-electron-radius                        [[length]]  score 7
         unlocks: a, perihelion-precession
         [consequence: inconclusive]
@@ -30,11 +45,6 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
         unlocks: internal-energy-change
         [consequence: inconclusive]
         [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
-    erasure-energy ≟ photon-energy                       [[energy]]  score 7
-        unlocks: photon-energy
-        [consequence: novel-consequence]
-        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
-        [adjudicated: decoy — Dimensional coincidence; no mechanism. Landauer's k_B·T·ln2 is a statistical lower bound on heat dissipated to a reservoir; equating it to a single photon's hν has no universal mechanism — it rewrites thermal energy in frequency units.]
     free-energy-difference ≟ internal-energy-change      [[energy]]  score 7
         unlocks: internal-energy-change
         [consequence: inconclusive]
@@ -55,11 +65,6 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
         unlocks: internal-energy-change
         [consequence: inconclusive]
         [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
-    rest-energy ≟ photon-energy                          [[energy]]  score 7
-        unlocks: photon-energy
-        [consequence: novel-consequence]
-        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
-        [adjudicated: entailed — Real physics, already entailed by the L-layer via CE-planck-einstein (E=hν) and CE-mass-energy (E=mc²); not a new link. Both Adam and Eve agree it is not a new discovery.]
     semi-major-axis ≟ classical-electron-radius          [[length]]  score 7
         unlocks: period, semi-major-axis
         [consequence: inconclusive]
@@ -136,11 +141,6 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
         unlocks: hubble-distance
         [consequence: inconclusive]
         [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: inconclusive · ceiling: no mechanism/data test]
-    hubble-distance ≟ peak-wavelength                    [[length]]  score 6
-        unlocks: hubble-distance
-        [consequence: novel-consequence]
-        [grounding — passed: numerical-consistency · gaps: magnitude (no representative value), axis (regime attributes unresolved), consequence: novel (unadjudicated) · ceiling: no mechanism/data test]
-        [adjudicated: decoy — Dimensional coincidence; no mechanism. A blackbody peak wavelength equated with the cosmological horizon — disparate domains, no mechanism; numerically off by ~10²⁹ for the CMB. The clearest "coincidence, not physics" case.]
     length ≟ classical-electron-radius                   [[length]]  score 6
         unlocks: length
         [consequence: inconclusive]
@@ -234,7 +234,7 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
     time ≟ elapsed-time                                  [[time]]
     work ≟ work-done-by-system                           [[energy]]
 
-  AXIS-CLASH (identification falsified (stated regimes differ)):
+  AXIS-CLASH (stated scale/force labels differ: a regime-label prior, not a physical test):
     semi-major-axis ≟ planck-length                      scale: classical ≠ quantum
 
   (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)

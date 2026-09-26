@@ -1,5 +1,7 @@
 # Batch G — historical planning docs — Doc Integrity Findings
 
+<!-- ste:historical-record -->
+
 **Reviewer:** Claude Code (Sonnet 4.6)
 **Date:** 2026-05-20
 **Files reviewed:**

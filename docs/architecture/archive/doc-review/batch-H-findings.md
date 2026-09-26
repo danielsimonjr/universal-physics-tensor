@@ -1,5 +1,7 @@
 # Batch H — historical architecture/audit docs — Doc Integrity Findings
 
+<!-- ste:historical-record -->
+
 **Reviewer**: sonnet subagent. **Date**: 2026-05-20.
 **Files**:
 - `docs/architecture/v0.4.5-refactor-targets.md`

@@ -1,7 +1,7 @@
 /**
  * Ambient module declaration for the optional peer dependency
- * `@danielsimonjr/mathts-tensor`. The package is listed in package.json's
- * `optionalDependencies` and is therefore not guaranteed to be installed at
+ * `@danielsimonjr/mathts-tensor`. The package is listed in package.json's peerDependencies as
+ * optional, and is therefore not guaranteed to be installed at
  * tsc time — without this declaration, the static `import { Tensor } from
  * '@danielsimonjr/mathts-tensor'` at the top of `numerical/mathts-engine.ts`
  * would fail tsc with TS2307 and need `@ts-ignore` (or skip the build

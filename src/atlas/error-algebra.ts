@@ -2,7 +2,7 @@
  * The Phase 0 error algebra: composition of Lipschitz-plus-offset bounds.
  *
  * With `∘` read as OUTER-AFTER-INNER, a bound `(K, δ)` states
- * `|f(x) − f̃(x)| ≤ K|x − x̃| + δ` in the bound's own norm. Composing an outer
+ * `|f(x) − f̃(x̃)| ≤ K|x − x̃| + δ` in the bound's own norm. Composing an outer
  * map onto an inner one therefore gives
  *
  *     (K_o, δ_o) ∘ (K_i, δ_i) = (K_o·K_i, K_o·δ_i + δ_o)

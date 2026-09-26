@@ -42,6 +42,20 @@ export type ConfrontationOutcome =
       readonly withinObserved: boolean;
       readonly units: string;
       readonly provenance: ObservationProvenance;
+      /**
+       * Present when `observed` is DERIVED from a different measured quantity
+       * rather than measured itself. BE-51's "observed" deflection is the
+       * prediction times (1 + γ)/2: VLBI measured γ, not a solar-limb
+       * deflection to 16 digits. The report shows this measurement, and labels
+       * `observed` as derived by `derivation`.
+       */
+      readonly measured?: {
+        readonly quantity: string;
+        readonly value: number;
+        readonly sigma: number;
+        readonly source: string;
+        readonly derivation: string;
+      };
     }
   | {
       readonly kind: 'upper-bound';

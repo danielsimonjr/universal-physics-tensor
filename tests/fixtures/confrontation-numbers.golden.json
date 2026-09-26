@@ -88,12 +88,16 @@
     "bridgeId": 51,
     "kind": "value",
     "numbers": {
-      "predicted": 1.7517100517691688,
-      "observed": 1.751639983367098,
-      "sigma": 0.00010510260310615013,
-      "residualInSigma": 0.6666666666680373,
+      "predicted": 1.751190325559984,
+      "observed": 1.7511202779469617,
+      "sigma": 0.00010507141953359905,
+      "residualInSigma": 0.6666666666669404,
       "provenance": {
         "year": 2009
+      },
+      "measured": {
+        "value": 0.99992,
+        "sigma": 0.00012
       }
     }
   },
@@ -101,10 +105,10 @@
     "bridgeId": 52,
     "kind": "value",
     "numbers": {
-      "predicted": 42.99158858487129,
+      "predicted": 42.98056186229095,
       "observed": 43.11,
       "sigma": 0.45,
-      "residualInSigma": 0.2631364780638042,
+      "residualInSigma": 0.2876403060201148,
       "provenance": {
         "year": 1947
       }

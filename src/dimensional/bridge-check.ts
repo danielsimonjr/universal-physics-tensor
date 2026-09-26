@@ -172,7 +172,7 @@ export const EXPECTED_DIMENSION_BY_BRIDGE: ReadonlyMap<number, Dimension> = new 
 /**
  * Infer the SI dimensional signature of a bridge equation expression.
  *
- * @param bridgeId  The id from `BRIDGE_EQUATIONS` (11..50). If present
+ * @param bridgeId  The id from `BRIDGE_EQUATIONS` (11..65). If present
  *                  in `EXPECTED_DIMENSION_BY_BRIDGE` the inferred dim
  *                  is cross-checked against the expected; mismatch =>
  *                  null. If absent, the inferred dim is returned as-is.

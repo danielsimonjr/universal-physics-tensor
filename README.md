@@ -40,6 +40,18 @@ Think of this as:
 
 ## Quick Start
 
+From npm, the CLI is `upt`:
+
+```bash
+npm install universal-physics-tensor
+npx upt help
+npx upt explain hawking-temperature mass=1.989e30
+```
+
+The npm package ships `dist/`, `bin/`, this README and the licence. The documentation, the examples
+and the test fixtures linked below live in the GitHub repository. The steps below work from a clone
+of it:
+
 ```bash
 # Clone the repository
 git clone https://github.com/danielsimonjr/universal-physics-tensor.git
@@ -63,7 +75,7 @@ bun run upt -- discover                                    # vet link candidates
 bun run upt -- discover --source=canonical                 # run the funnel on standard physics ALONE (no bridges)
 bun run upt -- discover --derive                           # surface machine-derived identity consequences (--max-orders / --anchor flags available)
 bun run upt -- probe scan                                  # experimental expression/residual frontier (Product B; not `upt discover`)
-bun run upt -- probe run --problem=tests/fixtures/discovery/pendulum-scaling/public/problem.json
+bun run upt -- probe run --problem=tests/fixtures/discovery/pendulum-scaling/public/problem.json   # a fixture in the clone
 bun run upt -- connectors                                  # which isolated bridges can connect to the core
 bun run upt -- coverage                                    # audit each bridge's empirical grounding
 bun run upt -- canonical                                   # the standard-physics L-layer registry (answer key)
@@ -78,7 +90,7 @@ bun run upt -- derive period:time length:length gravity:acceleration --formula "
 #   → period ∝ length^0.5·gravity^-0.5 ; formula dimension: [time] ✓ matches target ;
 #     formula MATCHES, recovered prefactor ≈ 6.2832 (2π)
 bun run upt -- help
-# Once published, the same commands run via `npx universal-physics-tensor <cmd>`.
+# From an npm install, run the same commands as `npx upt <cmd>`.
 # (`bun run explain` and `bun run bridge-priority` remain as aliases.)
 ```
 
@@ -86,11 +98,17 @@ bun run upt -- help
 (`@danielsimonjr/mathts-functions`) when the optional peers are installed,
 and a built-in, dependency-free parser otherwise — transparently, via a
 `FormulaParser` registry (add `--debug` to see which is active). UPT keeps
-**zero hard dependencies**; the MathTS packages are optional.
+**zero hard dependencies**; the MathTS packages and `@viz-js/viz` are optional peers, which a
+default install does not pull in. Add the ones you want, for example
+`npm install @danielsimonjr/mathts-functions` for the MathTS parser, or `npm install @viz-js/viz`
+for `upt map --format=svg`. The `universal-physics-tensor/numerical/mathts-engine` subpath imports
+`@danielsimonjr/mathts-tensor` directly, so importing it without that peer fails with
+`ERR_MODULE_NOT_FOUND`. That is the opt-in, not a bug: install the peer to use the engine. The main
+entry point never loads that subpath.
 
-See [`cli/README.md`](cli/README.md) for the full CLI reference — every command
+See [`cli/README.md`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/cli/README.md) for the full CLI reference — every command
 and alias, the `--source=catalog|canonical|both` flag, input syntax, exit codes,
-and troubleshooting. [`docs/architecture/PHYSICS_MAP.md`](docs/architecture/PHYSICS_MAP.md)
+and troubleshooting. [`docs/architecture/PHYSICS_MAP.md`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/PHYSICS_MAP.md)
 shows the rendered map (`upt map --format=mermaid|dot|svg`).
 
 ## Installation
@@ -157,7 +175,7 @@ Where:
 - **B** (Bridges): Off-diagonal equations connecting regimes
 - **E** (Emergence): Higher-order correlations producing emergent phenomena
 
-> **Note on notation:** the "+" here denotes disjoint union of catalog entries (each tensor slot holds content of exactly one category), not algebraic addition. The type system enforces this disjointness via the `Cell` discriminated union in [`src/core/cell.ts`](src/core/cell.ts); `UniversalTensor.populatedCells()` is the canonical way to enumerate the populated catalog as typed `Cell` values. See also [Part I §1.2](docs/specification/Part-I.md) for the spec-level treatment. Different slots may hold quantities of different physical dimensions (e.g., a Lagrangian density and a decoherence rate) and cannot be summed numerically.
+> **Note on notation:** the "+" here denotes disjoint union of catalog entries (each tensor slot holds content of exactly one category), not algebraic addition. The type system enforces this disjointness via the `Cell` discriminated union in [`src/core/cell.ts`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/src/core/cell.ts); `UniversalTensor.populatedCells()` is the canonical way to enumerate the populated catalog as typed `Cell` values. See also [Part I §1.2](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-I.md) for the spec-level treatment. Different slots may hold quantities of different physical dimensions (e.g., a Lagrangian density and a decoherence rate) and cannot be summed numerically.
 
 ### Bridge Equations
 
@@ -175,7 +193,7 @@ Bridge equations connect different physical regimes:
 - Universal Emergence Equation
 - Complexity-Entropy Production Relation
 
-Parts I–II of the formal specification document the original BE-11…54 corpus; later established additions BE-55…65 are captured in the live code/research record. The **authoritative current catalog** is the versioned, test-pinned JSON artifact at [`data/bridge-catalog.json`](data/bridge-catalog.json), which currently spans BE-11…65. Part III covers algorithmic implementation.
+Parts I–II of the formal specification document the original BE-11…54 corpus; later established additions BE-55…65 are captured in the live code/research record. The **authoritative current catalog** is the versioned, test-pinned JSON artifact at [`data/bridge-catalog.json`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/data/bridge-catalog.json), which currently spans BE-11…65. Part III covers algorithmic implementation.
 
 ### Composing Bridges (v0.8.0)
 
@@ -195,7 +213,7 @@ erasureCost.confidence;                   // 'highly-speculative' (min of the op
 That derived relation — the minimum erasure cost at a black-hole
 horizon — is the framework's first **derived** (rather than encoded)
 literature-anchored result, pre-registered before implementation and
-pinned to relErr ≤ 10⁻¹² (see [Part IX](docs/specification/Part-IX-Composition.md)
+pinned to relErr ≤ 10⁻¹² (see [Part IX](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-IX-Composition.md)
 and `docs/planning/v0.8.0-Design.md`). A computable **membership
 criterion** (a bridge's endpoint quantities must differ in regime) now
 adjudicates the catalog — 36 bridges · 5 not-a-bridge · 3 contested —
@@ -213,47 +231,47 @@ can be folded by MathTS `simplify` (optional peer), so CT-1 reduces to
 
 ### Formal Specification
 Complete theoretical foundation of the Universal Physics Tensor Framework —
-see the **[specification index](docs/specification/README.md)** for the full
-reader's map and the **[spec revision history](docs/specification/CHANGELOG.md)**
+see the **[specification index](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/README.md)** for the full
+reader's map and the **[spec revision history](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/CHANGELOG.md)**
 for how the documents evolved.
 
-- **[Part I: Foundation & Mathematical Framework](docs/specification/Part-I.md)** - Tensor structure, Π = L + B + E decomposition, Bridge Equations 11-20
-- **[Part II: Extended Bridge Equation Catalog](docs/specification/Part-II.md)** - Bridge Equations 21-54 across condensed matter, quantum biology, emergent spacetime
-- **[Part III: Computational Implementation](docs/specification/Part-III.md)** - Algorithms, information-theoretic bounds, ML integration
-- **[Part IV: Validation & Implications](docs/specification/Part-IV.md)** - Experimental pathways, philosophical implications, applications
-- **[Part V: Advanced Mathematics & Protocols](docs/specification/Part-V.md)** - Category theory extensions, validation protocols, algorithmic analysis
-- **[Part VI: Deployment & Governance](docs/specification/Part-VI.md)** - Implementation strategies, applications, governance frameworks
-- **Supplements** - [Part VII: Tensor Algebra](docs/specification/Part-VII-Tensor-Algebra.md) · [Part VIII: Metric Layer](docs/specification/Part-VIII-Metric-Layer.md) · [Part IX: Composition](docs/specification/Part-IX-Composition.md) · [Part X: Curvature & Field Equations](docs/specification/Part-X-Curvature-and-Field-Equations.md) · [Part XI: Proposed Equations](docs/specification/Part-XI-Proposed-Equations.md) (non-normative; machine-derived identity consequences, unadjudicated)
+- **[Part I: Foundation & Mathematical Framework](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-I.md)** - Tensor structure, Π = L + B + E decomposition, Bridge Equations 11-20
+- **[Part II: Extended Bridge Equation Catalog](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-II.md)** - Bridge Equations 21-54 across condensed matter, quantum biology, emergent spacetime
+- **[Part III: Computational Implementation](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-III.md)** - Algorithms, information-theoretic bounds, ML integration
+- **[Part IV: Validation & Implications](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-IV.md)** - Experimental pathways, philosophical implications, applications
+- **[Part V: Advanced Mathematics & Protocols](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-V.md)** - Category theory extensions, validation protocols, algorithmic analysis
+- **[Part VI: Deployment & Governance](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-VI.md)** - Implementation strategies, applications, governance frameworks
+- **Supplements** - [Part VII: Tensor Algebra](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-VII-Tensor-Algebra.md) · [Part VIII: Metric Layer](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-VIII-Metric-Layer.md) · [Part IX: Composition](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-IX-Composition.md) · [Part X: Curvature & Field Equations](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-X-Curvature-and-Field-Equations.md) · [Part XI: Proposed Equations](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/specification/Part-XI-Proposed-Equations.md) (non-normative; machine-derived identity consequences, unadjudicated)
 
 ### Planning & Development
-- **[ROADMAP.md](ROADMAP.md)** - Strategic direction: from bridge catalog to a verified, regime-aware physics atlas (phased, with exit criteria)
-- **[Development Plan](docs/planning/Development-Plan.md)** - Phased implementation roadmap
-- **[Implementation Plan](docs/planning/Implementation-Plan.md)** - Technical architecture
-- **[System Requirements](docs/planning/System-Requirements.md)** - Functional requirements
+- **[ROADMAP.md](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/ROADMAP.md)** - Strategic direction: from bridge catalog to a verified, regime-aware physics atlas (phased, with exit criteria)
+- **[Development Plan](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/planning/Development-Plan.md)** - Phased implementation roadmap
+- **[Implementation Plan](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/planning/Implementation-Plan.md)** - Technical architecture
+- **[System Requirements](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/planning/System-Requirements.md)** - Functional requirements
 
 ### Architecture
 
 Grounded in a real parse of the code. Every authored document ends with a `## Verification` block,
 and `repo_map.py check` fails when a claim in one stops matching the source.
 
-- **[Overview](docs/architecture/OVERVIEW.md)** - What this is, what it does, how it is laid out
-- **[Architecture](docs/architecture/ARCHITECTURE.md)** - Why it is built this way; principles and key decisions
-- **[Components](docs/architecture/COMPONENTS.md)** - Each module, with real signatures
-- **[Data Flow](docs/architecture/DATAFLOW.md)** - How a request travels end to end
-- **[API Reference](docs/architecture/API.md)** - The public surface, per export
-- **[File Inventory](docs/architecture/FILE_INVENTORY.md)** - Every tracked file, by zone and disposition
-- **[Test Coverage](docs/architecture/TEST_COVERAGE.md)** - What is tested and what is not *(generated)*
-- **[Dependency Graph](docs/architecture/DEPENDENCY_GRAPH.md)** - Who imports whom *(generated)*
-- **[Unused Analysis](docs/architecture/unused-analysis.md)** - Files and exports with no importer *(generated)*
-- **[Duplicate Symbols](docs/architecture/duplicate-symbols.md)** - Names defined in more than one file
-- **[Physics Map](docs/architecture/PHYSICS_MAP.md)** - The bridge catalog as a map
+- **[Overview](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/OVERVIEW.md)** - What this is, what it does, how it is laid out
+- **[Architecture](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/ARCHITECTURE.md)** - Why it is built this way; principles and key decisions
+- **[Components](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/COMPONENTS.md)** - Each module, with real signatures
+- **[Data Flow](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/DATAFLOW.md)** - How a request travels end to end
+- **[API Reference](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/API.md)** - The public surface, per export
+- **[File Inventory](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/FILE_INVENTORY.md)** - Every tracked file, by zone and disposition
+- **[Test Coverage](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/TEST_COVERAGE.md)** - What is tested and what is not *(generated)*
+- **[Dependency Graph](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/DEPENDENCY_GRAPH.md)** - Who imports whom *(generated)*
+- **[Unused Analysis](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/unused-analysis.md)** - Files and exports with no importer *(generated)*
+- **[Duplicate Symbols](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/duplicate-symbols.md)** - Names defined in more than one file
+- **[Physics Map](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/PHYSICS_MAP.md)** - The bridge catalog as a map
 
 Regenerate the three generated reports with `npm run docs:deps`; do not edit them by hand. The
 `docs-fresh` CI job fails if what is committed differs from a fresh generation.
 
 ### Code Documentation
-- **[Examples](examples/)** - Usage examples and code samples
-- **[Documentation Index](docs/README.md)** - Complete documentation guide
+- **[Examples](https://github.com/danielsimonjr/universal-physics-tensor/tree/master/examples)** - Usage examples and code samples
+- **[Documentation Index](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/README.md)** - Complete documentation guide
 
 ## Benchmarks
 
@@ -264,15 +282,15 @@ npm run bench        # interactive run (median, p99, ops/sec)
 npm run bench:ci     # verbose run for CI log capture
 ```
 
-Baseline results are recorded in [`docs/architecture/benchmarks.md`](docs/architecture/benchmarks.md).
+Baseline results are recorded in [`docs/architecture/benchmarks.md`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/architecture/benchmarks.md).
 These are **correctness-first baselines, not optimization targets**. Comparative
 analysis has since landed: v0.6.0's BR-2 `christoffelFn` flat-array refactor
-delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](CHANGELOG.md)).
+delivered a measured **5-6× RK4 geodesic-integrator speedup** (see [CHANGELOG](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/CHANGELOG.md)).
 
 ## Development Status
 
 The current version is recorded in `package.json` and on npm; release chronology
-lives in the [CHANGELOG](CHANGELOG.md). This README deliberately carries **no
+lives in the [CHANGELOG](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/CHANGELOG.md). This README deliberately carries **no
 version number and no release-by-release counts** — both drift, and nothing gates
 this file. It said `v0.44.1` while the package was at `0.44.3`.
 
@@ -295,16 +313,16 @@ external evidence/domain review before promotion.
 ### Remaining frontier (not code-completion blockers)
 
 - Physics-curation decisions and literature validation are tracked as bounded
-  contributor tasks in [CONTRIBUTING.md](CONTRIBUTING.md).
+  contributor tasks in [CONTRIBUTING.md](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/CONTRIBUTING.md).
 - Longer-horizon production ideas are explicitly non-blocking and live in
-  [`docs/planning/Future-Production-Hardening.md`](docs/planning/Future-Production-Hardening.md).
+  [`docs/planning/Future-Production-Hardening.md`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/docs/planning/Future-Production-Hardening.md).
 - Historical implementation plans are preserved as records; the live code-completion
-  ledger is [`docs/planning/ACTIVE.md`](docs/planning/ACTIVE.md) and is what
+  ledger is [`ACTIVE.md`](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/ACTIVE.md) and is what
   `npm run audit:plans` gates.
 
 ## Contributing
 
-See **[CONTRIBUTING.md](CONTRIBUTING.md)** — it lists bounded,
+See **[CONTRIBUTING.md](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/CONTRIBUTING.md)** — it lists bounded,
 no-code-required physics-review tasks (catalog adjudications, encoding
 checks against the literature, quantity-identification reviews) plus
 the dev quick-start, and explains the JSON catalog review surface.
@@ -335,7 +353,7 @@ This is an **engineer's approach to theoretical physics** — systematic, organi
 
 ## License
 
-MIT License - see [LICENSE](LICENSE) for details.
+Code: MIT License - see [LICENSE](LICENSE). Exported atlas data (`data/atlas/`): CC BY 4.0 - see [LICENSE-DATA](https://github.com/danielsimonjr/universal-physics-tensor/blob/master/LICENSE-DATA).
 
 ## Author
 

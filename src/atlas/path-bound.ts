@@ -41,13 +41,13 @@
  * `string` (Phase 0, `./types.ts`). No type change was needed, and this module
  * reads the field that is already there.
  *
- * ⚠ **Not implemented: the `uniformity` gate.** Design note §2 requires
- * `propagateUncertainty` to treat a `null` uniformity like
- * `'no-composite-claim'`. `ApproximationBound` has no `uniformity` field yet,
- * so there is nothing to read. No check is written here, because a check
- * against an absent field is dead code that LOOKS like a safeguard — the
- * failure mode this project keeps removing. Adding the field is a `types.ts`
- * change outside this task's ownership.
+ * **Uniformity is gated here, at use.** `ApproximationBound.uniformity` may
+ * be `null` (or empty — the same state) so a real bound can be recorded
+ * before anyone has analysed what the error is uniform in. Composing such a
+ * bound would attach a number to an unanalysed claim, so {@link boundPath}
+ * returns `'uniformity-unanalysed'` and does not compute one.
+ * `propagateUncertainty` does not read the field and does not fold `delta`
+ * into `sigma`: it stays a statistical-sigma function.
  *
  * Pure: no I/O, no registry reads.
  *
@@ -176,7 +176,12 @@ export type NoClaimReason =
   /** An edge on the path states no norm, so the composite holds in none. */
   | 'norm-not-stated'
   /** Two edges state DIFFERENT norms; composing across norms is unsound. */
-  | 'norm-mismatch';
+  | 'norm-mismatch'
+  /**
+   * A bound on the path has `uniformity === null` or an empty list: what the
+   * error is uniform in has not been analysed, so no number is stated.
+   */
+  | 'uniformity-unanalysed';
 
 /** A path that DOES carry a bound. @internal */
 export interface PathBoundClaim {
@@ -208,18 +213,22 @@ export type PathBoundResult = PathBoundClaim | PathNoClaim;
 /**
  * The error bound a chain of bridges carries — or an explicit no-claim.
  *
- * Three gates, in this order. Each one is a reason to refuse, and the FIRST
+ * Four gates, in this order. Each one is a reason to refuse, and the FIRST
  * reason found is the one reported; none of them is skippable by a caller.
  *
  * 1. **Relation.** `composeRelation` is folded along the path. The moment the
  *    running composite is `'no-composite-claim'`, the path has no bound. This
  *    is design note §3 constraint 1 and it is checked before any arithmetic,
  *    so no number is ever computed for a path that cannot carry one.
- * 2. **Lipschitz.** `composeBoundPath` folds the per-edge pairs. A `null` — an
+ * 2. **Uniformity.** Any bound whose `uniformity` is `null` or empty is not
+ *    yet analysed. The path returns `'uniformity-unanalysed'` and no Lipschitz
+ *    arithmetic runs. An edge with no `bound` — an exact equivalence, or an
+ *    unbounded coarse-graining — does not fail this gate.
+ * 3. **Lipschitz.** `composeBoundPath` folds the per-edge pairs. A `null` — an
  *    edge that is neither bounded nor exact — is tolerated only as the LAST
  *    entry, where it terminates the claim (`terminal: true`); anywhere else it
  *    throws `MissingLipschitzError` rather than inventing a constant.
- * 3. **Norm.** Every stated norm on the path must be the SAME norm, and no
+ * 4. **Norm.** Every stated norm on the path must be the SAME norm, and no
  *    unnormed exact map may carry a normed claim. An `exact-equivalence`
  *    states no norm (it has no `bound`), so a path mixing one with a normed
  *    bound is `'norm-not-stated'` — see the module note.
@@ -252,7 +261,27 @@ export function boundPath(bridges: readonly AtlasBridge[]): PathBoundResult {
       };
     }
   }
-  // ── Gate 2: one norm, stated by every contributing edge ───────────────────
+
+  // ── Gate 2: an unanalysed uniformity yields no number ─────────────────────
+  // Before any Lipschitz arithmetic. `null` and `[]` are the same state: an
+  // empty list is a universal over nothing, and counting it as analysed is
+  // the convention-checked empty-object defect. An edge with no bound states
+  // no error, so it does not fail this gate.
+  for (const bridge of bridges) {
+    if (bridge.bound === undefined) continue;
+    const uniformity = bridge.bound.uniformity;
+    if (uniformity === null || uniformity.length === 0) {
+      const how = uniformity === null ? 'null' : 'empty';
+      return {
+        kind: 'no-claim',
+        reason: 'uniformity-unanalysed',
+        detail:
+          `'${bridge.id}' has uniformity ${how} (not yet analysed), so the path carries no numeric bound`,
+      };
+    }
+  }
+
+  // ── Collect the per-edge pairs the remaining gates read ───────────────────
   // What each edge contributes. The split that matters: an `exact-equivalence`
   // with no `bound` is EXACT — it contributes `IDENTITY_BOUND`, not an unknown
   // constant. Any OTHER relation with no bound has an unknown Lipschitz
@@ -273,14 +302,14 @@ export function boundPath(bridges: readonly AtlasBridge[]): PathBoundResult {
     }
   }
 
-  // ── Gate 2: an unknown Lipschitz constant, anywhere but last, is fatal ────
+  // ── Gate 3: an unknown Lipschitz constant, anywhere but last, is fatal ────
   // Delegated to `composeBoundPath`, which throws `MissingLipschitzError`
   // rather than inventing a constant. Run BEFORE the norm gate: an unbounded
   // composite is a harder failure than an unstatable norm, and reporting the
   // softer one would mask it.
   const composed = composeBoundPath(pairs);
 
-  // ── Gate 3: one norm, and no unnormed map carrying a normed claim ─────────
+  // ── Gate 4: one norm, and no unnormed map carrying a normed claim ─────────
   if (norms.size > 1) {
     return {
       kind: 'no-claim',

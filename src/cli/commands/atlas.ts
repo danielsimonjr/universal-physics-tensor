@@ -25,10 +25,16 @@ import { emitJson } from '../output.js';
 
 const FLAGS: FlagSpec[] = [{ name: '--json', valueStyle: 'none' }];
 
+/** `null` and `[]` are both not yet analysed, and neither is omitted. */
+function formatUniformity(uniformity: readonly string[] | null): string {
+  if (uniformity === null || uniformity.length === 0) return 'not yet analysed';
+  return uniformity.join('; ');
+}
+
 const HELP = `upt atlas [<bridge-id>] [--json]
         One atlas bridge with every qualification visible: relation, premises
         and conclusion, transformation and inverse, side conditions, regime
-        inequalities, bound with its horizon, what it preserves and loses,
+        inequalities, bound with its horizon and uniformity, what it preserves and loses,
         witnesses, counterexamples, formal reference and review status. Empty
         sections print as "none stated", never disappear. With no id, lists
         every bridge of every family.
@@ -88,6 +94,7 @@ async function run(ctx: CommandCtx): Promise<number> {
             domain: b.bound.domain,
             horizon: b.bound.horizon,
             limitCharacter: b.bound.limitCharacter,
+            uniformity: b.bound.uniformity === null ? null : [...b.bound.uniformity],
           },
     preserves: [...b.preserves],
     doesNotPreserve: [...b.doesNotPreserve],
@@ -138,6 +145,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     out(`  domain: ${b.bound.domain}`);
     out(`  horizon: ${b.bound.horizon}`);
     out(`  limit: ${b.bound.limitCharacter}`);
+    out(`  uniformity: ${formatUniformity(b.bound.uniformity)}`);
   }
   list('preserves', b.preserves);
   list('does NOT preserve', b.doesNotPreserve);

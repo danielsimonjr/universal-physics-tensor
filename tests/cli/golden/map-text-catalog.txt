@@ -1,5 +1,5 @@
 
-Linkage map — how the equations connect via shared quantities  [source: catalog (44-bridge)]
+Linkage map — how the equations connect via shared quantities  [source: catalog (55-bridge)]
 (23 components over 41 edges; 11 compose into chains)
 
   ● cluster of 16  [ANCHORED to known physics]

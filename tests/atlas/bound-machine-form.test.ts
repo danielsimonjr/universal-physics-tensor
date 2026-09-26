@@ -26,6 +26,8 @@ import {
 } from '../../src/atlas/oscillators/bridges-limits.js';
 import { BRIDGE_CHAIN_WAVE } from '../../src/atlas/oscillators/bridges-coarse.js';
 import { admitApproximation } from '../../src/atlas/regime.js';
+import { ATLAS_FAMILIES } from '../../src/atlas/families.js';
+import { findPath } from '../../src/atlas/path-bound.js';
 import { MissingDeltaAtError } from '../../src/atlas/types.js';
 import type { ApproximationBound, AtlasBridge } from '../../src/atlas/types.js';
 
@@ -110,8 +112,31 @@ describe('ApproximationBound.deltaAt — the machine form of delta', () => {
     expect(pendulumPeriodErrorAt({})).toBe(Infinity);
     expect(pendulumPeriodErrorAt({ theta0: Math.PI })).toBe(Infinity);
     // A missing v0 must NOT quietly yield the smaller v0 = 0 bound.
-    expect(dampedOffsetBoundAt({ m: 0.1, b: 1 })).toBe(Infinity);
-    expect(dampedOffsetBoundAt({ m: 0.1, b: 0, v0: 5 })).toBe(Infinity);
+    expect(dampedOffsetBoundAt({ m: 0.1, b: 1, k: 1, x0: 1 })).toBe(Infinity);
+    expect(dampedOffsetBoundAt({ m: 0.1, b: 0, k: 1, x0: 1, v0: 5 })).toBe(Infinity);
+  });
+});
+
+describe('ab-damped-massless — deltaAt holds only at the witness normalisation (persona finding D2)', () => {
+  it('the formula is NOT a bound away from b = k = x0 = 1: at k = 100 the true error is 20x larger', () => {
+    // m k / b² = 0.1 is inside the declared overdamped range, but the formula has no k in it.
+    const formulaAtK100 = (2 * (1 + 0) * 1e-3) / 1;
+    expect(dampedOuterSup(1e-3, 0, 1, 100)).toBeGreaterThan(20 * formulaAtK100);
+  });
+
+  it('returns Infinity outside b = k = x0 = 1', () => {
+    expect(dampedOffsetBoundAt({ m: 1e-3, b: 1, k: 100, x0: 1, v0: 0 })).toBe(Infinity);
+    expect(dampedOffsetBoundAt({ m: 1e-3, b: 2, k: 1, x0: 1, v0: 0 })).toBe(Infinity);
+    expect(dampedOffsetBoundAt({ m: 1e-3, b: 1, k: 1, x0: 2, v0: 0 })).toBe(Infinity);
+  });
+
+  it('returns Infinity when k or x0 is missing, as it does for a missing v0', () => {
+    expect(dampedOffsetBoundAt({ m: 1e-3, b: 1, v0: 0 })).toBe(Infinity);
+    expect(dampedOffsetBoundAt({ m: 1e-3, b: 1, k: 1, v0: 0 })).toBe(Infinity);
+  });
+
+  it('keeps the formula at the normalisation, where the edge value is 3', () => {
+    expect(dampedOffsetBoundAt({ m: 0.25, b: 1, k: 1, x0: 1, v0: 5 })).toBeCloseTo(3, 12);
   });
 });
 
@@ -183,7 +208,7 @@ describe('ab-damped-massless — delta covers the true error AT THE DOMAIN EDGE'
   it('covers the true error across the declared range, not only at the fixture', () => {
     for (const m of [1e-3, 1e-2, 1e-1, 0.24, EDGE_M]) {
       const measured = dampedOuterSup(m, EDGE_V0);
-      expect(measured).toBeLessThan(dampedOffsetBoundAt({ m, b: 1, v0: EDGE_V0 }));
+      expect(measured).toBeLessThan(dampedOffsetBoundAt({ m, b: 1, k: 1, x0: 1, v0: EDGE_V0 }));
       expect(measured).toBeLessThan(AB_DAMPED_MASSLESS.bound?.delta ?? Number.NaN);
     }
   });
@@ -192,8 +217,59 @@ describe('ab-damped-massless — delta covers the true error AT THE DOMAIN EDGE'
     const declared = AB_DAMPED_MASSLESS.bound?.delta ?? Number.NaN;
     for (const m of [1e-3, 1e-2, 1e-1, 0.24, EDGE_M]) {
       for (const v0 of [0, 1, 5]) {
-        expect(dampedOffsetBoundAt({ m, b: 1, v0 })).toBeLessThanOrEqual(declared);
+        expect(dampedOffsetBoundAt({ m, b: 1, k: 1, x0: 1, v0 })).toBeLessThanOrEqual(declared);
       }
     }
+  });
+});
+
+describe('ab-pendulum-linear — the series horizon is the conservative one (persona finding D8 stands)', () => {
+  // The π/2-drift time is t = T0 (1 + e) / (4 e), with e the EXACT relative period error. The record's
+  // horizon uses the series 4 T0/θ0². A horizon is safe when it is not LONGER than the exact one.
+  it('4 T0/θ0² never exceeds the exact π/2-drift time on the domain θ0 ≤ 0.5', () => {
+    for (let theta0 = 0.05; theta0 <= 0.5 + 1e-12; theta0 += 0.05) {
+      const e = pendulumPeriodErrorAt({ theta0 });
+      const exact = (1 + e) / (4 * e);
+      const series = 4 / theta0 ** 2;
+      expect(series).toBeLessThanOrEqual(exact);
+    }
+  });
+
+  it('the gap is small: 100 T0 against 100.0208 T0 at θ0 = 0.2 (99.771 cycles of the true period)', () => {
+    const e = pendulumPeriodErrorAt({ theta0: 0.2 });
+    expect((1 + e) / (4 * e)).toBeCloseTo(100.0208, 3);
+    expect(1 / (4 * e)).toBeCloseTo(99.7708, 3);
+  });
+});
+
+/** The bounded approximations on a route, in route order. */
+const boundedApproximations = (path: readonly AtlasBridge[]): readonly AtlasBridge[] =>
+  path.filter((b) => b.relation === 'approximation' && (b.bound?.delta ?? 0) > 0);
+
+describe('declared K is never multiplied into a nonzero δ (persona finding Q-c stands)', () => {
+  // (K_o, δ_o) ∘ (K_i, δ_i) = (K_o K_i, K_o δ_i + δ_o). An approximation's K changes a composed δ only
+  // when an inner edge on the same route has δ > 0, i.e. only on a route with TWO bounded
+  // approximations. Every approximation declares K = 1 rather than deriving it (law 1); that is
+  // harmless exactly while no such route exists. When this test fails, derive K first.
+  it('no route that findPath returns, in any family, composes two bounded approximations', () => {
+    const offenders: string[] = [];
+    let routes = 0;
+    for (const fam of ATLAS_FAMILIES) {
+      for (const from of fam.models) {
+        for (const to of fam.models) {
+          if (from.id === to.id) continue;
+          const path = findPath(fam.family, from.id, to.id);
+          if (path === null) continue;
+          routes++;
+          if (boundedApproximations(path).length >= 2) offenders.push(`${fam.family}: ${path.map((b) => b.id).join(' → ')}`);
+        }
+      }
+    }
+    expect(routes).toBeGreaterThan(0);
+    expect(offenders).toEqual([]);
+  });
+
+  it('NEGATIVE CONTROL: the detector flags a route that composes two bounded approximations', () => {
+    expect(boundedApproximations([AB_PENDULUM_LINEAR, AB_DAMPED_MASSLESS])).toHaveLength(2);
   });
 });

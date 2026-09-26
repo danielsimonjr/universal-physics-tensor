@@ -24,6 +24,8 @@ const FLAGS: FlagSpec[] = [
   { name: '--bounds', valueStyle: 'attached' },
   { name: '--h1', valueStyle: 'attached' },
   { name: '--h2', valueStyle: 'attached' },
+  { name: '--searchable-only', valueStyle: 'none' },
+  { name: '--all', valueStyle: 'none' },
 ];
 
 const HELP = `upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
@@ -31,7 +33,7 @@ const HELP = `upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
         \`upt discover\`, which vets quantity identifications a≡b and is frozen.
         Relation-link / regime-transition gaps are not searchable here — use
         \`upt discover\`.
-        scan                 typed frontier gaps (Product A wrappers + notes)
+        scan                 typed frontier gaps (default: searchable only)
         show <gap-id>        one gap
         run --problem=FILE   bounded native search (MHC / holdout / budget)
         candidates           same as run; list stored statuses
@@ -39,10 +41,43 @@ const HELP = `upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
         rank                 run + Pareto front
         design --h1= --h2= --bounds=   discriminating experiment suggestion
         reproduce --problem=FILE       re-run a problem (same stop contract)
+        --searchable-only    scan: only Product-B-searchable gaps (default)
+        --all                scan: include Product A wrappers (not searchable)
         --budget-ms=N        wall-clock cap (default 5000)
         --holdout-tol=X      relative holdout RMSE cap (default 0.15)
         --worker=PATH        optional NDJSON worker (spawned as node PATH)
-        --json               machine envelope`;
+        --json               machine envelope
+
+        PROBLEM FILE (--problem=FILE, JSON)
+        target       {"name", "dim"}: the observable to explain. "dim" is a named
+                     dimension (time, length, mass, acceleration, ...) or explicit
+                     L^a.M^b.T^c (e.g. "L^3.M^-1.T^-2").
+        governing    [{"name", "dim"}, ...]: the candidate inputs.
+        exploratory  {"observable", "rows": [{name: value, ...}, ...]}: the fit data.
+        holdout      the same shape: the locked data the fit must also pass. A row
+                     that also appears in exploratory is refused as a leak.
+        gap          optional {"id", "kind", "summary"}. "id" must start with "fg-".
+                     "kind" is one of prediction-residual, relation-link,
+                     regime-transition, parameter-tension, assumption-conflict,
+                     missing-operator, unexplained-observation (default),
+                     model-disagreement, causal-mechanism, other.
+        role         optional on a dataset: exploratory-fit (default for
+                     exploratory), validation-holdout (default for holdout),
+                     external-replication, falsification-only.
+        observationsPath  optional: a separate JSON file with the datasets.
+        A dimensionless governing variable is written with "dim": "dimensionless".
+        Minimal example (small-angle pendulum):
+        {
+          "target": {"name": "period", "dim": "time"},
+          "governing": [{"name": "length", "dim": "length"},
+                        {"name": "gravity", "dim": "acceleration"}],
+          "exploratory": {"observable": "period", "rows": [
+            {"length": 1, "gravity": 9.81, "period": 2.006},
+            {"length": 2, "gravity": 9.81, "period": 2.837},
+            {"length": 0.5, "gravity": 1.62, "period": 3.491}]},
+          "holdout": {"observable": "period", "rows": [
+            {"length": 1.5, "gravity": 3.71, "period": 3.995}]}
+        }`;
 
 const EPISTEMICS =
   '⚠ experimental Product B. Not a discovery claim. `upt discover` is the identification funnel.';
@@ -133,12 +168,50 @@ async function run(ctx: CommandCtx): Promise<number> {
   const { graph, source } = resolveGraph(api, args.flags);
 
   if (sub === 'scan') {
-    const gaps = api.scanFrontier(graph);
+    if (args.flags.has('searchable-only') && args.flags.has('all')) {
+      throw new UsageError('upt probe scan: pick one of --searchable-only or --all');
+    }
+    // Default: searchable only (persona L3/I4). Today that is often empty —
+    // say so, and point at `upt discover` / `--all` rather than dumping 200+
+    // Product A wrappers as if they were a Product B frontier.
+    const showAll = args.flags.has('all');
+    const allGaps = api.scanFrontier(graph);
+    const searchable = allGaps.filter((g) => g.searchability.searchable);
+    const gaps = showAll ? allGaps : searchable;
     if (args.flags.has('json')) {
-      emitJson({ command: 'probe', source, epistemics: EPISTEMICS, result: gaps }, ctx.write);
+      emitJson(
+        {
+          command: 'probe',
+          source,
+          epistemics: EPISTEMICS,
+          options: {
+            scan: {
+              total: allGaps.length,
+              searchable: searchable.length,
+              showing: showAll ? 'all' : 'searchable-only',
+            },
+          },
+          result: gaps,
+        },
+        ctx.write,
+      );
+      return 0;
+    }
+    if (!showAll && searchable.length === 0 && allGaps.length > 0) {
+      out('upt probe scan — typed frontier gaps');
+      out(
+        `⚠ 0 of ${allGaps.length} gaps are searchable by Product B ` +
+          `(all are relation-link / regime-transition).`,
+      );
+      out('  Use `upt discover` for those. Pass --all to list them here.');
       return 0;
     }
     out(api.formatFrontierScan(gaps));
+    if (!showAll && allGaps.length > searchable.length) {
+      out(
+        `  (${allGaps.length - searchable.length} Product A wrappers hidden; pass --all to list them)`,
+      );
+    }
     return 0;
   }
 
@@ -226,7 +299,9 @@ async function run(ctx: CommandCtx): Promise<number> {
               status: r.record.status,
             })),
             wording: result.wording,
-            ...(sub === 'falsify' ? { falsifications: result.falsifications } : {}),
+            ...(sub === 'falsify'
+              ? { falsifications: result.falsifications, notFalsified: notFalsified(result) }
+              : {}),
           },
         },
         ctx.write,
@@ -239,11 +314,41 @@ async function run(ctx: CommandCtx): Promise<number> {
         out(`\n  falsify ${id} survived=${fal.survived}`);
         for (const rec of fal.records) out(`    ${rec.battery}: ${rec.outcome} — ${rec.detail}`);
       }
+      // Every candidate is accounted for (persona finding C5): one without
+      // batteries used to be passed over in silence.
+      for (const n of notFalsified(result)) {
+        out(`\n  falsify ${n.id}: no batteries run — status ${n.status}: ${n.reason}`);
+      }
     }
     return 0;
   }
 
   throw new UsageError(`upt probe: unhandled subverb '${sub}'`);
+}
+
+/** Why the falsification batteries did not run for a candidate, by its final status. */
+const NOT_FALSIFIED_REASON: Readonly<Record<string, string>> = {
+  'equivalent-known':
+    'batteries run only for candidates that are not equivalent to a known corpus relation',
+  rejected: 'the candidate was rejected before falsification',
+  'insufficient-evidence': 'there were no holdout observations to test it on',
+  'empirically-fit': 'the candidate did not pass its holdout',
+  'structurally-valid': 'the candidate was not fit to data',
+  generated: 'the candidate was not validated',
+};
+
+/** The candidates the batteries did not run for, with the reason. */
+function notFalsified(result: {
+  candidates: readonly { id: string; status: string }[];
+  falsifications: Readonly<Record<string, unknown>>;
+}): { id: string; status: string; reason: string }[] {
+  return result.candidates
+    .filter((c) => !(c.id in result.falsifications))
+    .map((c) => ({
+      id: c.id,
+      status: c.status,
+      reason: NOT_FALSIFIED_REASON[c.status] ?? 'the batteries did not run for this status',
+    }));
 }
 
 export const command: Command = {

@@ -3,7 +3,7 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
 ⚠ a REVIEW SURFACE: `promising` means "worth a physicist's minute", not "true".
   Each candidate hypothesises an identification a≡b and tests its consequences.
 
-  funnel:  345 candidates  →  49 promising  ·  286 inert  ·  9 magnitude-clash  ·  0 contradictory (falsified)  ·  1 axis-clash
+  funnel:  345 candidates  →  49 promising  ·  286 inert  ·  9 magnitude-clash  ·  0 contradictory (numerically falsified)  ·  1 axis-clash
 
   PROMISING (merges disconnected physics, unlocks quantities, stays consistent):
     a ≟ classical-electron-radius                        [[length]]  score 7
@@ -219,7 +219,7 @@ Discovery — link candidates VETTED through the inference suite  [source: canon
     time ≟ elapsed-time                                  [[time]]
     work ≟ work-done-by-system                           [[energy]]
 
-  AXIS-CLASH (identification falsified (stated regimes differ)):
+  AXIS-CLASH (stated scale/force labels differ: a regime-label prior, not a physical test):
     semi-major-axis ≟ planck-length                      scale: classical ≠ quantum
 
   (magnitude gate abstains where a representative value is unknown; weak priors on dimension.)

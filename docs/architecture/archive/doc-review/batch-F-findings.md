@@ -1,5 +1,7 @@
 # Batch F — sub-READMEs — Doc Integrity Findings
 
+<!-- ste:historical-record -->
+
 **Reviewer**: sonnet subagent. **Date**: 2026-05-20. **Files**: `src/bridges/README.md`, `src/dimensional/README.md`, `bench/README.md`.
 
 ## Summary

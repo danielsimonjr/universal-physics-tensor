@@ -1,6 +1,6 @@
 /**
  * Tier-5 AST encoding test for BE-48 — GRW mass-amplified localization
- * rate (CSL extension, post Wave Y reformulation).
+ * rate (the GRW/QMSL centre-of-mass amplification, post Wave Y reformulation).
  *
  * Formula: λ_GRW(m) = λ_0 · (m / m_0), with λ_0 ≈ 10⁻¹⁶ /s and m_0 =
  * nucleon mass.

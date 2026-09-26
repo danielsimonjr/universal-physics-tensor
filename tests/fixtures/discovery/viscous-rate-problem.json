@@ -1,0 +1,20 @@
+{
+  "gap": { "id": "fg-viscous-rate", "kind": "unexplained-observation" },
+  "target": { "name": "relax-rate", "dim": "T^-1" },
+  "governing": [
+    { "name": "visc", "dim": "M^1.L^-1.T^-1" },
+    { "name": "rho", "dim": "M^1.L^-3" },
+    { "name": "size", "dim": "L^1" }
+  ],
+  "exploratory": { "observable": "relax-rate", "rows": [
+    { "visc": 0.001, "rho": 1000, "size": 0.001, "relax-rate": 1.0 },
+    { "visc": 0.002, "rho": 1000, "size": 0.001, "relax-rate": 2.0 },
+    { "visc": 0.001, "rho": 800, "size": 0.002, "relax-rate": 0.3125 },
+    { "visc": 0.003, "rho": 1200, "size": 0.0015, "relax-rate": 1.1111111111111112 },
+    { "visc": 0.0015, "rho": 900, "size": 0.0005, "relax-rate": 6.666666666666667 }
+  ] },
+  "holdout": { "observable": "relax-rate", "rows": [
+    { "visc": 0.0025, "rho": 1100, "size": 0.0012, "relax-rate": 1.5782828282828283 },
+    { "visc": 0.0012, "rho": 950, "size": 0.0008, "relax-rate": 1.9736842105263157 }
+  ] }
+}

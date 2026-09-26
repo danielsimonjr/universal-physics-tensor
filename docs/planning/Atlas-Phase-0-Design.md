@@ -3,8 +3,8 @@
 **Executes:** [`Atlas-Roadmap-Implementation-Plan.md`](Atlas-Roadmap-Implementation-Plan.md)
 Sprint 0, itself executing [`ROADMAP.md`](../../ROADMAP.md) Phase 0.
 **Baseline:** `universal-physics-tensor@0.45.2`, `master` at `58f1023`, suite ≈ 3,700 across ~353 files.
-**Status:** design note, revision 1 (2026-09-20). Authorized by the Sprint 0 line in
-[`ACTIVE.md`](ACTIVE.md). Entry condition for Wave 1 is Adam returning GREEN, or a YELLOW whose
+Authorized by the Sprint 0 line in
+[`ACTIVE.md`](../../ACTIVE.md). Entry condition for Wave 1 is Adam returning GREEN, or a YELLOW whose
 items are resolved here.
 **Target:** v0.46.
 
@@ -16,9 +16,12 @@ decision, the curation-cost log, and the witness table with its numeric expectat
 
 ## 1. Module layout
 
-Everything lands under `src/atlas/`, reachable only through the `universal-physics-tensor/atlas`
-subpath, and **every symbol is `@internal`**. Nothing is re-exported from `src/index.ts` before
-Phase 6.
+Everything lands under `src/atlas/`. The Phase 0 pilot adds no root export: the symbols it
+introduces are `@internal`, and it re-exports nothing from `src/index.ts`. The
+`universal-physics-tensor/atlas` subpath stays the internal surface. Phase 6's API review
+([`Atlas-API-Review.md`](Atlas-API-Review.md)) promotes Tier 1 as the `atlas` namespace from
+`src/atlas/public.ts`, re-exported from `src/index.ts`. That namespace is the later public
+surface.
 
 ```
 src/atlas/
@@ -33,7 +36,7 @@ src/atlas/
     bridges-limits.ts           ab-pendulum-linear, ab-damped-massless
     bridges-coarse.ts           ab-chain-wave
     rejections.ts               ax-cubic-spring-lc
-    family.ts                   assembly (W3 brief)
+    index.ts                    assembly (the plan's name is family.ts; the tree uses index.ts)
   witnesses/
     quantum-support.ts          chirpedGaussianUncertaintyProduct, wickRotatedSchrodingerCoefficients
 tests/atlas/                    _ode.ts + one test file per brief
@@ -49,9 +52,9 @@ data/schemas/atlas-record.v0.json   draft-07, DOCUMENTATION only (no validator i
    reports.
 2. Nothing under `src/` may reference `fixtures/atlas` together with `scorer`. The existing
    `tests/composition/probe/import-graph.test.ts` guard is extended, not copied loosely.
-3. A `@public` tag anywhere under `src/atlas/` fails
-   `tests/api/public-tag-vs-index-invariant.test.ts` unless the symbol is reachable from the
-   `./atlas` subpath. Nothing atlas-side is public in Phase 0.
+3. The pilot adds no `@public` tag and no root export. A `@public` atlas symbol is Tier 1 in
+   [`Atlas-API-Review.md`](Atlas-API-Review.md): the `atlas` namespace from `src/atlas/public.ts`,
+   re-exported from `src/index.ts`. That namespace does not violate the pilot's boundary.
 
 ---
 
@@ -108,11 +111,12 @@ resolve is a test failure, not a warning.
 | `ab-pendulum-linear` | `approximation` | `['model-pendulum']` | `model-spring` |
 | `ab-damped-massless` | `approximation` (singular) | `['model-damped-spring']` | `model-first-order` |
 | `ab-chain-wave` | `coarse-graining` | `['model-chain']` | `model-wave-1d` |
-| `ax-cubic-spring-lc` | **rejection**, claimed `exact-equivalence` | `['model-cubic-spring', 'model-lc']` | — |
+| `ax-cubic-spring-lc` | **rejection**, claimed `exact-equivalence` | `['model-cubic-spring']` | `model-lc` |
 
 **Composition.** Exact equivalences are treated as bidirectional by the path finder, so the
 two-hop path `model-pendulum → model-spring → model-lc` exists. It composes as
-`approximation ∘ exact-equivalence = approximation` with bound `(1, θ0²/16)`. An exact edge
+`approximation ∘ exact-equivalence = approximation` with the pendulum bridge's bound `(1, δ)`, where
+`δ` is the exact period error at the θ0 = 0.5 edge, not the series `θ0²/16`. An exact edge
 contributes the identity bound **in the norms these Phase 0 bridges state**, so the composite's
 norm is the approximation edge's, and `IDENTITY_BOUND` needs no norm reconciliation step here.
 
@@ -130,8 +134,9 @@ the isometry assumption explicitly.
 **Decision, fixed here so no later sprint has to litigate it.** Every type in `src/atlas/types.ts`
 is a Phase 0 pilot type. If Phase 1's relation-contract work disagrees with any of them, the
 Phase 0 type is **replaced, not adapted**. There is no migration obligation, no deprecation
-window, and no back-compat shim, because nothing atlas-side is public before Phase 6 and the only
-consumers are Phase 0's own tests.
+window, and no back-compat shim, because the pilot adds no public root export and the only
+consumers are Phase 0's own tests. What Phase 6 puts on `src/index.ts` is the Tier 1 `atlas`
+namespace in [`Atlas-API-Review.md`](Atlas-API-Review.md).
 
 The point of the pilot is to **measure what these types cost to curate** (§5), not to ship them.
 A type that survives Phase 1 survives on merit, not on the cost of changing it.
@@ -322,7 +327,7 @@ src/canonical/entries/fluids-waves.ts:48       const SPRING_CONSTANT = dim(0, 1,
 ```
 
 **Not in the plan, found while checking: `SPRING_CONSTANT` is defined TWICE**, in `mechanics.ts`
-and again in `fluids-waves.ts`, with identical arguments. Harmless today because the values agree,
+and again in `fluids-waves.ts`, with identical arguments. Harmless while the values agree,
 but it is two sources of truth for one dimension and it is exactly the drift this workspace keeps
 producing. S0.1 redefines it once under `src/atlas/oscillators/dimensions.ts` and its test asserts
 agreement with **both** entry-file definitions, so a future divergence fails a test instead of

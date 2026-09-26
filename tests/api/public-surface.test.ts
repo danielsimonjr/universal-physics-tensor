@@ -73,7 +73,7 @@ const EXPECTED_RUNTIME_EXPORTS = [
   'C_SI', 'G_SI', 'H_SI', 'HBAR_SI', 'K_B_SI', 'E_SI',
   'ALPHA', 'M_P_SI', 'L_P_SI', 'T_P_SI', 'H0_SI',
   // v0.6.0 Killing-vector machinery (Task 1.3)
-  'verifyKillingEquation', 'evaluateConservedCharge',
+  'verifyKillingEquation', 'checkKillingEquation', 'evaluateConservedCharge',
   // v0.6.0 Einstein field-equation node + numerical residual (Tasks 2.3, 2.4)
   'validateEinsteinFieldEquation', 'evaluateEinsteinEquationResidual',
   // v0.6.0 Kretschmann curvature invariant (Tasks 3.5, 3.6)
@@ -271,6 +271,7 @@ const ALL_TYPE_EXPORTS = [
   'BianchiResidualNode',
   // v0.6.0 Killing-vector type additions (Task 1.3)
   'KillingEquationOptions',
+  'KillingEquationCheck',
   'ChristoffelAccess',
   // v0.6.0 Einstein-equation type additions (Tasks 2.3, 2.4)
   'EinsteinEquationResidualInput',

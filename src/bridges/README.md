@@ -1,6 +1,6 @@
 # Bridge Equation Index
 
-Machine-readable catalog of the 44 bridge equations (IDs 11–54; IDs 51–52 added v0.4.0, BE-53/54 added v0.7.x) defined in the UPT specification (`docs/specification/Part-{I..VI}.md`), exported as `BRIDGE_EQUATIONS: BridgeEquationEntry[]` from `index.ts`.
+Machine-readable catalog of the bridge equations (IDs from 11) defined in the UPT specification (`docs/specification/Part-{I..VI}.md`), exported as `BRIDGE_EQUATIONS: BridgeEquationEntry[]` from `index.ts`.
 
 ## AST-encoded bridges (Tier 5)
 

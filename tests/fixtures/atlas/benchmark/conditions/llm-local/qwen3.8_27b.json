@@ -1,0 +1,1002 @@
+{
+ "mb-oscillators-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 37924,
+  "attempts": []
+ },
+ "mb-oscillators-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 48815,
+  "attempts": []
+ },
+ "mb-oscillators-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 41846,
+  "attempts": []
+ },
+ "mb-oscillators-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 27865,
+  "attempts": []
+ },
+ "mb-oscillators-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 80505,
+  "attempts": []
+ },
+ "mb-oscillators-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 82157,
+  "attempts": []
+ },
+ "mb-oscillators-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 66507,
+  "attempts": []
+ },
+ "mb-oscillators-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-1-08\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 51899,
+  "attempts": []
+ },
+ "mb-oscillators-1-09": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-09\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 65252,
+  "attempts": []
+ },
+ "mb-oscillators-1-10": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-10\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 178206,
+  "attempts": []
+ },
+ "mb-oscillators-1-11": {
+  "outcome": "reject",
+  "failureKind": "notation-collision",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-11\",\"outcome\":\"reject\",\"failureKind\":\"notation-collision\"}",
+  "ms": 145826,
+  "attempts": []
+ },
+ "mb-oscillators-1-12": {
+  "outcome": "reject",
+  "failureKind": "notation-collision",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-12\",\"outcome\":\"reject\",\"failureKind\":\"notation-collision\"}",
+  "ms": 70662,
+  "attempts": []
+ },
+ "mb-oscillators-1-13": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-13\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 63738,
+  "attempts": []
+ },
+ "mb-oscillators-1-14": {
+  "outcome": null,
+  "failureKind": null,
+  "error": "reply is not JSON",
+  "reply": "",
+  "ms": 293630,
+  "attempts": []
+ },
+ "mb-oscillators-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 65759,
+  "attempts": []
+ },
+ "mb-oscillators-1-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-1-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 126314,
+  "attempts": []
+ },
+ "mb-oscillators-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 120121,
+  "attempts": []
+ },
+ "mb-oscillators-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 33849,
+  "attempts": []
+ },
+ "mb-oscillators-2-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 93923,
+  "attempts": []
+ },
+ "mb-oscillators-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 45759,
+  "attempts": []
+ },
+ "mb-oscillators-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-05\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 279416,
+  "attempts": []
+ },
+ "mb-oscillators-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 70150,
+  "attempts": []
+ },
+ "mb-oscillators-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 38549,
+  "attempts": []
+ },
+ "mb-oscillators-2-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-oscillators-2-08\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 44090,
+  "attempts": []
+ },
+ "mb-oscillators-2-09": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-09\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 44404,
+  "attempts": []
+ },
+ "mb-oscillators-2-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 37738,
+  "attempts": []
+ },
+ "mb-oscillators-2-11": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-11\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 18488,
+  "attempts": []
+ },
+ "mb-oscillators-2-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-12\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 103896,
+  "attempts": []
+ },
+ "mb-oscillators-2-13": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-13\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 104962,
+  "attempts": []
+ },
+ "mb-oscillators-2-14": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-14\",\"outcome\":\"reject\",\"failureKind\":\"non-uniform-limit\"}",
+  "ms": 60761,
+  "attempts": []
+ },
+ "mb-oscillators-2-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 98457,
+  "attempts": []
+ },
+ "mb-oscillators-2-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-oscillators-2-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 81449,
+  "attempts": []
+ },
+ "mb-diffusion-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 228837,
+  "attempts": []
+ },
+ "mb-diffusion-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 79994,
+  "attempts": []
+ },
+ "mb-diffusion-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 25009,
+  "attempts": []
+ },
+ "mb-diffusion-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-1-04\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 38280,
+  "attempts": []
+ },
+ "mb-diffusion-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-1-05\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 110013,
+  "attempts": []
+ },
+ "mb-diffusion-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 103073,
+  "attempts": []
+ },
+ "mb-diffusion-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 26503,
+  "attempts": []
+ },
+ "mb-diffusion-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 55025,
+  "attempts": []
+ },
+ "mb-diffusion-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 93848,
+  "attempts": []
+ },
+ "mb-diffusion-1-11": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-11\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 74820,
+  "attempts": []
+ },
+ "mb-diffusion-1-12": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-12\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 181453,
+  "attempts": []
+ },
+ "mb-diffusion-1-13": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-13\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 49030,
+  "attempts": []
+ },
+ "mb-diffusion-1-14": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-14\",\"outcome\":\"reject\",\"failureKind\":\"non-uniform-limit\"}",
+  "ms": 62390,
+  "attempts": []
+ },
+ "mb-diffusion-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 70071,
+  "attempts": []
+ },
+ "mb-diffusion-1-16": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-1-16\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 83123,
+  "attempts": []
+ },
+ "mb-diffusion-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 42814,
+  "attempts": []
+ },
+ "mb-diffusion-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 180420,
+  "attempts": []
+ },
+ "mb-diffusion-2-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-2-03\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 86204,
+  "attempts": []
+ },
+ "mb-diffusion-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 47888,
+  "attempts": []
+ },
+ "mb-diffusion-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 55478,
+  "attempts": []
+ },
+ "mb-diffusion-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-2-06\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 155085,
+  "attempts": []
+ },
+ "mb-diffusion-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 54185,
+  "attempts": []
+ },
+ "mb-diffusion-2-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-diffusion-2-08\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 147601,
+  "attempts": []
+ },
+ "mb-diffusion-2-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 99908,
+  "attempts": []
+ },
+ "mb-diffusion-2-11": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-11\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 89513,
+  "attempts": []
+ },
+ "mb-diffusion-2-12": {
+  "outcome": "reject",
+  "failureKind": "notation-collision",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-12\",\"outcome\":\"reject\",\"failureKind\":\"notation-collision\"}",
+  "ms": 210635,
+  "attempts": []
+ },
+ "mb-diffusion-2-13": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-13\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 66393,
+  "attempts": []
+ },
+ "mb-diffusion-2-14": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-14\",\"outcome\":\"reject\",\"failureKind\":\"non-uniform-limit\"}",
+  "ms": 57472,
+  "attempts": []
+ },
+ "mb-diffusion-2-15": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-15\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 83794,
+  "attempts": []
+ },
+ "mb-diffusion-2-16": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-diffusion-2-16\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 127284,
+  "attempts": []
+ },
+ "mb-waves-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 22640,
+  "attempts": []
+ },
+ "mb-waves-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 39805,
+  "attempts": []
+ },
+ "mb-waves-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 27715,
+  "attempts": []
+ },
+ "mb-waves-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-1-04\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 85086,
+  "attempts": []
+ },
+ "mb-waves-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 97175,
+  "attempts": []
+ },
+ "mb-waves-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 59774,
+  "attempts": []
+ },
+ "mb-waves-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 29961,
+  "attempts": []
+ },
+ "mb-waves-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-waves-1-08\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 124616,
+  "attempts": []
+ },
+ "mb-waves-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 106182,
+  "attempts": []
+ },
+ "mb-waves-1-11": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-11\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 54894,
+  "attempts": []
+ },
+ "mb-waves-1-12": {
+  "outcome": "reject",
+  "failureKind": "notation-collision",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-12\",\"outcome\":\"reject\",\"failureKind\":\"notation-collision\"}",
+  "ms": 23934,
+  "attempts": []
+ },
+ "mb-waves-1-13": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-13\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 35434,
+  "attempts": []
+ },
+ "mb-waves-1-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-14\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 216356,
+  "attempts": []
+ },
+ "mb-waves-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 108647,
+  "attempts": []
+ },
+ "mb-waves-1-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-1-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 201196,
+  "attempts": []
+ },
+ "mb-waves-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 32107,
+  "attempts": []
+ },
+ "mb-waves-2-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 68344,
+  "attempts": []
+ },
+ "mb-waves-2-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 70863,
+  "attempts": []
+ },
+ "mb-waves-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 55391,
+  "attempts": []
+ },
+ "mb-waves-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 54912,
+  "attempts": []
+ },
+ "mb-waves-2-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 47235,
+  "attempts": []
+ },
+ "mb-waves-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 42591,
+  "attempts": []
+ },
+ "mb-waves-2-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 93088,
+  "attempts": []
+ },
+ "mb-waves-2-09": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-09\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 36335,
+  "attempts": []
+ },
+ "mb-waves-2-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 79104,
+  "attempts": []
+ },
+ "mb-waves-2-11": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-11\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 80960,
+  "attempts": []
+ },
+ "mb-waves-2-12": {
+  "outcome": "reject",
+  "failureKind": "notation-collision",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-12\",\"outcome\":\"reject\",\"failureKind\":\"notation-collision\"}",
+  "ms": 92841,
+  "attempts": []
+ },
+ "mb-waves-2-13": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-13\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 48314,
+  "attempts": []
+ },
+ "mb-waves-2-14": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-14\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 51689,
+  "attempts": []
+ },
+ "mb-waves-2-15": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-15\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 155912,
+  "attempts": []
+ },
+ "mb-waves-2-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-waves-2-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 84261,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 26417,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-02": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-02\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 154054,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-1-03\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 103221,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-04\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 23663,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-1-05\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 49856,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-06": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-06\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 29372,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 41497,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-08": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-08\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 54107,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-09": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-09\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 84146,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-10": {
+  "outcome": "reject",
+  "failureKind": "domain-violation",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-10\",\"outcome\":\"reject\",\"failureKind\":\"domain-violation\"}",
+  "ms": 57966,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-11": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-11\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 59273,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-12": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-12\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 58139,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-13": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-13\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 73781,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-14": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-14\",\"outcome\":\"reject\",\"failureKind\":\"non-uniform-limit\"}",
+  "ms": 79680,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-15": {
+  "outcome": "reject",
+  "failureKind": "false-inverse",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-15\",\"outcome\":\"reject\",\"failureKind\":\"false-inverse\"}",
+  "ms": 67164,
+  "attempts": []
+ },
+ "mb-fluid-statics-1-16": {
+  "outcome": "reject",
+  "failureKind": "analogy-promoted",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-1-16\",\"outcome\":\"reject\",\"failureKind\":\"analogy-promoted\"}",
+  "ms": 102407,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-01": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-01\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 55812,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-02": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-02\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 50528,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-03": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-03\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 42173,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-04": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\": \"mb-fluid-statics-2-04\", \"outcome\": \"accept\", \"failureKind\": null}",
+  "ms": 143690,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-05": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-05\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 39299,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-06": {
+  "outcome": "reject",
+  "failureKind": "omitted-premise",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-06\",\"outcome\":\"reject\",\"failureKind\":\"omitted-premise\"}",
+  "ms": 112213,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-07": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-07\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 299043,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-08": {
+  "outcome": "reject",
+  "failureKind": "convention-mismatch",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-08\",\"outcome\":\"reject\",\"failureKind\":\"convention-mismatch\"}",
+  "ms": 108713,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-09": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-09\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 44232,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-10": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-10\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 49770,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-11": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-11\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 108211,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-12": {
+  "outcome": "reject",
+  "failureKind": "non-uniform-limit",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-12\",\"outcome\":\"reject\",\"failureKind\":\"non-uniform-limit\"}",
+  "ms": 80382,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-13": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-13\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 85248,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-14": {
+  "outcome": "reject",
+  "failureKind": "dimensional-coincidence",
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-14\",\"outcome\":\"reject\",\"failureKind\":\"dimensional-coincidence\"}",
+  "ms": 81901,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-15": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-15\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 32191,
+  "attempts": []
+ },
+ "mb-fluid-statics-2-16": {
+  "outcome": "accept",
+  "failureKind": null,
+  "error": null,
+  "reply": "{\"itemId\":\"mb-fluid-statics-2-16\",\"outcome\":\"accept\",\"failureKind\":null}",
+  "ms": 57121,
+  "attempts": []
+ }
+}

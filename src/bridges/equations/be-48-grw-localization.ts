@@ -1,7 +1,8 @@
 /**
- * Bridge Equation 48 — GRW mass-amplified localization rate
- * (Continuous Spontaneous Localization mass-dependence, post Wave Y
- * reformulation).
+ * Bridge Equation 48 — GRW mass-amplified localization rate (post Wave Y
+ * reformulation). The linear law is the GRW (QMSL) centre-of-mass
+ * amplification λ_macro = N λ_micro (Bassi & Ghirardi 2003 §6.4); in CSL the
+ * macroscopic rate is γ D_0 n_out instead (§8.3).
  *
  *   λ_GRW(m) = λ_0 · (m / m_0)
  *
@@ -14,11 +15,11 @@
  *   - Ghirardi, Rimini & Weber 1986 *Phys. Rev. D* 34:470 (canonical
  *     GRW objective-collapse master equation; original 1986 form).
  *   - Pearle 1989 *Phys. Rev. A* 39:2277 (Continuous Spontaneous
- *     Localization extension; introduces mass-density-coupled noise).
- *   - Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (CSL with
- *     mass-amplification mechanism: rate λ ∝ m/m_0 for composite
- *     systems with N nucleons).
- *   - Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (review).
+ *     Localization; not seen).
+ *   - Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (the CSL
+ *     paper; metadata only).
+ *   - Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (review; §6.4 gives the
+ *     GRW/QMSL centre-of-mass amplification, §8.3 the CSL rate).
  *
  * Status: speculative.
  *

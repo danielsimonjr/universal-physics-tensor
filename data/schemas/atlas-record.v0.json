@@ -61,7 +61,7 @@
     "approximationBound": {
       "type": "object",
       "description": "Quantitative error bound. `horizon` (prose) states where the approximation stops being usable; the machine predicate that decides it lives in the TypeScript source and is not serialisable, so only the prose form appears here.",
-      "required": ["K", "delta", "norm", "domain", "horizon"],
+      "required": ["K", "delta", "norm", "domain", "horizon", "limitCharacter", "uniformity"],
       "properties": {
         "K": {
           "type": "number",
@@ -85,6 +85,17 @@
           "type": "string",
           "minLength": 1,
           "description": "Prose statement of the time or regime past which the bound no longer holds."
+        },
+        "parameterRange": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Optional prose range of the parameter the bound was taken over."
+        },
+        "limitCharacter": { "$ref": "#/definitions/limitCharacter" },
+        "uniformity": {
+          "description": "What the error is uniform in. null or an empty array means not yet analysed; boundPath then returns no numeric bound.",
+          "type": ["array", "null"],
+          "items": { "type": "string", "minLength": 1 }
         }
       },
       "additionalProperties": false

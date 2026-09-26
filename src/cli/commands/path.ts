@@ -16,12 +16,19 @@
  * Horizons are evaluated only when `--at` supplies a `t`. An unevaluated
  * horizon is reported as unevaluated, on the same rule that makes
  * `regimeHolds` tri-state.
+ *
+ * The REGIME of every bridge on the path is checked at the `--at` point too.
+ * A bound is claimed only inside its bridge's regime, so a horizon that holds
+ * says nothing when the point is outside the regime: this command once printed
+ * the pendulum bound and "all hold" at θ0 = 0.8, where the bound's own regime
+ * is θ0 ≤ 0.5 and the true error is 2.6 times the bound. An unchecked regime
+ * is reported as unknown, never as a pass.
  */
 import type { FlagSpec } from '../args.js';
 import { registerCommand, type Command, type CommandCtx } from '../command.js';
-import { CliError } from '../errors.js';
+import { CliError, EXIT_CHECK_FAILED } from '../errors.js';
 import { emitJson } from '../output.js';
-import { parseAt } from './regime.js';
+import { parseAt, resolveAtPoint, showInequality } from './regime.js';
 
 const FLAGS: FlagSpec[] = [
   { name: '--at', valueStyle: 'either', repeatable: true },
@@ -30,9 +37,10 @@ const FLAGS: FlagSpec[] = [
 
 const HELP = `upt path <from> <to> [--at group=value ...] [--json]
         The chain of bridges from one model to another, the relation the chain
-        composes to, the composed (K, delta) with the norm it holds in, and
-        whether every horizon on the path still holds at --at (pass t=<time>
-        plus the horizon's parameters, e.g. --at theta0=0.2 T0=1 t=10).
+        composes to, the composed (K, delta) with the norm it holds in,
+        whether every bridge's REGIME holds at --at (the bound is claimed only
+        inside it), and whether every horizon still holds (pass t=<time> plus
+        the parameters, e.g. --at theta0=0.2 T0=1 t=10).
         When the composition table declines to compose the relations, the path
         carries NO bound: the command prints 'no composite claim' and exits 0.
         That refusal is the answer, and no number is invented in its place.
@@ -44,6 +52,13 @@ const EPISTEMICS =
 
 /** The literal phrase the no-composite-claim case must print. */
 const NO_COMPOSITE_PHRASE = 'no composite claim';
+
+interface RegimeReport {
+  bridgeId: string;
+  ok: boolean | 'unknown';
+  violated: string[];
+  unchecked: string[];
+}
 
 interface HorizonReport {
   bridgeId: string;
@@ -130,6 +145,59 @@ async function run(ctx: CommandCtx): Promise<number> {
     }));
   const allHold = horizons.every((h) => h.holds === true);
 
+  // The same --at resolution as `upt regime`: group spellings, and groups derived
+  // from their parameters. Unknown keys are not reported here, because horizon
+  // parameters such as T0 and t are legitimate --at keys on a path.
+  const { values: resolved } = resolveAtPoint(point, bridges.map((b) => b.regime));
+  const regimes: RegimeReport[] = bridges.map((b) => {
+    const check = api.regimeHolds(b.regime, resolved);
+    return {
+      bridgeId: b.id,
+      ok: check.ok,
+      violated: check.violated.map(showInequality),
+      unchecked: check.unchecked.map(showInequality),
+    };
+  });
+  const allRegimesHold: boolean | 'unknown' = regimes.some((r) => r.ok === false)
+    ? false
+    : regimes.some((r) => r.ok === 'unknown')
+      ? 'unknown'
+      : true;
+
+  // The bound AT the --at point (persona finding L9). Printed only when it is
+  // PROVEN: every regime holds, every step has a closed-form deltaAt (the exact
+  // error), and every value is finite. It is composed by the same rule as the
+  // domain supremum, by substituting each step's point value for its delta.
+  let pointBound: { K: number; delta: number } | null = null;
+  let pointBoundReason: string | null = null;
+  if (result.kind === 'bound' && Object.keys(point).length > 0) {
+    const steps = bridges.filter((b) => b.bound !== undefined);
+    const numerical = steps.find((b) => b.bound!.deltaAtBasis !== 'closed-form');
+    if (allRegimesHold !== true) {
+      pointBoundReason = 'a regime on the path is violated or unchecked';
+    } else if (steps.length === 0) {
+      pointBoundReason = 'no step carries a bound';
+    } else if (numerical !== undefined) {
+      pointBoundReason =
+        numerical.bound!.deltaAt === undefined
+          ? `${numerical.id} states no point bound`
+          : `${numerical.id}'s point bound is numerically supported, not proven`;
+    } else {
+      const atPoint = bridges.map((b) =>
+        b.bound === undefined ? b : { ...b, bound: { ...b.bound, delta: b.bound.deltaAt!(point) } },
+      );
+      const composed = atPoint.every((b) => b.bound === undefined || Number.isFinite(b.bound.delta))
+        ? api.boundPath(atPoint)
+        : null;
+      if (composed !== null && composed.kind === 'bound') pointBound = composed.bound;
+      else pointBoundReason = 'a parameter the point bound needs was not supplied';
+    }
+  }
+
+  // A violated regime or horizon is a failed check: exit 3 (persona finding F2).
+  // UNKNOWN, where a coordinate or t was not supplied, is not a failure.
+  const exitCode = allRegimesHold === false || (t !== undefined && !allHold) ? EXIT_CHECK_FAILED : 0;
+
   if (wantJson) {
     emitJson(
       {
@@ -149,6 +217,10 @@ async function run(ctx: CommandCtx): Promise<number> {
                 terminal: result.terminal,
               }
             : { kind: 'no-claim', reason: result.reason, detail: result.detail, phrase: NO_COMPOSITE_PHRASE }),
+          regimes,
+          allRegimesHold,
+          pointBound,
+          ...(pointBoundReason !== null ? { pointBoundReason } : {}),
           horizons,
           horizonsEvaluated: t !== undefined,
           allHorizonsHold: t === undefined ? null : allHold,
@@ -156,7 +228,7 @@ async function run(ctx: CommandCtx): Promise<number> {
       },
       ctx.write,
     );
-    return 0;
+    return exitCode;
   }
 
   out(`\nupt path ${from} → ${to}`);
@@ -168,12 +240,33 @@ async function run(ctx: CommandCtx): Promise<number> {
     out(`  composed bound: K = ${result.bound.K} · delta = ${result.bound.delta}`);
     out(`  norm: ${result.norm ?? '(none stated — the claim is the vacuous identity)'}`);
     if (result.terminal) out('  terminal: the last step states no Lipschitz constant; the claim ends there');
+    if (pointBound !== null) {
+      out(
+        `  bound at this point: K = ${pointBound.K} · delta = ${pointBound.delta} (closed-form: the exact error; ` +
+          "the composed bound above is the supremum over the bridge's domain)",
+      );
+    } else if (pointBoundReason !== null) {
+      out(`  bound at this point: none — ${pointBoundReason}`);
+    }
   } else {
     out(`  composite relation: ${NO_COMPOSITE_PHRASE}`);
     out(`  bound: ${NO_COMPOSITE_PHRASE} — reason '${result.reason}'`);
     out(`    ${result.detail}`);
   }
   out('');
+  if (allRegimesHold === false) {
+    out('  regimes at --at: VIOLATED — no bound on this path is claimed at this point');
+  } else if (allRegimesHold === 'unknown') {
+    out('  regimes at --at: UNKNOWN (a coordinate was not supplied); an unchecked regime is not a passing one');
+  } else if (bridges.every((b) => b.regime.inequalities.length === 0)) {
+    out('  regimes: VACUOUS — no bridge on this path states an inequality; nothing was checked');
+  } else {
+    out('  regimes at --at: all hold');
+  }
+  for (const r of regimes) {
+    if (r.ok === false) out(`    ${r.bridgeId}: VIOLATED — ${r.violated.join('; ')}`);
+    else if (r.ok === 'unknown') out(`    ${r.bridgeId}: unknown — unchecked: ${r.unchecked.join('; ')}`);
+  }
   if (horizons.length === 0) {
     out('  horizons: none on this path (no step carries a bound)');
   } else if (t === undefined) {
@@ -186,7 +279,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
   }
   out(`  (${EPISTEMICS})`);
-  return 0;
+  return exitCode;
 }
 
 export const command: Command = { name: 'path', aliases: [], flags: FLAGS, help: HELP, run };

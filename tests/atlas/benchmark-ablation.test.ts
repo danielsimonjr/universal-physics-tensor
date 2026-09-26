@@ -22,8 +22,6 @@ const speed: ExprNode = { kind: 'op', op: '/', args: [sym('x', L), sym('t', T)] 
 
 const BASE: BenchmarkItem = {
   id: 'base',
-  kind: 'invalid',
-  failureKind: 'domain-violation',
   premises: ['p'],
   conclusion: 'c',
   claimedRelation: 'exact-equivalence',
@@ -36,19 +34,23 @@ const BASE: BenchmarkItem = {
   regime: { inequalities: [{ group: 'g', op: '<', bound: 1 }], values: { g: 0.5 } },
 };
 
-/** Four invalid items, each caught by exactly ONE instrument. */
+/** Four invalid items, each caught by exactly ONE instrument. The answers live in LABELS only. */
 const ITEMS: BenchmarkItem[] = [
-  { ...BASE, id: 'by-types', failureKind: 'analogy-promoted', composedFrom: ['structural-analogy', 'exact-equivalence'] },
+  { ...BASE, id: 'by-types', composedFrom: ['structural-analogy', 'exact-equivalence'] },
   { ...BASE, id: 'by-assumptions', expr: { kind: 'op', op: '/', args: [sym('x', L), sym('0', dim())] } },
   {
     ...BASE,
     id: 'by-conventions',
-    failureKind: 'convention-mismatch',
     conventions: { premise: { heatWorkSign: 'Q-W' }, conclusion: { heatWorkSign: 'Q+W' } },
   },
   { ...BASE, id: 'by-regimes', regime: { ...BASE.regime!, values: { g: 5 } } },
 ];
-const LABELS: ItemLabel[] = ITEMS.map((i) => ({ itemId: i.id, kind: 'invalid', failureKind: i.failureKind! }));
+const LABELS: ItemLabel[] = [
+  { itemId: 'by-types', kind: 'invalid', failureKind: 'analogy-promoted' },
+  { itemId: 'by-assumptions', kind: 'invalid', failureKind: 'domain-violation' },
+  { itemId: 'by-conventions', kind: 'invalid', failureKind: 'convention-mismatch' },
+  { itemId: 'by-regimes', kind: 'invalid', failureKind: 'domain-violation' },
+];
 
 describe('ABLATION_CONFIGS', () => {
   it('are the plan’s four, cumulative, ending at the full configuration', () => {

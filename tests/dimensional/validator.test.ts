@@ -270,3 +270,44 @@ describe('validator: known-bad equations', () => {
     expect(r.violations[0].location).toContain('args[0]');
   });
 });
+
+describe('validator: a literal ZERO in a sum is compatible with every dimension', () => {
+  // Numbers are dimensionless symbols in this grammar, so `x = 0` can only be
+  // written as `x - 0`. Zero is the additive identity: it carries no dimension
+  // of its own. Treating it as dimensionless rejected every "... = 0" equation.
+  const zero = sym('0', DIMENSIONLESS);
+  const accel: ExprNode = { kind: 'op', op: '/', args: [sym('x', LENGTH), { kind: 'op', op: '^', args: [sym('t', TIME), sym('2', DIMENSIONLESS)] }] };
+
+  it('x − 0 has the dimension of x', () => {
+    const r = validate({ kind: 'op', op: '-', args: [accel, zero] });
+    expect(r.ok).toBe(true);
+    expect(r.inferredDimension).toEqual(ACCELERATION);
+  });
+
+  it('0 − x (unary minus) has the dimension of x', () => {
+    const r = validate({ kind: 'op', op: '-', args: [zero, sym('E', ENERGY)] });
+    expect(r.ok).toBe(true);
+    expect(r.inferredDimension).toEqual(ENERGY);
+  });
+
+  it('0 + 0 is dimensionless', () => {
+    const r = validate({ kind: 'op', op: '+', args: [zero, zero] });
+    expect(r.ok).toBe(true);
+    expect(r.inferredDimension).toEqual(DIMENSIONLESS);
+  });
+
+  it('CONTROL: a NON-zero number still cannot be added to a dimensioned quantity', () => {
+    const r = validate({ kind: 'op', op: '-', args: [sym('E', ENERGY), sym('1', DIMENSIONLESS)] });
+    expect(r.ok).toBe(false);
+  });
+
+  it('CONTROL: a zero still cannot hide a mismatch between the OTHER terms', () => {
+    const r = validate({ kind: 'op', op: '+', args: [sym('E', ENERGY), zero, sym('x', LENGTH)] });
+    expect(r.ok).toBe(false);
+  });
+
+  it('CONTROL: a zero that CARRIES a dimension is an ordinary term', () => {
+    const r = validate({ kind: 'op', op: '+', args: [sym('E', ENERGY), sym('0', LENGTH)] });
+    expect(r.ok).toBe(false);
+  });
+});

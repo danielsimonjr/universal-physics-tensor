@@ -13,7 +13,9 @@ describe('resolveGraph', () => {
   it('defaults to the catalog graph when --source is not given', () => {
     const result = resolveGraph(api, flagsFor());
     expect(result.source).toBe('catalog');
-    expect(result.label).toBe('catalog (44-bridge)');
+    // The count is derived from the catalog, so it cannot go stale as bridges are added.
+    expect(result.label).toBe(`catalog (${api.BRIDGE_EQUATIONS.length}-bridge)`);
+    expect(api.BRIDGE_EQUATIONS.length).toBeGreaterThan(0);
     expect(result.graph).toEqual(api.CATALOG_GRAPH);
   });
 

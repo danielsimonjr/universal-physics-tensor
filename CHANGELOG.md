@@ -8,6 +8,2022 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **CLI applied-physicist persona retest on 0.47.1 (post fix-batch)** (2026-09-26). Model persona
+  dogfood after W1–Q2; findings in `docs/research/cli-physicist-persona-0.47.1-post-fix.md`. Prior
+  fixes still hold. New open findings (no code in this commit): W4 Kepler/Schwarzschild prefactor
+  ratios (~1e5 / ~1e-28) from monomial constants evaluated as 1; W5 Planck length RHS refused as
+  all-constant; W6 bare `a` binds perihelion not acceleration for Unruh; W7 Landauer `ln(2)` not
+  compared while stub `ln2` agrees; L5–L8 vocabulary/output/frontier friction.
+
+### Fixed
+
+- **CLI applied-physicist persona findings on 0.47.1** (2026-09-26). Model persona dogfood;
+  dispositions in `docs/research/cli-physicist-persona-0.47.1.md`.
+  - **W1** — `speed-of-light` no longer skips the E=mc² prefactor check (constant-alias peel).
+  - **W2** — catalog kebabs on the equation RHS are identifiers, not subtraction.
+  - **W3 / I3** — equation landing summarises nearest equations; no ~100-id dump.
+  - **L1** — `upt derive` accepts named dim products/quotients (`power/area`, `length*temperature`).
+  - **L2 / I1** — `upt canonical --vars` prints target and governing names.
+  - **L3 / I4** — `upt probe scan` defaults to searchable-only; empty case points at discover / `--all`.
+  - **L4** — latex `T` resolves to `temperature` for Wien; CE-wien AST aligned.
+  - **Q1** — discover PROMISING lists consequence/magnitude before bare inconclusive.
+  - **Q2** — CONTRIBUTING.md catalog count 44 → 55.
+
+## [0.47.1] - 2026-09-25
+
+### Release summary
+
+A patch release from the outside-user re-test of the PUBLISHED 0.47.0 (21 of 24 earlier findings
+fixed; five new low-severity findings, N1–N5). No breaking change; no dependency change.
+
+- **N1 — one behaviour change a script can see.** A formula that uses a synonym of a canonical
+  variable (`velocity` for CE-kinetic-energy's `speed`) is now compared by dimension. A wrong
+  prefactor there exits 3 where it exited 0 with "prefactor NOT checked". The pairing is named in
+  the output, the target still matches by name only, and an ambiguous pairing is reported, not
+  guessed.
+- **N3, N2 + N5, N4 — clearer output, same exit codes.** A mismatch caused by an unknown name reads
+  UNKNOWN and names the placeholder. `map` and `explain` share one "did you mean?" ranking, by edit
+  distance with an adjacent swap as one edit (`lenght` → `length`). `map --equation` prints its
+  verdict before the linkage map.
+- **Additive API:** `suggestByDimension` takes the typed name as an optional fourth argument.
+  Without it, the order stays alphabetical.
+- **L9 residual — documented, not changed.** `ab-damped-massless` keeps δ = 3; the measured
+  supremum over its declared range is 0.524 (5.7× loose). No record or exported data changes.
+- **Repository only:** a push from a linked worktree can no longer make the test suite write to
+  the repository (hook and test-process scrub of git's repository-local variables).
+- **Dependency health, measured for this release:** `bun audit` finds 0 vulnerabilities in 135
+  packages. `bun outdated` lists `@types/node` and `fast-check` minor updates, vitest and
+  `@vitest/coverage-v8` 5 (a major), and the optional `@danielsimonjr/mathts-*` peers.
+
+### Documented
+
+- **The massless-limit bound δ = 3 is 5.7× loose; this is recorded, not tightened** (0.47.0 persona
+  re-test, L9 residual). `ab-damped-massless` states δ = 3, the supremum of 2(1+|v0|)m/b over its
+  declared range (m < 1/4, |v0| ≤ 5, at b = k = 1). For x0 = 1, the measured supremum of
+  |x − x_reduced| over that whole range is 0.524, at m ≈ 0.21 and v0 = +5. It does not grow toward
+  critical damping (0.514 at m = 0.249999). So δ holds, but it exceeds the unit signal it bounds.
+  A tighter δ needs a bound with its own basis, not a grid maximum, so the claim is unchanged. The
+  measurement is recorded beside δ in `src/atlas/oscillators/bridges-limits.ts`, in comments only:
+  no record text or exported data changes. Since 0.47.0, `upt path` withholds the point bound for
+  this bridge ("numerically supported, not proven").
+
+### Fixed
+
+- **`upt map --equation` prints the verdict before the linkage map** (0.47.0 persona finding N4).
+  The verdict on the user's equation (the dimensional check, the canonical comparison, where it
+  lands, and the hints) came after the whole 40-component linkage map, about 45 lines, so the
+  answer the user asked for was printed last. The "Your equation" block now comes first, and the
+  map follows it. The exit code does not change. The `map-equation-ok` and `map-equation-mismatch`
+  goldens are regenerated; their sorted lines are identical before and after, so only the order
+  changed. The `--poster` index (about 5 lines) and the visual formats (report on stderr) are
+  unchanged.
+
+- **One "did you mean?" ranking for `upt map` and `upt explain`, edit distance first** (0.47.0
+  persona findings N2 and N5). There were two rankers, and they disagreed:
+  - `map --equation` listed the quantities of an unknown name's inferred dimension alphabetically, so
+    `lenght` got "a, amplitude, barrier-width, bohr-radius, boundary-length" and never `length`;
+  - the name ranker put a substring before a near spelling, so `explain hawkng-temperature` listed
+    `temperature` before `hawking-temperature`.
+
+  Both now use one ranking: edit distance first, then containment, then length. The dimension is
+  still the filter when it can be inferred. The distance is optimal-string-alignment distance, so a
+  swap of two adjacent letters is one edit. Under plain Levenshtein, `lenght` → `length` and
+  `lenght` → `height` both cost 2, and the alphabet then put `height` first. Measured on the real
+  catalog: `lenght` → "length, height, wavelength, a, r"; `hawkng-temperature` →
+  "hawking-temperature, reheating-temperature, temperature, …". `suggestByDimension` takes the
+  typed name as an optional fourth argument; without it, the order stays alphabetical. The
+  `PHYSICS_MAP.md` example and its prose now show the new ranking.
+
+- **A mismatch caused by an unknown name says UNKNOWN, not MISMATCH** (0.47.0 persona finding N3).
+  `upt map --equation` checks an unknown name as a dimensionless placeholder, so its mismatch is not
+  a real check, and the command exits 0 (the UNKNOWN rule of F2). The line still read "⚠ dimensional
+  MISMATCH", which looks like a failed check with a success exit. It now reads "· UNKNOWN: RHS is
+  [L^-0.5 T] but the target is [time]; the mismatch involves the unresolved placeholder 'lenght'
+  (taken as dimensionless), so it is not a failed check". The exit code does not change. With every
+  name resolved, a mismatch still reads "⚠ dimensional MISMATCH" and exits 3. The `uu` example in
+  `docs/architecture/PHYSICS_MAP.md` shows the new line.
+
+- **A velocity/speed synonym no longer switches the prefactor check off** (0.47.0 persona finding
+  N1). CE-kinetic-energy names its variable `speed`, and CE-lorentz-factor names the same dimension
+  `velocity`. `upt map --equation "kinetic_energy = mass*velocity^2"` reported "the prefactor is NOT
+  checked" and exited 0, while the same formula with `speed` was caught (factor 2, exit 3). The CLI
+  has no quantity synonym table, so the comparison now pairs each variable by name first, then by a
+  dimension that exactly one remaining canonical variable carries. The report names the pairing:
+  "differs from CE-kinetic-energy (Kinetic energy; your velocity as its speed, paired by dimension) by a
+  constant factor: yours/canonical = 2.00000", exit 3. Three limits keep this from guessing:
+  - the TARGET still matches by name only, because a dimension would reach every law of that dimension
+    (`energy = mass*velocity^2` is still not compared with CE-kinetic-energy);
+  - a name the catalog does not know has no dimension and never pairs (`mass*vel^2` stays "NOT
+    checked");
+  - a pairing that is not unique is reported as not compared, never guessed. CE-carnot-efficiency
+    with `cold` and `hot` temperatures could pair either way, and 1 − T_c/T_h is not symmetric.
+
+  `upt derive` pairs its declared variables the same way. One existing CLI test used
+  `mass*velocity^2` as its "no canonical match" example. It pinned the defect, so it now uses a
+  three-variable equation.
+
+- **A push from a linked worktree no longer lets the test suite write to the repository.** git
+  exports an absolute `GIT_DIR` to a hook run from a linked worktree (`<main>/.git/worktrees/<name>`);
+  from the main worktree it exports none. The pre-push gate runs the suite, and
+  `tests/tools/pushed-head.test.ts` and `tests/tools/untracked-gate-inputs.test.ts` run `git init`
+  and `git commit` in temp directories, so they inherited it. On the 0.47.0 release push they set
+  `core.bare = true` in the main `.git/config` and committed onto the worktree's HEAD (repaired by
+  hand; nothing reached the remote). Reproduced on a scratch sentinel: with that `GIT_DIR` the two
+  files fail 17 tests, flip `core.bare` and add three commits by `t@example.invalid`. Two fixes:
+  - `.githooks/scrub-git-env.sh` runs `unset $(git rev-parse --local-env-vars)`, git's own list of
+    repository-local variables, and `pre-push` sources it first. The hook runs in the worktree
+    root, so its own git commands still find the repository.
+  - A vitest setup file, `tests/setup/scrub-git-env.ts`, removes the same variables from every
+    test process. This covers the tools under test (`git -C <tmp>`) and any other launcher. With
+    `GIT_DIR` exported, the same files now pass 24/24, and the sentinel is unchanged.
+
+  `tests/tools/hook-git-env.test.ts` pushes from a real linked worktree through a pre-push hook
+  that does what the leaking tests did. Without the scrub, the positive control shows the damage.
+  With the real scrub file sourced, the repository is unchanged, and the hook still sees its branch.
+  Disabling the `unset` line turns that test red. A third test fails if the setup list drifts from
+  `git rev-parse --local-env-vars`.
+
+  `.gitattributes` now pins `.githooks/**` to LF. With `core.autocrlf=true`, a Windows checkout
+  would write the hooks CRLF, and `sh` fails on the CR (`unset NAME\r` is an invalid name under
+  `set -e`).
+
+## [0.47.0] - 2026-09-25
+
+### Migration
+
+Four changes can break a caller. The entries below give the detail.
+
+1. **Exit code 3: a check that runs and fails** (F2). `derive --formula`, `map --equation` and
+   `path` exited 0 when their check failed. They now exit 3. Exit codes are 0 success, 1 runtime
+   error, 2 usage error, 3 check failed. UNKNOWN (a coordinate not supplied, an unresolved name)
+   stays 0. A script that treats any non-zero exit as a crash must treat 3 as "the check failed".
+2. **Exit code 1: `upt explain` of a name that is not a quantity** (C4). The command printed "no
+   derivation path" and exited 0. It now prints "'X' is not a quantity in the catalog graph: NOT
+   COVERED", with near-name suggestions, and exits 1. A real quantity that the inputs cannot reach
+   still exits 0.
+3. **`BridgeEquations.crossingResidual` is removed** (announced in 0.46.0). The five removed symbols
+   are `crossingResidual`, `evaluateCrossingResidual`, `BE35_CROSSING_RESIDUAL_RHS`,
+   `BE35_FORWARD_BLOCK` and `BE35_CROSSED_BLOCK`. Call `crossingEquation({ u, v, delta_phi, g_uv,
+   g_vu })` with the full reduced four-point function. It returns v^Δφ g(u,v) − u^Δφ g(v,u).
+4. **Packaging: the MathTS and Graphviz packages are optional peers** (F3). `npm install
+   universal-physics-tensor` installs 1 package, not 36. A caller that uses the MathTS parser, the
+   `numerical/mathts-engine` subpath or SVG output installs those peers explicitly. The README
+   lists them.
+
+### Release summary
+
+- **The outside-user persona pass on 0.46.0 is closed.** W1 and L1–L9 (physics and honesty) and the
+  0.47.0 batch (D1, D2, D4–D6, F1–F3, C2, C4, C5, the sourced prefactor table and the
+  `crossingResidual` removal) each landed as one commit or one PR. C1 and C3 are recorded as
+  design-first work in ROADMAP §8.
+- **Dependency health, measured for this release:** `bun audit` finds 0 vulnerabilities in 135
+  packages. `bun outdated` lists only the optional `@danielsimonjr/mathts-*` peers behind their
+  latest releases. `@vitest/coverage-v8` is aligned with vitest (^4.1.7), so the coverage gates
+  measure again. Probe coverage then read 94.53% of statements against its 95% gate. That gap is
+  open in `todo.md`.
+
+### Removed (BREAKING)
+
+- **`BridgeEquations.crossingResidual` is removed, as announced in 0.46.0.** The 0.46.0 notice said:
+  "`BridgeEquations.crossingResidual` (`evaluateCrossingResidual`) and its ASTs
+  (`BE35_CROSSING_RESIDUAL_RHS`, `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`) do not state crossing
+  symmetry. They have no `v^Δφ` / `u^Δφ` prefactors and describe one conformal block. A zero from
+  them is not evidence of crossing, so the evaluator tests nothing. Use
+  `BridgeEquations.crossingEquation`." All five symbols are removed. The registered BE-35 RHS was
+  already `BE35_CROSSING_EQUATION_RHS`, so no registered physics changes. **Migration:** a caller
+  that computed `crossingResidual({ ope_coefficient, g_block_uv, g_block_vu })` to test crossing
+  symmetry calls `crossingEquation({ u, v, delta_phi, g_uv, g_vu })` with the full reduced
+  four-point function g at (u, v) and at (v, u). That returns v^Δφ g(u,v) − u^Δφ g(v,u), which is
+  zero exactly when crossing holds (Rattazzi, Rychkov, Tonni & Vichi 2008, eq. 4.3). The old
+  single-block value has no crossing-symmetric replacement, because it never tested crossing. A new
+  test pins that the five symbols are gone and that the registered RHS is unchanged.
+
+### Changed (BREAKING)
+
+- **A check that runs and fails now exits 3** (persona finding F2). `derive`, `map --equation`
+  and `path` printed a failed check and exited 0, so a script could not tell it from a passed one.
+  The CLI's exit codes are now:
+  - `0`: success;
+  - `1`: runtime error;
+  - `2`: usage error;
+  - `3`: **the command ran and its check came out negative**.
+
+  Exit 3 covers:
+  - `derive --formula`: a dimension that differs from the target, a monomial mismatch, or a
+    canonical difference (a constant factor or the form);
+  - `map --equation`: a dimension mismatch when every name resolved, or a canonical difference;
+  - `path`: a violated regime or horizon at the `--at` point.
+
+  UNKNOWN stays 0: a coordinate was not supplied, or an unknown name was checked as a
+  dimensionless placeholder. So does a survey command such as `regime`. `--json` exits the same
+  way. **Migration:** a script that treated any non-zero exit as a crash should treat 3 as "the
+  check failed", and read the output or `--json` for the detail. The golden harness gains an
+  optional `exitCode` per case; `map-equation-mismatch` pins 3.
+  `path --at` accepts the same group spellings and parameter-derived groups as `regime`. This
+  landed in F1 (e9a90c5), and exit 3 depends on it: a spelling the path could not resolve would
+  otherwise read as unchecked, or produce a false VIOLATED and a wrong exit 3. A new test
+  runs `tau · D · q^2=…`, `tau*D*q^2=…` and `tau=1 D=… q=1` on the telegraph path. At ε = 1 all
+  three exit 3, and at ε = 0.02 all three exit 0.
+
+### Fixed
+
+- **`upt probe falsify` accounts for every candidate** (persona finding C5). The persona ran
+  `falsify` and got no battery lines. That was by design, but it looked broken: the batteries run
+  only for NEW candidates, and a candidate equivalent to a known corpus relation stops at
+  `equivalent-known`. The command said nothing, so "no batteries ran" read as "the command is
+  broken". Each candidate without batteries is now listed as "falsify <id>: no batteries run —
+  status <status>: <reason>", and `--json` gains `notFalsified`. The skip rule itself is unchanged.
+  A control test runs a new relation, f = η/(ρL²), absent from the corpus: it still prints all four
+  batteries and no "no batteries" line. New fixture `tests/fixtures/discovery/viscous-rate-problem.json`.
+- **A dimensionless input no longer blocks `upt probe`, and its stop reason is true** (persona
+  finding C2). With θ0 among the inputs, the target's monomial is not unique, since any f(θ0) can
+  multiply it. The native enumerator then produced nothing, and the run said "enumerator produced no
+  dimensionally valid candidates", which is false: √(ℓ/g) is valid. The monomial is now taken from
+  the dimensioned inputs, and the run says that an unknown function of the dimensionless inputs is
+  not searched. When not even the dimensioned inputs fix a unique monomial, the stop reason says
+  "the target is not a unique monomial of the inputs … the native enumerator searches unique
+  monomials only". On the persona's finite-amplitude pendulum data with θ0 as an input, the probe
+  now finds √(ℓ/g), fits ĉ = 7.387, and reports that it contradicts CE-pendulum-period's 2π by
+  18%: the data lie outside the small-angle regime. Probe statement coverage rose from 94.53% to
+  94.62%.
+- **`upt explain` says plainly when a name is not covered** (persona finding C4). `upt explain
+  qwertyuiop`, `soliton-speed` and `driven-damped-oscillator` all printed "cannot be determined
+  from {} (no inputs): the graph has no derivation path" and exited 0. That is the same answer as
+  for a real quantity the inputs cannot reach. A name that is not a quantity of the chosen graph
+  now reads "'X' is not a quantity in the catalog graph: NOT COVERED", with near-name suggestions
+  (`hawkng-temperature` → `hawking-temperature`), and exits 1, as an unknown model id does in
+  `upt path`. Underscores resolve like hyphens (`hawking_temperature`). A real quantity the inputs
+  cannot reach is still an answer and exits 0, and its summary now starts "'X' is in the graph,
+  but cannot be determined from …".
+- **README links were dead on npm** (persona finding D1). The npm package ships only `dist/`,
+  `bin/`, `README.md` and `LICENSE`. The README linked 44 other repository paths relatively, among
+  them `docs/`, `cli/README.md`, `examples/` and `data/bridge-catalog.json`, and every one of those
+  links was dead on the npm page. They now point to the GitHub repository. The Quick Start opens
+  with the npm route (`npx upt …`), and says that the docs and fixtures it names are in the
+  repository. It no longer says "Once published". A new test, `tests/tools/readme-links.test.ts`,
+  fails on any relative link outside the shipped `files`, and on any GitHub link to a path that
+  does not exist in the tree.
+- **The `upt probe --problem` file format is documented** (persona finding D2). The loader's types
+  are `@internal`, and the persona needed three failing runs to learn the rules: `gap.kind` is an
+  enum, `gap.id` must start with `fg-`, and a dataset `role` is an enum. `upt help probe` now
+  describes every field, all 10 gap kinds and all 4 dataset roles, the holdout-leak rule and the
+  `"dimensionless"` spelling. It also gives a minimal pendulum example, whose periods are
+  2π√(ℓ/g) to three places. A test takes that example out of the help text and loads it with the
+  real loader, and it checks every kind and role against the ones the loader accepts.
+- **The `upt evaluate` help quoted a Chandrasekhar mass the command does not print** (persona
+  finding D4). It said "~1.44 M_sun", but `upt evaluate be-63 mu_e=2` prints 1.4559. The help in
+  `upt help`, `upt help evaluate` and `cli/README.md` now says ≈ 1.456 and names the inputs: an ideal
+  degenerate gas, with m_u and M☉ = 1.989e30 kg. Independent recomputation gives
+  ω₃√(3π)/2 · (ħc/G)^{3/2}/(2m_u)² = 2.8957e30 kg = 1.4559 M☉. A test reads the number back out
+  of both help sources and compares it with the evaluator.
+- **`upt discover --derive` put 300 into every free input, whatever its dimension** (persona
+  finding D5). Examples: a Hubble rate of 300 s⁻¹ (H₀ is about 2.2 × 10⁻¹⁸ s⁻¹), a frequency of
+  300 Hz, a Yukawa coupling of 300, and a Higgs VEV of 300 J. A proposal is now evaluated only when
+  every input has a sourced sample, and each sample prints with its source. The sources are the
+  representative-value table and a documented room temperature of 300 K. Otherwise the line reads
+  "no sourced sample value for X; not evaluated". Checked: T = b·H₀/c = 2.13 × 10⁻²⁹ K at
+  H₀ = 2.2 × 10⁻¹⁸ s⁻¹, and ν = k_B ln 2 · 300 K / h = 4.33 × 10¹² Hz, both recomputed independently.
+- **The LC analogies state their dictionary where a reader looks** (persona finding D6). The
+  force–voltage map m ↔ L, k ↔ 1/C, b ↔ R, x ↔ q was only inside the witness tolerance text. The
+  `ab-spring-lc` counterexample also said "the same L, C with R = 4 has ζ_RLC = 0.5" without giving
+  L and C, and ζ = (R/2)√(C/L) = 0.5 needs L/C = 16. Both transformations now name the map. The
+  counterexample names L = 2 and C = 0.125, the circuit witness W2b runs, and states the ζ formula.
+  A test recomputes ζ from the numbers in the text, and checks that they are the ones W2b uses.
+  `data/atlas/*.json` were regenerated with `bun run atlas:json`.
+- **The coverage gates measured nothing for eleven days.** Dependabot #167 (2026-09-14) raised
+  `@vitest/coverage-v8` to 5.0.0, whose peer dependency is `vitest@5.0.0`, while vitest stayed on
+  4.1.11. Every coverage run then died with "AssertionError: coverageFilesDirectory is required"
+  and reported 0% on every file. No CI job runs `test:probe-coverage` or `test:coverage`, so nothing
+  turned red. The provider is back on `^4.1.7`, matching vitest (installed 4.1.11), and a new test
+  fails whenever the two majors differ, in `package.json` or in `node_modules`. With the gate
+  measuring again, probe coverage is 94.53% statements against its 95% threshold: lines, functions
+  and branches pass. The shortfall is mostly in modules that predate this session, and it is filed
+  as a todo row. The threshold is NOT lowered. The new `corpus.ts` code from L7 is now fully
+  line-covered: dimension-based alignment, bridge-layer matches and evaluation failure.
+- **`--at` takes coordinates the way a user writes them** (persona finding F1).
+  `upt regime diffusion --at tau=1 D=1 q=1` reported the telegraph bridge "unchecked (no value
+  supplied)". Only the exact display string `"tau · D · q^2=1"`, with its middle dots, reached the
+  check, and an unknown key such as `Foo=2` was dropped silently. Now, in both `upt regime` and
+  `upt path`:
+  - a group whose parameters are all given is derived from them, as the product of each parameter
+    to its exponent;
+  - a group name matches with spaces ignored and `*` read as `·`.
+
+  `upt regime` also names every key that no record in the family uses. A zero exponent does not
+  block derivation: two records key `tau · D · q^2`, one with an extra `c: 0`, which the first test
+  caught. `--json` gains `resolvedPoint` and `unknownCoordinates` (additive).
+- **A default install is one package, not 36** (persona finding F3). The nine `@danielsimonjr/mathts-*`
+  packages and `@viz-js/viz` were `optionalDependencies`, and npm installs those by default, so
+  `npm install universal-physics-tensor` pulled 36 packages and 48 MB. They are now optional
+  `peerDependencies`, marked in `peerDependenciesMeta`, which npm does not install unless asked.
+  They are also `devDependencies`, so this repository's tests still run against them. Measured
+  with `npm pack` and a clean `npm install` of the tarball: 1 package, 8.4 MB. The CLI works
+  there: `eval` and `derive` run on the built-in parser, and `--debug` reports `builtin`. **Packaging
+  change:** a user who relied on the MathTS parser or SVG output now installs those peers
+  explicitly, and the README says how. A new test fails if `dependencies` or
+  `optionalDependencies` reappear, or if a peer is not optional. The README also says that
+  importing the `numerical/mathts-engine` subpath without `@danielsimonjr/mathts-tensor` fails
+  with `ERR_MODULE_NOT_FOUND` by design, as checked in the peerless install.
+
+- **`upt path` quoted a bound outside the regime it is claimed in** (outside-user persona finding
+  L1, 2026-09-25). At `--at theta0=0.8` it printed the pendulum bound, `delta = 0.0159`, and
+  "horizons all hold", although `ab-pendulum-linear` claims that bound only for θ0 ≤ 0.5. The
+  exact relative period error at θ0 = 0.8 is 2K(sin 0.4)/π − 1 = 0.0415 (AGM), which is 2.6 times the
+  printed bound. The command checked only each bound's time horizon, never its regime. It now
+  checks the regime of every bridge on the path at the `--at` point and prints `regimes at --at:
+  VIOLATED — no bound on this path is claimed at this point`. It prints UNKNOWN when a coordinate is
+  missing, and VACUOUS when no bridge states an inequality. `--json` gains `regimes` (per-bridge
+  `ok`, `violated`, `unchecked`) and `allRegimesHold` (`true`, `false` or `'unknown'`). Both fields
+  are additive. The help text states the regime check.
+- **The discovery magnitude gate counted a graph identity as evidence** (persona finding L3).
+  `thermal-wavelength ≟ planck-length` was "promising" with `magnitude (1.1 orders, anchor-derived)`
+  under *passed*, and `upt ground` showed no gaps. The anchor sets the temperature to the Hawking
+  temperature of the anchor mass M, and then h/√(2π M k_B T_H) = 4π ℓ_P exactly, for every M
+  (log10 4π = 1.099). The magnitude agreement is therefore fixed by the graph and tests nothing.
+  Checked at M = 1 kg, 10¹² kg and M☉: the ratio is 12.566 each time, and the funnel's own
+  thermal wavelength is 2.0310 × 10⁻³⁴ m at both M☉ and 10³ M☉. The funnel now re-evaluates the
+  graph with every anchor input times 10³. It sets `magnitudeAnchorInvariant` when an
+  anchor-derived magnitude ratio does not move, and the grounding ledger then lists the magnitude
+  under *gaps* ("anchor-invariant … an identity, not evidence"). A magnitude clash stays a clash.
+  The flag fires on 4 catalog candidates; only this one was a pass. The verdict, still `promising`,
+  is unchanged: magnitude is not one of its conditions.
+- **`upt explain` called one bridge written twice "independent derivations"** (persona finding
+  L5). For `hawking-temperature mass=1.989e30` it reported "2 independent derivations (be-42,
+  be-42-via-rs). They agree … — a passing consistency check". The two edges are BE-42 in M and in
+  r_s: ℏc/(4π k_B r_s) with r_s = 2GM/c² is ℏc³/(8πGM k_B), so their agreement is algebra. The value
+  itself, 6.1684 × 10⁻⁸ K, is correct (independent recomputation: 6.16843 × 10⁻⁸ K). The summary now
+  counts independence by catalog bridge (`BridgeEdge.beId`): "2 derivation routes … restate ONE
+  bridge (BE-42) … agreement by construction, not an independent check". Routes over several
+  distinct bridges are counted as such. `DerivationExplanation` gains `beId` (additive). Three
+  goldens change by that summary line (`demo-no-args`, `explain-bare-names`, `explain-mass-value`).
+- **A relative-error convention was stated nowhere, and one counterexample read it the wrong way**
+  (persona finding W1). The `ab-kg-schrodinger` counterexample said that at x = ck/ω₀ = 1 "the
+  non-relativistic kinetic frequency is 17% too high". It is ω₀/2 against the exact ω₀(√2 − 1), so
+  it is **20.7% above the exact value**. 17.2% is the gap over its own value, 3 − 2√2. Every relative
+  `delta` in the atlas divides |exact − reduced| by the REDUCED model's value. A new test,
+  `tests/atlas/relative-norm-convention.test.ts`, recomputes all six from closed-form physics at
+  the edge of each domain: the pendulum (elliptic K by AGM), telegraph → Fick, telegraph → wave,
+  Klein–Gordon → wave, Klein–Gordon → Schrödinger, and stiff → flexible string. Every numeric
+  `delta` was already correct under that convention. The six `norm` strings now end ", normalized by
+  the value of the reduced model", `ApproximationBound.norm` documents the rule, and the
+  counterexample states both numbers. `data/atlas/*.json` were regenerated with
+  `bun run atlas:json`, and the `atlas-pendulum` golden changes by the norm line.
+- **`upt discover` called a label mismatch a falsification** (persona finding L4). The AXIS-CLASH
+  header read "identification falsified (stated regimes differ)" over 70 pairs, while the funnel
+  line on the same screen counted "0 contradictory (falsified)". An axis clash compares the stated
+  `scale`/`force` labels of the two quantities and computes nothing. The header now reads
+  "stated scale/force labels differ: a regime-label prior, not a physical test", and the funnel
+  reads "contradictory (numerically falsified)". The `discovery.ts` doc comments, `cli/README.md`
+  and `DATAFLOW.md` say the same. The verdict enum, counts and ranking are unchanged. Four
+  `discover` goldens change by those two lines.
+- **`upt confront` showed a derived number as be-51's "observed" deflection** (persona finding L6).
+  It printed "observed 1.751639983367098 ± 0.000105 arcsec". VLBI measured PPN γ = 1 − (0.8 ±
+  1.2) × 10⁻⁴, not a solar-limb deflection to 16 digits. The "observed" value is the prediction
+  times (1 + γ)/2, reproduced to every printed digit. The residual, 0.67σ, was already right,
+  because it tests only γ. The line now reads "derived (1+γ)/2 × predicted = …", with a second
+  line "measured: PPN γ = 0.99992 ± 0.00012 (VLBI); the value above is derived from it, not
+  observed". The `value` outcome gains an optional `measured` field (additive), which `--json` and
+  `data/bridge-catalog.json` carry; the catalog was regenerated with `bun run catalog:json`. The
+  zero-tolerance confrontation golden (`tests/fixtures/confrontation-numbers.golden.json`) was NOT
+  regenerated. The two new input numbers, γ and σ, were added to it by hand, and every existing
+  number is unchanged.
+- **The GR confrontations take GM☉ from the IAU 2015 nominal value** (Mothership ruling on persona
+  finding L6). BE-51 used G × 1.989e30 kg and BE-52 used G × 1.98892e30 kg, which put G·M 3.0e-4
+  and 2.6e-4 above the nominal (GM)☉ = 1.3271244e20 m³ s⁻² (IAU 2015 Resolution B3). GM☉ is
+  known to about 10 digits and G to about 5. For BE-51 the offset was 5.2e-4 arcsec, five times the
+  VLBI 1σ on the deflection. A new internal `GM_SUN_SI` (with `GM_SUN_SOURCE`) is the source, and
+  each confrontation uses M = GM☉/G, so G·M is the nominal value exactly. **be-37/51/52 outputs
+  shift by about 3e-4 relative:**
+  - BE-51 predicted deflection: 1.7517100517691688″ → 1.751190325559984″ (−2.97e-4). The residual
+    stays 0.67σ, because it tests only γ.
+  - BE-52 predicted Mercury precession: 42.99158858487129 → 42.98056186229095 ″/cy (−2.56e-4). The
+    residual goes from 0.263σ to 0.288σ.
+  - BE-52 regime bound r_s/r_p: 6.4216e-8 → 6.4199e-8.
+  - BE-37 does not move: its prediction is PPN γ = 1 and uses no mass.
+
+  Each new value was recomputed independently from the closed forms before it was pinned. The
+  zero-tolerance pins in `tests/fixtures/confrontation-numbers.golden.json` and
+  `tests/atlas/gr-spine-regime.test.ts` were re-pinned deliberately, with the old values kept in
+  comments. `data/bridge-catalog.json` was regenerated with `bun run catalog:json`. The public
+  `M_SUN_SI` (1.989e30) and the be-37/51 solar-limb regime bound, which is built from it, are
+  unchanged.
+- **`ab-stokes-einstein` states its regime in machine form** (persona finding L8). Its side
+  conditions said "Re ≪ 1" and "t ≫ m/γ" in prose, but the regime had no inequality. So `upt
+  regime diffusion --at Re=1000` reported it VACUOUS and valid, although Stokes drag, and with it
+  D = k_B T/(6πηa), holds only in creeping flow. The regime now has `Re ≤ 0.1` and `m · gamma^-1 ·
+  t^-1 ≤ 0.01`. Re is a dimensionless input of the flow. The overdamping group uses the same key as
+  `ab-langevin-diffusion`, so one `--at` value checks both bridges. The side conditions state that
+  0.1 and 0.01 are chosen thresholds for "≪ 1". This was conditional on no frozen hash moving, and
+  none did:
+  - the eight pinned code blobs and the eight Criterion 3 file hashes are unchanged;
+  - the benchmark items blob is unchanged;
+  - `witness-results.json` and `atlas-study-results.md` regenerate byte-identical.
+
+  The `src/canonical` input tree already differed from `freeze.json` before this session: the
+  change is at dbd4e95, which registered Amendment 9. `data/atlas/{atlas,diffusion}.json` were
+  regenerated with `bun run atlas:json`.
+
+- **A user formula is now compared with the canonical equation it restates** (persona finding L2).
+  `upt map --equation "period = pi*sqrt(length/gravity)"` and `upt derive … --formula
+  "mass*velocity^2"` answered "✓ consistent" and "MATCHES", although each is wrong by a constant.
+  Dimensional analysis cannot see a prefactor, and the output did not say so. When a canonical
+  equation has the same target and the same non-constant variables, both commands now evaluate
+  the two formulas at three fixed points, where variable i takes (1.7 + i)^p for p = 1, 1.3, 1.6.
+  The output is identical on every run. They report one of:
+  - **agrees**, prefactor included;
+  - **differs by a constant factor**, with the ratio `yours/canonical`;
+  - **differs in FORM**, when the ratio is not constant across the points;
+  - **prefactor NOT checked**, with the reason.
+
+  The last one matters for the persona's own two examples. `src/canonical` records CE-pendulum-period
+  only dimensionally and CE-kinetic-energy only up to a constant (its AST is m·v²), so a wrong 2π or
+  ½ still cannot be caught there. The output now says so instead of staying silent. `src/canonical`
+  is a pinned Criterion 3 input tree, so recording those prefactors needs an amendment. When no
+  entry matches, the output says the prefactor is not checked. Checked computation:
+  `hawking_temperature = hbar*c^3/(4*pi*G*mass*k_B)` reports the factor 2.00000 against
+  CE-hawking-temperature (4π for 8π). The exact form reports agreement. A 1/M² variant and T ∝ ℓ/g
+  report a difference in form. A same-scale point design would have hidden the T ∝ ℓ/g case, because
+  every ratio between variables stays fixed; the per-variable bases were chosen after a test caught
+  that. In `derive`, a variable counts as a constant only when its name AND dimension match one:
+  `c:length` stays a length. The `--json` envelopes gain `canonicalComparisons` (additive). New
+  internal module `composition/canonical-compare.ts`. The `derive-formula` and three
+  `map-equation` goldens gain the comparison line.
+- **`upt probe` compares a fitted prefactor with the prefactor of the corpus relation it matches**
+  (persona finding L7). On finite-amplitude pendulum data (θ0 up to 2.5 rad), probe found √(ℓ/g)
+  with ĉ = 7.387 and marked it "equivalent to CE-pendulum-period (not novel)", although the
+  small-angle law has 2π = 6.283. `normalForm` matches up to a constant, so the new
+  `corpusPrefactorNotes` evaluates the corpus relation against the candidate at three fixed
+  points to get the corpus prefactor. It then prints one of:
+  - "fitted ĉ agrees with X's prefactor" (within the holdout tolerance);
+  - "fitted ĉ contradicts X's prefactor (+N%): the data may lie outside that relation's regime";
+  - "X records no prefactor, so the fitted ĉ is not compared with it".
+
+  Only a fully quantitative canonical entry records a prefactor. CE-pendulum-period is dimensional
+  only, so the persona's own case now reads "records no prefactor" rather than being flagged: the
+  same data limit as L2. Checked on CE-friedmann, H² = (8π/3) G ρ: true data give ĉ = 8.378,
+  "agrees", and data 20% high give ĉ = 10.05, "contradicts … (+20%)". `ProbeSearchResult` gains
+  `prefactorNotes` (additive).
+- **`upt path --at` prints the PROVEN bound at the point, beside the domain supremum** (persona
+  finding L9). The path printed only the supremum over each bridge's declared domain: for the
+  pendulum, 0.0159 at any θ0. At θ0 = 0.2 the true period error is 0.0025, and for
+  `ab-damped-massless` the supremum, δ = 3, exceeds the unit signal. `ApproximationBound` gains an
+  optional `deltaAtBasis`:
+  - `'closed-form'` means `deltaAt` is the exact error, so a proven bound that holds with equality;
+  - `'numerically-supported'` means witnesses support it, but no proof covers it.
+
+  Six approximations are closed-form. `ab-damped-massless`'s 2(1 + |v0|) m/b is numerical (witness
+  W8b). `upt path` prints "bound at this point: K = 1 · delta = 0.002505744228602058 (closed-form: the
+  exact error; the composed bound above is the supremum over the bridge's domain)" only when every
+  regime holds and every step is closed-form. Otherwise it prints "none" and the reason, for
+  example "ab-damped-massless's point bound is numerically supported, not proven". A new test checks
+  the pendulum `deltaAt` against the exact error at θ0 = 0.1, 0.2, 0.35 and 0.5. The exact error is
+  computed by Simpson quadrature of the elliptic integral, independent of the AGM the code uses, and
+  the two agree to 1e-9. The five other closed forms are checked at an interior point. `--json`
+  gains `pointBound` and `pointBoundReason` (additive).
+- **A sourced prefactor table lets L2 and L7 catch a wrong constant** (Mothership ruling on the
+  L2/L7 limit). `src/canonical` records CE-pendulum-period only dimensionally and CE-kinetic-energy
+  only up to a constant, so T = π√(ℓ/g) and K = m·v² could only be reported as "prefactor NOT
+  checked". `src/canonical` is a pinned Criterion 3 input tree and is not edited. The new
+  `src/composition/canonical-prefactors.ts`, outside it, records nine exact prefactors: pendulum
+  period 2π, kinetic energy ½, rotational kinetic energy ½, capacitor energy ½, Schwarzschild
+  radius 2, Kepler's third law 2π, LC resonance 1, Stokes drag 6π, and Stokes–Einstein 1/(6π).
+
+  Each has a verbatim quote and a locator pinned to a Wikipedia revision and wikitext line. The
+  quotes are held as `String.raw` literals, and all nine were checked byte for byte against the
+  fetched revisions. Elastic energy and the inductor were left out: no clean verbatim line was found.
+
+  The prefactor multiplies the entry's AST, or its monomial when it has none; a test holds that
+  neither carries a constant of its own.
+  - `upt map --equation` / `upt derive`: T = π√(ℓ/g) now reports "differs … by a constant factor:
+    0.500000", K = m·v² reports the factor 2, and the true laws report "agrees".
+  - `upt probe`: the pendulum fixture reports "agrees with CE-pendulum-period's prefactor 6.283".
+    The persona's finite-amplitude data now report "contradicts CE-pendulum-period's prefactor
+    6.283 (+18%)", which is the L7 outcome originally proposed.
+
+  Three goldens change from "NOT checked" to "agrees". Landed in 35152dd; this entry was added in
+  the following commit, because a shell chain let that commit through without it.
+
+## [0.46.0] - 2026-09-24
+
+### Release summary
+
+- **Deprecated: `BridgeEquations.crossingResidual`.** It is physically WRONG, and it will be REMOVED in
+  0.47.0. Use `crossingEquation`. The "Deprecated (2026-09-24)" entry below gives the detail.
+- **The model atlas, ROADMAP Phases 0–6, is delivered.** It holds typed relations between physical
+  models:
+  - three families (oscillators, diffusion, waves), with 24 models and 20 bridges over 6 relation types;
+  - regimes, and error bounds that carry their horizon;
+  - evidence tags that are derived, never set;
+  - one reviewed `formalRef`;
+  - the invalid-bridge benchmark, with 125 model-authored frozen items;
+  - the study.
+- **UPT is DONE** (owner, pre-registration Amendment 12). Every ROADMAP §7 criterion is measured and
+  reported: MET, NOT MET, amended or deferred. Two are NOT MET, and they are the study's findings:
+  - **Criterion 2, invalid-bridge rejection:** the atlas rejected 6/61 invalid items, and the best
+    local LLM (qwen3.8:27b) rejected 51/61. The atlas abstains on 116/125 and makes 1 wrong accept,
+    against 9 to 13 for the LLMs.
+  - **Criterion 3, retrieval of the established relation:** the typed structural search found 12/50,
+    and a local embedding model (qwen3-embedding:4b) found 49/50.
+  - **Amended or deferred:** human κ, the practical-value and curation-cost criteria, the independent
+    physicist review, and ≥ 5 reviewed `formalRef`s (1 of 5).
+- **Future work, not started:** hybrid retrieval, where embeddings find the candidates and the atlas
+  verifies them (ROADMAP §8).
+- **Dependency health, measured for this release:** `bun audit` finds 0 vulnerabilities in 129
+  packages. `bun outdated` shows:
+  - minor dev updates (`@types/node`, `@vitest/coverage-v8`, `fast-check`);
+  - vitest 5 available (a major);
+  - the optional `@danielsimonjr/mathts-*` peers behind their latest releases.
+
+  No dependency changes in this release.
+
+### Fixed (2026-09-24) — the pre-push gate refused every annotated tag
+
+- **The gate compared the wrong sha.** git passes each pushed ref to `pre-push` as "<local ref> <local sha>
+  <remote ref> <remote sha>". For an annotated tag the local sha is the TAG OBJECT's, not the commit's, so
+  the check "the pushed commit is HEAD" refused every annotated release tag, the v0.46.0 tag included, although
+  the tag named HEAD.
+- **The check is now `tools/gate-inputs/pushed-head.ts`.** It peels each sha to the commit it names before the
+  comparison, and the hook calls it. `tests/tools/pushed-head.test.ts` has 4 cases. The annotated-tag case
+  FAILS when the tool is reverted to the raw comparison.
+- Release tooling only: the npm package is unchanged.
+
+### Changed (2026-09-24) — UPT is DONE: the owner accepts the measured verdicts (pre-registration Amendment 12)
+
+Mothership relayed the owner's words verbatim (21:29 CDT): "(a) for now. (b) as a future ROADMAP using embedding with Qwen3-embedding:4b."
+
+- **Amendment 12** records the decision. DONE means that every ROADMAP §7 criterion is measured and
+  reported, and UPT is DONE on that basis. Criteria 2 and 3 are NOT MET, and they stand as the study's
+  findings.
+- **The ROADMAP §7 header** says so.
+- **A new ROADMAP §8, Future (not started), holds one entry:** hybrid retrieval. qwen3-embedding:4b
+  finds the candidate relations (49/50 in criterion 3), and the atlas verifies them (1 wrong accept,
+  against 9 to 13 for the LLMs).
+
+### Added (2026-09-24) — criterion 3 VERDICT: NOT MET (pre-registration Amendment 11)
+
+The embedding condition was scored after Amendment 11 was committed (`b6916ab`) and its CI run was
+green (36084344662, 2026-09-25T02:01:31Z). The scorer checked every Amendment 8 and 11 pin first.
+
+- **PRIMARY (n = 50), the criterion's pool:**
+  - embeddings (qwen3-embedding:4b, frozen vectors): 49/50 = 98.0% [89.5%, 99.6%];
+  - typed structural search: 12/50 = 24.0% [14.3%, 37.4%].
+- **The verdict is NOT MET.** The typed interval does not lie above the embedding point estimate.
+- **In-distribution:** 30/30 for embeddings, 0/30 for typed search. Fluid statics (held out): 19/20
+  for embeddings, 12/20 for typed search.
+- **SECONDARY (n = 64):** 63/64 = 98.4% against 15/64 = 23.4%.
+- **Variance, disclosed and not scored.** A second embedding pass is not byte-identical: min cosine
+  0.9972, mean 0.9994 over 232 vectors. It gives the same 49/50, and no truth query crosses the depth
+  cut. The file is committed beside the frozen one.
+- **A negative result, recorded as one.** On this task, finding the established relation that a claim
+  restates or misuses, a local embedding model beats the atlas's typed structural search by a wide
+  margin.
+- **Criterion 2 stands as measured, NOT MET.** No re-run is planned (Mothership).
+- `atlas-study-results.md` now includes the verdict section, and a note marks the older INTERIM
+  wording. Its other content regenerated unchanged.
+- The ROADMAP §7 Phase 1 row now says that the two browser checks are deferred by the owner.
+
+### Added (2026-09-24) — criterion 3: pre-registration Amendment 11 registers the embedding condition before it is scored
+
+- **Registered, as Amendment 8 requires, before any score:**
+  - the model, qwen3-embedding:4b, which LLMBench's final class 6 ranks best on search, and its digest;
+  - the query instruction;
+  - the pinned code (`embedding.ts`, `run.ts`);
+  - the SHA-256 of the frozen vector file, `docs/research/criterion3/embeddings/qwen3-embedding-4b.json`
+    (2,560 dimensions, 107 records, 125 queries, embedded once).
+- **The verdict rule is restated before the score.** The typed search scored 12/50 [14.3%, 37.4%], so
+  the criterion is NOT MET at an embedding recall of 8/50 = 16.0% or more.
+- **`tools/criterion3-study/embedding.ts`:** embeds once, ranks by cosine with the id tie-break, and
+  scores through the runner's own scorer. It refuses to score unless the Amendment 8 and 11 pins
+  match AND the amendment's commit and CI result are given.
+- **Disclosed:** that last guard came after one early scorer invocation had computed a score. Its
+  output was cut before any number was shown. Amendment 11 records the event.
+- `UPT_OLLAMA_URL` sets the Ollama address. `OLLAMA_HOST` is the server's bind address
+  (`0.0.0.0:11434`), not a URL, so the script does not read it.
+- **Architecture-doc counts** updated for the two new files, from `repo_map`: 868 source files,
+  3,097 exports, 887 type-only imports; tests 478, tools 22.
+
+### Changed (2026-09-24) — Sprint 4 and Sprint 5 tracker rows closed by amendment; a gate observation
+
+- **Ticked, titles unchanged, with Mothership's OK.** Each row has a child line that names its
+  amendment:
+  - Sprint 5, by Amendment 6: κ amended;
+  - Sprint 4, by Amendment 10: the formalRef exit criterion is deferred by the owner.
+- **`NOTES.md` records an observation, not a cause.** The pre-push gate did not run for the `cd4f0d5`
+  push, because `core.hooksPath` was set to the absolute `.git\hooks`. A plugin review worktree was
+  created at 14:02, but the mechanism is unproven. The setting is restored, and the stale worktree
+  and its merged branch are removed.
+
+### Changed (2026-09-24) — the owner DEFERS the Phase 4 reviewed-`formalRef` criterion and the citation work
+
+Mothership relayed the owner's words verbatim (15:02 CDT): "I feel that UPT is burning a lot of tokens for a long time on citations we can resolve another time. We're not trying to turn this project in a paper right now. It's mainly an exploration project."
+
+- **Pre-registration Amendment 10** records the criterion "≥ 5 bridges with a reviewed
+  `formalRef`" as DEFERRED at 1 of 5. It is not met and not closed. It no longer blocks DONE. The
+  PhysJS proofs are deferred with it.
+- **Marked "deferred - owner 2026-09-24 15:02":**
+  - the criterion's `todo.md` row, with a child line, so the row title is unchanged;
+  - the two browser checks in `docs/research/phase-1-citation-check.md` (von Klitzing 1980 eq. 4;
+    Shapiro 1964 eq. 1).
+- **Updated to match:** the ROADMAP §7 Phase 4 row and `NOTES.md`.
+- **Nothing was deleted.** No other open citation or provenance row exists in `todo.md`. The Zenodo
+  DOI row is publication work, so it stays open and unworked.
+- **Criterion 3 is NOT deferred.** Its task, finding the established relation that a claim restates
+  or misuses, is the vetting that the project exists for. The embedding condition still waits for
+  LLMBench.
+
+### Added (2026-09-24) — Phase 4 formalRef scoping report
+
+`docs/research/phase-4-formalref-scoping.md` answers Mothership's five questions about the Phase 4
+criterion "≥ 5 with a reviewed `formalRef`", which stands at 1. It is a report, with no code change.
+
+- **The one reference** is `ab-pendulum-linear` → Physlib `linearizedEquationOfMotion_iff`, fidelity
+  `sanity-lemmas`.
+- **"The proofs need PhysJS" agrees with the ROADMAP definition.** No library holds a statement to
+  point at, so new proofs are necessary, and PhysJS is the out-of-tree place for them. PhysJS is an
+  empty, private scaffold, held by the owner. A private proof cannot be checked by readers of the
+  public package, and the axiom gate checks only `lean4-physlib` references.
+- **Per bridge, no exact counterpart exists outside the one recorded.** The search covered Physlib
+  (`5ad56e24` and HEAD `1c81053a`), Mathlib (`bd6c1abe`, and `5ed29652` as Physlib pins it), and, by
+  a read-only subagent, Coq/Coquelicot, Isabelle, HOL Light, HOL4 and Mizar. One weaker counterpart
+  exists, for `ab-walk-diffusion`: the fixed-time central limit theorem (Mathlib, Isabelle, HOL
+  Light). Its Mathlib axioms were measured against the pinned checkout, with a `sorry` control.
+  d'Alembert exists only in the converse direction (Physlib; Coquelicot, partly `Admitted`).
+- **Candidates for new proofs:** five dispersion-limit bridges have closed-form error functions, so
+  short lemmas could certify `bound.delta` exactly. The costs are estimates, not measurements.
+- **The report opens with the owner's decision:** the criterion is deferred (the next entry). The
+  missing counterparts are the expected result, for two reasons on two sets:
+  - the catalog bridge equations are the owner's own work, so no external source is expected;
+  - the 20 atlas bridges are textbook relations, but formal libraries hold almost no physics PDEs.
+- **`TOOLS.md`:** GitHub code search can miss a quoted phrase that exists. A positive control caught
+  it, so the report used identifier searches only.
+
+### Changed (2026-09-24) — triage of the stale open `todo.md` rows outside the atlas roadmap
+
+The triage row named lines 654, 658, 830-844, 943 and 985. Rows inserted since then moved them by
++38, to 692, 696, 868-882, 981 and 1023, plus the optional rows 1405, 1409 and 1450. Each was
+checked against evidence. A row was ticked, box only, when the evidence showed it done.
+
+- **Ticked:**
+  - **P10, collaboration surface.** Its three deliverables shipped: the research note, the catalog
+    artifact v2 and the issue templates.
+  - **DGT diagnosis 2026-07-02.** Its four actionable gaps are closed. The watch items are notes,
+    not tasks.
+  - **The COMPONENTS.md stale-header follow-up.** The header no longer names v0.10.0, and a design
+    doc carries no version.
+  - **The criterion 3 "design the task first" row (Sprint 5).** The task was designed and frozen by
+    Amendment 8, and its in-process conditions ran.
+- **Kept open, with the reason:**
+  - **Phase 5 frontier (692):** an open research program.
+  - **The 2026-07-04 "NEXT" block (696):** BE-21 is confronted, but BE-53 is not.
+  - **be-16 and be-38 (868, 878):** no confrontation exists; one is data-pending and one is
+    contingent.
+  - **be-23 (873):** the aggregate is confronted, but the per-material table upgrade is not done.
+  - **be-12 (882):** a recorded design-time deferral, not unfinished work.
+  - **Canonical name unification (1405):** still valid. It is the naming gap that criterion 3
+    exposed, and it must wait: changing canonical entries now would break the frozen study's
+    registry check.
+  - **Symbolic forms (1450):** future work.
+  - **The optional mathts peers (50):** all its children are done, but the row itself asks for a
+    future alignment release.
+
+### Fixed (2026-09-24) — BE-48 credits the linear law to GRW, not CSL (F2); the BE-35 spec sum rule follows Rattazzi et al.
+
+- **BE-48 (census finding F2).** The name said "(CSL extension)" and the context said "GRW / CSL",
+  crediting the linear mass law `λ_0 (m/m_0)` to CSL. Bassi & Ghirardi 2003 derive it for GRW/QMSL,
+  as the centre-of-mass amplification `λ_macro = N λ_micro` (§6.4). They give CSL a different
+  macroscopic rate, `γ D_0 n_out` (§8.3).
+  - The name is now "GRW mass-amplified localization rate", and the context credits §6.4 and states
+    the CSL rate from §8.3.
+  - The module docstring stops crediting Ghirardi, Pearle & Rimini 1990 with "rate λ ∝ m/m_0".
+    Pearle 1989 is marked not seen, as in `references[]`.
+  - A correction is appended to the history `notes`, and the spec BE-48 section gains a
+    "Corrected on 2026-09-24" block.
+  - The name was not verbatim spec text: the spec heading is "Objective Collapse Equation (GRW
+    extension)". `docs/architecture/bridge-coverage-audit.md` is a dated historical snapshot and
+    keeps its old wording.
+- **BE-35 spec sum rule (Mothership's ruling).** The spec showed `Σ (C12 C34 − C13 C24) F = 0` and
+  called F "conformal blocks". That is not Rattazzi et al.'s form. The section now gives their
+  eq. 4.4 (g = 1 + Σ λ_O² g_O), their eq. 4.3 (the crossing equation BE-35 encodes), and their eq.
+  4.5, the sum rule `1 = Σ p F` with `p = λ_O² > 0` and `F = (v^Δφ g(u,v) − u^Δφ g(v,u)) / (u^Δφ − v^Δφ)`.
+  F is a crossing combination of one block. The BE-35 correction block now records the rewrite.
+- No number, unit system or relation type changed. `data/bridge-catalog.json` is regenerated.
+
+### Added (2026-09-24) — criterion 3 EXPLORATORY result: residual-form structural search (Amendment 9)
+
+The corrected condition ran after Amendment 9 (`dbd4e95`) was committed and its CI run was green
+(36035392889, 17:38Z). Before that, the runner refused to run without the Amendment 9 context. The
+result is reported in its own section of `docs/research/atlas-study-results.md`, labelled EXPLORATORY
+and POST HOC, beside the criterion and never in its place. Everything before that section, including
+the Amendment 8 results, regenerated byte for byte.
+
+- **PRIMARY (n = 50):** 12/50 = 24.0% [14.3%, 37.4%], the same as the pinned typed search. It is 0/30
+  on the in-distribution families and 12/20 on fluid statics.
+- **SECONDARY (n = 64):** 14/64 = 21.9%, one hit fewer than pinned (15). The residual adds the target
+  symbol, which moved one symbol-overlap tie.
+- **Instrument facts:**
+  - structural keys now match in 4 of 11,125 pairs, where the pinned search had 0;
+  - 4 of the 12 hits are placed by a key match (q-072, q-082, q-105, q-107), and the rest by symbol
+    overlap;
+  - one hit (q-043) is still an id tie-break;
+  - a separate check found that all 4 key-equal pairs are correct references, so the structural
+    tier is precise when it fires.
+- **What it means:** the representation mismatch is fixed, and it was not the main reason for the
+  misses. The claims restate or misuse their relation in forms that differ from the canonical
+  formula (extra terms, different factors, derived quantities), and no structural key equates those.
+  The naming gap stays a stated limitation.
+
+### Added (2026-09-24) — residual form for canonical entries; Amendment 9 registers an EXPLORATORY condition
+
+The criterion 3 in-process run found that typed structural search never matched on structure. It had
+0 key equalities in 11,125 pairs, because a claim is stored as `lhs − rhs` and a canonical entry as one
+target's right-hand side. Mothership ruled that this is a product defect to fix in code, and that the
+corrected condition may run only as EXPLORATORY and POST HOC, registered before it runs.
+
+- **Fixed in code: `canonicalResidual` (`src/canonical/residual.ts`)** returns `target − scalarAst`, the
+  form a claim is compared in. It was test-first: a residual claim `F − m·a` first fails to key-match
+  `CE-newton-second-law`, then matches in residual form. A control (`F − m·v`) still does not match,
+  and all 89 canonical residuals pass the dimension validator. The product's typed search switches to
+  it after the study closes (filed in `todo.md`), because the Amendment 8 pins are live until then.
+  No symbol-alias map was added: the naming gap is a stated limitation.
+- **`tools/criterion3-study/residual-corpus.ts`** puts the frozen corpus in residual form. It refuses
+  to run unless each frozen expression equals the registry's `scalarAst`, so the targets come from
+  the same registry. All 89 match.
+- **Amendment 9** (`docs/research/atlas-benchmark-preregistration.md`) registers the corrected
+  condition as POST HOC and EXPLORATORY. It keeps the same truth sets, pool and metric, and pins the
+  two files above by git blob id. The criterion verdict stays on the conditions as pinned in
+  Amendment 8, and the corrected result is reported beside it, never in its place.
+- **`run.ts` reads each amendment's own section (`amendmentSection`).** Before, it read from
+  "Amendment 8" to the end of the file, so Amendment 9's pins would have been taken as Amendment 8's.
+  The exploratory condition runs only when Amendment 9 is present, its pins match, and its commit and
+  CI are given. Before Amendment 9, the refactored runner reproduced the committed Amendment 8 results
+  byte for byte.
+
+### Added (2026-09-24) — criterion 3 step 4: the in-process retrieval conditions, INTERIM
+
+Amendment 8 (`d99dcc9`) was committed, and its CI run was green (36028162207, 16:36Z), before any
+condition ran. The three in-process conditions then ran on the frozen inputs. There is no criterion
+verdict yet: criterion 3 compares typed structural search with EMBEDDINGS, and the embedding condition
+waits for LLMBench.
+
+- **New `tools/criterion3-study/run.ts` (`bun run atlas:c3-run -- --write`).** It refuses to run unless
+  every file hash and pinned code blob in Amendment 8 matches the tree; a tampered `truth.json` was
+  refused. It counts the hits directly AND through `recallAtK`, and throws if they disagree. It records
+  each query's first-correct rank. `scripts/run-atlas-study.mjs` now includes the criterion 3 section in
+  `docs/research/atlas-study-results.md`, and the regenerated criterion 2 and ablation output is
+  byte-identical to the committed file.
+- **PRIMARY (n = 50), recall@10:**
+  - text retrieval 34/50 = 68.0% [54.2%, 79.2%];
+  - symbol matching 12/50 = 24.0% [14.3%, 37.4%];
+  - typed structural search 12/50 = 24.0% [14.3%, 37.4%].
+
+  In-distribution families (n = 30): text 66.7%, and both expression conditions 0/30. Fluid statics,
+  held out (n = 20): text 70.0%, both expression conditions 60.0%.
+- **SECONDARY (n = 64):** text 71.9%; symbol matching and typed structural search both 23.4%.
+- **Instrument facts, computed by the runner:**
+  - the typed structural tier NEVER fired (0 of 11,125 key equalities), so typed search reduces to its
+    symbol tie-break, which is why it equals symbol matching;
+  - 123/125 queries are `lhs − rhs` residuals, while a canonical `scalarAst` is one target's right-hand
+    side, so their normal forms cannot be equal;
+  - symbol names follow different conventions (physics notation against descriptive names);
+  - 17 of 50 truth queries have no correct reference with an expression;
+  - all 12 expression-condition hits are fluid statics. 11 of them rest on the one shared name `g`,
+    and 1 is an id tie-break.
+
+  The pinned conditions are not changed after the results. A corrected structural condition would need
+  its own amendment, and would be exploratory.
+- NOTES.md and the ROADMAP §7 Phase 6 row record the interim state. `TOOLS.md` records the lesson: a
+  tier that never fires hides behind its tie-break.
+
+### Added (2026-09-24) — criterion 3 step 3: pre-registration Amendment 8 freezes the labels and the scoring
+
+Criterion 3 must be frozen before any condition runs. Mothership returned the two blind labelers'
+files, and this commit records them. No retrieval condition has run.
+
+- **Amendment 8** (`docs/research/atlas-benchmark-preregistration.md`) registers:
+  - the task, the corpus (107 entries at `c144150`), the 125 queries with opaque ids, and MODEL labels
+    from two blind `claude-opus-5-5` labelers whose tool calls Mothership audited;
+  - agreement: exact 99/125 = 0.792, mean Jaccard 0.847 (0.748 without the both-"none" queries);
+  - PRIMARY truth: the 50 exact-agreement non-empty queries;
+  - SECONDARY truth: PRIMARY plus the 14 partial overlaps, with the truth their intersection
+    (n = 64). Excluded: 26 contested and 49 both-"none";
+  - the in-process conditions, pinned by git blob ids of the ranking and scoring code;
+  - the embedding rule (local model, frozen vectors, registered in a later amendment);
+  - scoring (recall@10, Wilson 95%, per family, fluid statics separately), and the criterion's pool:
+    PRIMARY over all families.
+- **Disclosures in the amendment:**
+  - the power at n = 50 is about ±0.109, wider than the design's ±0.07;
+  - 49 of 125 claims have no registry counterpart (19 of them diffusion);
+  - fluid statics, the held-out family, is 20 of the 50 PRIMARY queries;
+  - the 3 "valid" hits are all valid items;
+  - the opaque ids and seeded order.
+- **Frozen under `docs/research/criterion3/`:** the three label files byte for byte and the derived
+  `truth.json`, with the SHA-256 of all seven files in the amendment. The labeler files arrive with
+  CRLF line ends and their hash is of those bytes. `.gitattributes` therefore stores them with no
+  line-end conversion, and the test hashes raw bytes.
+- **New `tools/criterion3-study/labels.ts` (`bun run atlas:c3-labels`)** derives the truth sets.
+  `tests/tools/criterion3-labels.test.ts`:
+  - binds every amendment hash to its file;
+  - re-derives `truth.json` and the counts;
+  - checks that PRIMARY equals Mothership's agreed labels, and that SECONDARY uses the
+    intersection;
+  - fails on a missing label, an unknown id, or a changed label.
+
+  A changed truth file and a changed amendment hash each fail it.
+
+### Deprecated (2026-09-24) — `BridgeEquations.crossingResidual` is physically WRONG; removal in 0.47.0
+
+- `BridgeEquations.crossingResidual` (`evaluateCrossingResidual`) and its ASTs (`BE35_CROSSING_RESIDUAL_RHS`,
+  `BE35_FORWARD_BLOCK`, `BE35_CROSSED_BLOCK`) do not state crossing symmetry. They have no
+  `v^Δφ` / `u^Δφ` prefactors and describe one conformal block. A zero from them is not evidence of
+  crossing, so the evaluator tests nothing. Use `BridgeEquations.crossingEquation`.
+- They stay, deprecated, in the next release (0.46.0) to give consumers one release of notice. **They
+  are removed in the release after it (0.47.0).** If the next release is numbered differently, they
+  are removed in the release that follows it. (Mothership's ruling, 2026-09-24; UPT is 0.x, so a
+  minor release may break.)
+
+### Fixed (2026-09-24) — BE-35 encodes the crossing equation, not a single-block residual (census finding F1)
+
+BE-35's encoded relation was `R = C²·[g_block(u,v) − g_block(v,u)]`. That form has no `v^Δφ` / `u^Δφ`
+prefactors and is written for ONE conformal block. Neither is crossing symmetric. Its stated check,
+"identically zero at the crossing-symmetric point u = v = 1/4", holds for ANY function at u = v, so it
+tested nothing.
+
+- **Added:** `BE35_CROSSING_EQUATION_RHS` and `evaluateCrossingEquation`
+  (`BridgeEquations.crossingEquation`) compute `v^Δφ·g(u,v) − u^Δφ·g(v,u)`. This is the crossing
+  equation for four identical scalars (Rattazzi et al. 2008, eq. 4.3), with `g` the full reduced
+  four-point function `1 + Σ λ_O² g_O` (their eq. 4.4). The equation is now the RHS registered for
+  BE-35. The dimension is unchanged (`[1]`).
+- **Test instrument:** the generalized free field `g = 1 + u^Δ + (u/v)^Δ` satisfies the equation
+  exactly at every point off `u = v`. Dropping one term breaks it (a control that fails). A mutation
+  that removes the prefactors, which is the F1 defect, fails the test. A test that passed
+  vacuously (`undefined === undefined` before the evaluator existed) was hardened.
+- **Deprecated, not removed:** `evaluateCrossingResidual` and its ASTs stay, because
+  `BridgeEquations.crossingResidual` is public API. Removal is filed for a release.
+- **Updated to match:** the BE-35 `encoded_form`, a `known_issues` entry, and a correction in the
+  history `notes`. `docs/specification/Part-II.md` gains the AST pointer and a
+  "Corrected on 2026-09-24" block. That block also records that the spec's own sum rule is not the
+  encoded relation: in Rattazzi et al. (eq. 4.5), `F` is a normalised crossing combination of one
+  block, not a block.
+- **Review:** Adam (OpenAI) and Eve (Gemini) marked all 9 physics claims correct. Eve also noted that
+  the `x1 ↔ x2` constraint (eq. 4.2) is not encoded; per Rattazzi et al. §4 it holds automatically for
+  an even-spin expansion, and the module's scope notes now say so.
+- **Code-docs:** two input types had no summary line (one new, one preexisting). Both are fixed, and
+  the ratchet baseline drops from 155 to 154. A preexisting unused import in the BE-35 test is
+  removed.
+
+### Added (2026-09-24) — criterion 3 step 1: the blind-labeler inputs, frozen
+
+Pre-registration criterion 3 (recall@10, typed structural search against embeddings) was not run:
+the set had no reference corpus and no atlas-blind label per item. Mothership's design
+(`Dropbox/_fleet/specs/2026-09-24-upt-criterion3-design.md`) supplies both. Step 1 builds the two
+inputs that two blind model labelers receive. The labelers work outside this repository, because
+this session has read `src/atlas/` and must not label.
+
+- **New tool `tools/criterion3-export/` (`bun run atlas:c3-export`).** It writes
+  `docs/research/criterion3/`:
+  - `corpus.json`: the 107 canonical L-layer entries, pinned at `c144150`. The text is the name,
+    domain and assumptions; `expr` is the `scalarAst`, present for 89 entries. It leaves out
+    `partnerBridges`, `restatesBridge` and `model`.
+  - `queries.json`: the 125 frozen items. The text is the premises and the conclusion; `expr` is the
+    item's `expr`. It leaves out the verdict and answer fields.
+  - `leakage-report.md` and `freeze.json`, with the SHA-256 of each file.
+- **The item ids and the file order carried the verdict.** In 7 of the 8 authoring batches, items
+  01-08 are valid and the rest invalid. So the queries get opaque ids `q-001`… in the order of
+  SHA-256(seed + item id). `queries-key.json` maps the ids back to the items. It stays in the
+  repository and is not given to the labelers.
+- **Leakage:** 0 hits for atlas bridge, model or rejection ids, `BE-` ids and item ids. A control
+  string found all 6 planted tokens. There are 10 verdict-word hits, all in query texts ("valid
+  for ...", "independent of ...", "rotating-wave approximation"). The report lists each one for
+  review.
+- **The export refuses a tree whose inputs differ from HEAD,** so the recorded pin is true. The
+  frozen files are LF in the working tree (`.gitattributes`), so a plain `sha256sum` agrees with the
+  freeze.
+- **Tests:** `tests/tools/criterion3-export.test.ts` covers the exclusions, the opaque ids and
+  order, the scanner (including inputs it must flag), and the frozen files against their hashes and
+  a fresh export. Four mutations (atlas fields put back into the corpus text, real item ids kept, a
+  case-insensitive `BE` pattern, one byte of the frozen corpus changed) each fail the tests.
+- Copied to `Dropbox/_fleet/c3/` for Mothership (the key is not copied). No labels, conditions or
+  amendment: those are steps 2-5.
+
+### Added (2026-09-24) — mechanical citation quote check; Phase 1 "zero fabricated assumptions" MET
+
+Mothership ruled that the citation census alone could not support MET. Most final texts carried one
+OK from one judgement pass, and pass 2 had approved three texts that pass 3 rejected. The ruling asked
+for a pass of a different kind: exact string matches, with no re-judging of wording.
+
+- **New tool `tools/citation-quote-check/` (`bun run atlas:quote-check`).** It checks every quoted
+  span and every page, equation or section locator in `docs/research/phase-1-citation-claims.json`
+  against the downloaded sources, which are pinned by SHA-256. It uses pdftotext and tesseract. An
+  equation label counts only as the last token of its line, not after "Eq." or "Gl.", and near an
+  anchor from that equation. Extraction found a bibliography "(4)" and a line-final "Eq. (1)", and
+  either would otherwise have passed as a label. A claimed page must show its printed number. Every
+  span, label anchor and order span has a negative control: the longest word reversed must not match.
+- **CI:** `tests/tools/citation-quote-check.test.ts` checks the matcher and the grading logic. It
+  checks that every quote and locator of the 15 comments has a claim, with a paired input that must
+  fail. It checks that the captured output came from the current manifest AND the current checker
+  code. Mutation tests confirmed that the tests catch removal of the "Eq." exclusion, a label counted
+  anywhere in its line, and a REFERENCED fallback that ignores the page.
+- **A model code review found 6 defects before the recorded run.** All are fixed. The most serious
+  let a REFERENCED grade ignore the claimed page. The others were no control for order checks, an
+  English-only reference exclusion, a double decode of HTML entities, no unit tests for the grading,
+  and a captured output that CI could not tie to the code.
+- **Result: PASS.** 43 MATCH, 6 SNIPPET-ONLY (BE-11), 2 REFERENCED (Shapiro's unreadable label (1)),
+  1 BOT-WALL (von Klitzing eq. 4, behind the APS bot check), 1 UNREAD (C6). All 44 controls held.
+  Every quoted span matches.
+- **Phase 1 "zero fabricated assumptions" is recorded MET** by Mothership's ruling (ROADMAP §7,
+  `docs/research/phase-1-citation-check.md`). BE-11 (snippet access), C6, and the two unconfirmed
+  equation numbers are disclosed by name. The owner has a two-item browser list.
+- `TOOLS.md` and `WORKFLOWS.md` state how to run the check and what to do when a `// source:` comment
+  changes.
+
+### Fixed (2026-09-24) — citation census: all 15 `// source:` comments checked against their sources
+
+Mothership ordered the other 9 comments checked, with every overclaimed attribution fixed. The sample
+had found 5 of 6 overclaiming. Four model passes with source access (Opus) and a final reading by the
+author checked all 15 until no overclaim remained (`docs/research/phase-1-citation-check.md`).
+
+- **Every pass found the same defect in the previous pass's rewrites:** a paraphrase that added a word
+  the source did not use. Pass 2 found 5, pass 3 found 4 (2 in the sample's own fixes), pass 4 found 1
+  (in text that pass 3 had proposed). The loop converged once each comment quoted its source verbatim,
+  with a page or equation, and labelled the rest as this repository's.
+- **Fixed comments:** BE-11, BE-21, BE-35, BE-37, BE-48, BE-51, BE-52, BE-55 (both), BE-58 (both),
+  BE-59 (both). BE-35's overlay counterexample now quotes the registry reason verbatim, pinned by the
+  new `tests/bridges/overlay-registry-quote.test.ts` (RED before the fix). BE-35's transformation now
+  states the crossing relation with its prefactors.
+- **`references[]`:** BE-48 (the linear law is GRW/QMSL, review §6.4, not CSL), BE-51 (Einstein writes
+  2α/Δ), BE-52 (Carroll eq. 7.56 is the apsidal frequency). BE-48's `known_issues` sentence and the
+  BE-48 edge mirror in `catalog-tranche.ts` follow.
+- **Access is disclosed in the comments:** BE-11 (snippets only), BE-55 TKNN (abstract only), BE-59
+  Josephson 1962 (paywalled, not read).
+- **Result:** 0 overclaims remain; 13 checked; BE-11 on snippets only; C6 disclosed as unverifiable.
+  Whether that meets the Phase 1 criterion is Mothership's ruling (ROADMAP §7).
+- **Two findings filed, not fixed:** F1 (BE-35's encoded residual lacks the crossing prefactors) and F2
+  (BE-48's name and context credit the linear law to CSL).
+- No number, unit system or relation type changed. `data/bridge-catalog.json` is regenerated.
+
+### Fixed (2026-09-24) — citation comments that credited sources with the repository's own claims
+
+An Opus agent with source access checked a seeded random sample of 6 of the 15 `// source:` comments
+against the cited sources (`docs/research/phase-1-citation-check.md`). None was fully supported: 5
+were partial and 1 unverifiable. Each partial one stated the repository's own derivation, convention
+or classification as the source's statement.
+
+- **Fixed:** BE-11 (the "not a limit" label is ours; the book frames a weak-coupling limit), BE-21
+  (KSS state the SI value themselves and call the bound a conjecture), BE-52 (Einstein 1915 used
+  successive approximation, not the Schwarzschild solution; Carroll now cited as the lecture notes'
+  eq. 7.56 that was actually read; ~~its added gloss "states the result"~~ RETRACTED by the census: eq.
+  7.56 is the apsidal frequency ω_a, not Δφ per orbit), BE-55 (σ_xy = Ce²/h has the same form in Gaussian units; the SI
+  part is the values in ohms), BE-58 (~~Nyquist states no units~~ RETRACTED by the census: he states
+  frequency in "cycles per second", p. 112; the SI reading is ours).
+- **Outside the sample:** BE-51 cited p. 844, which is the field-equations paper; the deflection is
+  announced on p. 831. Corrected, and an unverified Carroll section number removed.
+- **Stand:** BE-59, whose paper is paywalled (consistent with Josephson's Nobel Lecture); the BE-21
+  name, which is verbatim spec text.
+- No record changes a number, unit system or relation type. `data/bridge-catalog.json` is regenerated
+  for the `references[]` changes. Checking the 9 unsampled comments is filed for Mothership.
+
+### Changed (2026-09-24) — Phase 0 physicist review closed by amendment (Amendment 7)
+
+Mothership ruled, under the owner's delegation, that a model-persona review does not satisfy
+"reviewed by an independent physicist". The criterion is recorded as NOT MEASURED (no human reviewer)
+in pre-registration Amendment 7, ROADMAP §7 and `NOTES.md`, with a pointer to the Fable review and its
+13 dispositions. The Phase 0 todo row and the review row are ticked as **closed by amendment, not
+met**: with Amendment 6 (curation cost), both of Phase 0's open criteria are now amended. No threshold,
+item, rater assignment or hash changes.
+
+### Added (2026-09-24) — Phase 0 persona findings D3, D5 and Q-b fixed with new witnesses; D8, Q-c, Q-d, Q-e stand
+
+- **W3b (isochrony) for the cubic-spring rejection.** The linear period is 2π at every amplitude;
+  the cubic spring's is not (6.22514 / 6.06066 / 5.51685 at A = 0.5 / 1 / 2, β x0²/k = 0.1). A
+  change of variables that rescales time by a constant scales every period alike, so no such change
+  makes the two exactly equivalent. The rejection's reason now says the surviving group is necessary,
+  not sufficient.
+- **W9b (the chain integrated) for chain→wave.** W9 compared two formulas; W9b integrates the chain
+  on a ring of 64 masses. The measured ω matches the lattice dispersion within 1e-9, the coarse error
+  matches (qa)²/24 within 1%, and superposition holds within 1e-10, which witnesses `linearity`. A
+  10% wrong κ and a cubic on-site force each fail it.
+- **Findings that stand, each with a test.** D8: the series horizon `4T0/θ0²` is shorter than the
+  exact π/2-drift time at every θ0 ≤ 0.5, so it is conservative. Q-c: over 170 ordered model pairs
+  no `findPath` route composes two bounded approximations, so no declared `K = 1` touches a composed
+  δ; a guard test fails when one does. Q-d and Q-e stand as documented in the review record.
+- Every finding of the review now has a disposition. `W3b` and `W9b` join the closed witness list.
+
+### Fixed (2026-09-24) — Phase 0 persona findings D1, D2, D4, D6, D7 and Q-a
+
+- **D2, a wrong number from a bound function.** `dampedOffsetBoundAt` returned `2(1+|v0|)m/b` for
+  any `b` and ignored `k` and `x0`; at `m = 1e-3, b = 1, k = 100`, inside the declared regime, the
+  true error is more than 20× that value. It now refuses (`Infinity`) outside `b = k = x0 = 1`, the
+  only normalisation the record declares, and requires `k` and `x0` like `v0`.
+- **D1.** `ab-spring-lc` and `ab-damped-rlc` claimed to preserve the "natural frequency"; the map
+  rescales time (W1a: ω_s = 2, ω_LC = 2√2). They now preserve it in units of ω0, and the
+  `transformation` states the composed map.
+- **D6.** The cubic-spring rejection listed `model-lc` as a premise and as the conclusion; a new
+  invariant over every family forbids that.
+- **Q-a.** W1b checked `x0·u/x0 = u` and could not fail. It now compares the inverse-mapped
+  trajectory with an independent integration of the dimensioned spring, with a 1%-wrong-ω0
+  negative control.
+- **D4, D7.** The error-algebra header now writes `f̃(x̃)`; the design note's composite bound is the
+  pendulum bridge's `(1, δ)`, not the series `θ0²/16`.
+- `data/atlas/*.json` regenerated (`bun run atlas:json`). Dispositions are in
+  `docs/research/phase-0-model-persona-review.md`.
+
+### Added (2026-09-24) — the Phase 0 model-persona review, recorded with its findings
+
+A Fable model instance, instructed as an independent, skeptical physicist (approved by Mothership),
+reviewed the Phase 0 pilot through the `CONTRIBUTING.md` review brief. It confirmed the physics of all
+six claims, recomputing every number, and found eight defects (D1-D8) and five qualifications. The
+review is recorded in `docs/research/phase-0-model-persona-review.md`, labelled "model-persona review
+(Fable), not a human physicist"; each finding has an open todo row and a disposition that is filled in
+as it lands. It does not satisfy the "independent physicist" criterion; Mothership ruled that the
+criterion is closed by amendment once every finding has a disposition.
+
+### Changed (2026-09-24) — three exit criteria AMENDED under the owner's delegation (Amendment 6)
+
+Mothership made three decisions on 2026-09-23 under the owner's delegation, because each criterion
+as written needs people the study does not have. They are recorded as pre-registration Amendment 6,
+in the ROADMAP §7 status rows for Phases 0, 4 and 5, and in `NOTES.md`. No threshold, item, rater
+assignment or hash changes; the frozen-set hash test still passes.
+
+- **κ:** the reported κ is MODEL agreement (0.984 / 0.978, two instances of one model). Human κ is
+  NOT MEASURED. The rater role is not filled with personas: two personas of one model family are not
+  independent raters.
+- **Criterion 5, practical value:** NOT MEASURED (no human participants).
+- **Curation cost per bridge (Phases 0 and 4, criterion 6):** NOT MEASURED; the MODEL cost,
+  USD 19.34 for the set, is the reported cost and is labelled as such.
+- **Closed by amendment, not done:** the Sprint 5 row that asked for independent human authors and
+  two named κ raters. No human authored or rated an item.
+
+### Fixed (2026-09-24) — "three classic tests" named the wrong three; the `'rank-3-lower'` tag explained
+
+- **Physics wording.** The GR evidence spine is perihelion (BE-52), light deflection (BE-51) and
+  Shapiro delay (BE-37). Four documents called these "the three classic tests of general
+  relativity". The classic three are perihelion, light deflection and gravitational redshift;
+  Shapiro delay is the fourth, and redshift is not in the spine. Fixed in the Phase 2 exit criterion
+  (`ROADMAP.md`, wording only; the criterion's tests are unchanged), `OVERVIEW.md` and
+  `docs/research/README.md`. The dated `docs/research/pi-instrument-results.md` keeps its original
+  sentence under a visible correction note.
+- **`'rank-3-lower'`.** The tag on the `@public` `CURVATURE_KIND_REGISTRY` entry for the Bianchi
+  residual is not renamed (public surface). Its doc comment now says what it means: B_{λμνρσ} has
+  five lower indices, and the "3" counts the cyclic terms over (λ, μ, ν).
+
+### Added (2026-09-24) — a second control for the formalRef gate: a hole inside an imported module
+
+`HoleProbe.lean` has its `sorry` in the probe file, so it showed only that the gate sees a hole in
+the file it runs. Every probed Physlib theorem is reached through an import of a compiled module.
+
+- **The control.** `formal/physlib/UptImportedHole.lean` is a `module` file with `@[expose] public
+  section`, the form of every Physlib file, and proves `(1 : Nat) = 2` with `sorry`. The gate
+  compiles it into the checkout's build directory; the compiler writes the same set of files as for
+  a Physlib module (`.olean`, `.olean.private`, `.olean.server`, `.ilean`, `.ir`).
+  `ImportedHoleProbe.lean` imports it, and the gate fails unless `#print axioms` reports `sorryAx`.
+- **What it shows, from the Lean source** (`Lean/Util/CollectAxioms.lean`): for an imported theorem,
+  `#print axioms` reads an axiom list that Lean stores in the `.olean` when it writes the file; it
+  does not walk the proof. The control shows that the stored list carries `sorryAx` for a hole. It
+  does not check how the Physlib `.olean` files were built.
+- **A failed compile fails the gate.** The gate deletes the module's old output first and requires
+  exit 0 and a written `.olean`, so the control cannot pass on an `.olean` left by an earlier run.
+- **Proof.** CI: 25 tests on the captured output, including the new control, an import error, and
+  the compile check (`compileProblem`). A mutant that disables the new check turns exactly its test
+  red. Live at the pinned checkout: the imported module proven by `rfl` (statement `(1 : Nat) = 1`)
+  FAILS the control; a module that does not compile FAILS with the compiler's message although a
+  good `.olean` from an earlier run was present; the committed probes PASS.
+- **Corrected in review:** the first version was not a `module` file, ignored the compile's exit
+  status (a stale `.olean` would have passed), and its README named the wrong limit (`lean -o`
+  against `lake build`; `lake build` runs `lean -o` too). `TOOLS.md` and `WORKFLOWS.md` now name both
+  controls.
+
+### Fixed (2026-09-24) — untracked files can no longer reach a gate or a generated doc
+
+An untracked `tests/tmp/differential.test.ts` failed the pre-push typecheck, and `bun run
+docs:deps` recorded it in the committed test-coverage docs. Both read the working tree, not the
+commit. Two root fixes:
+
+- **The generator reads the git index.** `tools/create-dependency-graph/tracked-files.ts` lists
+  `git ls-files`, and the generator's two directory walkers keep only those files. It fails loudly
+  outside a git work tree rather than fall back to the disk. A new file is included once staged
+  (`git add` or `git add -N`); `TOOLS.md` says so. Live proof: with a stray
+  `tests/tmp/stray.test.ts` present, `docs:deps` changed no generated file; before the fix the same
+  kind of stray moved the test-file count from 440 to 441.
+- **The pre-push gates judge exactly HEAD.** The hook now refuses (1) a push whose commit is not
+  HEAD, and (2) a working tree that differs from HEAD in any way (`tools/gate-inputs/gate-inputs.ts`,
+  the whole tree, gitignored files excepted). It then builds before the typecheck, because
+  `tsconfig.tests.json` reads types from the gitignored `dist/`, which CI builds first.
+- **Tests:** 16 on throwaway git repositories. Planted strays under `tools/`, `data/`, `bin/`,
+  `docs/specification/`, `formal/`, `scripts/`, the root, and an edited `NOTES.md` must each be
+  named. A mutant that restricts the check to the first path list tried (src, tests, bench, tools,
+  scripts) fails 7 of them.
+- **Corrected in review:** the first version gated a hand-kept list of paths, and its test compared
+  the list with a copy of itself, so it could not fail; the tests read `data/`, `bin/`, `docs/`,
+  `formal/` and `NOTES.md` too. The review also found the stale-`dist/` typecheck and that "the
+  pushed commit" was really HEAD.
+
+### Decided (2026-09-23) — no CI credential for the architecture-docs gate
+
+The owner decided, relayed by Mothership: no credential, no publish, and no copy of the private
+`skills` tooling into this repository. The architecture-docs gate (`repo_map.py check`) therefore
+stays in the pre-push hook only, and the architecture docs are updated by hand from the data of
+`tools/create-dependency-graph` until `repo-tools` replaces that tool. The todo row that waited on
+this decision is closed; the decision is recorded in `NOTES.md`.
+
+### Fixed (2026-09-23) — generated test-coverage docs recorded an untracked file
+
+The previous commit's `docs:deps` run recorded an UNTRACKED file, `tests/tmp/differential.test.ts`,
+in `test-coverage.json` (4 entries) and in `TEST_COVERAGE.md` (441 test files; the tracked tree has
+440). The file is a differential check for the merged PR #133; no session on this machine wrote it.
+It also broke the pre-push typecheck (TS2554), which is how it was found. It is moved, not deleted,
+to `%TEMP%\upt-stray-tests-tmp-20260923\` (SHA-256 prefix `5891139a`), and the docs are regenerated
+from the tracked tree. The root cause, that the generator and the test typecheck read untracked
+files, is filed in `todo.md`.
+
+### Fixed (2026-09-23) — source defects found by the architecture-docs audits
+
+Each item was re-checked against the source before the edit. An in-session Sonnet review (not
+human) confirmed all of them against the source and the built package.
+
+- **Raw NUL bytes in `src/composition/bridge-prediction.ts`.** The pair-key separator in `pairKey`
+  was two raw NUL bytes, present since the commit that created the file (`fcefdf3`). They are now
+  written as `\u0000`, the same character at run time. The raw bytes had two effects that no test
+  saw: grep printed "Binary file … matches" instead of the matching lines, and the `code-docs` gate
+  reported the file UNPARSED, so none of its exported symbols was ever checked. The file now parses
+  with 0 findings. A scan of all 1402 tracked text files found no other raw NUL, and the new test
+  `tests/internal/no-raw-nul.test.ts` (RED on the old tree, naming exactly this file) keeps it so.
+- **`src/numerical/lowering.ts`.** The doc comment for `lowerNode` ("Lower a validated ExprNode…
+  @internal") sat about 50 lines above the function, detached from it. It is now on `lowerNode`.
+- **`src/dimensional/ast-types.ts`.** `RicciTensorNode.riemann` said the "first two slots" are
+  contracted; `ricci()` contracts the upper index with the second lower index,
+  R_μν = R^λ_{μλν}.
+- **`src/dimensional/einstein-equation.ts`.** The example's stress-energy node used kind
+  `'stress-energy-tensor'`, a field `fluidType` that does not exist, and no `symbol`; it now matches
+  `StressEnergyTensorNode`.
+- **`src/numerical/klein-gordon.ts`.** Two examples imported
+  `universal-physics-tensor/numerical/klein-gordon`, which `package.json` does not export; both
+  functions are root exports.
+- **`src/bridges/index.ts`.** The module doc said 44 entries, 42 of them in
+  `EXPECTED_DIMENSION_BY_BRIDGE`, and `BridgeEquationEntry.id` said 11-50. Measured: 55 entries (IDs
+  11-65), all with a `dimensional_signature`; 53 in `EXPECTED_DIMENSION_BY_BRIDGE` (all but BE-51,
+  52); 42 with an AST (11-50, 53, 54).
+- **`bench/be37-eikonal.bench.ts`.** The header called the covariant evaluator a stub; it now
+  integrates with `integrateGeodesicGL4`.
+- **`code-docs` ratchet 157 -> 155.** Exactly two findings went away (the UNPARSED file and
+  `lowerNode`'s missing doc comment) and none appeared, compared file by file against HEAD.
+- **Withdrawn, not changed:** the filed claim that `curvature-composite.ts:31` ("rank-5 lower" for
+  the Bianchi residual) contradicts the registry. The comment is correct. The registry's tag
+  `'rank-3-lower'` is the misleading part, and lines 55-57 of the same file already say so. The tag
+  is on the `@public` `CURVATURE_KIND_REGISTRY`, so renaming it is a public-surface change; it is
+  reported to Mothership, not made here.
+
+### Added (2026-09-23) — the Physlib axiom probes and the formalRef axiom gate
+
+The one reviewed `formalRef` (`ab-pendulum-linear`) was checked with two Lean files that no repository
+held: `AxiomProbe.lean` (`#print axioms` over six Physlib theorems) and `HoleProbe.lean`, the positive
+control (a deliberate `sorry`). They sat untracked in a `%TEMP%` checkout, so a clone at the pinned
+commit could not restore them and the control could not be run again. EVO custody found and rescued
+them. They are now in `formal/physlib/`, byte-identical to the originals (SHA-256 checked), with the
+Lean output captured at the pin.
+
+- **The gate** (`tools/formalref-axiom-gate/gate.ts`, `bun run atlas:formal-gate -- --physlib
+  <checkout>`) checks the pin first, then runs both probes and fails when the control does not report
+  `sorryAx`, when a probed theorem is missing or depends on `sorryAx`, when a `lean4-physlib`
+  formalRef is not probed or records axioms other than the measured ones, or when there is nothing to
+  check. Lean exits 0 for a `sorry` proof, so the gate reads the printed axioms, never the exit code.
+  It needs Lean and a built Physlib checkout, so it does not run in CI; `formal/physlib/README.md`
+  gives the setup.
+- **Live proof at the pinned checkout:** the committed probes PASS (exit 0); AxiomProbe with an added
+  `sorry` theorem FAILS ("'gateHole' depends on sorryAx", exit 1); HoleProbe with its `sorry` replaced
+  by `rfl` FAILS ("positive control failed", exit 1).
+- **In CI:** 19 tests run the gate's judgement on the captured output. Mutants that remove the
+  `sorryAx` check or the control check each turn exactly one test red. Eight tests added after the
+  review fail against the first version of the gate.
+- **Corrected after review:** the gate did not check the Physlib pin, so a moved checkout would have
+  passed; names containing `'` were misread; an empty probe or reference list passed. All three now
+  fail. `captured/**` is LF in the working tree.
+- **Disclosed limit:** the control's `sorry` is in the probe file, so it does not show that the gate
+  detects a hole inside an imported module. Filed in `todo.md`.
+
+### Fixed (2026-09-23) — the captured flaky worker test, and five tests in the same race class
+
+`coverage-backfill.test.ts` "reports worker stderr on nonzero exit" failed the pre-push gate once:
+`expected 'worker timed out after 1000ms' to match /exited 2/`. Root cause: `runBackendWorker` arms
+its timeout when the launcher returns, so the worker's own start-up counts against the budget.
+Measured: `spawn()` returns in about 10 ms and the child then needs about 60 ms idle to boot and exit,
+but a bare `node -e` spawn took 843–4307 ms on the loaded host. The test raced a 1000 ms budget
+against that start-up. The product semantics (the budget includes start-up) are unchanged and are
+now stated in the JSDoc.
+
+- **Root fix, no number changed:** `runBackendWorker` takes an internal launcher seam, `opts.spawn`.
+  The test now drives a fake worker that exits on a microtask after stdin closes, so neither
+  start-up time nor the clock can decide the result. Two new tests cover the no-stderr exit and the
+  launch-error path, which no test covered before.
+- **Proof:** a `--require` preload that makes only the `node -e "process.exit(2)"` child sleep
+  1500 ms turns the OLD test RED with the exact captured message; the NEW tests pass under the same
+  preload. A mutant that drops stderr from the exit mapping turns the new stderr test RED.
+- **Same race, five siblings:** the real-worker tests in `backend.test.ts` (echo, rich, malformed;
+  5000 ms) and the pipeline tests in `coverage-backfill.test.ts` (echo, invalid; 3000 ms) raced the
+  same start-up. They test real NDJSON over real pipes, which a fake cannot, and the protocol has no
+  start-up signal, so they now use one shared hang guard, `REAL_WORKER_HANG_GUARD_MS` (30 s, below
+  vitest's 60 s), in `tests/composition/probe/worker-hang-guard.ts`, which names the variance
+  source. Proof: under a preload that delays only those worker scripts by 5.5 s (control: the echo
+  worker took 7016 ms under it, 858 ms without), HEAD's versions fail 5 of 5 and the new versions
+  pass 5 of 5. This is a deliberate widening for real-process tests only; the timeout test keeps
+  200 ms, which load cannot break. The two scoped files run in 2.19 s, unchanged.
+- **No Node types in the declarations:** the launcher is typed by local `WorkerProcess` /
+  `WorkerLauncher` interfaces, so no `.d.ts` in `dist` imports a `node:` module.
+- **Counts:** the new test module and the two exported types move the whole-repository figures to
+  847 files and 3011 exports (50 without an importer); the Verification tables are updated. The
+  `src/` figures from `docs:deps` are unchanged (348 files, 2450 exports).
+- **Instrument note:** the first sibling proof passed HEAD's tests because a shell heredoc turned the
+  preload's `[\\/]` into `[\/]`, so the gate never matched a Windows path. It was rewritten with a
+  file tool and given a positive control before the proof was trusted.
+
+### Changed (2026-09-23) — `COMPONENTS.md` in Simplified Technical English
+
+`COMPONENTS.md` is rewritten to STE, prose only, on top of its fact fix. `ste_check` reports 0
+findings (it had 76). `verify_rewrite.py` exits 0: every table row, code fence (including the module
+diagram) and heading is byte-identical, and the technical tokens are unchanged. Long enumerations
+became bullet lists. An in-session Sonnet review (not human) compared every changed sentence and
+FAILED two; both are fixed.
+
+- **Corrected after review:** the candidate funnel again says the 36 same-kind candidates are a subset
+  of the 98 that touch the anchored core (the rewrite had made them two independent counts). The
+  rewrite had added "directly" to "No module in `src/` calls `propagateUncertainty`", which implied an
+  indirect caller that does not exist; the word is removed.
+
+### Fixed (2026-09-23) — `COMPONENTS.md`: false claims corrected, release history moved out
+
+A read-only Opus audit reported about 230 claims checked, 38 false and 9 that it could not check
+(the audit report was a session artifact and is not kept in the repository). An Opus writer re-checked
+each claim against the source, and the built package under Node, before editing. A separate Opus
+review (in-session, not human) re-measured the result and FAILED four new sentences; all four are
+fixed, along with 13 minor points.
+
+- **Stale counts:** 19 data-confronted bridges (was 9), 22 CLI commands in 31 files (was 15 in 27),
+  71 `composition/` files (was 47), 55 catalog bridges with IDs 11–65 (was 44, 11–54), 47 bridges
+  without a canonical partner (was 36), 13 non-monomial entries (was 10), 0 type-only cycles (was 2).
+- **Wrong behaviour:** the per-bridge `evaluate*()` functions are synchronous and return a number;
+  only BE-37's eikonal path calls `evaluateNumerical`. `lowerCurvature` is a `switch` and never reads
+  `CURVATURE_KIND_REGISTRY`. `ricci` contracts R^λ_{μλν}. The BE-36 and BE-23 uncertainty
+  confrontations compute σ inline; no module in `src/` calls `propagateUncertainty`. The default
+  engine is `MathTSEngine` when both MathTS peers are installed. The KSS nullary edge is `be21Edge`.
+- **Wrong locations and signatures:** `ExprNode` (25 arms) and every tensor, curvature and equation
+  node type are declared in `ast-types.ts`; the kinds are `stress-energy` and `einstein-equation`.
+  `NumericalInputs`, `evaluateMetricInverse`, `integrateGeodesic`, `integrateGeodesicGL4`,
+  `evaluateBE37CovariantEikonalNumerical`, `inferDimensionForBridge`, `christoffelFnFlat` and the
+  `MetricTensorNode` fields now match the source.
+- **Physics wording:** perihelion and light deflection are two of the three classic GR tests, and
+  Shapiro delay is the fourth. Mercury tests (2 + 2γ − β)/3, not β alone. The "~10⁻⁵ precision"
+  figure is removed: Mercury's σ/observed is about 1%.
+- **Omissions:** `atlas/` is in the module diagram; `B_WIEN_SI` is in the constant list.
+- **Stateless:** version labels, dates, task IDs and "now / since / as of" narratives are removed;
+  pointers to dated records keep their file names. A "Maintained by" line carrying a personal name is
+  removed under the no-personal-name rule for product docs.
+- **Retracted in review:** the first draft said `src/atlas/path-bound.ts` uses
+  `propagateUncertainty` (it names it only in a comment), that every metric closure returns a
+  `Float64Array` (`MetricClosure` and the `killing.ts` closures return `number[][]`), that every
+  `be-*.ts` module exports an LHS tree and an inputs interface (31 and 3 of 43 do), and that
+  `DEFERRED_EVALUATOR_REGISTRY` is tagged `@internal` (it has no tag).
+- **Filed, not fixed here:** an orphaned `@internal` doc comment in `lowering.ts`, and raw NUL bytes in
+  `bridge-prediction.ts` that make grep skip the file.
+
+### Changed (2026-09-23) — the five living docs in Simplified Technical English
+
+`PHYSICS_MAP.md`, `benchmarks.md`, `bridge-gradient-tutorial.md`, `intelligent-index-tutorial.md`
+and `archive/README.md` are rewritten to STE, prose only, on top of their fact fixes. `ste_check`
+reports 0 findings on each (it had 6, 23, 2, 3 and 3). `verify_rewrite.py` exits 0 on each, so every
+table row, code fence and heading is byte-identical and the technical tokens are unchanged. An
+in-session Sonnet review (not human) compared every changed sentence and found no change of meaning.
+
+- **Corrected after review:** the rewrite added an actor, "the writer", in three `benchmarks.md`
+  sentences that had no subject. The vitest bump now names its commit (`28f6f8b`), the 40%-threshold
+  sentence says the data cannot support the test, and the pair-iteration sentence says the design
+  rejected it.
+
+### Fixed (2026-09-23) — `PHYSICS_MAP.md` and `benchmarks.md` corrected against the source
+
+An Opus review (in-session, not human) re-ran every changed figure against the live CLI and the
+source and FAILED one passage, which is fixed.
+
+- **`PHYSICS_MAP.md`: the inline canonical map and every count were stale.** The Mermaid block is
+  regenerated from `upt map --source=canonical --format=mermaid` and matches it byte for byte. The
+  canonical layer is 107 laws: an 83-law core, two two-law clusters and 20 isolated laws (the text
+  said 82 and 17 over 103). `--source=both` is 148 edges over 40 components (was 144 over 37). A
+  bare `upt map` prints text; the graphic needs `--format`. The `--equation` example outputs are
+  replaced with live output. SVG output is now named. The v0.34–0.36 history notes are removed.
+- **`maps/*.dot` and `maps/*.svg` regenerated.** The catalog label reads 55-bridge (was 44). A second
+  regeneration gave identical bytes.
+- **`benchmarks.md`: five figures and descriptions were wrong.** τ_end is ≈ 4.83 ms (the text said
+  46.8). The RK4 comparison is 52.6 ms per 1000-step call, ≈ 0.053 ms/step (it said 52.6 ms/step).
+  The pre-BR-2 path called `christoffelFn` 4 times per step, 40 000 allocations at 10k steps (it
+  said 16 and 160 000). The BE-37 section now says its timings describe the old stub, which `src/`
+  replaced with a GL4 integration. The header no longer claims one machine and one date. The
+  removed Vitest `benchmarkTimeout` option is noted.
+- **Retracted in review:** the first draft said the measured post-BR-2 path reused one scratch
+  buffer. The run was at `6e34310` (2026-05-19); the scratch buffer arrived in `c2fc0fc`
+  (2026-06-22), which is not an ancestor (`git merge-base --is-ancestor` exit 1). The text now
+  attributes the speedup to flat allocation, not to reuse.
+- **Left for later (filed, not fixed here):** the header comment in `bench/be37-eikonal.bench.ts`
+  still describes the stub.
+
+### Fixed (2026-09-23) — the two tutorials and the archive README corrected against the source
+
+A read-only audit (Opus) of the living docs; an Opus review (in-session, not human) ran every new
+example and FAILED two passages, both fixed.
+
+- **`bridge-gradient-tutorial.md`: the walkthrough did not run.** It called `bridgeGradient` with a
+  `MathTSEngine`, which throws `NumericalBackendError` on the plain-JS catalog evaluators (engine AD
+  traces only engine ops). The walkthrough now uses `bridgeGradientNumerical` (verified output:
+  value 6.17e-8 K, gradient `{ M_kg: -3.10e-38 }`), and the doc names all four gradient functions,
+  including the exact-AD `bridgeGradientAST` / `bridgeGradientASTById` (which need the
+  `mathts-autograd` and `mathts-tensor` peers). The package specifier was wrong in both tutorials
+  (`@danielsimonjr/universal-physics-tensor`; the package is `universal-physics-tensor`), and a
+  see-also path now points into `archive/`.
+- **`intelligent-index-tutorial.md`:** `AxisMismatchError` names the shared index id and both
+  axes, not operand positions; release-labelled plans ("v0.8.0+") are stated as present fact.
+- **`archive/README.md`:** the v0.8/v0.9 records beside the archive are older release records, not
+  the current release (the package is at 0.45.x). The audit also called the "v0.4.x through v0.7.x"
+  range false; the review showed it is true (v0.4.5 … v0.7.2), so it stays.
+
+### Changed (2026-09-23) — `create-dependency-graph`: long export lists render as fenced blocks
+
+- **Why.** `DEPENDENCY_GRAPH.md`'s 13 Simplified-Technical-English findings were not prose: they were
+  generated identifier lists (`- Re-exports: …`, up to 517 words) that read as run-on sentences.
+  An identifier list is data, so the generator now renders any export list longer than
+  `LONG_EXPORT_LIST_THRESHOLD` (8) names as a wrapped `text` fence under its label; shorter lists
+  keep the inline form. `ste_check` on the file: 13 → 0. (The plan had said these findings came
+  from source doc comments; they did not.)
+- **No data changed, proven.** A names-only extraction of `DEPENDENCY_GRAPH.md` before and after is
+  identical: 637 lists, 2,790 names, same order; 29 lists became fences. Positive controls: a name
+  altered inside a fenced list and inside an inline list are both detected. `dependency-graph.json`,
+  `.yaml` and `dependency-summary.compact.json` are byte-unchanged.
+- A generated-format change for `repo-tools depgraph` to adopt (Mothership's approval, carried into
+  that spec).
+
+### Changed (2026-09-23) — `ARCHITECTURE.md` in Simplified Technical English, stateless
+
+- 44 STE findings fixed, prose only; `ste_check` reports 0. Long enumerations (the composition-layer
+  file list, the GR layers, the L1-sum tier, the curvature evaluators) became bullet lists with the
+  same items in the same order. Tables, fences and headings are byte-identical, and every technical
+  token is preserved (no allow-lists).
+- Written by an Opus subagent under those checks; reviewed independently by Sonnet (in-session, not
+  human), which FAILED one passage — "The kinds are ..." made a non-exhaustive list read as complete
+  — fixed to "The kinds include ...". All other passages PASS.
+
+### Fixed (2026-09-23) — two stale source comments found by the `ARCHITECTURE.md` audit
+
+Comments only.
+
+- `src/dimensional/validator.ts`: the module note said special-function arguments must be
+  dimensionless "but the validator does not yet enforce that". It does: a dimensioned
+  transcendental argument is an error-severity violation, and a tensor argument throws
+  `TensorInScalarOpError` (the `transcendental` arm).
+- `src/dimensional/metric.ts`: `derivativeStrategy: 'computed'` was documented as "engine
+  auto-differentiates the metric function (default)". The lowering treats a raw-tensor metric input
+  as constant (∂g = 0); metric closures in `inputs.fields` take the curvature paths, which
+  finite-difference them.
+
+### Fixed (2026-09-23) — `ARCHITECTURE.md`: 24 false claims corrected, release history moved out
+
+A read-only full-claim audit (Opus, about 190 claims) found 24 false; the load-bearing ones were
+re-checked by the session before editing.
+
+- **How the code works, which the doc had wrong:** per-bridge `evaluate*()` functions are plain JS
+  (only BE-37 goes through `evaluateNumerical`), and evaluator code is spread over `equations/`, two
+  closed-form modules and `bridges/be55…be65-*.ts`; `derivativeStrategy: 'computed'` makes the
+  lowering treat a raw-tensor metric as constant, not finite-difference it; the validator DOES check
+  valence homogeneity and dimensioned transcendental arguments; `FreeIndexMismatchError` and
+  `TensorInScalarOpError` throw out of `validate()` instead of accumulating; `ok` also requires an
+  inferred dimension; the reverse-mode tape is `EngineTape.backward()`; `bridgeGradient` is not
+  "analytic" for plain-JS bridges; `numerical/index.ts` does re-export `Float64ReferenceEngine`.
+- **Where things live:** `ExprNode` and the curvature/field-equation node types are declared in
+  `ast-types.ts`; `parsePhysics` is in `formula-registry.ts`; the union has four more arms than the
+  doc listed; `catalog-full.ts` is a barrel over four per-domain edge files; tests live in
+  `tests/dimensional/` and `tests/bridges/`, not `tests/unit/…`.
+- **Counts:** 55 catalog entries (not 44), 19 data-confronted bridges (not 9), `composition/` has 71
+  files (not 47), both cycle counts are 0 (not "two type-only cycles remain").
+- **History moved here from the doc:** the v0.9.0 / v0.10.0 / v0.11.0 milestone bullets, the
+  v0.28–v0.40 arc, and the per-row release labels (every present fact they carried is kept). The
+  suite snapshot the doc quoted — 3,700 passed / 4 skipped / 1 todo (3,705 tests) across 353 files,
+  98.5% file coverage (259/263) — is retired history: `TEST_COVERAGE.md` (generated) and `NOTES.md`
+  carry the current figures.
+- **Review:** an Opus review (in-session, not human) FAILED two corrections as first written:
+  more structural errors than two throw out of `validate()` (e.g. `IndexLabelCollisionError`), and
+  the stress-energy node kind is `'stress-energy'`, with all eleven curvature/equation kinds
+  dispatching through `validator-registry.ts`. It also caught an overclaim (five equation modules
+  have no `validate*Dimensions()` helper) and a dropped "contested". All fixed before commit.
+- Found by the same audit, filed for a separate commit: two stale source comments
+  (`validator.ts:10-11`, `metric.ts:35-39`).
+
+### Added (2026-09-23) — `checkKillingEquation`, a verdict on the relative Killing residual
+
+- `checkKillingEquation(killingFn, metricFn, christoffelAt, x, opts?)` returns
+  `{ residual, relativeResidual, withinTolerance }`: `residual` is exactly
+  `verifyKillingEquation`'s output, `relativeResidual = residual / max(max|g_μν(x)|, 1)` (the
+  normalization `evaluateEinsteinEquationResidual` uses), and `withinTolerance` is
+  `relativeResidual <= opts.tolerance` (default 1e-10). A non-finite or non-positive tolerance throws
+  `RangeError`. New public surface (function + `KillingEquationCheck`), so a MINOR bump when released.
+- **Why relative.** The residual is absolute, in the metric's units. With SI Schwarzschild
+  (g_tt ≈ −9e16) the exact time-translation Killing field leaves 2.44e-4 at 3 r_s and 3.05e-5 at
+  10 r_s (about 3e-21 relative), so an absolute 1e-10 default would call exact Killing fields
+  failing. All numbers were measured under vitest on Node; Bun's JavaScriptCore trig gave a
+  different value at one point, which the test file records.
+- Tests (`tests/numerical/killing-check.test.ts`, written first): exact ∂_t and ∂_φ pass at 3, 5, 10,
+  100 and 1000 r_s; `residual` equals `verifyKillingEquation`'s; pinned `verifyKillingEquation`
+  outputs are unchanged; a non-Killing field (ξ = ∂_r) fails the default and passes a looser
+  tolerance; a tighter tolerance fails a case the default passes; invalid tolerances throw. Mutating
+  the verdict back to the absolute residual turns 6 tests red.
+- Decision (ii) of four, by Mothership under the user's delegation; no independent human review.
+
+### Fixed (2026-09-23) — `KillingEquationOptions.tolerance` was documented but ignored
+
+- It said "Maximum tolerated residual ... Default 1e-10", but `verifyKillingEquation` never read it
+  and returned the raw residual. The option now documents that only `checkKillingEquation` reads it,
+  on the relative residual; `verifyKillingEquation` is byte-for-byte unchanged. The module doc's
+  "machine precision (~1e-15 or exact 0)" now says RELATIVE, with the measured absolute SI values.
+  `tests/numerical/killing-schwarzschild.test.ts` no longer passes `tolerance` to
+  `verifyKillingEquation`, which implied the option had an effect.
+- API.md, DATAFLOW.md and COMPONENTS.md describe the new function. The four gated
+  `totalExports` tables move 3004 → 3008, and the ungated `docs:deps` prose figures are re-measured
+  (2450 exports, 1232 re-exports; they had drifted across earlier commits).
+  The new test file moves the gated whole-repository `totalSourceFiles` 845 → 846 (tests 465 → 466).
+
+### Changed (2026-09-23) — `OVERVIEW.md` in Simplified Technical English, stateless
+
+- 14 STE findings fixed, prose only; `ste_check` reports 0. Two inline lists became bullet lists
+  with the same items in the same order. Tables, fences and headings are byte-identical, and every
+  technical token is preserved (one punctuation artifact of the checker's number pattern, `2,` →
+  `2`, is declared).
+- Sonnet review (in-session, not human): PASS on all 14 passages; its one cosmetic nit (a stray
+  space) is fixed.
+
+### Fixed (2026-09-23) — the CLI said "44-bridge"; the catalog holds 55, and the label is now derived
+
+- **User-visible:** `upt discover`, `candidates` and `map` printed `[source: catalog (44-bridge)]`. The
+  label is now `catalog (${BRIDGE_EQUATIONS.length}-bridge)`, so it prints `55-bridge` today and
+  cannot go stale when bridges are added. `src/cli-api.ts` gains `BRIDGE_EQUATIONS` for it (the
+  CLI reaches internals only through that barrel). Four CLI goldens change by exactly that banner
+  line; `tests/cli/graphs.test.ts` asserts the derived label (it failed first against the old one).
+- **The same stale count elsewhere,** removed rather than updated where a comment does not need a
+  number: `coverage.ts`, `canonical-graph.ts` (2), `proposed-bridges.ts` (2), `bridges/index.ts`,
+  `src/bridges/README.md`, `cli/README.md` (whose table also claimed "8 established + 36
+  speculative"; today 19 / 33 / 3), and `PHYSICS_MAP.md` / `bridge-gradient-tutorial.md` (55).
+- The new barrel export moves the gated `totalExports` 3003 → 3004 in four Verification tables.
+
+### Fixed (2026-09-23) — `OVERVIEW.md`: stale counts corrected, release history moved out
+
+A read-only full-claim audit (Opus, about 115 claims) found 11 false; the session re-checked each.
+
+- **Counts:** the catalog holds 55 bridges, not 44 (four places); the evidence spine is 19
+  confrontations (15 established, 4 speculative), not 9; the canonical L-layer holds 107 equations,
+  not 103; the North Stars list has four goals, not three.
+- **Capability:** symbolic composition and simplification exist
+  (`src/composition/compose-symbolic.ts`, `expr-simplify.ts`); the doc called them "eventual".
+- **History out of a design doc.** The `## Version History` section (v0.1–v0.40, about 135 lines) and
+  the release-by-release `## Roadmap` paragraph are replaced by `## History and plans`, a pointer to
+  this file, `ROADMAP.md`, `todo.md` and `docs/planning/`. Every version they named has an entry here,
+  and every measured figure they quoted is already here. Two of the audit's false claims lived in that
+  section and go with it: "two type-only cycles remain" (both cycle counts are 0) and "`discover`
+  defaults to `--source=both`" (it defaults to `catalog`; `map` and `connectors` default to `both`).
+  The one standing-status sentence (the physicist-review surfaces) moved to `NOTES.md`.
+- Found by the same audit, fixed separately: the CLI labels the catalog source `catalog (44-bridge)`.
+
+### Fixed (2026-09-23) — stale source doc comments found while fact-checking `docs/architecture/`
+
+Comments only; no code changes.
+
+- `src/numerical/gl4-integrator.ts`: the module header said it "ships types + Butcher constants
+  only" and that `integrateGeodesicGL4` "lands in Task 3"; the module holds the solver and the
+  integrator. `GL4Options` and the stage-result JSDoc said "lands in Task 3" / "the upcoming".
+- `src/numerical/perihelion-finder.ts`: the `findPerihelion` `@example` called
+  `integrateGeodesicGL4` with a signature that does not exist (`christoffelFn`, `x0`, `p0`,
+  `gl4.snapshots`). It now shows the real `(GL4State, GL4Options)` call and points to the full
+  setup in `tests/bridges/perihelion-precession.test.ts`.
+- `src/dimensional/bridge-check.ts`: `inferDimensionForBridge` said bridge ids run 11..50; they run
+  to 65.
+- `src/numerical/lowering.ts`: the `lowerCurvature` JSDoc said `CURVATURE_KIND_REGISTRY` supplies the
+  per-kind spec; the function never reads it.
+- `tests/bridges/dimensional-signature-catalog.test.ts`: the header said only BE-11 and BE-14 have
+  AST encodings; the test covers every entry of `BRIDGE_RHS_BY_ID` (42).
+
+### Fixed (2026-09-23) — `API.md`: `DuplicateCoordinateWarning` is not a `NumericalResult` warning
+
+- The entry said the warning "appears in `NumericalResult.warnings`". It never does: a
+  covariant-derivative coordinate collision throws `MetricSignatureError` by default, and validation
+  emits `DuplicateCoordinateWarning` through `process.emitWarning` only when
+  `UPT_ALLOW_COORD_SHADOW=1` (`src/dimensional/connection-validators.ts`; the class's own JSDoc in
+  `src/dimensional/errors.ts` already said so). The same error was fixed in `DATAFLOW.md`'s error
+  table; this is the sibling copy.
+
+### Changed (2026-09-23) — `API.md` in Simplified Technical English, stateless
+
+- 15 STE findings fixed (13 long sentences, 2 ambiguous references), prose only; `ste_check`
+  reports 0. Long inline lists (the `*_SI` constants, the 17 confrontation result types, the
+  `explainQuantity` and `describeGrounding` outputs) became bullet lists with the same items in the
+  same order. Tables, fences and headings are byte-identical, and every technical token is preserved.
+- Sonnet review (in-session, not human): PASS on all 14 changed passages.
+
+### Fixed (2026-09-23) — `DATAFLOW.md`: 18 more false claims corrected after a full-claim audit
+
+The first `DATAFLOW.md` fact fix checked only the lines it changed, and a claim it left alone (Flow 9's
+"failure bucket") turned out false. A read-only audit agent then checked about 150 claims against the
+source: 17 FALSE, 2 unverifiable. The session re-read every cited line before editing; all 17 held.
+With the Flow 9 item, 18 claims are corrected, and one unverifiable number is replaced by the module's
+own statement:
+
+- **Behaviour the doc had wrong:** a dimension mismatch in `+`/`-` is recorded as a Violation, not
+  thrown; the default engine is `MathTSEngine` when both MathTS peers are installed; `*`, `/`, `^` are
+  computed in JS, not by the engine; forward-mode AD runs once per input element; `lowerCurvature`
+  never reads `CURVATURE_KIND_REGISTRY`, and only Ricci and Einstein recurse; Λ is required; the
+  residual normalizes each component by `max(|g_μν|, 1)`; `verifyKillingEquation` takes exact
+  Christoffels, uses no finite differences by default, and never reads its `tolerance` option;
+  junction and dimension refusals in `enumerateCompositions` are skipped; nothing in `src/` calls
+  `propagateUncertainty`; `boundPath` has four gates (uniformity is the second);
+  `DuplicateCoordinateWarning` is not in `NumericalResult.warnings` (validation throws by default;
+  the process warning is opt-in through `UPT_ALLOW_COORD_SHADOW=1`).
+- **Names and scope:** the node kind is `'einstein-equation'`; every catalog entry has a
+  `dimensional_signature` string; `adjudicateCatalog` returns ids grouped by verdict; confrontations
+  include speculative bridges; the discovery verdict precedence is magnitude-clash > contradictory >
+  axis-clash, and `promising` also requires a non-subsuming identification.
+- **Review:** an Opus review (in-session, not human) FAILED three of the corrections as first
+  written: Einstein lowers an inner Ricci node (not the Riemann directly); `dMetricFn` still
+  finite-differences ∂ξ; the process warning is opt-in. All three are fixed, and a dropped but
+  true clause (signature = `format()` output for encoded entries, pinned by a test) is restored.
+- **Filed, not blessed:** the unread `KillingEquationOptions.tolerance` looks like a defect; it is a
+  code question for Mothership in `todo.md`, and the doc states current behaviour. The stale
+  `lowerCurvature` JSDoc is filed with the other source-JSDoc rows.
+
+### Added (2026-09-23) — `tools/create-dependency-graph`: opt-in API-surface report
+
+- **Why.** Checking `docs/architecture/` against the code meant hand-written greps for each
+  signature, `async` flag and stability tag, and two of those loops timed out. The generated data
+  had exports and imports per file but no signatures, tags or re-export-resolved surface.
+- **What.** A new, repository-neutral module `tools/create-dependency-graph/api-surface.ts`
+  (source-text scan; loader and resolver injected; no repo paths) and three opt-in flags:
+  `--api-surface=<file>`, `--api-entry=<path>` (default `src/index.ts`), `--stability-tags=a,b`.
+  Flags and the `schemaVersion: 1` output schema are in the tool README, for adoption by the shared
+  `repo-tools depgraph`.
+- **Additive, proven.** The standard outputs (`DEPENDENCY_GRAPH.md`, `dependency-graph.json` /
+  `.yaml`, `dependency-summary.compact.json`, `TEST_COVERAGE.md`, `test-coverage.json`) are
+  byte-identical to the unmodified tool's, both without the flag and with it (`cmp`, runs gated on
+  exit 0, rewrite confirmed by mtime).
+- **Verified against `dist`.** On this repository the report's runtime surface is exactly
+  `Object.keys(root)` (289 = 289, none missing either way), all 116 `ALL_TYPE_EXPORTS` appear as
+  type-only, and 0 specifiers are unresolved. That cross-check caught a defect before commit:
+  comments inside `export { … }` became part of a name and dropped 12 root exports (the same class
+  as the tool's earlier C-9 bug); names are now read from comment-masked text, with a test.
+- **Tests:** `tests/tools/api-surface.test.ts`, 20 tests, written first. Mutation-checked: a star
+  export carrying `default`, dropping the top-level (brace-depth) check, and prefix-matching tags
+  each turn a test red (the depth mutant survived the first draft; a case was added for it).
+- **Gated counts re-measured.** The two new files move the whole-repository `repo_map` counts:
+  `totalSourceFiles` 843 → 845 and `totalExports` 2990 → 3003, in the Verification tables of six
+  docs and the prose that restates them. `FILE_INVENTORY.md` drops its note that `repo_map` files
+  `tests/tools/plan-doc-audit.test.ts` in the `tools` zone: the upstream classifier fix now files
+  it as a test (tests 463 → 465 = that file + the new test; tools stays 13).
+
+### Fixed (2026-09-23) — `API.md` stale facts corrected against the source
+
+A fact-fix commit, kept separate from the Simplified Technical English pass. Every correction was
+measured against the current tree or `dist`:
+
+- **Wrong signatures and examples.** `evaluateGravitationalLensing` and
+  `evaluatePerihelionPrecession` are synchronous, take `M_kg`/`b_m` and `M_kg`/`a_m`/`e`/`T_yr`, and
+  return `alpha_rad` and `dphi_rad_per_orbit`; the doc showed `async` calls with other field
+  names. `inferDimensionForBridge` takes `(bridgeId, expr)`; `evaluateMetricInverse` takes
+  `(gInverse, g, inputs, tolerance?, options?)` and also returns `residualNorm`. The
+  `integrateGeodesic` example used inputs that do not exist; the GL4 and `findPerihelion` entries
+  had the same errors fixed in `DATAFLOW.md`.
+- **`enumerateCompositions` reports no failures.** Junction and dimension refusals are skipped
+  (`src/composition/enumerate.ts`); the doc promised "failures with attribution", and its example
+  read a `report.candidates` field that does not exist.
+- **Counts:** the catalog has 55 entries (ids 11–65), not 44 (11–54). The confrontation table had 9
+  rows; the registry holds 19, and the 10 missing rows (BE-55, 56, 58–65) are added. The constants
+  list gains `B_WIEN_SI`. The public-surface test counts (217 / 116 / 245) were stale — measured
+  218 / 116 / 289 — and are dropped for a pointer to the test.
+- **The header said** any symbol outside `EXPECTED_RUNTIME_EXPORTS` is `@internal`. The snapshot
+  pins all 289 root exports, 71 of them outside that list, so the sentence contradicted the tier
+  table. It now states what the test pins.
+- **Subpaths that do not exist.** "Exported via `numerical/killing`" (and five others) and
+  "reachable via the bridges subpath" named package subpaths that `package.json` does not export.
+  They now name the defining source file, and `isActiveStatus` is stated to be unreachable.
+- **History moved here from the doc:** the layers by release — connection v0.4.0, curvature v0.5.0
+  (the GR-foundations release), constants v0.5.1 (`M_SUN_SI` v0.8.0, `M_E_SI` v0.11), Killing /
+  field-equation / invariants v0.6.0, intelligent index v0.7.x, composition / membership / GW170817
+  v0.8.0 (BE-42 reversed to a bridge in its Phase-4 adjudication), calibration edges `be12Edge`,
+  `be11ZurekEdge`, `be37Edge` v0.9.0, the catalog-edge tranche v0.10.0, `CATALOG_FULL_EDGES`,
+  the namespacing gate, Klein-Gordon and BE-23 v0.11, symbolic composition v0.12, geometrized
+  adapters (G-9 increment 2), `BridgeEquations` and the axis-order extension v0.14, and the
+  discovery / confrontation program: BE-52 × Mercury v0.28.0, the adjudication ledger v0.31.0,
+  `rankDiscoveries` on the root v0.32.0, the unified registry, consequence propagation and
+  sensitivity v0.33.0, BE-51 v0.35.0, the grounding ledger and BE-21 v0.37.0, BE-35 v0.38.0,
+  BE-11 v0.39.0, the BE-36 one-sided `caveat` v0.40.0. The v0.9.0 Painlevé–Gullstrand
+  `Float64Array` migration was breaking only for deep importers of that module. The type table's
+  "Added" column (v0.1.0–v0.6.0 per type) and the confrontation table's "Added" column are
+  dropped.
+
+### ⚠ Stability promise tightened (2026-09-23) — no `@public-new` tier; those symbols are `@public`
+
+**What changes for a consumer.** `docs/architecture/API.md` labelled about 60 exports `@public-new`,
+a tier it described as "may be adjusted in a subsequent minor release". Those exports are now
+documented as `@public`: **a breaking change to any of them requires a major-version bump.** This
+tightens the promise; no code changed behaviour, and no consumer can break from it.
+
+- **Why.** The source never carried the tier: `@public-new` appears 0 times in `src/` and
+  `git log -S'@public-new' -- src` is empty, while 528 doc blocks say `@public`. The doc had
+  published a looser contract than the code declares, and nothing enforced it. The
+  `@public-new` row of the tier table and its "rolling tier" paragraph are removed.
+- **Source aligned in the same commit.** 12 of those exports had no stability tag at all:
+  `christoffel`, `validateKretschmannScalar`, and the types `CovariantDerivativeNode`,
+  `RicciTensorNode`, `EinsteinTensorNode`, `BianchiResidualNode`, `KretschmannScalarNode`,
+  `EinsteinFieldEquationNode`, `GravitationalLensingInputs`, `GravitationalLensingResult`,
+  `PerihelionPrecessionInputs`, `PerihelionPrecessionResult`. Each now carries `@public`; the 10
+  types also gain a one-line summary. The code-docs ratchet falls 167 → 157.
+- **Who decided.** An ADR-level call made by Mothership, the lead, under the user's delegation
+  (option (a) of three). No independent human reviewed it.
+
+### Changed (2026-09-23) — `DATAFLOW.md` in Simplified Technical English, stateless
+
+- 14 STE findings fixed (10 long sentences, 3 ambiguous references, 1 passive), prose only.
+  `ste_check` reports 0 for the file. Tables, fences, diagrams, headings and the Verification
+  block are byte-identical to the fact-fix commit before it, and every technical token is
+  preserved, with no removals or additions.
+- A Fable panel review (in-session, not human) FAILED one of 10 changes. It had moved `bin/upt.mjs`
+  in front of the verb, so the appositive "a launcher that loads..." attached to `src/cli/main.ts`
+  and read as false. Fixed as two sentences; the re-review PASSED all 10.
+
+### Fixed (2026-09-23) — `DATAFLOW.md` stale facts corrected against the source
+
+A fact-fix commit, kept separate from the Simplified Technical English pass so that each commit
+carries one kind of change. Every correction was measured against the current tree or `dist`:
+
+- **Flow 5 (geodesic integration) described an API that does not exist.** The RK4 input bundle
+  named `dτ` and `nSteps`; the real inputs are `tauStart`, `tauEnd`, `steps` and an optional
+  `domainMinRadius`, and `christoffelFn` returns a flat `Float64Array(64)`. The result is
+  `{ xFinal, vFinal, trajectory }`, with positions sampled about 100 times, not `nSteps + 1`
+  `{ x, v }` records. The GL4 path does not take the RK4 shape: it works on the canonical state
+  (x, p) with `gInverseFn` / `dgInverseFn` and returns `GL4Snapshot[]`. `findPerihelion` reads
+  `(tau, x, p)` snapshots, so an RK4 trajectory cannot feed it. "Energy-conserving" is dropped:
+  a symplectic method bounds energy drift, and the source never claims conservation.
+- **Flow 3:** "no symbolic-tree differentiation" was false since `bridgeGradientAST`
+  (`src/diff/bridge-ast-gradient.ts`); and `derivativeStrategy: 'computed'` lowers ∂g to zero,
+  not through finite differences (`src/numerical/derivative-lowering.ts`).
+- **Flow 4:** catalog ids run 11–65, not 11–54.
+- **Flow 10:** the confrontation registry holds 19 entries, not 9. The doc now points to
+  `listConfrontations()` instead of carrying a count that no gate holds.
+- **History moved here from the doc** (it had carried it as present fact):
+  - Enumeration over the 15-edge graph (v0.10.0): 6 valid, 4 registered, 2 novel. Over the
+    41-edge graph (v0.11): 11 compositions, 7 novel, 1 collision held at the gate. Re-measured
+    2026-09-23 on the 41-edge graph: 11 compositions, 4 registered, 7 novel, 1 requiring a
+    disposition — unchanged.
+  - The flow and gate labels: Flow 8 v0.8.0 → v0.11, Flow 9 v0.10.0, the alias gate v0.11
+    (Option D), the adjudication overlay v0.31 (Phase 1), consequence annotation v0.33
+    (Phase 4-Unit-A), the grounding ledger v0.37 (PI-instrument Phase 1), the BE-36 one-sided
+    caveat v0.40, the mechanism-proxy and propose→confront assessments 2026-07-04, the atlas path
+    query Sprint 2, the Kretschmann factored raising v0.11, RK4 v0.4.0, GL4 and `findPerihelion`
+    v0.5.0, the curvature validators v0.5.0 / v0.6.0.
+  - Before `repo_map` 0.4.2 the whole CLI was absent from the dependency graph and 28 live files
+    were reported as orphans, because `bin/upt.mjs` loads `dist/cli/main.js` by a path built at
+    runtime.
+- Found while measuring, filed in `todo.md`: stale JSDoc in `src/numerical/gl4-integrator.ts`
+  and the `findPerihelion` `@example`.
+
+### Changed (2026-09-23) — `duplicate-symbols.md` in Simplified Technical English, stateless
+
+- 6 STE findings fixed (3 long sentences, 3 ambiguous references); `ste_check` reports 0 for the
+  file. Tables, headings and the Verification block are byte-identical, and every technical token
+  is preserved, with no removals or additions.
+- A Fable panel review (in-session, not human) PASSED all 7 changes, including "unusually clean"
+  to "unusually low" and the two-branch disjunction recast as two conditionals.
+
+### Changed (2026-09-23) — `FILE_INVENTORY.md` in Simplified Technical English, stateless
+
+- 4 STE findings fixed; `ste_check` reports 0 for the file. Tables, headings and the Verification
+  block are byte-identical, and every technical token is preserved except those listed below.
+- **Moved out of the doc, as history:** before two `repo_map` fixes, this repository reported 50
+  orphans: 28 were the whole `src/cli/` subtree, lost because the launcher's entry could not be
+  resolved, and 15 were benchmarks filed under `src` because only `benchmarks/` was matched. The
+  doc now states the two failure modes and how the tool avoids each. It gives no count, because
+  both counts were past measurements; `src/cli/` has 31 files today and `bench/` has 16.
+- A Fable panel review (in-session, not human) FAILED the first draft, which had recast 28 and 15
+  as present-tense counts and dropped a causal link, and PASSED the revision.
+
+### Changed (2026-09-23) — 40 dated architecture records are marked historical for the STE check
+
+- Each of the 40 dated, point-in-time records under `docs/architecture/` now carries
+  `<!-- ste:historical-record -->` in its first five lines. `ste_check.py` (architecture-docs 0.6.0)
+  reports these files as SKIPPED, not as passes: history is not rewritten into Simplified Technical
+  English. No canonical document is marked. The 10 canonical documents, and the 5 LIVING
+  non-canonical documents (`PHYSICS_MAP.md`, `benchmarks.md`, both tutorials and
+  `archive/README.md`), are rewritten to 0 findings in their own commits.
+- The first count was 45, then 43. Reading each file's head showed 5 were living documents and not
+  records; 3 archive records had no findings and were left unmarked. Exactly 40 are marked.
+
+### Changed (2026-09-23) — the atlas's `AdjudicationVerdict` is now `MembershipVerdict`
+
+- Two DIFFERENT unions shared the name `AdjudicationVerdict`. The atlas one
+  (`'bridge' | 'not-a-bridge' | 'unadjudicated'`, `@internal`, subpath only) judges whether a
+  catalog row is a bridge at all. The composition one (`'genuine' | 'decoy' | 'entailed' | 'deferred'`,
+  `@public`, package root) judges an identification candidate. The atlas type is renamed
+  `MembershipVerdict` in `src/atlas/derive-evidence.ts`, the atlas barrel and its test. The
+  compile-time pin tying it to `BridgeVerdict` still holds.
+- **No public-surface change, proven:** `src/atlas/public.ts` is byte-identical before and after
+  and names neither type, and the package root still exports the composition `AdjudicationVerdict`.
+  The API and atlas tests pass (62). `duplicate-symbols.md` drops the group: 2 duplicate names
+  now, with 1,657 distinct names re-measured from a fresh map.
+
+### Decided (2026-09-23) — four owner decisions on Sprint 6
+
+- **Data licence:** the exported atlas data under `data/atlas/` is CC BY 4.0. The new
+  `LICENSE-DATA` names every covered file and links to the legal code. The code, the JSON schemas,
+  `data/bridge-catalog.json` and the benchmark fixtures stay MIT (`LICENSE`). `README.md` and the
+  governance note §4 say which licence covers what.
+- **Maintainers:** one named maintainer across all atlas families is recorded as a deliberate
+  decision, not a gap (governance note §1). The held-out fluid-statics family still has none.
+- **Hosted frontier LLM:** not run, out of scope, and nothing spent on it (pre-registration
+  Amendment 5; ROADMAP Phase 6 deliverables). Local models stand in, and every result says they are
+  weaker baselines.
+- **Reviewer time:** the Phase 6 exit criterion is amended to NOT MEASURED, because there are no
+  independent human reviewers. The criterion now records this instead of holding an unmet box.
+
+### Fixed (2026-09-23) — master CI was red after PR #184
+
+- PR #184 (0ae8cbf) added a `uniformity:` line to the `upt atlas` report on purpose
+  (`formatUniformity` in `src/cli/commands/atlas.ts`), but did not update the CLI golden corpus.
+  `tests/cli/upt-golden.test.ts > atlas-pendulum` failed in CI on the merge (run 35882497084;
+  the only failure) and in the pre-push hook. The corpus was regenerated with
+  `node tests/cli/golden-capture.mjs`. It changed exactly one line in one file,
+  `tests/cli/golden/atlas-pendulum.txt`: the intended `uniformity:` line. This was a deterministic
+  failure, not the open flaky test.
+
+### Decided (2026-09-23) — the Tier 1 `atlas` namespace stays; the roadmap rule says why
+
+- `docs/decisions/atlas-tier1-namespace.md` records the decision. Mothership decided it as lead,
+  with the user's delegation for ADR-level calls; no independent human reviewed it. Tier 1 was
+  promoted (07041cc) on API-quality grounds BEFORE the study ran. The study's NOT MET result on
+  criterion 2 refutes a claim that Tier 1 does not expose: the benchmark runner and the
+  applicability checker are `@internal`, and they are absent from `src/atlas/public.ts`.
+- `ROADMAP.md` Phase 6: the promotion rule now reads that a symbol whose value depends on a
+  benchmark claim waits on the study, and a symbol selected on API-quality grounds alone does not.
+  The rule and the practice now agree.
+- **Audit for claims that the atlas rejects invalid bridges better than alternatives:** none found
+  in `README.md`, `cli/README.md`, `docs/specification/` or `docs/README.md`. `ROADMAP.md`
+  named that comparison as the proposal's headline test, and it now points to the result
+  (the atlas did not beat the LLM baselines) so the line cannot be read as a live thesis.
+
+- Fixed: atlas design notes and ROADMAP.md stated rules the code no longer follows (not-a-bridge forces contradicted; types-only ablation accepts unchecked items; no LLM runner; empty frozen set; Phase 2 adds optional norm and puts path bounds in propagateUncertainty).
+- Added: `ApproximationBound.uniformity`; `boundPath` refuses an unanalysed bound (`uniformity-unanalysed`) before it computes a number.
+- Regenerated `docs:deps`. The uniformity edit moved `totalLinesOfCode` from 68633 to 68703 in the four generated architecture artifacts. `docs-fresh` diffs those files.
+
+### Verified (2026-09-23) — a fresh environment reproduces every published artifact byte for byte
+
+- A clean clone of `master` (6ec5f7f) outside the working tree ran: install (frozen lockfile), build,
+  the full suite (4,659 passed), `catalog:json`, `atlas:json`, `atlas:witness-results` (18/18
+  checked), `atlas:study`, `docs:deps` and `smoke`. Every one of the eight regenerated artifacts is
+  BYTE-IDENTICAL to its committed blob, checked by comparing bytes with `git cat-file blob`.
+- **Fixed: a clean regeneration still left the tree "modified" on Windows.** `.gitattributes`
+  pinned `docs/architecture/**` to LF because tools write it, but not the other tool-written
+  artifacts. With `core.autocrlf=true` they checked out as CRLF, and a generator's LF output then
+  showed as a change with no content difference. `data/**`, `docs/research/atlas-study-results.md`
+  and `tests/fixtures/atlas/benchmark/**` are now pinned to LF as well. Proven in the fresh clone:
+  before the fix, 8 files showed modified after regeneration; after it, only the fix itself did. The
+  artifacts were already deterministic, so the fix is to the checkout, not to the comparison.
+
+### Changed (2026-09-23) — the architecture-docs gate stops checking lines of code
+
+- `totalLinesOfCode` is no longer a gated claim in `docs/architecture/OVERVIEW.md` (Mothership,
+  option b). It changed on almost every edit and blocked two pushes in a row. A claim that fails
+  on every push trains readers to update it without reading it. The gate now holds only claims that
+  change when the STRUCTURE changes: files, exports, entry roots, orphans. The figure itself, with
+  its source and date, moved to `NOTES.md`, because a dated measurement does not belong in an
+  architecture doc (AGENTS.md rule 6).
+- Proven both ways with temporary edits, reverted afterwards. A non-exported code edit moved lines
+  of code from 135,606 to 135,609, and the gate PASSED with no docs touch-up. A new tracked source
+  file FAILED it (`totalSourceFiles` 843 → 844). A first probe used exported constants and failed on
+  `totalExports`; that change is structural, so the gate was right to fail it.
+
+### Changed (2026-09-23) — the study results lead with the abstention finding; the gemma rerun is declined
+
+- `docs/research/atlas-study-results.md` now states, NEXT TO the criterion-2 verdict, that the atlas
+  abstained on 116 of 125 items. The prose items rarely state the formal fields its instruments
+  check, and its one advantage (1 wrong accept against 9, 5 and 13) comes entirely from that
+  abstention. The sentence is computed by `scripts/run-atlas-study.mjs` from the metrics, not typed
+  into the generated file. This is a finding about the interface between natural-language claims
+  and the formal apparatus, and it is the most useful thing the benchmark has produced.
+- **Declined: a secondary gemma4:26b run with a larger context** (Mothership, 2026-09-23). It
+  cannot change the verdict, because qwen3.8:27b is the pre-registered best with 1 error. It would
+  be chosen after seeing error rates, so it could only be exploratory, and it would read as a second
+  chance for the atlas. It would also hold the shared GPU for about 3.7 h. The context-budget lesson
+  is recorded in `NOTES.md` as a note on how baselines are built, not as a rerun.
+
+### Result (2026-09-22/23) — criterion 2 is NOT MET: the local LLM baselines beat the atlas by a wide margin
+
+- Pre-registered in Amendment 4 and run as frozen. The best baseline, qwen3.8:27b (balanced
+  accuracy 91.8%), rejected 51 of 61 invalid items and accepted 64 of 64 valid items. The atlas
+  rejected 6 of 61. Atlas minus best-LLM rejection: **−73.8%, 95% Newcombe [−82.7%, −58.7%]**,
+  McNemar exact p = 6.8e−13. The interval excludes zero on the WRONG side. gpt-oss:20b (83.1%)
+  also beats the atlas. Full table: `docs/research/atlas-study-results.md`.
+- **Where the atlas does better:** wrong accepts. The atlas made 1; the models made 9 (qwen),
+  5 (gemma) and 13 (gpt-oss). It gets there by abstaining on 116 of 125 items, because most items
+  do not state the formal fields (regime values, conventions, chains) that its instruments check.
+  The abstentions are reported, not folded into accuracy.
+- **Read with these limits:** the baselines are local models, and the items were written and rated
+  by one model family, so an LLM judge may share the author's framing. gemma4:26b returned an
+  EMPTY answer on 64 of 125 items: its reasoning filled the frozen 8,192-token context. Those
+  items are scored as unanswered, and gemma's score measures that budget, not its judgement.
+- Run record: every model has all 125 items recorded, with nothing dropped. qwen3.8:27b: 1 error;
+  123 items re-asked after the Ollama restart that ended the first run. gemma4:26b: 64 errors, all
+  empty replies. gpt-oss:20b: 0 errors. Wall time: 10,292 s, 13,333 s and 1,977 s, about 7.1 h in
+  total. Spend: USD 0.
+
+### Added (2026-09-22) — the local LLM runner and its scoring (criterion 2, Amendment 4)
+
+- `scripts/atlas-benchmark-llm-local.mjs` runs the frozen configuration: one item per call, public
+  fields only, and the model's digest checked against the config before any call. A malformed
+  reply is an error, never a default. A transport failure is retried once and re-asked on resume.
+  The runner flushes after every item and exits non-zero when any item errored.
+- `scripts/run-atlas-study.mjs` now scores each local LLM condition, picks the pre-registered best
+  baseline (highest balanced accuracy), and reports atlas vs each model with the Newcombe interval
+  and McNemar p. It refuses to score a model whose run is unfinished: a missing record, or a
+  transport failure the runner will retry. Checked on a partial run, where it reported 103
+  unfinished items rather than scoring them as unanswered.
+- The first run lost every request from item 3 onward: the llm-wiki `OllamaServe` watchdog
+  restarted a healthy Ollama when the probe model was merely NOT-LOADED. Starship owns that fix.
+  It exposed two runner defects, now fixed: resume skipped items that had failed on transport, and
+  a failed digest check crashed the run instead of reporting.
+
+### Fixed (2026-09-22) — a doc comment that named a parameter the function does not have
+
+- `validateBEDimensions` (`src/bridges/equations/_be-helpers.ts`) documented `equationLabel`, but
+  the parameter is `_equationLabel`: it is unused, hence the underscore. A doc that is wrong about
+  a signature is worse than a missing one. The code-docs MUST count drops from 168 to 167, and the
+  committed ratchet baseline is lowered to match, so the ratchet keeps its bite. Mothership found
+  this in a report-only run.
+
+### Added (2026-09-22) — pre-registration Amendment 4: criterion 2 on local LLM baselines
+
+- Committed BEFORE any model call. The owner chose to spend nothing, so criterion 2 runs against
+  local Ollama models (qwen3.8:27b, gemma4:26b, gpt-oss:20b). The frozen configuration is in
+  `tests/fixtures/atlas/benchmark/conditions/llm-local.config.json`: models and digests,
+  temperature 0 and a fixed seed, the exact prompt, one item per call, and the public fields
+  only. The "best baseline" is fixed in advance as the model with the highest balanced accuracy,
+  so a model that rejects everything cannot win. Stated limit: local models are weaker baselines
+  than a hosted frontier model. Criterion 3 is not run, because the set has no reference corpus
+  or correct-reference labels.
+
+### Changed (2026-09-22) — Dependabot holds the optional mathts-* peers
+
+- `.github/dependabot.yml` ignores `@danielsimonjr/mathts-*`. The optional peers are held for a
+  dedicated MathTS-alignment release (`todo.md`), not merged as drive-by bumps. Mothership closed
+  Dependabot PRs #178–181 for that reason. The pattern matches all nine mathts packages in
+  `package.json`. Remove the entry when the alignment release lands.
+
+### Fixed (2026-09-22) — the architecture-docs claims now have a gate, and the stale ones are corrected
+
+- **The architecture-docs claims had no gate that could fail.** The `docs-fresh` CI job regenerates
+  only the dependency artifacts. It never runs `repo_map.py check`, so the `## Verification` tables
+  in seven hand-written docs had drifted: for example 710 source files were claimed where there are
+  842, and 2,377 exports where there are 2,990. The pre-push hook now runs a gate named
+  "architecture-docs claims (repo_map check)", scoped to those tables. It was run RED on the
+  unfixed tree first, with 19 stale claims in 7 docs. It runs in the hook and not in CI, because
+  `repo_map.py` lives in a private repository that CI cannot read without a credential. That
+  decision is filed in `todo.md`.
+- **Also fixed in the hook: the code-docs ratchet could pass on a crash.** It read its count with
+  `grep ... || echo 0`, so a crash, or a change in the tool's output, read as "0 MUST issues" and
+  was reported as an improvement. It now needs a PASS or FAIL line from the tool. A crashing fake
+  tool fails the hook, and a genuine PASS still passes.
+- **The docs, corrected from a fresh map.** Every `## Verification` row was updated from
+  `repo_map.py check` output. The prose that restates a number was corrected as well, because the
+  gate reads only the tables:
+  - the `src/`-scope figures are now 348 files, 2,446 exports and 1,229 re-exports, read from
+    `dependency-graph.json`; the module count went from 10 to 11 with `atlas`;
+  - the per-module file counts are taken from the generator;
+  - the bridge count (55, IDs 11–65) and the confrontation count (19) come from the built
+    registries, each counted two ways;
+  - the per-zone and per-disposition inventories each sum to 842;
+  - the entry roots are now 5 (the atlas and probe subpaths);
+  - `duplicate-symbols.md` gained a third group. It is `AdjudicationVerdict`: two DIFFERENT unions
+    under one name, one `@internal` in the atlas and one `@public` in composition. A rename is
+    recommended.
+- **`COMPONENTS.md` has an Atlas Module section**, with the real signatures. `ste_check.py` finds
+  no problem in it; the doc's other sections still carry 33 STE findings. The remaining ungated
+  prose (release versions, "Currently" counts, 691 STE findings across the architecture docs) is
+  filed in `todo.md`, not claimed as fixed.
+
+### Changed (2026-09-22) — `CLAUDE.md` is a thin loader; each of its facts moved to one home
+
+- `CLAUDE.md` went from 20,983 bytes to a 742-byte loader that `@`-imports `AGENTS.md`,
+  `WORKFLOWS.md`, `TOOLS.md`, `MEMORY.md` and `NOTES.md`. Each fact was MOVED, not copied:
+  - the stack, source map, AST grammar, encoding patterns and invariants went to `MEMORY.md`;
+  - the commands table went to `TOOLS.md`;
+  - the release order, the TDD-from-a-plan gotchas and the review tier went to `WORKFLOWS.md`;
+  - every count and dated measurement went to `NOTES.md`.
+
+  A scan for facts stated in two files found five, and each now has one home.
+- **Stale statements found in the move and corrected, not carried over:**
+  - The atlas source-map row said nothing is re-exported from `src/index.ts`. The `atlas`
+    namespace has been exported since 07041cc.
+  - The import-site list missed a type-only import at `composition/compose.ts:48`; re-measured.
+  - The test-suite timing now names the test count it was measured at.
+- `tests/cli/command-count-prose.test.ts` read the CLI count from `CLAUDE.md`. It now reads
+  `NOTES.md`, and its negative control covers that file. A mutation to 23 failed both tests.
+
+### Changed (2026-09-22) — the active ledger leaves `docs/planning/`; the plan audit can no longer pass on nothing
+
+- `docs/planning/ACTIVE.md` moved to the repository root as `ACTIVE.md`. It is an authorization and
+  completion register, which is status by nature, and `docs/planning/` holds design only. Its
+  outbound links, and every inbound link and path reference, were fixed in the same commit:
+  `ROADMAP.md`, `README.md`, the Atlas design notes, the Scientific-Bridge-Discovery notes and
+  `tools/plan-doc-audit`. The `todo.md` rows that record where a sprint WAS promoted keep the old
+  path, because that is history.
+- **Fixed: a missing plan root made the `audit:plans` release gate pass having scanned nothing.**
+  `collectMd` returned `[]` for a path that did not exist, so moving the ledger without updating the
+  default would have silently disabled the gate. A missing root is now an error, and the default
+  lives in an exported `DEFAULT_PLAN_ROOTS`. `tests/tools/plan-doc-audit.test.ts` pins that every
+  default root exists and that a missing root throws. It failed 2 of 3 before the fix. The audit
+  scans the same 4 unchecked items from the new location as it did from the old one.
+
+### Fixed (2026-09-22) — the public benchmark file no longer carries the answer
+
+- `BenchmarkItem` carried `kind` and `failureKind`, which are the answer, even though its own
+  docstring said "never the answer". The atlas condition never read them, but any LLM or embedding
+  condition fed `public/items.json` would have read the key. Both fields now live only in
+  `scorer/labels.json`. The loader refuses a public or contested item that carries either field.
+  The kind rules moved to a new `validateLabels`, which checks the answer key against the set:
+  one label per item, none for an unknown item, and a known failure kind exactly on invalid
+  labels. The assembly and study scripts run it, and the study exits 4 when the key does not fit.
+- The items, labels, freeze and every count are unchanged, and a rerun of the study produced a
+  byte-identical results file. Only the frozen-set hash moved, recorded in pre-registration
+  Amendment 3. The tests were written first and failed 5 of 5 before the fix.
+
+### Changed (2026-09-22) — status moved out of the design documents; the repo gains its control files
+
+- **The Atlas planning documents now state design only.** MET/UNMET/OPEN markers, progress counts,
+  dates and "today" wording were removed from `Atlas-Phase-{0,4,5,6}-Design.md`,
+  `Atlas-API-Review.md`, `Atlas-Governance.md`, `Atlas-Phase-0-Curation-Cost.md` and
+  `Atlas-Roadmap-Implementation-Plan.md`. Each document keeps its intent, the criteria as
+  DEFINED, and the reasoning. The status moved to `NOTES.md`. The history was already in this
+  CHANGELOG, so it was deleted there rather than copied. The exit-criteria table in Phase 4 now
+  says how each criterion is CHECKED, not whether it is met.
+- **Three design statements had gone false, and nothing had flagged them:**
+  - Phase 4 still said 12 of the 18 witnesses lacked a negative control.
+  - Phase 6 still said the study path had never run.
+  - The API review still said no atlas symbol was `@public`.
+
+  That silent staleness is why status does not belong in a design document.
+- **New root files:** `AGENTS.md` (the law), `WORKFLOWS.md` (procedure), `TOOLS.md` (instruments,
+  and how each one misleads), `MEMORY.md` (stateless facts) and `NOTES.md` (dated state). Mothership
+  drafted them. They were corrected before commit:
+  - AGENTS.md said no agent may author a frozen item. That contradicts the owner's rule allowing
+    atlas-blind model authors.
+  - Status was routed to a `status.md` that is outside the repository.
+  - NOTES.md was already stale on kappa and on the study run.
+  - Several facts appeared in two or three of the files.
+- `CLAUDE.md` still duplicates facts that now have a home in those files. That move is filed in
+  `todo.md`.
+
+### Added (2026-09-22) — the benchmark set exists: model-authored, model-rated, and run once
+
+- **125 frozen items and 3 contested**, written and rated by `claude-fable-5-1` instances
+  (pre-registration Amendment 2). The owner removed the human requirement. No human authored or
+  rated an item.
+- **The instances were isolated by how they were launched.** Each role ran as a separate `claude -p`
+  process with no tools, no MCP servers, no settings, no memory, and a working directory outside the
+  repository. The launch's own `init` record (`tools: []`, `mcp_servers: []`) is stored with the
+  exact prompt and reply of all 32 calls in `tests/fixtures/atlas/benchmark/provenance/`, and the
+  pipeline refuses a reply whose record shows a tool.
+  - The author was atlas-blind.
+  - The encoder never saw the answers.
+  - The two raters shared no context.
+  - This session has read `src/atlas/`, so it authored, encoded and rated nothing.
+  Scripts: `scripts/atlas-benchmark-models.mjs` and `scripts/atlas-benchmark-assemble.mjs`.
+- **Kappa between the two MODEL raters, over all 128 items and before the freeze:** 0.984
+  (valid/invalid) and 0.978 (nine categories). All three roles are the same model, so this is
+  model self-agreement and not evidence of human agreement.
+  `tests/atlas/benchmark-model-set.test.ts` recomputes kappa and the freeze from the raw rater
+  files. A control shows that one flipped verdict moves kappa.
+- **The freeze took:** the empty-set hash test and the "EMPTY" fixture test both went RED on the new
+  set before the note was amended. The pre-registration test now checks the LAST recorded hash, and
+  its control drops one item.
+- **First run of the study path on a non-empty set.** The atlas rejects 6 of 61 invalid items
+  (Wilson 95% [4.6%, 19.8%]) and names the right failure kind for all 6. It abstains on 116 of 125
+  items, wrongly accepts 1, and falsely rejects 1. The false reject comes from the encoding: a
+  derivative with respect to ln p was encoded as a literal `ln(p)`. No LLM or embedding condition
+  exists, so no paired comparison was made.
+- Model cost for the whole set: USD 19.34 (author 10.78, encoder 5.45, raters 3.11). This is model
+  cost, not human curation time.
+
+### Fixed (2026-09-22) — two defects the first real run exposed
+
+- **The dimensional validator rejected every equation of the form "x = 0".** Numbers are
+  dimensionless symbols in this grammar, so "x = 0" is written `x - 0`, and the validator treated
+  the literal zero as a dimensionless term. Zero is the additive identity: a dimensionless literal
+  zero in a sum is now skipped. Controls: a non-zero number is still rejected, a zero does not hide
+  a mismatch between the other terms, and a zero that carries a dimension is an ordinary term. On
+  the benchmark this removed 4 false rejects of valid items. It also removed 2 rejections of
+  invalid items that had been correct only by accident, through the same bug.
+- **The atlas condition accepted an item that no instrument checked.** In the "types only"
+  ablation, every item without a claimed chain was accepted, with nothing run: 61 wrong accepts.
+  An accept now needs at least one instrument that ran. Otherwise the item abstains.
+
 ### Added (2026-09-22) — Newcombe's paired interval checked against the PUBLISHED table
 
 - `tests/atlas/benchmark-stats.test.ts` now checks `pairedDifferenceInterval` against all 18 rows of

@@ -216,7 +216,8 @@ export const BRIDGE_KLEIN_GORDON_WAVE: AtlasBridge = {
       const { omega0, c, k } = params;
       return kleinGordonPhaseError(omega0 ?? Number.NaN, c ?? Number.NaN, k ?? Number.NaN);
     },
-    norm: 'relative phase-velocity error of a Fourier mode',
+    deltaAtBasis: 'closed-form',
+    norm: 'relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model',
     domain: 'ω₀/(c k) ≤ 0.1',
     horizon:
       't ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 c k δ(ω₀, c, k))',
@@ -229,6 +230,8 @@ export const BRIDGE_KLEIN_GORDON_WAVE: AtlasBridge = {
     },
     parameterRange: 'ω₀/(c k) ≤ 0.1',
     limitCharacter: 'regular',
+    // A phase-velocity error. The record says it is not uniform in time.
+    uniformity: ['phase velocity of one Fourier mode, for ω₀/(ck) ≤ 0.1'],
   }),
   regime: {
     family: WAVES_FAMILY_NAME,

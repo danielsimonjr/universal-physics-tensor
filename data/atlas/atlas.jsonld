@@ -5,7 +5,7 @@
     "qudt": "http://qudt.org/schema/qudt/",
     "dcterms": "http://purl.org/dc/terms/"
   },
-  "@id": "urn:upt:atlas:release:0.45.2",
+  "@id": "urn:upt:atlas:release:0.47.1",
   "upt:qudtProbedAt": "2026-09-22",
   "@graph": [
     {
@@ -601,6 +601,11 @@
       "upt:witness": [
         {
           "upt:id": "W9",
+          "upt:kind": "numeric",
+          "upt:test": "tests/atlas/oscillators-coarse.test.ts"
+        },
+        {
+          "upt:id": "W9b",
           "upt:kind": "numeric",
           "upt:test": "tests/atlas/oscillators-coarse.test.ts"
         }

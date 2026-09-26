@@ -268,16 +268,28 @@ where:
 
 **Bridge Equation 35: Conformal Bootstrap - Physical Operator Equation**
 
+> **AST encoding (Tier 5):** [`src/bridges/equations/be-35-conformal-bootstrap.ts`](../../src/bridges/equations/be-35-conformal-bootstrap.ts)
+
 - **Status**: Established. The conformal bootstrap crossing-symmetry equation is well established in CFT and has produced rigorous bounds on critical exponents for the 3D Ising model and other theories (Rattazzi-Rychkov-Tonni-Vichi 2008, arXiv:0807.0004; Poland-Rychkov-Vichi 2018 review arXiv:1805.04405).
 - **Context**: Constrains possible conformal field theories
 - **Mathematical Formulation**:
 
 <img src="https://i.upmath.me/svg/%5Clangle%20O_1(x_1)%20O_2(x_2)%20O_3(x_3)%20O_4(x_4)%20%5Crangle%20%3D%20%5Csum_%7B%5CDelta%2C%5Cell%7D%20C_%7B12%7D%5EO%20C_%7B34%7D%5EO%20g_%7B%5CDelta%2C%5Cell%7D(u%2Cv)" alt="\langle O_1(x_1) O_2(x_2) O_3(x_3) O_4(x_4) \rangle = \sum_{\Delta,\ell} C_{12}^O C_{34}^O g_{\Delta,\ell}(u,v)" />
 
-with crossing symmetry constraints:
-<img src="https://i.upmath.me/svg/%5Csum_%7B%5CDelta%2C%5Cell%7D%20%5Cleft(C_%7B12%7D%5EO%20C_%7B34%7D%5EO%20-%20C_%7B13%7D%5EO%20C_%7B24%7D%5EO%5Cright)%20F_%7B%5CDelta%2C%5Cell%7D(u%2Cv)%20%3D%200" alt="\sum_{\Delta,\ell} \left(C_{12}^O C_{34}^O - C_{13}^O C_{24}^O\right) F_{\Delta,\ell}(u,v) = 0" />
+For four identical scalars φ of dimension Δ_φ, the reduced four-point function is the unit operator plus the conformal blocks of the exchanged operators (Rattazzi-Rychkov-Tonni-Vichi 2008, eq. 4.4):
+<img src="https://i.upmath.me/svg/g(u%2Cv)%20%3D%201%20%2B%20%5Csum_%7BO%20%5Cin%20%5Cphi%5Ctimes%5Cphi%7D%20%5Clambda_O%5E2%5C%2C%20g_O(u%2Cv)" alt="g(u,v) = 1 + \sum_{O \in \phi\times\phi} \lambda_O^2\, g_O(u,v)" />
 
-where <img src="https://i.upmath.me/svg/u%2C%20v" alt="u, v" /> are cross-ratios and <img src="https://i.upmath.me/svg/F_%7B%5CDelta%2C%5Cell%7D" alt="F_{\Delta,\ell}" /> are conformal blocks.
+Crossing symmetry under x₁ ↔ x₃ requires the relation below (their eq. 4.3, which writes Δ_φ as d). BE-35 encodes this relation:
+<img src="https://i.upmath.me/svg/v%5E%7B%5CDelta_%5Cphi%7D%5C%2C%20g(u%2Cv)%20%3D%20u%5E%7B%5CDelta_%5Cphi%7D%5C%2C%20g(v%2Cu)" alt="v^{\Delta_\phi}\, g(u,v) = u^{\Delta_\phi}\, g(v,u)" />
+
+Written as a sum rule over the exchanged operators (their eq. 4.5):
+<img src="https://i.upmath.me/svg/1%20%3D%20%5Csum_%7B%5CDelta%2C%5Cell%7D%20p_%7B%5CDelta%2C%5Cell%7D%5C%2C%20F_%7B%5CDelta_%5Cphi%2C%5CDelta%2C%5Cell%7D(u%2Cv)%2C%20%5Cquad%20p_%7B%5CDelta%2C%5Cell%7D%20%3D%20%5Clambda_O%5E2%20%3E%200" alt="1 = \sum_{\Delta,\ell} p_{\Delta,\ell}\, F_{\Delta_\phi,\Delta,\ell}(u,v), \quad p_{\Delta,\ell} = \lambda_O^2 > 0" />
+
+<img src="https://i.upmath.me/svg/F_%7B%5CDelta_%5Cphi%2C%5CDelta%2C%5Cell%7D(u%2Cv)%20%3D%20%5Cfrac%7Bv%5E%7B%5CDelta_%5Cphi%7D%20g_%7B%5CDelta%2C%5Cell%7D(u%2Cv)%20-%20u%5E%7B%5CDelta_%5Cphi%7D%20g_%7B%5CDelta%2C%5Cell%7D(v%2Cu)%7D%7Bu%5E%7B%5CDelta_%5Cphi%7D%20-%20v%5E%7B%5CDelta_%5Cphi%7D%7D" alt="F_{\Delta_\phi,\Delta,\ell}(u,v) = \frac{v^{\Delta_\phi} g_{\Delta,\ell}(u,v) - u^{\Delta_\phi} g_{\Delta,\ell}(v,u)}{u^{\Delta_\phi} - v^{\Delta_\phi}}" />
+
+where u and v are cross-ratios and g_{Δ,ℓ} is the conformal block of an exchanged operator of dimension Δ and spin ℓ. F is a crossing combination of ONE block, not a conformal block.
+
+> **Corrected on 2026-09-24:** The encoded relation is the crossing equation for four identical scalars of dimension Δφ, `v^Δφ g(u, v) = u^Δφ g(v, u)` (Rattazzi-Rychkov-Tonni-Vichi 2008, eq. 4.3, which writes Δφ as `d`), where `g(u, v) = 1 + Σ_{O∈φ×φ} λ_O² g_O(u, v)` is the full reduced four-point function: the unit operator plus the conformal blocks (their eq. 4.4). The earlier encoding `C² [g_block(u, v) − g_block(v, u)]` had no prefactors and was written for one block. Neither is crossing symmetric, and its check at `u = v = 1/4` holds for any function. The sum rule previously shown here, `Σ (C12 C34 − C13 C24) F = 0` with F called "conformal blocks", was not Rattazzi et al.'s form. It is rewritten above to their eq. 4.5, where F is a crossing combination of one block, not a conformal block.
 
 ### Category K: Modified Theories and Extensions
 
@@ -507,6 +519,8 @@ where the localization operators are (3D Gaussian-resolved position projectors w
 with collapse rate <img src="https://i.upmath.me/svg/%5Clambda%20%5Csim%2010%5E%7B-16%7D" alt="\lambda \sim 10^{-16}" /> s<img src="https://i.upmath.me/svg/%5E%7B-1%7D" alt="^{-1}" /> (canonical GRW value) and localization length <img src="https://i.upmath.me/svg/%5Csigma%20%5Csim%2010%5E%7B-7%7D" alt="\sigma \sim 10^{-7}" /> m.
 
 > **Corrected on 2026-05-04 (R0 audit):** Added the missing `(πσ²)^{-3/4}` prefactor to `L_x`. The 3D Gaussian-resolved position projector requires this normalization to ensure `∫ d³x L_x† L_x = 1` (i.e. the localization-amplitude squared integrates to a dimensionless probability), which is the trace-preservation / probability-conservation condition for the GRW master equation; without it the d³x integral injects an unabsorbed `[L^3]` factor and the equation does not close dimensionally — `dρ/dt` would not have units of `[T^-1]` as required. Citation: Ghirardi-Rimini-Weber 1986, Phys. Rev. D 34:470 (original); Bassi-Ghirardi 2003, Phys. Rep. 379:257 (review, arXiv:quant-ph/0302164). The 1D analogue carries `(πσ²)^{-1/4}`; the cube-root power tracks the dimensionality of the position eigenspace. Status remains **Established** — this is a typesetting / transcription correction to a canonical formula, not a reformulation. Also rate updated `lambda ~ 1e-17 → 1e-16 s^-1` to match canonical GRW (the 1e-17 figure refers to a specific CSL bound and was unsourced here).
+
+> **Corrected on 2026-09-24:** The encoded scalar is the mass-amplified rate `λ_GRW(m) = λ_0 · (m/m_0)`. It is the GRW (QMSL) centre-of-mass amplification `λ_macro = N λ_micro` (Bassi & Ghirardi 2003, §6.4), with `N = m/m_0` this repository's identification. In CSL the macroscopic rate is `γ D_0 n_out` instead (§8.3). The index entry's name and context credited the linear law to CSL, and now credit it to GRW.
 
 **Bridge Equation 49: Quantum Darwinism Redundancy**
 

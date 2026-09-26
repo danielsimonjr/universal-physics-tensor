@@ -59,6 +59,16 @@ const EPISTEMICS =
   '  Each candidate hypothesises an identification a≡b and tests its consequences.';
 
 // ── discover --derive (identity-consequence proposals) ────────────────────
+
+/**
+ * Sample values for GENERIC quantities, which the representative-value table
+ * leaves out on purpose. A proposal is evaluated only when every free input
+ * has a sourced sample: this command once put 300 into every input, a Hubble
+ * rate of 300 s⁻¹ among them (persona finding D5).
+ */
+const GENERIC_SAMPLES: Readonly<Record<string, { value: number; source: string }>> = {
+  temperature: { value: 300, source: 'room temperature, 300 K' },
+};
 function deriveReport(
   api: CommandCtx['api'],
   ranked: readonly VettedCandidate[],
@@ -76,12 +86,21 @@ function deriveReport(
   }
   for (const p of proposals) {
     let approx = '';
-    try {
-      const vals = Object.fromEntries((p.governing || []).map((g) => [g.name, 300]));
-      const at = (p.governing || []).map((g) => `${g.name}=300`).join(', ');
-      approx = `  ≈ ${p.evaluate(vals).toExponential(2)}${at ? ` (${at})` : ''}`;
-    } catch {
-      approx = '';
+    const governing = p.governing || [];
+    const sampleOf = (name: string) => api.REPRESENTATIVE_VALUES[name] ?? GENERIC_SAMPLES[name];
+    const missing = governing.filter((g) => sampleOf(g.name) === undefined).map((g) => g.name);
+    if (missing.length > 0) {
+      approx = `  (no sourced sample value for ${missing.join(', ')}; not evaluated)`;
+    } else {
+      try {
+        const vals = Object.fromEntries(governing.map((g) => [g.name, sampleOf(g.name)!.value]));
+        const at = governing
+          .map((g) => `${g.name}=${sampleOf(g.name)!.value} [${sampleOf(g.name)!.source}]`)
+          .join(', ');
+        approx = `  ≈ ${p.evaluate(vals).toExponential(2)}${at ? ` (${at})` : ''}`;
+      } catch {
+        approx = '';
+      }
     }
     out(`  ${p.id}`);
     out(`      ${p.formulaLatex}      ${p.dimensionalSignature}${approx}`);
@@ -185,7 +204,19 @@ async function run(ctx: CommandCtx): Promise<number> {
   }
 
   const by = (v: string) => withConsequence.filter((r) => r.verdict === v);
-  const promising = by('promising');
+  // Q1: within PROMISING, spend the physicist's first minute on consequence-
+  // bearing / magnitude-backed rows before inconclusive + no-magnitude coincidences.
+  const consRank = (s: ConsequenceSignal | undefined): number =>
+    s === 'entailed' ? 0 : s === 'novel-consequence' ? 1 : 2;
+  const promising = [...by('promising')].sort((a, b) => {
+    const ca = consRank(a.consequence?.signal);
+    const cb = consRank(b.consequence?.signal);
+    if (ca !== cb) return ca - cb;
+    const magA = a.magnitudeChecked && a.magnitudeAnchorInvariant !== true ? 0 : 1;
+    const magB = b.magnitudeChecked && b.magnitudeAnchorInvariant !== true ? 0 : 1;
+    if (magA !== magB) return magA - magB;
+    return b.score - a.score || a.a.localeCompare(b.a) || a.b.localeCompare(b.b);
+  });
   const inert = by('inert');
   const contra = by('contradictory');
   const clash = by('magnitude-clash');
@@ -196,7 +227,7 @@ async function run(ctx: CommandCtx): Promise<number> {
   out(
     `  funnel:  ${withConsequence.length} candidates  →  ${promising.length} promising  ` +
       `·  ${inert.length} inert  ·  ${clash.length} magnitude-clash  ` +
-      `·  ${contra.length} contradictory (falsified)  ·  ${axisClash.length} axis-clash\n`
+      `·  ${contra.length} contradictory (numerically falsified)  ·  ${axisClash.length} axis-clash\n`
   );
   if (promising.length) {
     out('  PROMISING (merges disconnected physics, unlocks quantities, stays consistent):');
@@ -243,7 +274,7 @@ async function run(ctx: CommandCtx): Promise<number> {
     }
   }
   if (axisClash.length) {
-    out(`\n  AXIS-CLASH (identification falsified (stated regimes differ)):`);
+    out(`\n  AXIS-CLASH (stated scale/force labels differ: a regime-label prior, not a physical test):`);
     for (const r of axisClash) {
       out(`    ${(r.a + ' ≟ ' + r.b).padEnd(52)} ${r.axisClashes.join('; ')}`);
     }

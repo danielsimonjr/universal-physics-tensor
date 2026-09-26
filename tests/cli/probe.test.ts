@@ -26,9 +26,19 @@ describe('upt probe', () => {
     expect(text(c)).toMatch(/subverb/);
   });
 
-  it('scan lists not-searchable relation-link gaps and tells the user about discover', async () => {
+  it('scan defaults to searchable-only and points at discover when none are searchable (L3)', async () => {
     const c = capture();
     expect(await runCli(['probe', 'scan'], c.io)).toBe(0);
+    const t = text(c);
+    expect(t).toMatch(/0 of \d+ gaps are searchable/);
+    expect(t).toMatch(/upt discover/);
+    expect(t).toMatch(/--all/);
+    expect(t).not.toMatch(/fg-link-/);
+  });
+
+  it('scan --all lists not-searchable relation-link gaps', async () => {
+    const c = capture();
+    expect(await runCli(['probe', 'scan', '--all'], c.io)).toBe(0);
     const t = text(c);
     expect(t).toMatch(/fg-link-/);
     expect(t).toMatch(/upt discover/);
@@ -40,9 +50,9 @@ describe('upt probe', () => {
     expect(await runCli(['probe', 'show', 'fg-does-not-exist'], c.io)).toBe(1);
   });
 
-  it('show a real gap from scan --json', async () => {
+  it('show a real gap from scan --all --json', async () => {
     const c = capture();
-    expect(await runCli(['probe', 'scan', '--json'], c.io)).toBe(0);
+    expect(await runCli(['probe', 'scan', '--all', '--json'], c.io)).toBe(0);
     const env = JSON.parse(text(c));
     const id = env.result[0].id as string;
     const c2 = capture();

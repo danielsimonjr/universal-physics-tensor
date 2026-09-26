@@ -1,0 +1,10 @@
+import Physlib.ClassicalMechanics.Pendulum.SimplePendulum.SmallAngle
+import Physlib.ClassicalMechanics.Pendulum.SimplePendulum.PeriodFormula
+import Physlib.ClassicalMechanics.WaveEquation.Basic
+
+#print axioms ClassicalMechanics.SimplePendulum.linearizedEquationOfMotion_iff
+#print axioms ClassicalMechanics.SimplePendulum.toHarmonicOscillator_ω
+#print axioms ClassicalMechanics.SimplePendulum.norm_equationOfMotion_residual_le
+#print axioms ClassicalMechanics.SimplePendulum.strictMonoOn_periodFormula
+#print axioms ClassicalMechanics.SimplePendulum.smallAnglePeriod_le_periodFormula
+#print axioms ClassicalMechanics.planeWave_waveEquation

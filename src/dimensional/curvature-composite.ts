@@ -52,9 +52,11 @@ export type CurvatureKind =
  * `freeIndicesShape` is a human-readable summary of the free-index structure:
  *   - `'rank-4-1upper-3lower'` — 1 upper + 3 lower (Riemann, Weyl)
  *   - `'rank-2-lower-lower'`   — 2 lower (Ricci, Einstein)
- *   - `'rank-3-lower'`         — 5 lower indices (Bianchi residual stores as rank-3
- *                                  in this shape tag for the 3 cyclic derivatives;
- *                                  actual tensor is rank-5)
+ *   - `'rank-3-lower'`         — the Bianchi residual B_{λμνρσ}, which has FIVE lower
+ *                                  indices. The "3" is not the rank: it counts the three
+ *                                  cyclic terms over (λ, μ, ν) in
+ *                                  B_{λμνρσ} = ∇_λ R_{μνρσ} + ∇_μ R_{νλρσ} + ∇_ν R_{λμρσ}.
+ *                                  The name stays because the registry is public.
  *   - `'scalar'`               — 0 free indices (Kretschmann)
  *
  * `componentDim` is the SI dimension of each component in the F8/I3 convention
@@ -96,6 +98,7 @@ export const CURVATURE_KIND_REGISTRY: Record<CurvatureKind, CurvatureKindSpec> =
     componentDim: { L: -2, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 },
   },
   'bianchi-residual': {
+    // Five lower indices; '3' counts the cyclic terms, not the rank (see CurvatureKindSpec).
     freeIndicesShape: 'rank-3-lower',
     componentDim: { L: -3, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 },
   },

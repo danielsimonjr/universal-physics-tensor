@@ -1,9 +1,9 @@
 metadata:
   name: universal-physics-tensor
-  version: 0.45.2
-  totalFiles: 348
+  version: 0.47.1
+  totalFiles: 351
   totalModules: 11
-  totalExports: 2445
+  totalExports: 2475
 entryPoints:
   - file: src/index.ts
     type: main
@@ -143,7 +143,6 @@ modules:
       internalDependencies:
         - file: ./types.js
           imports:
-            - FAILURE_KINDS
             - HELD_OUT_FAMILY
         - file: ./types.js
           imports:
@@ -236,6 +235,9 @@ modules:
       internalDependencies:
         - file: ./types.js
           imports:
+            - FAILURE_KINDS
+        - file: ./types.js
+          imports:
             - FailureKind
           typeOnly: true
         - file: ./stats.js
@@ -249,16 +251,19 @@ modules:
             - McNemarResult
           typeOnly: true
       exports:
+        - validateLabels
         - scoreCondition
         - pairedRejection
         - scoreAblation
       interfaces:
         - ConditionAnswer
         - ItemLabel
+        - LabelProblem
         - ConditionMetrics
         - PairedRejection
         - AblationRow
       functions:
+        - validateLabels
         - scoreCondition
         - pairedRejection
         - scoreAblation
@@ -752,9 +757,9 @@ modules:
           reExport: true
         - file: ./derive-evidence.js
           imports:
-            - AdjudicationVerdict
             - CounterexampleLike
             - EvidenceInput
+            - MembershipVerdict
             - RejectionLike
             - WitnessLike
           reExport: true
@@ -1182,9 +1187,9 @@ modules:
         - AtlasRejection
         - FormalFidelity
         - FormalRef
-        - AdjudicationVerdict
         - CounterexampleLike
         - EvidenceInput
+        - MembershipVerdict
         - RejectionLike
         - WitnessLike
         - CompositionResult
@@ -1277,9 +1282,9 @@ modules:
         - deriveEvidence
         - deriveEvidenceForVerdict
         - NO_PASSING_WITNESSES
-        - AdjudicationVerdict
         - CounterexampleLike
         - EvidenceInput
+        - MembershipVerdict
         - RejectionLike
         - WitnessLike
         - composeRelation
@@ -2719,6 +2724,10 @@ modules:
         - file: ./gravitational-lensing.js
           imports:
             - evaluateGravitationalLensing
+        - file: ../core/constants.js
+          imports:
+            - GM_SUN_SI
+            - G_SI
       exports:
         - VLBI_LAMBERT_2009
         - confrontBE51
@@ -2737,6 +2746,10 @@ modules:
         - file: ./perihelion-precession.js
           imports:
             - evaluatePerihelionPrecession
+        - file: ../core/constants.js
+          imports:
+            - GM_SUN_SI
+            - G_SI
       exports:
         - MERCURY
         - confrontBE52
@@ -3231,7 +3244,7 @@ modules:
             - evaluateKibbleZurek
         - file: ./equations/be-35-conformal-bootstrap.js
           imports:
-            - evaluateCrossingResidual
+            - evaluateCrossingEquation
         - file: ./equations/be-36-gw-speed-bound.js
           imports:
             - evaluateGWSpeedRatio
@@ -4480,7 +4493,7 @@ modules:
         - KIBBLE_ZUREK_EXP_ARG
         - KIBBLE_ZUREK_RHS
     src/bridges/equations/be-35-conformal-bootstrap.ts:
-      description: Bridge Equation 35 — Conformal Bootstrap (crossing-symmetry residual).
+      description: Bridge Equation 35 — Conformal Bootstrap (the crossing equation).
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -4498,16 +4511,12 @@ modules:
             - validateFiniteInputs
             - validateBEDimensions
       exports:
-        - BE35_FORWARD_BLOCK
-        - BE35_CROSSED_BLOCK
-        - BE35_CROSSING_RESIDUAL_RHS
-        - evaluateCrossingResidual
+        - BE35_CROSSING_EQUATION_RHS
+        - evaluateCrossingEquation
       functions:
-        - evaluateCrossingResidual
+        - evaluateCrossingEquation
       constants:
-        - BE35_FORWARD_BLOCK
-        - BE35_CROSSED_BLOCK
-        - BE35_CROSSING_RESIDUAL_RHS
+        - BE35_CROSSING_EQUATION_RHS
     src/bridges/equations/be-36-gw-speed-bound.ts:
       description: Bridge Equation 36 — GW170817 graviton-speed bound (post Wave Y
       externalDependencies: []
@@ -5016,7 +5025,7 @@ modules:
         - BBN_DARK_LHS
         - BBN_DARK_RHS
     src/bridges/equations/be-48-grw-localization.ts:
-      description: Bridge Equation 48 — GRW mass-amplified localization rate
+      description: Bridge Equation 48 — GRW mass-amplified localization rate (post Wave Y
       externalDependencies: []
       nodeDependencies: []
       internalDependencies:
@@ -5669,7 +5678,7 @@ modules:
             - KIBBLE_ZUREK_RHS
         - file: ./equations/be-35-conformal-bootstrap.js
           imports:
-            - BE35_CROSSING_RESIDUAL_RHS
+            - BE35_CROSSING_EQUATION_RHS
         - file: ./equations/be-36-gw-speed-bound.js
           imports:
             - BE36_GW_SPEED_RATIO_RHS
@@ -6295,6 +6304,23 @@ modules:
       constants:
         - CANONICAL_EQUATIONS
         - CANONICAL_BY_ID
+    src/canonical/residual.ts:
+      description: "Residual form of a canonical equation: `target − scalarAst`."
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/ast-types.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ./canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+      exports:
+        - canonicalResidual
+      functions:
+        - canonicalResidual
     src/canonical/seed-l-layer.ts:
       description: Seed the canonical-equation registry into the tensor's L-layer (Π = L + B + E)
       externalDependencies: []
@@ -6592,6 +6618,7 @@ modules:
         - file: ../errors.js
           imports:
             - UsageError
+            - EXIT_CHECK_FAILED
         - file: ../../dimensional/types.js
           imports:
             - Dimension
@@ -6715,6 +6742,7 @@ modules:
         - file: ../errors.js
           imports:
             - UsageError
+            - CliError
       exports:
         - command
       constants:
@@ -6847,6 +6875,7 @@ modules:
           imports:
             - UsageError
             - CliError
+            - EXIT_CHECK_FAILED
         - file: ./_discovery-opts.js
           imports:
             - parseDiscoveryOpts
@@ -6872,6 +6901,10 @@ modules:
           imports:
             - EquationAnalysis
           typeOnly: true
+        - file: ../../composition/canonical-compare.js
+          imports:
+            - CanonicalComparison
+          typeOnly: true
       exports:
         - command
       constants:
@@ -6893,12 +6926,15 @@ modules:
         - file: ../errors.js
           imports:
             - CliError
+            - EXIT_CHECK_FAILED
         - file: ../output.js
           imports:
             - emitJson
         - file: ./regime.js
           imports:
             - parseAt
+            - resolveAtPoint
+            - showInequality
       exports:
         - command
       constants:
@@ -7027,8 +7063,12 @@ modules:
       exports:
         - command
         - parseAt
+        - resolveAtPoint
+        - showInequality
       functions:
         - parseAt
+        - resolveAtPoint
+        - showInequality
       constants:
         - command
     src/cli/commands/symbolic.ts:
@@ -7057,16 +7097,19 @@ modules:
       constants:
         - command
     src/cli/errors.ts:
-      description: Typed error classes for the UPT CLI.
+      description: Typed error classes and exit codes for the UPT CLI.
       externalDependencies: []
       nodeDependencies: []
       internalDependencies: []
       exports:
+        - EXIT_CHECK_FAILED
         - UsageError
         - CliError
       classes:
         - UsageError
         - CliError
+      constants:
+        - EXIT_CHECK_FAILED
     src/cli/graphs.ts:
       description: Shared `--source=catalog|canonical|both` graph resolution — replaces
       externalDependencies: []
@@ -7167,8 +7210,14 @@ modules:
             - renderDotToSvg
             - equationLanding
             - analyzeUserEquation
+            - resolveToCatalogName
+            - suggestQuantities
             - buckinghamPi
             - dimensionallyDetermines
+          reExport: true
+        - file: ./composition/user-equation.js
+          imports:
+            - formatConnectedSummary
           reExport: true
         - file: ./composition/bridge-analysis.js
           imports:
@@ -7196,6 +7245,10 @@ modules:
         - file: ./composition/discovery.js
           imports:
             - rankDiscoveries
+          reExport: true
+        - file: ./bridges/index.js
+          imports:
+            - BRIDGE_EQUATIONS
           reExport: true
         - file: ./bridges/confrontation-coverage.js
           imports:
@@ -7335,6 +7388,25 @@ modules:
           imports:
             - describeGrounding
           reExport: true
+        - file: ./composition/representative-values.js
+          imports:
+            - REPRESENTATIVE_VALUES
+          reExport: true
+        - file: ./composition/canonical-compare.js
+          imports:
+            - compareWithCanonical
+            - compareUserEquation
+            - describeComparison
+            - describeComparisons
+          reExport: true
+        - file: ./composition/canonical-compare.js
+          imports:
+            - CanonicalComparison
+          reExport: true
+        - file: ./composition/symbolic-constants.js
+          imports:
+            - CONSTANTS
+          reExport: true
         - file: ./composition/grounding.js
           imports:
             - CandidateGrounding
@@ -7404,8 +7476,11 @@ modules:
         - renderDotToSvg
         - equationLanding
         - analyzeUserEquation
+        - resolveToCatalogName
+        - suggestQuantities
         - buckinghamPi
         - dimensionallyDetermines
+        - formatConnectedSummary
         - bridgePriority
         - attemptDerivation
         - dimensionalFreedom
@@ -7418,6 +7493,7 @@ modules:
         - parseDimensionSpec
         - predictMissingBridges
         - rankDiscoveries
+        - BRIDGE_EQUATIONS
         - auditCoverage
         - CONFRONTATIONS
         - listConfrontations
@@ -7464,6 +7540,12 @@ modules:
         - checkConventions
         - unknownConventionKeys
         - describeGrounding
+        - REPRESENTATIVE_VALUES
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparison
+        - describeComparisons
+        - CONSTANTS
         - OSCILLATOR_FAMILY
         - ATLAS_FAMILIES
         - deriveEvidence
@@ -7487,6 +7569,7 @@ modules:
         - ConsequenceSignal
         - ConsequenceEvidence
         - ConventionKey
+        - CanonicalComparison
         - CandidateGrounding
         - AtlasFamily
         - RegimeCheck
@@ -7514,8 +7597,11 @@ modules:
         - renderDotToSvg
         - equationLanding
         - analyzeUserEquation
+        - resolveToCatalogName
+        - suggestQuantities
         - buckinghamPi
         - dimensionallyDetermines
+        - formatConnectedSummary
         - bridgePriority
         - attemptDerivation
         - dimensionalFreedom
@@ -7528,6 +7614,7 @@ modules:
         - parseDimensionSpec
         - predictMissingBridges
         - rankDiscoveries
+        - BRIDGE_EQUATIONS
         - auditCoverage
         - CONFRONTATIONS
         - listConfrontations
@@ -7588,6 +7675,13 @@ modules:
         - unknownConventionKeys
         - ConventionKey
         - describeGrounding
+        - REPRESENTATIVE_VALUES
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparison
+        - describeComparisons
+        - CanonicalComparison
+        - CONSTANTS
         - CandidateGrounding
         - OSCILLATOR_FAMILY
         - ATLAS_FAMILIES
@@ -7770,6 +7864,60 @@ modules:
         - placeQuantity
         - buildRegimeTensor
         - predictMissingBridges
+    src/composition/canonical-compare.ts:
+      description: Compare a user's formula with the canonical (textbook) equation it restates.
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies:
+        - file: ../dimensional/validator.js
+          imports:
+            - ExprNode
+          typeOnly: true
+        - file: ../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../dimensional/algebra.js
+          imports:
+            - equals
+        - file: ../canonical/registry.js
+          imports:
+            - CANONICAL_EQUATIONS
+        - file: ../canonical/canonical-equation.js
+          imports:
+            - CanonicalEquation
+          typeOnly: true
+        - file: ./symbolic-constants.js
+          imports:
+            - CONSTANTS
+        - file: ./expr-eval.js
+          imports:
+            - evalExpr
+        - file: ./canonical-prefactors.js
+          imports:
+            - canonicalPrefactor
+        - file: ./user-equation.js
+          imports:
+            - parseUserEquation
+            - resolveToCatalogName
+        - file: ../numerical/formula-registry.js
+          imports:
+            - parsePhysics
+        - file: ../dimensional/types.js
+          imports:
+            - DIMENSIONLESS
+      exports:
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparisons
+        - describeComparison
+      interfaces:
+        - CanonicalComparison
+      functions:
+        - compareWithCanonical
+        - compareUserEquation
+        - describeComparisons
+        - describeComparison
     src/composition/canonical-graph.ts:
       description: Canonical-only graph — project the standard-physics L-layer
       externalDependencies: []
@@ -7823,6 +7971,20 @@ modules:
       constants:
         - CANONICAL_CONSTANTS
         - CANONICAL_GRAPH
+    src/composition/canonical-prefactors.ts:
+      description: Exact prefactors for canonical equations that `src/canonical` records only
+      externalDependencies: []
+      nodeDependencies: []
+      internalDependencies: []
+      exports:
+        - CANONICAL_PREFACTORS
+        - canonicalPrefactor
+      interfaces:
+        - CanonicalPrefactor
+      functions:
+        - canonicalPrefactor
+      constants:
+        - CANONICAL_PREFACTORS
     src/composition/catalog-graph.ts:
       description: The full composition graph as a single constant — the 41 `BridgeEdge`s
       externalDependencies: []
@@ -9634,6 +9796,7 @@ modules:
         - BackendRequest
         - BackendCandidate
         - BackendResponse
+        - WorkerProcess
       functions:
         - runBackendWorker
     src/composition/probe/candidate-store.ts:
@@ -9680,14 +9843,29 @@ modules:
         - file: ./generator.js
           imports:
             - monomialToExpr
+        - file: ../expr-eval.js
+          imports:
+            - evalExpr
+        - file: ../../dimensional/algebra.js
+          imports:
+            - equals
+        - file: ../../dimensional/types.js
+          imports:
+            - Dimension
+          typeOnly: true
+        - file: ../canonical-prefactors.js
+          imports:
+            - canonicalPrefactor
       exports:
         - compareToCorpus
+        - corpusPrefactorNotes
         - corpusRelativeWording
       interfaces:
         - CorpusMatch
         - CorpusComparisonResult
       functions:
         - compareToCorpus
+        - corpusPrefactorNotes
         - corpusRelativeWording
     src/composition/probe/dataset.ts:
       description: Observation adapters for Product B.
@@ -9909,6 +10087,7 @@ modules:
         - file: ../../dimensional/buckingham.js
           imports:
             - dimensionallyDetermines
+            - DimensionalDeterminationResult
         - file: ../../dimensional/validator.js
           imports:
             - validate
@@ -9924,10 +10103,12 @@ modules:
             - BudgetState
       exports:
         - monomialToExpr
+        - nativeDetermination
       interfaces:
         - RawCandidate
       functions:
         - monomialToExpr
+        - nativeDetermination
     src/composition/probe/index.ts:
       description: Experimental Product B barrel — expression / residual search.
       externalDependencies: []
@@ -10492,6 +10673,7 @@ modules:
         - file: ./generator.js
           imports:
             - generateNative
+            - nativeDetermination
             - RawCandidate
         - file: ./fingerprint.js
           imports:
@@ -10501,6 +10683,7 @@ modules:
         - file: ./corpus.js
           imports:
             - compareToCorpus
+            - corpusPrefactorNotes
             - corpusRelativeWording
             - CorpusComparisonResult
         - file: ./fit.js
@@ -11499,11 +11682,14 @@ modules:
           imports:
             - inferUnknownDimension
       exports:
+        - rewriteCatalogHyphens
+        - hyphenSubtractHint
         - parseUserEquation
         - resolveToCatalogName
         - suggestQuantities
         - suggestByDimension
         - equationLanding
+        - formatConnectedSummary
         - analyzeUserEquation
         - UserEquationError
       classes:
@@ -11514,11 +11700,14 @@ modules:
         - EquationHint
         - EquationAnalysis
       functions:
+        - rewriteCatalogHyphens
+        - hyphenSubtractHint
         - parseUserEquation
         - resolveToCatalogName
         - suggestQuantities
         - suggestByDimension
         - equationLanding
+        - formatConnectedSummary
         - analyzeUserEquation
   core:
     src/core/axes-registry.ts:
@@ -11596,6 +11785,8 @@ modules:
         - T_P_SI
         - H0_SI
         - M_SUN_SI
+        - GM_SUN_SI
+        - GM_SUN_SOURCE
         - M_E_SI
         - B_WIEN_SI
       constants:
@@ -11611,6 +11802,8 @@ modules:
         - T_P_SI
         - H0_SI
         - M_SUN_SI
+        - GM_SUN_SI
+        - GM_SUN_SOURCE
         - M_E_SI
         - B_WIEN_SI
     src/core/flux-rules.ts:
@@ -12359,6 +12552,10 @@ modules:
             - TEMPERATURE
             - ENTROPY
             - CHARGE
+        - file: ./algebra.js
+          imports:
+            - multiply
+            - divide
       exports:
         - parseDimensionSpec
         - DimensionSpecError
@@ -13396,11 +13593,13 @@ modules:
         - file: ./numerical/killing.js
           imports:
             - verifyKillingEquation
+            - checkKillingEquation
             - evaluateConservedCharge
           reExport: true
         - file: ./numerical/killing.js
           imports:
             - KillingEquationOptions
+            - KillingEquationCheck
             - ChristoffelAccess
           reExport: true
         - file: ./numerical/geodesic-integrator.js
@@ -14237,6 +14436,7 @@ modules:
         - einstein
         - bianchiResidual
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
         - integrateGeodesic
         - type GeodesicIntegratorInputs
@@ -14484,6 +14684,7 @@ modules:
         - EinsteinTensorNode
         - BianchiResidualNode
         - KillingEquationOptions
+        - KillingEquationCheck
         - ChristoffelAccess
         - TracableTensorNode
         - TensorTraceNode
@@ -14793,8 +14994,10 @@ modules:
         - bianchiResidual
         - BianchiResidualNode
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
         - KillingEquationOptions
+        - KillingEquationCheck
         - ChristoffelAccess
         - integrateGeodesic
         - type GeodesicIntegratorInputs
@@ -15878,6 +16081,9 @@ modules:
         - file: ./pderiv.js
           imports:
             - pderivNumericalFn
+        - file: ./input-validation.js
+          imports:
+            - validateFiniteInputs
         - file: ../tests/fixtures/schwarzschild.js
           imports: []
         - file: ../tests/fixtures/schwarzschild.js
@@ -15885,22 +16091,25 @@ modules:
             - schwarzschildKillingT
       exports:
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
       interfaces:
         - KillingEquationOptions
+        - KillingEquationCheck
       functions:
         - verifyKillingEquation
+        - checkKillingEquation
         - evaluateConservedCharge
     src/numerical/klein-gordon.ts:
       description: Klein-Gordon dispersion-relation numerical evaluator (G-7 debt closure).
       externalDependencies:
-        - package: universal-physics-tensor/numerical/klein-gordon
+        - package: universal-physics-tensor
           imports:
             - evaluateKGDispersionResidual
         - package: universal-physics-tensor
           imports:
             - C_SI
-        - package: universal-physics-tensor/numerical/klein-gordon
+        - package: universal-physics-tensor
           imports:
             - verifyKleinGordonPlaneWave
       nodeDependencies: []
@@ -16510,6 +16719,7 @@ dependencyGraph:
         - src/canonical/linkage.ts
         - src/canonical/normal-form.ts
         - src/canonical/registry.ts
+        - src/canonical/residual.ts
         - src/canonical/seed-l-layer.ts
     - name: Cli
       files:
@@ -16554,7 +16764,9 @@ dependencyGraph:
         - src/composition/axis-audit.ts
         - src/composition/bridge-analysis.ts
         - src/composition/bridge-prediction.ts
+        - src/composition/canonical-compare.ts
         - src/composition/canonical-graph.ts
+        - src/composition/canonical-prefactors.ts
         - src/composition/catalog-graph.ts
         - src/composition/compose-surface.ts
         - src/composition/compose-symbolic.ts
@@ -16716,18 +16928,18 @@ dependencyGraph:
         - src/numerical/types.ts
         - src/numerical/weyl-lowering.ts
 statistics:
-  totalTypeScriptFiles: 348
+  totalTypeScriptFiles: 351
   totalModules: 11
-  totalLinesOfCode: 68562
-  totalExports: 2445
+  totalLinesOfCode: 70485
+  totalExports: 2475
   totalClasses: 58
-  totalInterfaces: 357
-  totalFunctions: 551
+  totalInterfaces: 362
+  totalFunctions: 566
   totalTypeGuards: 4
   totalEnums: 0
-  totalConstants: 606
-  totalReExports: 1229
-  totalTypeOnlyImports: 483
+  totalConstants: 608
+  totalReExports: 1242
+  totalTypeOnlyImports: 490
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0
   unusedFilesCount: 1

@@ -1,7 +1,7 @@
 /**
  * Universal Physics Tensor — Bridge Equation Index
  *
- * Machine-readable catalog of all 44 bridge equations (IDs 11-54) from the UPT
+ * Machine-readable catalog of all bridge equations (IDs from 11) from the UPT
  * specification (Parts I-VI; BE-51–54 catalogued in Part-II §V-B). Each entry
  * preserves the spec's stated status, known issues, references, and
  * dependencies on other bridge equations.
@@ -12,11 +12,12 @@
  * Source-of-truth files: docs/specification/Part-{I-VI}.md
  *
  * Honest-claude: fields not explicitly stated in the spec are null (not guessed).
- * - dimensional_signature is populated for all 44 entries at HEAD; 42 of them
- *   (IDs 11-50, 53, 54) are also registered in `EXPECTED_DIMENSION_BY_BRIDGE`
- *   (`src/dimensional/bridge-check.ts`) with AST encodings under
- *   `src/bridges/equations/` — BE-51/52 are closed-form evaluator bridges
- *   without AST encodings. Populated values are exactly what
+ * - dimensional_signature is populated for all 55 entries. 53 of them (all
+ *   except BE-51 and BE-52) are registered in `EXPECTED_DIMENSION_BY_BRIDGE`
+ *   (`src/dimensional/bridge-check.ts`); 42 (IDs 11-50, 53, 54) also have AST
+ *   encodings under `src/bridges/equations/`. BE-51/52 are closed-form evaluator
+ *   bridges, and BE-55-65 have evaluator modules in `src/bridges/`; none of
+ *   them has an AST encoding. Populated values are exactly what
  *   `format()` produces for the inferred Dimension shape; never free-form prose.
  * - known_issues are extracted ONLY from explicit issue-markers in the spec
  *   ("**Known issue:**", "**Additional known issue:**", "**Bound violation:**",
@@ -176,7 +177,7 @@ export interface KnownIssue {
  * deleting it would erase the record that the claim was made and refuted.
  */
 export interface BridgeEquationEntry {
-  /** Equation number, 11-50. */
+  /** Equation number, 11-65. */
   id: number;
   /** Verbatim heading text from the spec. */
   name: string;
@@ -533,12 +534,17 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `see source | status_text: Established (Lindblad form). Auxiliary coupling-dependent rate corrected 2026-05-04 (R0 audit, branch fix/be-11-decoherence-coupling) from the broken Arrhenius-in-coupling form γ_k(T,λ) = γ_0 exp(-λ/λ_thermal) — which was exponentially *decreasing* in coupling, physically backwards — to the Caldeira-Leggett weak-coupling form γ_k(λ) = γ_0 (λ/λ_0)². The Lindblad master equation itself is unchanged and remains established literature.`,
   // -- Atlas Phase 1 overlay --
-  // source: Breuer & Petruccione, "The Theory of Open Quantum Systems" (OUP) -
-  // the Born-Markov derivation of the Markovian master equation. The reduced
-  // dynamics is obtained by TRACING OUT the environment, which is a
-  // coarse-graining, not a limit and not an equivalence. Cited by work and
-  // topic: the section numbers already in this row's references[] were not
-  // re-verified against an edition in hand, so they are not re-asserted here.
+  // source: Breuer & Petruccione, "The Theory of Open Quantum Systems" (OUP 2002;
+  // checked on search snippets of pp. 116, 136 and 146 only, no full text) -
+  // the Born-Markov derivation of the Markovian master equation: the reduced
+  // density matrix is the partial trace over the environment (p. 116), under
+  // the condition that the bath correlation time is small compared to the
+  // relaxation time (p. 136, in section 3.3.1 "Weak-coupling Limit"); the book
+  // later calls that condition "obviously a weak-coupling condition" (p. 146).
+  // The type 'coarse-graining' is THIS repository's classification of the
+  // partial trace; the book frames the derivation as a limit. Cited by work and
+  // topic: the section numbers in this row's references[] were not re-verified
+  // against an edition in hand.
   relation: {
     type: 'coarse-graining',
     transformation:
@@ -986,10 +992,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the KSS viscosity-to-entropy bound landed (src/bridges/equations/be-21-kss-bound.ts). dimensional_signature null → '[T Theta]' (= K·s in SI; η has [Pa·s] = [M L^-1 T^-1]; s has [J/(K·m³)] = [M L^-1 T^-2 Θ^-1]; ratio = T·Θ ✓ matches [ℏ/k_B] = [J·s]/[J/K] = [K·s]). Numerical bracket: η/s = 1.054571817e-34/(4π · 1.380649e-23) ≈ 6.078e-13 K·s, matching the textbook universal lower bound on any quantum fluid. | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued bridge content with canonical scalar reductions that preserve the bridge's load-bearing claim). Replaced the operator-valued holographic-dictionary retarded Green's function recipe G_R(ω,k) = -i lim r^(2Δ-d) (g^rr/√g^tt) ∂_r φ / φ_0 (which has no clean scalar AST encoding without committing to a bulk dual) with the canonical Kovtun-Son-Starinets 2005 saturating value η/s = ℏ/(4π k_B) — the most-cited universal scalar consequence of the same Son-Starinets AdS/CFT lineage that the original BE-21 cited. The bridge framing (universal viscosity bound as a UPT condensed-matter ↔ high-energy bridge) is preserved; the operator-valued framing is the AST-unencodable element documented as the reformulation candidate in known_issues. Status remains 'established' because the KSS bound itself is established AdS/CFT result. Note: counterexamples in higher-derivative gravity (Kats-Petrov 2009 Gauss-Bonnet) are noted but the bound holds in two-derivative Einstein-gravity duals, which is the canonical AdS/CMT regime BE-21 sits in. | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown naming applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): [quantum, condensed-matter]. Rationale (HIGH: KSS comes from AdS/CFT (quantum gravity) and bounds a condensed-matter transport quantity).`,
   // -- Atlas Phase 1 overlay --
   // source: Kovtun, Son & Starinets 2005 Phys. Rev. Lett. 94:111601
-  // (arXiv:hep-th/0405231) - eta/s is COMPUTED from the dual black-brane
-  // geometry (graviton absorption / membrane paradigm), so the relation is a
-  // derivation within two-derivative Einstein-gravity duals, not an
-  // approximation to some more exact value.
+  // (arXiv:hep-th/0405231) - they compute eta through Kubo's formula and the
+  // low-energy graviton absorption cross section of the dual black brane
+  // (eqs. 5-7, 14). Their eq. (16) shows that in N=4 SYM the first
+  // finite-coupling (string) correction RAISES eta/s above hbar/(4 pi k_B).
+  // Typing the relation as an exact
+  // derivation within the Einstein-gravity limit is THIS repository's
+  // classification.
   relation: {
     type: 'derivation',
     transformation:
@@ -997,10 +1006,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'Einstein-gravity dual: eta from the graviton absorption cross-section, ' +
       's from the horizon area',
   },
-  // source: Kovtun, Son & Starinets 2005 state the bound as eta/s >= 1/(4 pi)
-  // in units hbar = k_B = 1. This row's saturating value 6.078e-13 K.s is the
-  // same statement in SI, so the unit system is load-bearing for the NUMBER
-  // rather than decorative.
+  // source: Kovtun, Son & Starinets 2005, eq. (1): eta/s = hbar/(4 pi k_B)
+  // ~ 6.08e-13 K s, stated with hbar and k_B restored, for theories with
+  // gravity duals; they CONJECTURE ("We speculate") that it is a lower bound
+  // for relativistic QFTs at finite temperature and zero chemical potential.
+  // This row's saturating value 6.078e-13 K.s is that SI value, so the unit
+  // system is load-bearing for the NUMBER rather than decorative.
   conventions: { unitSystem: 'SI' },
 },
 {
@@ -1541,7 +1552,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   formula_latex: `\\langle O_1(x_1) O_2(x_2) O_3(x_3) O_4(x_4) \\rangle = \\sum_{\\Delta,\\ell} C_{12}^O C_{34}^O g_{\\Delta,\\ell}(u,v)`,
   source_part: 'II',
   source_section: `Part-II Category J`,
-  known_issues: [],
+  known_issues: [
+    {
+      severity: 'other',
+      description: `The single-block residual R = C²·[g_block(u,v) − g_block(v,u)] (BridgeEquations.crossingResidual) had no v^Δφ / u^Δφ prefactors and was written for ONE conformal block; crossing holds only for the full four-point function g = 1 + Σ_O λ_O² g_O with the prefactors (Rattazzi et al. 2008, eq. 4.3). It was deprecated in 0.46.0 and REMOVED in 0.47.0; the encoded relation is BridgeEquations.crossingEquation.`,
+      fixable: 'spec-edit',
+    },
+  ],
   // Wave J Tier F (2026-05-05): expanded references[] from prose-Status citations.
   references: [
     `Rattazzi, Rychkov, Tonni & Vichi 2008 *JHEP* 0812:031 (arXiv:0807.0004; modern conformal-bootstrap revival, foundational)`,
@@ -1551,9 +1568,9 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   ],
   dependencies: [],
   dimensional_signature: `[1]`, // Wave Z — BE-35 CFT bootstrap crossing residual Tier-5 AST encoding 2026-05-07.
-  encoded_form: `Crossing-symmetry residual R_cross = C²·[g_block(u,v) − g_block(v,u)] (a single dimensionless scalar measuring violation of crossing symmetry between u- and v-channels); reduced from the full four-point CFT correlator + conformal-block decomposition shown in formula_latex.`,
+  encoded_form: `Crossing equation R_cross = v^Δφ·g(u,v) − u^Δφ·g(v,u) for four identical scalars of dimension Δφ (Rattazzi et al. 2008, eq. 4.3), with g the full reduced four-point function 1 + Σ_O λ_O² g_O (identity plus the sum over exchanged operators); a single dimensionless scalar, zero in a consistent CFT. Reduced from the four-point correlator and its conformal-block decomposition in formula_latex.`,
   tractability_class: 'numerical-tractable',
-  notes: `Encoded 2026-05-07 (Wave Z): Tier-5 AST encoding for the conformal-bootstrap crossing-symmetry residual landed (src/bridges/equations/be-35-conformal-bootstrap.ts). dimensional_signature null → '[1]'. The original 4-pt-function expansion ⟨O₁O₂O₃O₄⟩ = Σ_{Δ,ℓ} C₁₂^O C₃₄^O g_{Δ,ℓ}(u,v) is operator-valued and admits no scalar reduction without committing to specific operator dimensions; AST encodes OpenAI's reduction R_cross = C²·[g_block(u,v) − g_block(v,u)] which is identically zero at the crossing-symmetric point u=v=1/4 for any consistent CFT. Honest-claude scope notes: single-block reduction (the real bootstrap programme sums an infinite (Δ,ℓ) tower with positivity / unitarity constraints — that spectrum-fitting is the load-bearing numerical content of bootstrap papers and is NOT captured here); OPE coefficients C are scheme-dependent normalizations (assumed unit-normalized so C is dimensionless); conformal-block functions g_{Δ,ℓ}(u,v) encoded as dimensionless symbol stubs (analytic forms exist in 2D/4D Dolan-Osborn but live outside AST grammar — no hypergeometric-function node). Gemini-Pro-confirmed second-opinion 2026-05-07: "sharp and canonical representation of the conformal bootstrap philosophy", AST-grammar-compliant via dimensionless-stub. | see source | status_text: Established. The conformal bootstrap crossing-symmetry equation is well established in CFT and has produced rigorous bounds on critical exponents for the 3D Ising model and other theories (Rattazzi-Ry... | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown classification applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): NOT-A-BRIDGE. HIGH NOT-A-BRIDGE: pure-CFT internal-consistency result; single regime. The bridges array remains [unknown, unknown] as the structural marker for not actually a regime-spanning bridge. Future v0.8+ restructuring may move this entry to a separate LAW_EQUATIONS registry.`,
+  notes: `Encoded 2026-05-07 (Wave Z): Tier-5 AST encoding for the conformal-bootstrap crossing-symmetry residual landed (src/bridges/equations/be-35-conformal-bootstrap.ts). dimensional_signature null → '[1]'. The original 4-pt-function expansion ⟨O₁O₂O₃O₄⟩ = Σ_{Δ,ℓ} C₁₂^O C₃₄^O g_{Δ,ℓ}(u,v) is operator-valued and admits no scalar reduction without committing to specific operator dimensions; AST encodes OpenAI's reduction R_cross = C²·[g_block(u,v) − g_block(v,u)] which is identically zero at the crossing-symmetric point u=v=1/4 for any consistent CFT. Honest-claude scope notes: single-block reduction (the real bootstrap programme sums an infinite (Δ,ℓ) tower with positivity / unitarity constraints — that spectrum-fitting is the load-bearing numerical content of bootstrap papers and is NOT captured here); OPE coefficients C are scheme-dependent normalizations (assumed unit-normalized so C is dimensionless); conformal-block functions g_{Δ,ℓ}(u,v) encoded as dimensionless symbol stubs (analytic forms exist in 2D/4D Dolan-Osborn but live outside AST grammar — no hypergeometric-function node). Gemini-Pro-confirmed second-opinion 2026-05-07: "sharp and canonical representation of the conformal bootstrap philosophy", AST-grammar-compliant via dimensionless-stub. | see source | status_text: Established. The conformal bootstrap crossing-symmetry equation is well established in CFT and has produced rigorous bounds on critical exponents for the 3D Ising model and other theories (Rattazzi-Ry... | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown classification applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): NOT-A-BRIDGE. HIGH NOT-A-BRIDGE: pure-CFT internal-consistency result; single regime. The bridges array remains [unknown, unknown] as the structural marker for not actually a regime-spanning bridge. Future v0.8+ restructuring may move this entry to a separate LAW_EQUATIONS registry. | Corrected 2026-09-24 (citation census finding F1): the Wave Z residual C²·[g_block(u,v) − g_block(v,u)] had no v^Δφ / u^Δφ prefactors and was written for one block, and neither is crossing symmetric. Its stated check, "identically zero at the crossing-symmetric point u=v=1/4", holds for ANY function at u = v and so tested nothing. The encoded relation is now the crossing equation v^Δφ·g(u,v) − u^Δφ·g(v,u) for the full four-point function (BE35_CROSSING_EQUATION_RHS, BridgeEquations.crossingEquation), checked exactly against the generalized free field g = 1 + u^Δ + (u/v)^Δ away from u = v. The old evaluator stays, deprecated, as public API.`,
   // -- Atlas Phase 1 overlay --
   // BE-35 is adjudicated 'not-a-bridge' (src/bridges/rejected.ts). 'relation'
   // records what the equation IS WITHIN ITS REGIME; the rejection is linked
@@ -1561,24 +1578,30 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // source: Rattazzi, Rychkov, Tonni & Vichi 2008 JHEP 0812:031
   // (arXiv:0807.0004) and Poland, Rychkov & Vichi 2019 Rev. Mod. Phys.
   // 91:015002 - crossing symmetry equates the s-channel and t-channel
-  // conformal-block decompositions of ONE four-point function. Two exact
-  // decompositions of the same object is an exact equivalence, and the
-  // cross-ratio swap is its own inverse.
+  // conformal-block decompositions of ONE four-point function (the s-/t-channel
+  // names are Poland et al.'s, Sec. III.I). Typing this as 'exact-equivalence'
+  // is THIS repository's classification. Poland et al. (Sec. II) call the
+  // crossing relation "a consistency condition on the CFT data"; Rattazzi et al.
+  // (Sec. 4) call it "a set of crossing symmetry constraints for the function
+  // g(u, v)". The swap (u, v) -> (v, u) is its own inverse by construction.
   relation: {
     type: 'exact-equivalence',
     transformation:
-      's-channel OPE decomposition of <O1 O2 O3 O4> -> t-channel decomposition, ' +
-      'i.e. the cross-ratio swap (u, v) -> (v, u)',
+      's-channel OPE decomposition of <phi phi phi phi> (four identical scalars of ' +
+      'dimension d) -> t-channel decomposition: ' +
+      'the crossing relation v^d g(u, v) = u^d g(v, u) (Rattazzi et al. 2008, eq. 4.3), ' +
+      'i.e. the cross-ratio swap (u, v) -> (v, u) with those prefactors',
     inverse: '(v, u) -> (u, v) - the swap is an involution and is its own inverse',
   },
-  // source: the in-repo adjudication registry, reason quoted verbatim. The
-  // witness is that registry entry, which is a checkable artifact in this tree.
+  // source: the in-repo adjudication registry, reason quoted verbatim (pinned by
+  // tests/bridges/overlay-registry-quote.test.ts). The witness is that registry
+  // entry, which is a checkable artifact in this tree.
   counterexamples: [
     {
       description:
-        'Not a regime-crossing bridge: the crossing-symmetry constraint is ' +
-        'internal to a CFT operator algebra - a consistency condition within ' +
-        'one QFT regime, not a relation between regimes.',
+        'The crossing-symmetry constraint is internal to a CFT’s ' +
+        'operator algebra — a consistency condition within one QFT ' +
+        'regime, not a relation between regimes.',
       witness: 'src/bridges/rejected.ts - REJECTED_BRIDGE_ADJUDICATIONS, beId 35',
     },
   ],
@@ -1693,8 +1716,13 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Tier-5 AST encoding landed 2026-05-11 (Wave Z-F, src/bridges/equations/be-37-shapiro-delay.ts) — encodes Shapiro gravitational time-delay Δt = (2GM/c³)·ln(R_far/R_near) using the typed-prefactor + log-stub idiom. Prefactor 2GM/c³ has dim [time] (light-travel-time-scale of the Schwarzschild radius); log argument R_far/R_near is dimensionless (lemma test enforces); the log itself is replaced by a fresh DIMENSIONLESS symbol 'ln_R_ratio' (no log primitive in the AST grammar, same idiom as BE-25 / BE-45 log-stubs). Inferred RHS dim [T] · [1] = [time] ✓. Numerical bracket: Sun grazing (M_sun, 1 AU to R_sun) gives ~50-300 μs, matching Shapiro 1964 prediction and Cassini 2003 experimental confirmation. | Reformulated 2026-05-11 (Wave Z-F, per OpenAI o3 consultation, analogous to Wave P-D R-D2 BE-25 Penrose-Hameroff → IIT and Wave Z-E BE-16 Complexity-Entropy → Landauer): replaced the operationally-meaningless vacuum c(t,x)≠const ansatz with the canonical Shapiro gravitational time-delay. The Albrecht-Magueijo / Moffat / Barrow vacuum-c-variation proposals remain non-equivalent, non-falsifiable, and Ellis-Uzan-critique-vulnerable; they are retained in references[] as historical context but the canonical Shapiro form is now the bridge equation. Status set to 'speculative' (not 'established') because Shapiro itself is canonical and experimentally confirmed but the *bridge framing* — treating Shapiro delay as the UPT "modified-light-propagation" bridge — is the speculative element. Honest-claude: Shapiro delay is general-relativistic gravitational physics — it is NOT a "varying c" in any fundamental sense. Light always travels at c locally; the delay arises from the integrated path length / coordinate-time effects in curved spacetime. The encoded form uses the GR-canonical PPN parameter γ=1 (i.e., coefficient 2GM/c³). A more general PPN encoding would use (1+γ)GM/c³ with γ as a free parameter (Bertotti-Iess-Tortora 2003 constrained |γ-1| < 2.3e-5). | Earlier history: INVALID per disposition decision 2026-05-05 (R3 audit, docs/planning/BE-37-VSL-Disposition-Brief.md): vacuum c(t,x)-variation is operationally meaningless per Ellis-Uzan 2005. The disposition correctly preserved the gap rather than picking one of the three non-equivalent VSL ansätze (Albrecht-Magueijo / Moffat / Barrow); OpenAI o3 Wave-Z-F consultation (2026-05-11) confirmed Shapiro delay as the appropriate canonical operationally-meaningful replacement. | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown naming applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): [classical, gravity]. Rationale (HIGH: self-explanatory; classical EM signal + GR gravity (Shapiro delay)).`,
   // -- Atlas Phase 1 overlay --
-  // source: Shapiro 1964 Phys. Rev. Lett. 13:789 - Delta t is DERIVED from the
-  // Schwarzschild line element for a null ray, at leading order in GM/(c^2 R).
+  // source: Shapiro 1964 Phys. Rev. Lett. 13:789 - he derives the round-trip
+  // excess delay (eq. 1), a proper-time difference from the flat-space value,
+  // from the Schwarzschild solution. Eq. (1) is linear in the gravitational
+  // radius r0 = GM/c^2; he neglects the change-in-path contribution as second
+  // order. This row's
+  // one-way coordinate-time log form (2GM/c^3) ln(R_far/R_near) is THIS
+  // repository's simplification of it, not Shapiro's formula.
   // NOT typed 'approximation': that member REQUIRES an ApproximationBound with
   // a Lipschitz K, a delta and a machine horizon, and no such bound is sourced
   // for the post-Newtonian truncation. The weak-field validity already lives in
@@ -2070,7 +2098,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
 },
 {
   id: 48,
-  name: `GRW mass-amplified localization rate (CSL extension)`,
+  name: `GRW mass-amplified localization rate`,
   category: `O`,
   category_name: `Quantum Foundations`,
   bridges: [`quantum`, `classical`] as [string, string],
@@ -2083,22 +2111,22 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   // master equation remains the bridge framing / context; the scalar
   // rate is the encodable bridge content.
   status: 'speculative',
-  context: `GRW / CSL mass-amplified spontaneous-localization rate λ_GRW(m) = λ_0 · (m/m_0): a particle of mass m localizes at rate proportional to m/m_0, where m_0 is the nucleon mass and λ_0 ≈ 10⁻¹⁶ /s is the canonical GRW 1986 single-nucleon rate. The full Lindblad master equation is the framing; the scalar rate is the AST-encoded bridge content.`,
+  context: `GRW mass-amplified spontaneous-localization rate λ_GRW(m) = λ_0 · (m/m_0), the GRW (QMSL) centre-of-mass amplification λ_macro = N λ_micro (Bassi & Ghirardi 2003 §6.4); in CSL the macroscopic rate is γ D_0 n_out instead (§8.3). A particle of mass m localizes at rate proportional to m/m_0, where m_0 is the nucleon mass and λ_0 ≈ 10⁻¹⁶ /s is the canonical GRW 1986 single-nucleon rate. The full Lindblad master equation is the framing; the scalar rate is the AST-encoded bridge content.`,
   formula_latex: `\\lambda_{\\text{GRW}}(m) = \\lambda_0 \\cdot \\frac{m}{m_0}, \\quad \\lambda_0 \\approx 10^{-16}\\,\\text{s}^{-1}, \\quad m_0 = m_{\\text{nucleon}}`,
   source_part: 'II',
   source_section: `Part-II Category O`,
   known_issues: [
     {
       severity: 'phenomenological-ansatz',
-      description: `[Reformulated 2026-05-07, Wave Y] The mass-amplified localization rate λ_GRW(m) = λ_0 · (m/m_0) is canonical CSL physics (Pearle 1989 *Phys. Rev. A* 39:2277; Ghirardi-Pearle-Rimini 1990 *Phys. Rev. A* 42:78; Bassi-Ghirardi 2003 *Phys. Rep.* 379:257 review §2.1). The original BE-48 entry encoded the full GRW Lindblad master equation dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}] which is operator-valued and has no clean scalar AST encoding. The Wave Y reformulation encodes only the scalar rate, parallel to BE-11's encoding of the Caldeira-Leggett rate γ_k(λ) (not the full Lindblad master equation). The bridge framing — using GRW / CSL mass-amplification as a UPT quantum-foundations bridge between standard QM and a possible objective-collapse modification of QM — is the speculative element documented here. λ_0 = 10⁻¹⁶ /s is the canonical 1986 GRW value (Ghirardi-Rimini-Weber Phys. Rev. D 34:470); experimental constraints (Adler 2007 *J. Phys. A* 40:2935; cold-atom interferometry; X-ray emission tests) bound it. The phenomenological-ansatz tag is for the bridge framing, not for the canonical λ_GRW = λ_0(m/m_0) rate itself.`,
+      description: `[Reformulated 2026-05-07, Wave Y] The mass-amplified localization rate λ_GRW(m) = λ_0 · (m/m_0) is the GRW (QMSL) centre-of-mass amplification λ_macro = N λ_micro (Bassi-Ghirardi 2003 *Phys. Rep.* 379:257 review §6.4), with N = m/m_0 this repository's identification; CSL gives γ D_0 n_out instead (review §8.3). The original BE-48 entry encoded the full GRW Lindblad master equation dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}] which is operator-valued and has no clean scalar AST encoding. The Wave Y reformulation encodes only the scalar rate, parallel to BE-11's encoding of the Caldeira-Leggett rate γ_k(λ) (not the full Lindblad master equation). The bridge framing — using GRW / CSL mass-amplification as a UPT quantum-foundations bridge between standard QM and a possible objective-collapse modification of QM — is the speculative element documented here. λ_0 = 10⁻¹⁶ /s is the canonical 1986 GRW value (Ghirardi-Rimini-Weber Phys. Rev. D 34:470); experimental constraints (Adler 2007 *J. Phys. A* 40:2935; cold-atom interferometry; X-ray emission tests) bound it. The phenomenological-ansatz tag is for the bridge framing, not for the canonical λ_GRW = λ_0(m/m_0) rate itself.`,
       fixable: 'reformulation',
     },
   ],
   references: [
     `Ghirardi, Rimini & Weber 1986 *Phys. Rev. D* 34:470 (original GRW objective-collapse master equation; canonical 3D form; λ_0 ≈ 10⁻¹⁶ /s)`,
-    `Pearle 1989 *Phys. Rev. A* 39:2277 (Continuous Spontaneous Localization extension; mass-density-coupled noise)`,
-    `Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (CSL with mass-amplification mechanism: rate λ ∝ m/m_0 for composite systems)`,
-    `Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (arXiv:quant-ph/0302164; Dynamical reduction models — comprehensive review §2.1 covers the mass-amplification rate)`,
+    `Pearle 1989 *Phys. Rev. A* 39:2277 (Continuous Spontaneous Localization; not seen)`,
+    `Ghirardi, Pearle & Rimini 1990 *Phys. Rev. A* 42:78 (the CSL paper; metadata only)`,
+    `Bassi & Ghirardi 2003 *Phys. Rep.* 379:257 (arXiv:quant-ph/0302164; Dynamical reduction models — review; §6.4 gives the GRW/QMSL centre-of-mass amplification λ_macro = N λ_micro, §8.3 the CSL rate γ D_0 n_out)`,
     `Bassi, Lochan, Satin, Singh & Ulbricht 2013 *Rev. Mod. Phys.* 85:471 (arXiv:1204.4325; Models of wave-function collapse, underlying theories, and experimental tests)`,
     `Adler 2007 *J. Phys. A* 40:2935 (CSL parameter constraints from cosmic-ray-induced ionization rates)`,
   ],
@@ -2106,12 +2134,14 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   dimensional_signature: `[frequency]`, // Wave Y — encoded; localization rate.
   encoded_form: `Localization rate λ_GRW (a single scalar frequency), reduced from the full nonlinear stochastic Schrödinger evolution shown in formula_latex.`,
   tractability_class: 'closed-form',
-  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the mass-amplified GRW localization rate λ_GRW(m) = λ_0 · (m/m_0) landed (src/bridges/equations/be-48-grw-localization.ts). dimensional_signature was orphan '[frequency]' (R0 audit pin); now backed by an AST module. The full Lindblad master equation is preserved as the bridge framing / context; the scalar rate is the encoded bridge content (parallel to BE-11 encoding only the Caldeira-Leggett rate γ_k(λ), not the full Lindblad). Numerical bracket: λ_GRW(electron) ≈ 5×10⁻²⁰ /s (negligible for individual electrons); λ_GRW(macroscopic 1 g) ≈ 6×10⁷ /s (rapid collapse, no Schrödinger-cat states). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued master equations with their canonical scalar reductions). Replaced the operator-valued Lindblad master-equation form (dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}]) with the canonical mass-amplification rate λ_GRW(m) = λ_0 · (m/m_0). Status changed from 'established' to 'speculative' because the bridge framing — using GRW / CSL mass-amplification as a UPT bridge between standard QM and a possible objective-collapse modification — is the speculative element (the rate formula itself is canonical, but the existence of the GRW / CSL effect as a real physical mechanism is the conjectural content). Same pattern as BE-22, BE-26, BE-38 (Kitaev-Preskill / WKB / Milgrom canonical, UPT bridge framing speculative). | Earlier history: Corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value. Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review. | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown naming applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): [quantum, classical]. Rationale (HIGH: CSL-extension maps quantum superposition -> classical localization).`,
+  notes: `Encoded 2026-05-07 (Wave Y): Tier-5 AST encoding for the mass-amplified GRW localization rate λ_GRW(m) = λ_0 · (m/m_0) landed (src/bridges/equations/be-48-grw-localization.ts). dimensional_signature was orphan '[frequency]' (R0 audit pin); now backed by an AST module. The full Lindblad master equation is preserved as the bridge framing / context; the scalar rate is the encoded bridge content (parallel to BE-11 encoding only the Caldeira-Leggett rate γ_k(λ), not the full Lindblad). Numerical bracket: λ_GRW(electron) ≈ 5×10⁻²⁰ /s (negligible for individual electrons); λ_GRW(macroscopic 1 g) ≈ 6×10⁷ /s (rapid collapse, no Schrödinger-cat states). | Reformulated 2026-05-07 (Wave Y, per the strategic pattern of replacing operator-valued master equations with their canonical scalar reductions). Replaced the operator-valued Lindblad master-equation form (dρ/dt = -(i/ℏ)[H,ρ] + λ ∫d³x [L_x ρ L_x† - (1/2){L_x† L_x, ρ}]) with the canonical mass-amplification rate λ_GRW(m) = λ_0 · (m/m_0). Status changed from 'established' to 'speculative' because the bridge framing — using GRW / CSL mass-amplification as a UPT bridge between standard QM and a possible objective-collapse modification — is the speculative element (the rate formula itself is canonical, but the existence of the GRW / CSL effect as a real physical mechanism is the conjectural content). Same pattern as BE-22, BE-26, BE-38 (Kitaev-Preskill / WKB / Milgrom canonical, UPT bridge framing speculative). | Earlier history: Corrected 2026-05-04 R0 audit — added canonical (πσ²)^{-3/4} prefactor to L_x and updated λ from 1e-17 to 1e-16 s^-1 to match the original 1986 GRW value. Citations: Ghirardi-Rimini-Weber 1986 Phys. Rev. D 34:470; Bassi-Ghirardi 2003 Phys. Rep. 379:257 review. | 2026-05-23 BRIDGE-PHYSICS-AUDIT S3 unknown<->unknown naming applied (per docs/architecture/archive/v0.7-physics-judgment-proposals.md S3): [quantum, classical]. Rationale (HIGH: CSL-extension maps quantum superposition -> classical localization). | Corrected 2026-09-24 (citation census finding F2): the name said "(CSL extension)" and the context said "GRW / CSL", crediting the linear law λ_0 (m/m_0) to CSL. Bassi & Ghirardi 2003 give it for GRW/QMSL (§6.4, λ_macro = N λ_micro) and give CSL a different macroscopic rate, γ D_0 n_out (§8.3). The name and context now say GRW; the earlier text above is kept as history.`,
   // -- Atlas Phase 1 overlay --
-  // source: Ghirardi, Pearle & Rimini 1990 Phys. Rev. A 42:78, and the review
-  // Bassi & Ghirardi 2003 Phys. Rep. 379:257 - within CSL the mass
-  // amplification of the localization rate for a composite of N nucleons is
-  // DERIVED from the single-nucleon rate; it is not fitted. The SPECULATIVE
+  // source: Bassi & Ghirardi 2003 Phys. Rep. 379:257 (review of GRW 1986 and
+  // CSL; Ghirardi, Pearle & Rimini 1990 Phys. Rev. A 42:78 is the CSL paper,
+  // metadata only). The linear amplification lambda_0 (m/m_0) is the GRW/QMSL
+  // centre-of-mass rate lambda_macro = N lambda_micro (review §6.4), with
+  // N = m/m_0 THIS repository's identification; it is derived, not fitted. In
+  // CSL the macroscopic rate is gamma D_0 n_out instead (review §8.3). The SPECULATIVE
   // element is the bridge framing (that objective collapse happens at all),
   // which this row's 'status' already carries; the overlay does not touch
   // 'status'.
@@ -2119,7 +2149,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
     type: 'derivation',
     transformation:
       'single-nucleon GRW localization rate lambda_0 at reference mass m_0 -> ' +
-      'composite-mass rate lambda_GRW(m) = lambda_0 (m/m_0) by CSL amplification',
+      'composite-mass rate lambda_GRW(m) = lambda_0 (m/m_0) by the GRW (QMSL) ' +
+      'centre-of-mass amplification lambda_macro = N lambda_micro',
   },
 },
 {
@@ -2218,8 +2249,8 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   known_issues: [],
   references: [
     `Dyson, Eddington & Davidson 1920 Phil. Trans. R. Soc. A 220:291 (original 1919 eclipse expedition)`,
-    `Einstein 1915 Preuss. Akad. Wiss. 844 (GR prediction of 4GM/(Rc²) deflection)`,
-    `Carroll 2004 Spacetime and Geometry §8.5 (standard GR textbook derivation)`,
+    `Einstein 1915 Preuss. Akad. Wiss. 831 (the perihelion paper: the doubled deflection 2α/Δ, 1.7″ at the Sun's limb, p. 834; 4GM/(Rc²) needs α = 2GM/c², which is this repository's identification)`,
+    `Carroll 2004 Spacetime and Geometry (not seen: cited as the standard textbook; no section or content verified)`,
     `Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)`,
   ],
   dependencies: [],
@@ -2227,12 +2258,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Added 2026-05-15 (v0.4.0 Task 15 [U]): Eddington 1919 gravitational lensing bridge. evaluateGravitationalLensing({M_kg, b_m}) → {alpha_rad, alpha_arcsec, M_kg, b_m} in src/bridges/gravitational-lensing.ts. Solar grazing validation: α ≈ 8.49×10⁻⁶ rad ≈ 1.75 arcsec. Domain: b > 0; weak-field: b >> r_Schwarzschild = 2GM/c². Geodesic cross-validation (null RK4, 200k steps) passes to ±1e-4 relative error. First bridge beyond the original 40-bridge spec catalog.`,
   // -- Atlas Phase 1 overlay --
-  // source: Einstein 1915 Preuss. Akad. Wiss. 844, and Carroll, "Spacetime and
-  // Geometry", the weak-field light-deflection derivation - alpha = 4GM/(b c^2)
-  // is DERIVED from null geodesics of the Schwarzschild metric at first order
-  // in GM/(b c^2). Work and topic are cited rather than a section number: the
-  // number in this row's references[] was not re-verified against an edition in
-  // hand. NOT typed 'approximation' - see BE-37: no Lipschitz K / delta /
+  // source: Einstein 1915 Preuss. Akad. Wiss. 831 (the perihelion paper, which
+  // announces the doubled deflection, 1.7", on p. 834; pp. 844-847 are the
+  // field-equations paper; Einstein worked by successive approximation), and
+  // Carroll, "Spacetime and Geometry" (not seen). That alpha = 4GM/(b c^2)
+  // follows from Schwarzschild null geodesics at first order in GM/(b c^2) is
+  // THIS repository's statement. NOT typed 'approximation' - see BE-37: no Lipschitz K / delta /
   // machine horizon is sourced for the post-Newtonian truncation, and the type
   // demands all three.
   relation: {
@@ -2260,7 +2291,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   references: [
     `Einstein 1915 Preuss. Akad. Wiss. 831 (GR prediction of perihelion advance)`,
     `Le Verrier 1859 (original anomalous Mercury precession observation, 43"/century)`,
-    `Carroll 2004 Spacetime and Geometry §7.4 (standard GR textbook derivation)`,
+    `Carroll, Lecture Notes on General Relativity (gr-qc/9712019), eq. (7.56) (the apsidal frequency ω_a; refers to Weinberg for the derivation)`,
     `Will 2014 Living Rev. Relativity 17:4 (arXiv:1403.7377; modern observational tests)`,
   ],
   dependencies: [],
@@ -2268,12 +2299,18 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Added 2026-05-15 (v0.4.0 Task 16a [U]): Einstein 1915 perihelion precession bridge (closed-form only; geodesic cross-validation deferred to sub-task 16b). evaluatePerihelionPrecession({M_kg, a_m, e, T_yr}) → {dphi_rad_per_orbit, dphi_arcsec_per_orbit, dphi_arcsec_per_century, M_kg, a_m, e} in src/bridges/perihelion-precession.ts. Mercury validation: ~43.0 arcsec/century within 0.5 arcsec. Domain: 0 ≤ e < 1, a > 0, T > 0 (bound elliptical orbits only). Second bridge beyond the original 40-bridge spec catalog.`,
   // -- Atlas Phase 1 overlay --
-  // source: Einstein 1915 Preuss. Akad. Wiss. 831, and Carroll, "Spacetime and
-  // Geometry", the perihelion-precession derivation - Delta phi =
-  // 6 pi GM/(a(1-e^2) c^2) is DERIVED from the Schwarzschild orbit equation at
-  // first post-Newtonian order. Work and topic cited rather than a section
-  // number, for the BE-51 reason. NOT typed 'approximation', for the BE-37
-  // reason.
+  // source: Einstein 1915 Preuss. Akad. Wiss. 831-839, eqs. (13)-(14):
+  // epsilon = 3 pi alpha/(a(1-e^2)), obtained by SUCCESSIVE APPROXIMATION of
+  // his field equations (Schwarzschild's exact solution came in 1916). Einstein
+  // defines alpha only as a constant fixed by the Sun's mass (p. 833);
+  // alpha = 2GM/c^2, which gives Delta phi = 6 pi GM/(a(1-e^2) c^2), is THIS
+  // repository's identification. The transformation below describes the
+  // standard textbook route through the Schwarzschild orbit equation, not
+  // Einstein's. Carroll's lecture notes (gr-qc/9712019, eq. 7.56) give the
+  // apsidal frequency omega_a = 3(GM)^(3/2)/(c^2 (1-e^2) r^(5/2)) and refer to
+  // Weinberg for the derivation; converting omega_a to Delta phi per orbit with
+  // Kepler's third law is THIS repository's step. NOT typed 'approximation',
+  // for the BE-37 reason.
   relation: {
     type: 'derivation',
     transformation:
@@ -2370,18 +2407,27 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   notes: `Added 2026-07-05 (PI-instrument bridge expansion): integer quantum Hall / TKNN topological Hall conductance. Closed-form evaluator evaluateQuantumHall({C}) → {sigma_xy_S, R_H_ohm, R_K_ohm} in src/bridges/be55-quantum-hall.ts (BE-51/52 pattern, no AST round-trip; registered in EXPECTED_DIMENSION_BY_BRIDGE). Confronted via be55-quantum-hall-confrontation.ts on UNIVERSALITY (material-independence to 8.6×10⁻¹¹, graphene vs GaAs) — NOT R_H=h/Ce², which is definitional post-2019 SI. Populates the underused Topology axis. Adam/Eve physics vet 2026-07-05: GREEN/GREEN.`,
   // -- Atlas Phase 1 overlay --
   // source: Thouless, Kohmoto, Nightingale & den Nijs 1982 Phys. Rev. Lett.
-  // 49:405 - sigma_xy is DERIVED from Kubo linear response and comes out as
-  // e^2/h times the Chern number of the filled bands. The topological invariant
-  // is the derivation's result, not an ansatz.
+  // 49:405 (abstract checked; full text not accessed). The abstract says "The
+  // Kubo formula is written in a form that makes apparent the quantization when
+  // the Fermi energy lies in a gap." The 2016 Nobel scientific background (§4)
+  // states the result as sigma_H = n e^2/h with n an integer (its eq. 9), writes
+  // sigma_H as a sum over Landau levels of Berry-curvature integrals (its eq. 10),
+  // each equal to a first Chern number C1 (its eq. 13, where n labels the Landau
+  // level), and says "the relation to the mathematics of fibre bundles was
+  // established" later by Avron, Seiler & Simon 1983 and Kohmoto 1985. The
+  // quantization is the derivation's result, not an ansatz.
   relation: {
     type: 'derivation',
     transformation:
       'filled Bloch bands of a 2D electron gas in a strong field -> Kubo ' +
       'transverse conductance sigma_xy = C e^2/h, C the TKNN/Chern integer',
   },
-  // source: von Klitzing, Dorda & Pepper 1980 Phys. Rev. Lett. 45:494 report the
-  // quantized Hall RESISTANCE in SI ohms; sigma_xy = C e^2/h and R_K = h/e^2 are
-  // SI statements and do not carry over unchanged to Gaussian units.
+  // source: von Klitzing, Dorda & Pepper 1980 Phys. Rev. Lett. 45:494 (full text
+  // read by two model checks) report the
+  // quantized Hall RESISTANCE in SI ohms, as R_H = alpha^-1 mu0 c / 2i (eq. 4).
+  // sigma_xy = C e^2/h itself has the same form in Gaussian units; what is SI
+  // here is this row's values in ohms and siemens, so the unit system is
+  // load-bearing for the numbers.
   conventions: { unitSystem: 'SI' },
 },
 {
@@ -2450,9 +2496,10 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Added 2026-07-05 (PI-instrument bridge expansion): Johnson-Nyquist voltage-noise PSD. Closed-form evaluator evaluateJohnsonNyquist({T_K, R_ohm}) → {S_V_V2_per_Hz} in src/bridges/be58-johnson-nyquist.ts. Confronted via be58-johnson-nyquist-confrontation.ts (value: NIST JNT k_B vs CODATA, 0.81σ — independent, resistance traceable to QHE/BE-55, T to acoustic thermometry). Adam/Eve physics vet 2026-07-05: GREEN/GREEN (factor-4 confirmed to < ppm).`,
   // -- Atlas Phase 1 overlay --
-  // source: Nyquist 1928 Phys. Rev. 32:110 - S_V = 4 k_B T R is DERIVED from
-  // thermodynamics plus transmission-line mode counting, as the classical
-  // (Rayleigh-Jeans) limit h f << k_B T of the same derivation's quantum form.
+  // source: Nyquist 1928 Phys. Rev. 32:110 - S_V = 4 k_B T R is derived from the
+  // second law, transmission-line mode counting and equipartition (eq. 1).
+  // Nyquist then gives the Planck-weighted form as eq. (8). Reading eq. (1) as
+  // the h f << k_B T limit of eq. (8) is THIS repository's gloss.
   // The limit is stated in 'transformation' rather than typed 'approximation',
   // because no Lipschitz K / delta / machine horizon for the h f / k_B T
   // truncation is sourced.
@@ -2462,8 +2509,12 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
       'resistor R in thermal equilibrium at T -> one-sided voltage-noise PSD ' +
       'S_V = 4 k_B T R, in the classical limit h f << k_B T',
   },
-  // source: Nyquist 1928 - the result is stated for SI electrical quantities
-  // (R in ohms, S_V in V^2/Hz). NOTE: the LOAD-BEARING convention here is the
+  // source: Nyquist 1928, eq. (1): E^2 d nu = 4 R k T d nu. The paper gives no
+  // unit for E, R, k or T; it states frequency in "cycles per second" (p. 112).
+  // Reading it in SI (R in ohms, S_V in V^2/Hz) is this repository's choice. Its
+  // frequencies run over positive values (it integrates from 0 to
+  // infinity), consistent with a one-sided spectrum, though it does not
+  // discuss the choice. NOTE: the LOAD-BEARING convention here is the
   // one-sided-vs-two-sided PSD choice, which is what makes the prefactor 4
   // rather than 2. 'Conventions' has no field for it, so it is recorded in
   // 'transformation' above and reported as an overlay gap rather than forced
@@ -2477,7 +2528,7 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   category_name: `Condensed Matter - High Energy Bridges`,
   bridges: [`quantum`, `classical`] as [string, string],
   status: 'established',
-  context: `A Josephson junction biased at DC voltage V emits radiation at f = K_J·V, with the Josephson constant K_J = 2e/h = 483597.8484 GHz/V (exact, post-2019 SI). The factor 2e is the Cooper-pair charge — the effect is macroscopic quantum coherence of a BOSONIC condensate. It is the quantum standard of the volt; with BE-55 (R_K = h/e², the ohm) and BE-58 (k_B via Johnson noise) it completes the quantum metrology triangle. Josephson 1962 (Nobel 1973).`,
+  context: `A Josephson junction biased at DC voltage V emits radiation at f = K_J·V, with the Josephson constant K_J = 2e/h, exact in the post-2019 SI (483597.8484 GHz/V to 10 significant figures). The factor 2e is the Cooper-pair charge — the effect is macroscopic quantum coherence of a BOSONIC condensate. It is the quantum standard of the volt; with BE-55 (R_K = h/e², the ohm) and BE-58 (k_B via Johnson noise) it completes the quantum metrology triangle. Josephson 1962 (Nobel 1973).`,
   formula_latex: `f = \\frac{2e}{h} V, \\quad K_J = \\frac{2e}{h}`,
   source_part: 'III',
   source_section: `PI-instrument condensed-matter cluster (2026-07-05) — established data-confrontable bridge`,
@@ -2492,18 +2543,23 @@ export const BRIDGE_EQUATIONS: BridgeEquationEntry[] = [
   tractability_class: 'closed-form',
   notes: `Added 2026-07-05 (condensed-matter cluster): AC Josephson f = 2eV/h. Closed-form evaluator evaluateACJosephson({V_volts}) → {f_Hz, K_J_Hz_per_V} in src/bridges/be59-ac-josephson.ts. Confronted via be59-ac-josephson-confrontation.ts on UNIVERSALITY (junction/material-independence of the Josephson volt to ~1e-10) — NOT the post-2019-definitional K_J. statistics 'bosonic' (Cooper pair). Completes the metrology triangle with BE-55 + BE-58. Adam/Eve physics vet 2026-07-05: GREEN/GREEN.`,
   // -- Atlas Phase 1 overlay --
-  // source: Josephson 1962 Phys. Lett. 1:251 - f = 2eV/h is DERIVED from the
-  // Josephson phase relation d(phi)/dt = 2eV/hbar for a tunnel junction; the
-  // factor 2e is the Cooper-pair charge.
+  // source: Josephson 1962 Phys. Lett. 1:251 (paywalled; NOT read, so this
+  // attribution is unverified). His 1973 Nobel Lecture states the phase relation
+  // d(Delta phi)/dt = 2eV/hbar (eq. 4) and, after eq. (5), "a periodically
+  // varying current at a frequency 2eV/h". That the factor
+  // 2e is the Cooper-pair charge is the standard reading.
   relation: {
     type: 'derivation',
     transformation:
       'DC bias V across a Josephson junction -> radiation frequency ' +
       'f = (2e/h) V via the phase relation d(phi)/dt = 2eV/hbar',
   },
-  // source: BIPM, "The International System of Units (SI)", 9th edition (2019),
-  // which fixes e and h exactly and thereby fixes K_J = 2e/h exactly in SI
-  // (483597.8484 GHz/V). The exactness of that number is an SI statement.
+  // source: BIPM, "The International System of Units (SI)", 9th edition (2019;
+  // checked in version 4.01), which fixes e and h exactly. The Brochure states
+  // neither K_J = 2e/h nor its SI value; it mentions only the abrogated
+  // conventional K_J-90 = 483 597.9 GHz/V. Given K_J = 2e/h (Josephson, above),
+  // K_J is exact in SI (483597.848416984... GHz/V; 483597.8484 is that value
+  // rounded) because e and h are fixed. That inference is THIS repository's.
   conventions: { unitSystem: 'SI' },
 },
 {

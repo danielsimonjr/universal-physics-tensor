@@ -29,6 +29,11 @@
 // Dimension objects from src/dimensional/constants.ts.
 import { C_SI as c_SI, G_SI } from '../core/constants.js';
 
+/**
+ * Inputs to `evaluatePerihelionPrecession` (BE-52).
+ *
+ * @public
+ */
 export interface PerihelionPrecessionInputs {
   /** Central mass in kilograms (e.g. solar mass 1.989e30 kg). */
   readonly M_kg: number;
@@ -40,6 +45,11 @@ export interface PerihelionPrecessionInputs {
   readonly T_yr: number;
 }
 
+/**
+ * Result of `evaluatePerihelionPrecession` (BE-52).
+ *
+ * @public
+ */
 export interface PerihelionPrecessionResult {
   /** GR perihelion advance per orbit in radians: Δφ = 6πGM/(a(1−e²)c²). */
   readonly dphi_rad_per_orbit: number;

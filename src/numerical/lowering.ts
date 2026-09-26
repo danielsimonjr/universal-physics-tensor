@@ -195,9 +195,9 @@ function lowerContractable(
  * Dispatcher for the six curvature-composite AST kinds.
  *
  * v0.6.0 Task 3.10e: extracted from `lowerNode`'s switch so all curvature
- * lowering logic lives in one named helper. `CURVATURE_KIND_REGISTRY[node.kind]`
- * supplies the per-kind shape/dim spec; the actual numerical paths are
- * preserved verbatim from the prior per-kind arms — no logic changes.
+ * lowering logic lives in one named helper. It switches on `node.kind`
+ * directly; `CURVATURE_KIND_REGISTRY` is not read here. The numerical paths
+ * are preserved verbatim from the prior per-kind arms — no logic changes.
  *
  * Called from `lowerNode` for all `CurvatureKind` discriminants.
  * @internal
@@ -392,8 +392,6 @@ function lowerCurvature(
   }
 }
 
-/** Lower a validated ExprNode to an EngineTensor.
- *  @internal — cross-module/test use only; not part of the consumer surface. */
 /**
  * S-9 (v0.9.0): deferred-evaluator registry — the single source of
  * truth for AST kinds whose numerical evaluation lives in a dedicated
@@ -444,6 +442,8 @@ function isDeferredNodeKind(kind: string): kind is DeferredNodeKind {
   return Object.prototype.hasOwnProperty.call(DEFERRED_EVALUATOR_REGISTRY, kind);
 }
 
+/** Lower a validated ExprNode to an EngineTensor.
+ *  @internal — cross-module/test use only; not part of the consumer surface. */
 export function lowerNode(
   node: ExprNode,
   inputs: NumericalInputs,

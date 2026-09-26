@@ -15,7 +15,8 @@
  * - **accept** only when EVERY ENABLED instrument RAN and CLEARED: side conditions were
  *   stated, the applicability checker found nothing, the regime was supplied and
  *   every inequality was checked and held, and any claimed chain agrees with the
- *   table. S4.1 already fixed the principle: an empty finding list means "no rule
+ *   table. At least one instrument must have RUN: an item that no enabled
+ *   instrument applies to abstains, because nothing cleared it. S4.1 already fixed the principle: an empty finding list means "no rule
  *   fired", which is weaker than "valid". An item that leaves a check unrun has
  *   not been cleared by it.
  * - **abstain** otherwise. Abstention is a first-class outcome and is preferred
@@ -139,6 +140,9 @@ export function runAtlasOnItem(item: BenchmarkItem, config: AtlasRunConfig = FUL
     rejected = true;
   };
   let allRanAndCleared = true;
+  // An accept needs at least one instrument that actually RAN. Without this,
+  // an item no enabled instrument applies to is accepted with nothing checked.
+  let ranAny = false;
   const unrun = (reason: string): void => {
     reasons.push(`UNRUN: ${reason}`);
     allRanAndCleared = false;
@@ -151,6 +155,7 @@ export function runAtlasOnItem(item: BenchmarkItem, config: AtlasRunConfig = FUL
   } else if (item.sideConditions === undefined) {
     unrun('no side conditions stated, so the applicability checker has nothing to check against');
   } else {
+    ranAny = true;
     const findings = checkApplicability({
       ast: item.expr,
       sideConditions: item.sideConditions,
@@ -173,6 +178,7 @@ export function runAtlasOnItem(item: BenchmarkItem, config: AtlasRunConfig = FUL
 
   // 2. Composition. Only for items that claim a chain.
   if (config.types && item.composedFrom !== undefined) {
+    ranAny = true;
     const [first, second] = item.composedFrom;
     const composed = composeRelation(first, second);
     if (item.composedFrom.includes('structural-analogy') && STRONG.has(item.claimedRelation)) {
@@ -204,6 +210,7 @@ export function runAtlasOnItem(item: BenchmarkItem, config: AtlasRunConfig = FUL
   } else if (item.regime === undefined) {
     unrun('no regime supplied, so the use site was never checked against a domain');
   } else {
+    ranAny = true;
     const check = regimeHolds(
       { family: item.family, inequalities: item.regime.inequalities, groupDefinitions: {} },
       item.regime.values,
@@ -229,6 +236,10 @@ export function runAtlasOnItem(item: BenchmarkItem, config: AtlasRunConfig = FUL
       ...(rejectKind === undefined ? {} : { detectedFailure: rejectKind }),
       reasons,
     };
+  }
+  if (allRanAndCleared && !ranAny) {
+    reasons.push('UNRUN: no enabled instrument applies to this item, so nothing was checked');
+    return { itemId: item.id, outcome: 'abstain', reasons };
   }
   if (allRanAndCleared) {
     reasons.push('ACCEPT: every instrument ran and cleared');

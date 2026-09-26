@@ -8,7 +8,7 @@
 import type { ExprNode } from '../../dimensional/ast-types.js';
 import { DIMENSIONLESS } from '../../dimensional/types.js';
 import { sym } from '../../dimensional/ast-builders.js';
-import { dimensionallyDetermines } from '../../dimensional/buckingham.js';
+import { dimensionallyDetermines, type DimensionalDeterminationResult } from '../../dimensional/buckingham.js';
 import { validate } from '../../dimensional/validator.js';
 import type { DimensionalVariableRef, SearchBudget, SearchProblem } from './types.js';
 import { canEmitCandidate, type BudgetState } from './search-budget.js';
@@ -62,7 +62,7 @@ export function* generateNative(
   problem: SearchProblem,
   state: BudgetState,
 ): Iterable<RawCandidate> {
-  const det = dimensionallyDetermines(problem.target, problem.governing);
+  const { det } = nativeDetermination(problem);
   if (!det.determined || !det.monomial) return;
 
   const expr = monomialToExpr(det.monomial, [problem.target, ...problem.governing]);
@@ -91,6 +91,33 @@ export function* generateNative(
   }
 }
 
+/**
+ * The monomial the native enumerator searches, and the dimensionless inputs it
+ * leaves out (persona finding C2). A dimensionless input makes the monomial
+ * non-unique, since any f(θ0) can multiply it, and the enumerator used to
+ * produce nothing. When the monomial over ALL inputs is not unique, it is taken
+ * from the DIMENSIONED inputs; `unsearched` names the dimensionless ones whose
+ * function is not searched.
+ * @internal
+ */
+export function nativeDetermination(problem: SearchProblem): {
+  det: DimensionalDeterminationResult;
+  unsearched: string[];
+} {
+  const det = dimensionallyDetermines(problem.target, problem.governing);
+  if (det.determined) return { det, unsearched: [] };
+  const isDimensionless = (g: DimensionalVariableRef) => Object.values(g.dim).every((e) => e === 0);
+  const dimless = problem.governing.filter(isDimensionless);
+  if (dimless.length === 0) return { det, unsearched: [] };
+  const reduced = dimensionallyDetermines(
+    problem.target,
+    problem.governing.filter((g) => !isDimensionless(g)),
+  );
+  return reduced.determined
+    ? { det: reduced, unsearched: dimless.map((g) => g.name) }
+    : { det, unsearched: [] };
+}
+
 function astDepth(node: ExprNode): number {
   if (node.kind === 'op') return 1 + Math.max(0, ...node.args.map(astDepth));
   if (node.kind === 'transcendental' || node.kind === 'abs') return 1 + astDepth(node.arg);
@@ -113,7 +140,7 @@ function* generateCorrections(
 ): Iterable<RawCandidate> {
   const kind = problem.discrepancy!.kind;
   if (kind !== 'additive' && kind !== 'relative' && kind !== 'standardized') return;
-  const det = dimensionallyDetermines(problem.target, problem.governing);
+  const { det } = nativeDetermination(problem);
   if (!det.determined || !det.monomial) return;
   if (!canEmitCandidate(state)) return;
   const corr = monomialToExpr(det.monomial, [problem.target, ...problem.governing]);

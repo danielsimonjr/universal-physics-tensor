@@ -1,4 +1,6 @@
 # Batch D — specification Part I–IV — Doc Integrity Findings
+
+<!-- ste:historical-record -->
 **Reviewer**: opus subagent. **Date**: 2026-05-20. **Files**: Part-I..IV.md.
 
 ## Summary

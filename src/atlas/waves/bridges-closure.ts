@@ -73,7 +73,8 @@ export const BRIDGE_KG_SCHRODINGER: AtlasBridge = {
       if (c === undefined || k === undefined || omega0 === undefined) return Number.NaN;
       return kgNonrelativisticError((c * k) / omega0);
     },
-    norm: 'relative error of the kinetic frequency ω − ω₀',
+    deltaAtBasis: 'closed-form',
+    norm: 'relative error of the kinetic frequency ω − ω₀, normalized by the value of the reduced model',
     domain: 'x = ck/ω₀ ≤ 0.1',
     horizon:
       't ≪ π/(δ ω₀ x²): the kinetic-phase drift reaches π/2; machine form t < π/(δ ω₀ x²)',
@@ -88,6 +89,8 @@ export const BRIDGE_KG_SCHRODINGER: AtlasBridge = {
     },
     parameterRange: 'x = ck/ω₀ ≤ 0.1',
     limitCharacter: 'regular',
+    // A frequency error. The record says it is not uniform in time.
+    uniformity: ['kinetic frequency of one mode, for x = ck/ω₀ ≤ 0.1'],
   }),
   regime: regime(
     [
@@ -102,7 +105,8 @@ export const BRIDGE_KG_SCHRODINGER: AtlasBridge = {
   counterexamples: [
     {
       description:
-        'At x = ck/ω₀ = 1 the non-relativistic kinetic frequency is 17% too high: the limit is a ' +
+        'At x = ck/ω₀ = 1 the non-relativistic kinetic frequency ω₀/2 is 20.7% above the exact ' +
+        'ω₀(√2 − 1), which is 17.2% of its own value (the normalization of delta): the limit is a ' +
         'long-wavelength statement.',
       witness: 'WS5b',
     },
@@ -119,7 +123,7 @@ export const BRIDGE_KG_SCHRODINGER: AtlasBridge = {
       id: 'WS5b',
       kind: 'numeric',
       test: TEST,
-      tolerance: 'relative error 3 − 2√2 = 0.1716 at x = 1',
+      tolerance: 'relative error 3 − 2√2 = 0.1716 at x = 1, normalized by the reduced value',
     },
   ],
   citations: [
@@ -177,7 +181,8 @@ export const BRIDGE_STIFF_STRING: AtlasBridge = {
     delta: stiffStringPhaseError(1, STIFF_MAX_BETA, 1),
     deltaAt: (p) =>
       stiffStringPhaseError(p['F'] ?? Number.NaN, p['EI'] ?? Number.NaN, p['k'] ?? Number.NaN),
-    norm: 'relative phase-velocity error of a Fourier mode',
+    deltaAtBasis: 'closed-form',
+    norm: 'relative phase-velocity error of a Fourier mode, normalized by the value of the reduced model',
     domain: 'β = EIk²/F ≤ 0.01',
     horizon:
       't ≪ π/(2 c k δ): the phase drift reaches π/2; machine form t < π/(2 √(F/μ) k δ)',
@@ -191,6 +196,8 @@ export const BRIDGE_STIFF_STRING: AtlasBridge = {
     },
     parameterRange: 'β = EIk²/F ≤ 0.01',
     limitCharacter: 'regular',
+    // A phase-velocity error. The record says it is not uniform in time.
+    uniformity: ['phase velocity of one Fourier mode, for β = EIk²/F ≤ 0.01'],
   }),
   regime: regime(
     [

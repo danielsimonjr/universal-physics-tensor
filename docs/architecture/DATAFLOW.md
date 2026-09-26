@@ -12,8 +12,8 @@
 6. [Flow 5: Geodesic Integration (RK4 + GL4)](#flow-5-geodesic-integration-rk4--gl4)
 7. [Flow 6: Curvature-Node Lowering](#flow-6-curvature-node-lowering)
 8. [Flow 7: Einstein-Equation Residual](#flow-7-einstein-equation-residual)
-9. [Flow 8: Bridge-Edge Composition (v0.8.0 → v0.11)](#flow-8-bridge-edge-composition-v080--v011)
-10. [Flow 9: Phase-D Enumeration + Uncertainty Propagation (v0.10.0)](#flow-9-phase-d-enumeration--uncertainty-propagation-v0100)
+9. [Flow 8: Bridge-Edge Composition](#flow-8-bridge-edge-composition)
+10. [Flow 9: Phase-D Enumeration + Uncertainty Propagation](#flow-9-phase-d-enumeration--uncertainty-propagation)
 11. [Flow 10: Confrontation (`upt confront`)](#flow-10-confrontation-upt-confront)
 12. [Flow 11: Discovery Funnel + Epistemic Grounding (`upt discover`)](#flow-11-discovery-funnel--epistemic-grounding-upt-discover)
 13. [Flow 12: Expression / Residual Search (`upt probe`)](#flow-12-expression--residual-search-upt-probe)
@@ -80,9 +80,9 @@ Caller builds an ExprNode tree
 │    For each node:                                           │
 │    ├── 'symbol'              → return node.dim              │
 │    ├── 'op' *,/              → multiply / divide dims       │
-│    ├── 'op' +,-              → add / subtract (throws       │
-│    │                           DimensionMismatchError if    │
-│    │                           dims disagree, or raises     │
+│    ├── 'op' +,-              → add / subtract (a dimension  │
+│    │                           mismatch appends an error-   │
+│    │                           severity Violation; throws   │
 │    │                           FreeIndexMismatchError if    │
 │    │                           free-index maps differ)      │
 │    ├── 'op' ^                → power(baseDim, n)            │
@@ -99,11 +99,11 @@ Caller builds an ExprNode tree
 │    ├── 'covariant-derivative'→ validateCovariantDerivative()│
 │    ├── 'riemann-tensor'      → validateRiemannTensor()      │
 │    ├── 'ricci-/einstein-/    → curvature.ts validators      │
-│    │    bianchi-...'           (v0.5.0)                      │
-│    ├── 'weyl-tensor'         → validateWeylTensor() (v0.6.0)│
+│    │    bianchi-...'                                          │
+│    ├── 'weyl-tensor'         → validateWeylTensor()         │
 │    ├── 'kretschmann-scalar'  → validateKretschmannScalar()  │
-│    └── 'einstein-field-      → validateEinsteinFieldEquation│
-│         equation'              () (v0.6.0)                   │
+│    └── 'einstein-equation'   → validateEinsteinFieldEquation│
+│                                ()                            │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -154,7 +154,8 @@ Caller provides ExprNode tree + NumericalInputs
 ┌─────────────────────────────────────────────────────────────┐
 │ 2. RESOLVE ENGINE                                            │
 │    engine = options?.engine ?? await getActiveEngine()      │
-│    // Default: Float64ReferenceEngine                       │
+│    // Default: MathTSEngine when both MathTS peers are      │
+│    // installed, otherwise Float64ReferenceEngine           │
 │    // Override: pass engine in EvaluateOptions              │
 └─────────────────────────────────────────────────────────────┘
           │
@@ -163,7 +164,9 @@ Caller provides ExprNode tree + NumericalInputs
 │ 3. LOWERING PASS (lowering.ts lowerNode())                  │
 │    Recursively translates ExprNode → EngineTensor:          │
 │    ├── 'symbol'         → engine.fromNested(inputs[name])  │
-│    ├── 'op' *,/,+,-,^  → engine arithmetic methods         │
+│    ├── 'op' +,-        → engine.add / engine.sub            │
+│    ├── 'op' *,/,^      → rank-0 only: computed in JS, then  │
+│    │                    lifted back with engine.fromNested  │
 │    ├── 'tensor-product' → engine.einsum(EinsumSpec, ...)   │
 │    │   [contraction plan built by computeContraction()]     │
 │    ├── 'integral'       → numerical quadrature (if present) │
@@ -220,11 +223,13 @@ Caller wraps computation in a closure
 ┌─────────────────────────────────────────────────────────────┐
 │ 2a. FORWARD-MODE (forwardGrad)                               │
 │    Float64ReferenceEngine path:                             │
-│    ├── Lift x to EngineDualTensor (primal=x.data,           │
-│    │   tangent=ones)                                        │
-│    ├── Run fn(dualX) — all arithmetic propagates            │
-│    │   both primal and tangent per dual-number rules        │
-│    └── Extract { value: primal, jacobian: tangent }         │
+│    ├── One zero-tangent probe run of fn: output shape       │
+│    │   and value                                            │
+│    ├── For each input element k: an EngineDualTensor        │
+│    │   with unit tangent e_k; run fn — arithmetic           │
+│    │   propagates primal and tangent per dual-number rules  │
+│    └── Scatter each output tangent into Jacobian column     │
+│        k; return { value, jacobian }                        │
 │                                                             │
 │    MathTSEngine path: delegate to mathts-autograd forward   │
 │    mode; same result shape.                                 │
@@ -251,7 +256,7 @@ Caller wraps computation in a closure
 └─────────────────────────────────────────────────────────────┘
 ```
 
-**Honest note**: AD operates on user-supplied closures, not on `ExprNode` trees. There is no symbolic-tree differentiation in v0.4.0. The `derivativeStrategy: 'computed'` field on `MetricTensorNode` still uses finite differences (pderiv) in the AST evaluation path — it does not route through `forwardGrad` / `reverseGrad`.
+**Honest note**: `forwardGrad` / `reverseGrad` operate on user-supplied closures, not on `ExprNode` trees. Exact AD over a bridge's scalar RHS AST is a separate path: `bridgeGradientAST` (`src/diff/bridge-ast-gradient.ts`) lowers the AST through the optional `@danielsimonjr/mathts-autograd` peer. In the AST evaluation path, the `derivativeStrategy: 'computed'` default on `MetricTensorNode` lowers ∂g to zero (`src/numerical/derivative-lowering.ts`). The reason: a metric-tensor input carries constant values. This path does not route through `forwardGrad` / `reverseGrad`.
 
 ---
 
@@ -291,7 +296,7 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
 ┌─────────────────────────────────────────────────────────────┐
 │ ACCESS METADATA FIELDS                                       │
 │                                                             │
-│ entry.id                  // 11–54                          │
+│ entry.id                  // 11–65                          │
 │ entry.name                // verbatim spec heading          │
 │ entry.status              // BridgeEquationStatus           │
 │ entry.formula_latex       // primary equation as LaTeX      │
@@ -306,9 +311,9 @@ import { BRIDGE_EQUATIONS } from 'universal-physics-tensor';
    Caller uses metadata (no dimensional or numerical layer touched)
 ```
 
-The catalog is a static array — no async, no computation. `dimensional_signature` is `null` for entries not yet encoded as ASTs; `string` (output of `format()`) for the entries with dimensional analysis in `src/bridges/equations/`.
+The catalog is a static array — no async, no computation. `dimensional_signature` is typed `string | null`, and every catalog entry carries a string, including the bridges that have no AST encoding in `src/bridges/equations/`. For every encoded entry the string is `format()` of the inferred dimension, pinned by `tests/bridges/dimensional-signature-catalog.test.ts`.
 
-Since v0.8.0 two derived views sit beside the array: `adjudicateCatalog()` applies the bridge-membership criterion (with the `rejected.ts` negative catalog as overlay) and returns a per-entry `BridgeVerdict` report, and `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
+Two derived views sit beside the array. `adjudicateCatalog()` applies the bridge-membership criterion, with the `rejected.ts` negative catalog as overlay. The function returns a `CatalogAdjudicationReport`: bridge ids grouped by verdict into `bridges`, `notABridges` and `unadjudicated`. The per-entry `BridgeVerdict` comes from `adjudicateBridgeEntry()`. `data/bridge-catalog.json` is the generated JSON artifact (`npm run catalog:json`).
 
 ---
 
@@ -317,10 +322,10 @@ Since v0.8.0 two derived views sit beside the array: `adjudicateCatalog()` appli
 **Purpose**: Integrate a test-particle geodesic in an arbitrary Lorentzian manifold.
 
 **Entry points**:
-- `integrateGeodesic(inputs: GeodesicIntegratorInputs): GeodesicIntegratorResult` — fixed-step RK4 (v0.4.0).
-- `integrateGeodesicGL4(...)` — GL4 Gauss–Legendre 4th-order symplectic integrator (v0.5.0).
+- `integrateGeodesic(inputs: GeodesicIntegratorInputs): GeodesicIntegratorResult` — fixed-step RK4.
+- `integrateGeodesicGL4(initialState: GL4State, options: GL4Options): readonly GL4Snapshot[]` — GL4 Gauss–Legendre 4th-order symplectic integrator.
 
-The RK4 path is traced below. The GL4 path takes the same `(christoffelFn, x0, v0, …)` shape but, instead of the explicit 4-stage Butcher tableau, solves the implicit 2-stage Gauss–Legendre system per step (fixed-point iteration on the stage values), yielding a symplectic, energy-conserving update. GL4 emits `GL4Snapshot` entries and a `GL4State` trajectory; it is the preferred path for long-time integration where energy drift matters. The `findPerihelion` finder (v0.5.0) consumes a GL4 or RK4 trajectory and bisects on the radial coordinate to locate the perihelion radius.
+The RK4 path is traced below. The GL4 path does not take the RK4 shape. GL4 works on the canonical state `GL4State` (x, p), with p the covariant momentum. GL4 takes the inverse metric `gInverseFn` and its derivatives `dgInverseFn` instead of a Christoffel closure. GL4 does not use the explicit 4-stage Butcher tableau. Per step, GL4 solves the implicit 2-stage Gauss–Legendre system by Picard fixed-point iteration on the stage values. The result is a symplectic update for the geodesic Hamiltonian H = ½ g^{μν} p_μ p_ν. GL4 returns `GL4Snapshot` entries `{ tau, x, p, v? }`. GL4 is the preferred path for long-time integration where energy drift matters. The `findPerihelion` finder consumes `(tau, x, p)` snapshots: GL4 output, not an RK4 trajectory, which carries positions only. The finder locates the − to + sign change of dr/dτ = g^{rν} p_ν and fits a cubic Hermite polynomial on that bracket. When the analytic root misses `tauTolerance`, the finder refines the root by bisection on the polynomial.
 
 ```
 Caller prepares Christoffel-symbol closure + initial conditions
@@ -329,19 +334,21 @@ Caller prepares Christoffel-symbol closure + initial conditions
 ┌─────────────────────────────────────────────────────────────┐
 │ 1. INPUT BUNDLE                                              │
 │    {                                                        │
-│      christoffelFn: (x) => Γ[μ][ν][ρ],   // closure        │
+│      christoffelFn: (x, out?) => Float64Array(64),          │
+│                  // Γ^λ_{μν} at index 16·λ + 4·μ + ν        │
 │      x0: [t, r, θ, φ],                   // initial pos    │
 │      v0: [dt/dτ, dr/dτ, dθ/dτ, dφ/dτ], // initial vel    │
-│      dτ: number,                          // step size      │
-│      nSteps: number,                      // integration steps │
+│      tauStart, tauEnd: number,        // proper-time span   │
+│      steps: number,                   // RK4 step count     │
+│      domainMinRadius?: number,        // optional r floor   │
 │    }                                                        │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 2. VALIDATE INPUTS                                           │
-│    Check x0, v0 are 4-vectors; dτ > 0; nSteps ≥ 1.        │
-│    Throw NumericalBackendError on invalid input.            │
+│    Throw NumericalBackendError if steps is not a positive   │
+│    integer, or if x0[1] < domainMinRadius (when supplied).  │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -351,7 +358,8 @@ Caller prepares Christoffel-symbol closure + initial conditions
 │      dx^μ/dτ = v^μ                                         │
 │      dv^μ/dτ = −Γ^μ_{νρ}(x) v^ν v^ρ                       │
 │                                                             │
-│    For each step i = 0 … nSteps-1:                         │
+│    dτ = (tauEnd − tauStart) / steps                         │
+│    For each step i = 0 … steps-1:                           │
 │    ├── k1 = f(x_i, v_i)         // slope at start           │
 │    ├── k2 = f(x_i+dτ/2·k1_x,   // slope at midpoint (k1)  │
 │    │         v_i+dτ/2·k1_v)                                │
@@ -368,15 +376,15 @@ Caller prepares Christoffel-symbol closure + initial conditions
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 4. COLLECT TRAJECTORY                                        │
-│    trajectory: Array<{ x: [t,r,θ,φ], v: [dt/dτ,…] }>      │
-│    Length = nSteps + 1 (includes initial state).            │
+│    trajectory: positions x^μ only — the initial point plus  │
+│    one sample every max(1, ⌊steps/100⌋) steps.              │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
-   GeodesicIntegratorResult { trajectory }
+   GeodesicIntegratorResult { xFinal, vFinal, trajectory }
 ```
 
-The integrator has no `TensorEngine` dependency. It accepts a plain JS closure for the Christoffel symbol, which the caller can build using `christoffel()` and then evaluate numerically, or supply analytically (e.g., the closed-form Schwarzschild Christoffel coefficients).
+The integrator has no `TensorEngine` dependency. The integrator accepts a plain JS closure for the Christoffel symbol. The caller can build the closure with `christoffel()` and evaluate it numerically. The caller can also supply the closure analytically (e.g., the closed-form Schwarzschild Christoffel coefficients).
 
 ---
 
@@ -401,17 +409,23 @@ Caller builds a curvature node (ricci(R), einstein(R,g,gI), …)
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 2. LOWERING — lowerCurvature() dispatcher (lowering.ts)      │
-│    A single dispatcher handles all six curvature kinds:     │
-│    ├── Look up node.kind in CURVATURE_KIND_REGISTRY         │
-│    │   (src/dimensional/curvature-composite.ts)             │
-│    ├── Recursively lower the inner RiemannTensorNode        │
-│    │   (lowerCurvature calls itself for nested kinds)       │
-│    ├── Materialize the inner Riemann via engine.toNested    │
+│    A single dispatcher switches on node.kind for all six    │
+│    curvature kinds:                                         │
+│    ├── 'riemann-tensor', 'weyl-tensor', 'kretschmann-       │
+│    │   scalar', 'bianchi-residual': build Riemann from the  │
+│    │   metric closures in inputs.fields (christoffelAt,     │
+│    │   dGammaAt, buildRiemann / riemannLowerAt helpers)     │
+│    ├── 'ricci-tensor': lowerCurvature calls itself on the   │
+│    │   inner RiemannTensorNode and materializes it via      │
+│    │   engine.toNested                                      │
+│    ├── 'einstein-tensor': lowerCurvature calls itself on an │
+│    │   inner 'ricci-tensor' node and materializes the       │
+│    │   Ricci; g and g⁻¹ come from inputs.tensors            │
 │    ├── Contract on the JS side (Ricci trace, Einstein       │
 │    │   combination, Bianchi cyclic sum, Weyl trace removal, │
 │    │   Kretschmann full contraction)                         │
 │    └── Lift the result back via engine.fromNested           │
-│    "Walk-directly philosophy" (v0.5.0 Task 6): no AST       │
+│    "Walk-directly philosophy": no AST                       │
 │    rewrite into a tensor-product einsum.                    │
 └─────────────────────────────────────────────────────────────┘
           │
@@ -423,7 +437,7 @@ Caller builds a curvature node (ricci(R), einstein(R,g,gI), …)
 └─────────────────────────────────────────────────────────────┘
 ```
 
-`computeKretschmann` is the standalone numerical path for the Kretschmann scalar (v0.11 factored index-raising algorithm, replacing the earlier O(4⁸) naive contraction) — used for direct sample-point diagnostics without building a full AST node.
+`computeKretschmann` is the standalone numerical path for the Kretschmann scalar. It uses factored index-raising: four single-index raisings instead of the O(4⁸) naive contraction. Use it for direct sample-point diagnostics without a full AST node.
 
 ---
 
@@ -441,7 +455,7 @@ Caller supplies metric closures + stress-energy closure + point
 │ 1. INPUT BUNDLE (EinsteinEquationResidualInput)              │
 │    ├── metric closure(s) — MetricClosure: x ↦ g_μν(x)       │
 │    ├── stress-energy closure — x ↦ T_μν(x)                  │
-│    ├── cosmological constant Λ (default 0)                  │
+│    ├── cosmological constant Λ (required; 0 for vacuum)     │
 │    └── evaluation point — Vec4                              │
 └─────────────────────────────────────────────────────────────┘
           │
@@ -451,15 +465,16 @@ Caller supplies metric closures + stress-energy closure + point
 │    Finite-difference the metric closure to get ∂g, ∂²g →    │
 │    Christoffels → Riemann → Ricci → Einstein tensor G_μν.   │
 │    4th-order stencil; the FD truncation error sets the      │
-│    residual floor (~1e-10 relative).                         │
+│    residual floor (typically < 1e-8 relative for            │
+│    Schwarzschild vacuum, per the module doc).               │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 3. RESIDUAL                                                  │
 │    r_μν = G_μν + Λ g_μν − κ T_μν,   κ = 8πG/c⁴             │
-│    residual = max|r_μν| / max|g_μν|   (scale-normalized,    │
-│    dimensionless relative residual)                          │
+│    residual = max over (μ,ν) of |r_μν| / max(|g_μν|, 1)     │
+│    (per-component scale-normalized, dimensionless)          │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -467,11 +482,11 @@ Caller supplies metric closures + stress-energy closure + point
    For Schwarzschild vacuum (T=0, Λ=0) it is the FD floor.
 ```
 
-The `verifyKillingEquation` flow is analogous: it finite-differences the metric to assemble exact Christoffels, then evaluates ∇_μ ξ_ν + ∇_ν ξ_μ at a point and reports the residual against a tolerance.
+The `verifyKillingEquation` flow is analogous. It takes caller-supplied exact Christoffels through `christoffelAt` and returns the maximum of |∇_μ ξ_ν + ∇_ν ξ_μ| at a point. By default (`constantKilling: true`) it uses metric compatibility and no finite differences. With `constantKilling: false` it uses finite differences: for ∂ξ only when `dMetricFn` is supplied, and for the whole lowered field otherwise. `verifyKillingEquation` does not compare the residual against a tolerance. `checkKillingEquation` makes that comparison. The check applies `KillingEquationOptions.tolerance` (default 1e-10) to the relative residual, residual / max(max|g_μν|, 1), and returns `withinTolerance`.
 
 ---
 
-## Flow 8: Bridge-Edge Composition (v0.8.0 → v0.11)
+## Flow 8: Bridge-Edge Composition
 
 **Purpose**: Chain two bridge edges through a shared quantity into a derived relation. The pool of composable edges is the 41-edge graph (9 calibration + 6 catalog-tranche + 26 catalog-full).
 
@@ -497,7 +512,7 @@ Caller picks two edges (e.g., be42Edge: M → T_H, be16Edge: T → E_min)
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 3. ALIAS GATE (v0.11 namespacing gate, Option D)             │
+│ 3. ALIAS GATE (namespacing gate, Option D)                   │
 │    For every source-quantity name appearing in BOTH          │
 │    operands (outside the junction):                          │
 │    ├── look up SOURCE_ALIAS_DISPOSITIONS[composedId],        │
@@ -525,7 +540,7 @@ Caller picks two edges (e.g., be42Edge: M → T_H, be16Edge: T → E_min)
 
 ---
 
-## Flow 9: Phase-D Enumeration + Uncertainty Propagation (v0.10.0)
+## Flow 9: Phase-D Enumeration + Uncertainty Propagation
 
 **Purpose**: Mechanically enumerate all valid two-edge compositions over the graph (the Part-IX Phase-D loop), and attach observational uncertainty to any edge's prediction.
 
@@ -546,16 +561,15 @@ Caller supplies an edge pool (e.g., CATALOG_FULL_EDGES + named edges)
 │    │   │   (completeness check)                              │
 │    │   └── else → NOVEL candidate (review surface)          │
 │    ├── CompositionJunctionError / CompositionDimensionError │
-│    │   → failure bucket with attribution                    │
+│    │   → skipped: a silent non-pair, not reported           │
 │    └── CompositionAliasError → requiresDisposition[]        │
-│        (v0.11: held at the gate, not silently composed)     │
+│        (held at the gate, not silently composed)            │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
-   EnumerationReport — v0.10.0 (15-edge graph): 6 valid, 4
-   registered, 2 novel; v0.11 (41-edge graph): 11 compositions,
-   7 novel, 1 collision held at the gate. Novel candidates are
-   review surfaces: docs/research/v0.1{0,1}.0-novel-candidates.md.
+   EnumerationReport { all, registered, novel, requiresDisposition }.
+   Novel candidates are review surfaces:
+   docs/research/v0.1{0,1}.0-novel-candidates.md.
 
 Uncertainty path (uncertainty.ts):
 ┌─────────────────────────────────────────────────────────────┐
@@ -564,9 +578,11 @@ Uncertainty path (uncertainty.ts):
 │    │   input point (first-order)                             │
 │    └── σ_out² = Σᵢ (∂f/∂xᵢ · σᵢ)²                          │
 │    Works on composed edges for free (they are BridgeEdges). │
-│    Consumers: confrontBE36WithUncertainty (Δt = 1.74±0.05 s │
-│    → σ ≈ 1.9e-17 on the BE-36 bound), confrontBE23With-     │
-│    Uncertainty.                                              │
+│    No module in src/ calls it. confrontBE36With-            │
+│    Uncertainty (Δt = 1.74±0.05 s → σ ≈ 1.9e-17 on the       │
+│    BE-36 bound) and confrontBE23WithUncertainty compute     │
+│    σ analytically instead: each is linear in its one        │
+│    uncertain input.                                         │
 └─────────────────────────────────────────────────────────────┘
 ```
 
@@ -574,7 +590,7 @@ Uncertainty path (uncertainty.ts):
 
 ## Flow 10: Confrontation (`upt confront`)
 
-**Purpose**: Compare a bridge's prediction — or, for a bound-type bridge, its encoded bound — against an INDEPENDENT, cited real-world observation. Confrontation is orthogonal to the discovery funnel (Flow 11): it operates only on established, catalog bridges, never on discovery candidates.
+**Purpose**: Compare a bridge's prediction — or, for a bound-type bridge, its encoded bound — against an INDEPENDENT, cited real-world observation. Confrontation is orthogonal to the discovery funnel (Flow 11): it operates only on catalog bridges (established and speculative), never on discovery candidates.
 
 **Entry point**: CLI `upt confront [--bridge=be-XX] [--sensitivity] [--json]` (`src/cli/commands/confront.ts`) → `listConfrontations()` / `runConfrontation(bridgeId)` (`src/bridges/confrontations.ts`).
 
@@ -585,8 +601,8 @@ Caller runs `upt confront` (all bridges) or `upt confront --bridge=be-37`
 ┌─────────────────────────────────────────────────────────────┐
 │ 1. REGISTRY LOOKUP                                           │
 │    CONFRONTATIONS: Map<bridgeId, ConfrontationEntry>          │
-│    9 registered confrontations (v0.40): BE-11, 21, 23, 35,   │
-│    36, 37, 48, 51, 52.                                       │
+│    One entry per confronted bridge; listConfrontations()     │
+│    returns them in bridge-id order.                          │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
@@ -615,7 +631,7 @@ Caller runs `upt confront` (all bridges) or `upt confront --bridge=be-37`
 │    ├── 'upper-bound'  → predicted (encoded bound), bound      │
 │    │                    (observational bound), satisfied,     │
 │    │                    optional `caveat` — e.g. BE-36's      │
-│    │                    v0.40 one-sided caveat (the encoded   │
+│    │                    one-sided caveat (the encoded         │
 │    │                    ± bound only tests the + side of an   │
 │    │                    asymmetric GW170817 interval)         │
 │    ├── 'consistency'  → predicted, approaches, fractionalGap  │
@@ -645,7 +661,7 @@ Caller runs `upt confront` (all bridges) or `upt confront --bridge=be-37`
 
 ## Flow 11: Discovery Funnel + Epistemic Grounding (`upt discover`)
 
-**Purpose**: Hypothesize a cross-cluster quantity identification `a ≡ b` and vet it through an ordered falsifier stack, then annotate every survivor with an honest ledger of what was actually tested — so a physicist reading `promising` knows exactly how much weight the verdict bears.
+**Purpose**: Hypothesize a cross-cluster quantity identification `a ≡ b` and vet it through an ordered falsifier stack. Then annotate every survivor with an honest ledger of what was actually tested. A physicist who reads `promising` then knows exactly how much weight the verdict bears.
 
 **Entry point**: CLI `upt discover [--source=catalog|canonical|both] [--derive] [--max-orders] [--anchor] [--show-adjudicated] [--json]` (`src/cli/commands/discover.ts`).
 
@@ -663,25 +679,29 @@ Caller runs `upt discover`
           ▼
 ┌─────────────────────────────────────────────────────────────┐
 │ 2. VET — rankDiscoveries() (composition/discovery.ts)         │
-│    For each candidate a≡b, in gate order:                    │
+│    For each candidate a≡b, the funnel computes:             │
 │    ├── magnitude gate — orders of magnitude apart (from       │
 │    │   REPRESENTATIVE_VALUES or anchor-derived); > N orders   │
 │    │   (default maxOrdersOfMagnitude=3) → 'magnitude-clash'   │
+│    │   a ratio the anchor probe (×1e3) cannot move is         │
+│    │   graph-fixed: an identity, shown as a grounding gap     │
 │    ├── axis gate — scale/force RegimeAttributes agreement;    │
-│    │   a clash → 'axis-clash' (an identity falsifier)         │
+│    │   a clash → 'axis-clash' (a regime-label prior, no test) │
 │    ├── structural signals — mergesComponents (union-find       │
 │    │   over the quantity graph), unlocksFromAnchor            │
 │    │   (forwardClosure), numericallyConsistent (retrodict     │
 │    │   over the anchor-reachable subgraph); a contradiction   │
 │    │   → 'contradictory'                                      │
-│    └── verdict: 'promising' (consistent AND merges components │
-│        AND unlocks ≥1 quantity) | 'inert' | 'contradictory' | │
-│        'magnitude-clash' | 'axis-clash'                       │
+│    └── verdict, in precedence order: 'magnitude-clash',     │
+│        then 'contradictory' (not numerically consistent),   │
+│        then 'axis-clash', then 'promising' (merges          │
+│        components AND unlocks ≥1 quantity AND is not a      │
+│        subsuming identification), else 'inert'              │
 └─────────────────────────────────────────────────────────────┘
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 3. ADJUDICATION LEDGER OVERLAY (v0.31, Phase 1)               │
+│ 3. ADJUDICATION LEDGER OVERLAY                                │
 │    annotateAdjudications() (composition/adjudication.ts)      │
 │    attaches any physicist-recorded verdict — 'genuine' |      │
 │    'decoy' | 'entailed' | 'deferred' — sourced from            │
@@ -692,7 +712,7 @@ Caller runs `upt discover`
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 4. CONSEQUENCE ANNOTATION (v0.33, Phase 4-Unit-A)             │
+│ 4. CONSEQUENCE ANNOTATION                                     │
 │    annotateConsequences() (composition/consequence.ts)        │
 │    derives each promising candidate's monomial algebraic       │
 │    consequence (deriveProposedBridges) and classifies it via   │
@@ -705,7 +725,7 @@ Caller runs `upt discover`
           │
           ▼
 ┌─────────────────────────────────────────────────────────────┐
-│ 5. EPISTEMIC-GROUNDING LEDGER (v0.37, PI-instrument Phase 1)  │
+│ 5. EPISTEMIC-GROUNDING LEDGER                                 │
 │    describeGrounding() (composition/grounding.ts) — a pure,   │
 │    annotation-only view over the candidate's already-computed│
 │    falsifier results (never changes the verdict/score):      │
@@ -718,8 +738,8 @@ Caller runs `upt discover`
 │    └── the PERMANENT honest ceiling: mechanismTested: false    │
 │        and dataTested: false — no mechanism-proxy gate and no │
 │        propose→confront loop are buildable on dimensional      │
-│        candidates alone (both assessed 2026-07-04 and          │
-│        correctly NOT built; real mechanism/data confrontation  │
+│        candidates alone (both assessed and correctly NOT       │
+│        built; real mechanism/data confrontation                │
 │        live in the ESTABLISHED-bridge world, Flow 10, reached  │
 │        only after a candidate graduates via human review).     │
 └─────────────────────────────────────────────────────────────┘
@@ -784,7 +804,7 @@ Caller runs `upt probe run --problem=FILE`
 
 ## Flow 13: Atlas Path Query (`upt path`, `upt regime`)
 
-Added in Sprint 2. **The interesting property of this flow is what it REFUSES to produce.**
+**The interesting property of this flow is what it REFUSES to produce.**
 
 ```
 upt path model-pendulum model-lc --at theta0=0.2 T0=1 t=10
@@ -797,20 +817,25 @@ upt path model-pendulum model-lc --at theta0=0.2 T0=1 t=10
         │   to its first premise.
         │   Returns a ROUTE, not a warrant.
         ▼
-  boundPath(bridges)                    three gates, in this order
+  boundPath(bridges)                    four gates, in this order
         │
         ├── 1. RELATION. composeRelation folded along the path. The moment
         │      the running composite is 'no-composite-claim' the path has NO
         │      bound, and the function returns BEFORE any arithmetic — so no
         │      number is ever computed for a path that cannot carry one.
         │
-        ├── 2. LIPSCHITZ. composeBoundPath folds the per-edge (K, delta)
+        ├── 2. UNIFORMITY. Any bound whose uniformity is null or empty is
+        │      not yet analysed: the path returns 'uniformity-unanalysed'
+        │      and no Lipschitz arithmetic runs. An edge with no bound does
+        │      not fail this gate.
+        │
+        ├── 3. LIPSCHITZ. composeBoundPath folds the per-edge (K, delta)
         │      pairs, outer-after-inner: (K2*K1, K2*d1 + d2). A null — an
         │      edge neither bounded nor exact — is tolerated ONLY as the last
         │      entry, where it terminates the claim; anywhere else it throws
         │      MissingLipschitzError rather than inventing a constant.
         │
-        └── 3. NORM. Every stated norm on the path must be the SAME, and no
+        └── 4. NORM. Every stated norm on the path must be the SAME, and no
                unnormed exact map may carry a normed claim. IDENTITY_BOUND is
                the identity ONLY IN THE NORM A BRIDGE STATES, and an
                exact-equivalence bridge carries no bound, hence states no
@@ -823,12 +848,12 @@ upt path model-pendulum model-lc --at theta0=0.2 T0=1 t=10
 ```
 
 **Why the discriminated union rather than a nullable number.** A caller cannot read `.bound` off
-a no-claim, because a no-claim has no `.bound`. The refusal is enforced by the type rather than by
-a documented convention, which is what stops a downstream reader treating "no bound" as zero.
+a no-claim, because a no-claim has no `.bound`. The type enforces the refusal, not a documented
+convention. The type is what stops a downstream reader treating "no bound" as zero.
 
-**The composed number would often be unchanged, and that is the danger.** Composing with the
-identity is arithmetically a no-op, so a path mixing a normed approximation with an unnormed exact
-equivalence yields the RIGHT MAGNITUDE ATTACHED TO THE WRONG NORM. The gate exists because the
+**The composed number would often be unchanged. That the number is unchanged is the danger.** Composing
+with the identity is arithmetically a no-op. So a path mixing a normed approximation with an
+unnormed exact equivalence yields the RIGHT MAGNITUDE ATTACHED TO THE WRONG NORM. The gate exists because the
 error is invisible in the arithmetic.
 
 `upt regime <family> [--at group=value ...]` shares the regime machinery and reports each model as
@@ -846,7 +871,7 @@ UPT uses three distinct error-signalling mechanisms:
 |-----------|----------|---------|
 | `throw` | Programmer errors, invalid ASTs, invariant violations | `NumericalBackendError`, `DimensionMismatchError`, `EngineCapabilityError`, the composition errors (`CompositionJunctionError`, `CompositionDimensionError`, `CompositionAliasError`, `DomainViolationError`), `NumericalBackendError` from bad inputs to `integrateGeodesic` |
 | `Violation` entries in `ValidationResult` | Expected dimensional mismatches the caller should inspect | Non-homogeneous equation, mismatched free-index signatures |
-| `warnings` in `NumericalResult` | Non-fatal numerical observations | `DuplicateCoordinateWarning`, inverse-metric inconsistency |
+| `warnings` in `NumericalResult` | Non-fatal numerical observations | Inverse-metric inconsistency. `DuplicateCoordinateWarning` is not here: validation throws `MetricSignatureError` by default, and emits the warning as a Node process warning only when `UPT_ALLOW_COORD_SHADOW=1` |
 
 Error-severity violations make `ValidationResult.ok = false` and cause `evaluateNumerical()` to throw. Warning-severity violations appear in `NumericalResult.warnings` but do not block evaluation.
 
@@ -865,12 +890,13 @@ Regenerate: `python repo_map.py map <repo> --out <dir>` · Check: `python repo_m
 
 | Claim | Value | Source |
 |---|---|---|
-| entryRoots | 4 | dependency-graph.json |
-| reachableFiles | 282 | dependency-graph.json |
+| entryRoots | 5 | dependency-graph.json |
+| reachableFiles | 337 | dependency-graph.json |
 | runtimeCircularDeps | 0 | dependency-graph.json |
 
-**`entryRoots` is 3, and that is the interesting number.** The roots are `src/index.ts`,
-`src/numerical/mathts-engine.ts` and `src/cli/main.ts`. The third is reached only through
-`bin/upt.mjs`, a launcher that loads `dist/cli/main.js` via a path assembled at runtime. A
-static resolver cannot follow that, so until `repo_map` 0.4.2 the whole CLI was absent from the
-graph and 28 live files were reported as orphans.
+**`entryRoots` is 5.** The roots are `src/index.ts`, the subpath entries
+`src/numerical/mathts-engine.ts`, `src/atlas/index.ts` and `src/composition/probe/index.ts`, and
+`src/cli/main.ts`. The last is the interesting one: only
+`bin/upt.mjs` reaches it. That launcher loads `dist/cli/main.js` via a path assembled at runtime. A
+static resolver cannot follow that path, so `repo_map` recovers `src/cli/main.ts` as a root from
+`bin/upt.mjs`.

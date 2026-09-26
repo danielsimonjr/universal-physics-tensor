@@ -111,3 +111,27 @@ describe('upt confront', () => {
     expect(cap.lines.join('')).not.toMatch(/sensitivity/i);
   });
 });
+
+// Persona finding L6 (2026-09-25): be-51 printed "observed 1.751639983367098 ± 0.000105 arcsec".
+// VLBI measured PPN γ = 1 − (0.8 ± 1.2)×10⁻⁴, not a solar-limb deflection to 16 digits: the
+// number was the tool's own prediction times (1 + γ)/2 (reproduced to every printed digit). The
+// residual, 0.67σ, is correct because it tests only γ; the label was not.
+describe('upt confront be-51 shows the measurement, and labels the deflection as derived', () => {
+  it('prints γ ± σ as the measurement and the deflection as (1+γ)/2 × predicted', async () => {
+    const cap = capture();
+    const code = await runCli(['confront', '--bridge=be-51'], cap.io);
+    expect(code).toBe(0);
+    const text = cap.lines.join('');
+    expect(text).toMatch(/measured: PPN γ = 0\.99992 ± 0\.00012 \(VLBI\); the value above is derived from it, not observed/);
+    expect(text).toMatch(/derived \(1\+γ\)\/2 × predicted = 1\.75112\d* ± 0\.000105\d* arcsec/);
+    expect(text).not.toMatch(/observed 1\.75/);
+    expect(text).toMatch(/residual 0\.67σ/);
+  });
+
+  it('--json carries the measurement', async () => {
+    const cap = capture();
+    await runCli(['confront', '--bridge=be-51', '--json'], cap.io);
+    const s = JSON.stringify(JSON.parse(cap.lines.join('')));
+    expect(s).toContain('"measured":{"quantity":"PPN γ","value":0.99992,"sigma":0.00012,"source":"VLBI","derivation":"(1+γ)/2 × predicted"}');
+  });
+});

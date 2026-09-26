@@ -93,6 +93,8 @@ const DIM_L_NEG4: Dimension = { L: -4, M: 0, T: 0, I: 0, Theta: 0, N: 0, J: 0 };
  *
  * Returns:
  *   - `{ dim: [L⁻⁴], freeIndices: empty Map }` — scalar, no free indices.
+ *
+ * @public
  */
 export function validateKretschmannScalar(
   node: KretschmannScalarNode,

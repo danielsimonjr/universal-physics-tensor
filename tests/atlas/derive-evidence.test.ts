@@ -17,7 +17,7 @@ import {
   deriveEvidence,
   NO_PASSING_WITNESSES,
   deriveEvidenceForVerdict,
-  type AdjudicationVerdict,
+  type MembershipVerdict,
   type EvidenceInput,
   type WitnessLike,
 } from '../../src/atlas/derive-evidence.js';
@@ -31,7 +31,7 @@ import { REJECTED_BRIDGE_ADJUDICATIONS, REJECTED_BRIDGE_IDS } from '../../src/br
  * `membership.ts` fails `bun run typecheck` here.
  */
 type Mutual<A, B> = [A] extends [B] ? ([B] extends [A] ? true : never) : never;
-const VERDICT_UNIONS_AGREE: Mutual<AdjudicationVerdict, BridgeVerdict> = true;
+const VERDICT_UNIONS_AGREE: Mutual<MembershipVerdict, BridgeVerdict> = true;
 
 const sorted = (s: ReadonlySet<string>): string[] => [...s].sort();
 

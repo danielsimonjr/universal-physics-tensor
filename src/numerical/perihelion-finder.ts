@@ -259,26 +259,28 @@ function bisectCubic(
  * ```typescript
  * import { findPerihelion, integrateGeodesicGL4 } from 'universal-physics-tensor';
  * import {
- *   schwarzschildChristoffelFn,
+ *   schwarzschildDgInverseFn,
  *   schwarzschildGInverseFn,
  *   schwarzschildRs,
  * } from '../tests/fixtures/schwarzschild.js';
  *
  * const M = 1.989e30;
- * const r_s = schwarzschildRs(M);
- * const r0 = 20 * r_s; // starting radius
- *
- * const gl4 = integrateGeodesicGL4({
- *   christoffelFn: schwarzschildChristoffelFn(M),
- *   x0: [0, r0, Math.PI / 2, 0],
- *   p0: [0, 0, 0, 1 / r0], // purely azimuthal kick
- *   tauMax: 1e6,
- *   steps: 2000,
- *   snapshotEvery: 1,
- * });
+ * const r0 = 20 * schwarzschildRs(M); // starting radius
+ * // Canonical (x, p) state: covariant momentum p = [-E, 0, 0, L] from the
+ * // orbit's conserved energy E and angular momentum L (see
+ * // tests/bridges/perihelion-precession.test.ts for a full setup).
+ * const snapshots = integrateGeodesicGL4(
+ *   { x: [0, r0, Math.PI / 2, 0], p: [-E, 0, 0, L] },
+ *   {
+ *     steps: 2000,
+ *     tauMax: 1e6,
+ *     gInverseFn: schwarzschildGInverseFn(M),
+ *     dgInverseFn: schwarzschildDgInverseFn(M),
+ *   },
+ * );
  *
  * const perihelion = findPerihelion({
- *   snapshots: gl4.snapshots,
+ *   snapshots,
  *   gInverseFn: schwarzschildGInverseFn(M),
  *   tauTolerance: 1e-9,
  * });

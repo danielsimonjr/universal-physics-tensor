@@ -1,0 +1,97 @@
+{
+  "sources": [
+    { "key": "bp2002-toc", "title": "Breuer & Petruccione, The Theory of Open Quantum Systems (OUP 2002): table-of-contents scan", "url": "https://www.gbv.de/dms/goettingen/372695639.pdf", "file": "bp_toc.pdf", "sha256": "2a8d2bb2f9d76730cf2b385602441d6793940c774d32492de1df09925d2e468b", "format": "pdf", "ocrPages": [3], "note": "The text layer lost the page numbers of sections 3.1.3 to 3.5; OCR of page 3 reads them." },
+    { "key": "bp2002-crossref", "title": "Crossref record of The Theory of Open Quantum Systems", "url": "https://api.crossref.org/works/10.1093/acprof:oso/9780199213900.001.0001", "file": "crossref-breuer.json", "sha256": "1d0ad89b8b9add821b23281c19ca6c16286adca8fffb924f9feb821ca2cc5102", "format": "json", "note": "The OUP 2007 edition record; used for the title only." },
+    { "key": "carroll2004-crossref", "title": "Crossref record of Carroll, Spacetime and Geometry", "url": "https://api.crossref.org/works/10.1017/9781108770385", "file": "crossref-carroll.json", "sha256": "c4e98e51d3d2379374d731f26f3b75f5fd8c701d21a6e7a86bdc3c8aac270cee", "format": "json", "note": "The Cambridge 2019 reissue record; used for the title only. The book itself was not seen." },
+    { "key": "kss2005", "title": "Kovtun, Son & Starinets 2005, arXiv:hep-th/0405231v2", "url": "https://arxiv.org/pdf/hep-th/0405231v2", "file": "kss2005.pdf", "sha256": "97b15621361c4b2665bae690bab9e699bf138c072956b4ca5934e8709601d682", "format": "pdf" },
+    { "key": "prv2019", "title": "Poland, Rychkov & Vichi 2019, arXiv:1805.04405v3", "url": "https://arxiv.org/pdf/1805.04405v3", "file": "prv.pdf", "sha256": "87df5a2e17ce3a01e11bb971402b360dc704890c90cfdb1bcaf7cf9a1d1ae999", "format": "pdf" },
+    { "key": "rrtv2008", "title": "Rattazzi, Rychkov, Tonni & Vichi 2008, arXiv:0807.0004v2", "url": "https://arxiv.org/pdf/0807.0004v2", "file": "rrtv.pdf", "sha256": "03d7bc98b0d9f454eb589c917c251dfabc6c500f1bc7e0643eaa9a89bbc8dea4", "format": "pdf" },
+    { "key": "shapiro1964", "title": "Shapiro 1964, Phys. Rev. Lett. 13:789 (scan)", "url": "https://lweb.cfa.harvard.edu/~loeb/Shapiro_D.pdf", "file": "shapiro1964.pdf", "sha256": "f654c48e43711403c8713337e02bd271c7bdc8d06ada264c283c52409e9b2fad", "format": "pdf", "firstPage": 789, "ocrPages": [1] },
+    { "key": "bassi2003", "title": "Bassi & Ghirardi 2003, arXiv:quant-ph/0302164v2", "url": "https://arxiv.org/pdf/quant-ph/0302164v2", "file": "bassi2003.pdf", "sha256": "da6181e6fb69a53ba3f49dbb238f037d9f5954e570a142f068099c316fdb3a59", "format": "pdf" },
+    { "key": "einstein1915", "title": "Einstein 1915, Sitzungsber. Preuss. Akad. Wiss. 831-839 (ADS scan)", "url": "https://adsabs.harvard.edu/pdf/1915SPAW.......831E", "file": "einstein1915.pdf", "sha256": "63195c91fb4ef949b9684c88f8110b006447cb163dc6028b290046a67b77bd0e", "format": "pdf", "firstPage": 831, "ocrPages": [3, 4, 8, 9] },
+    { "key": "einstein1915-844", "title": "Einstein 1915, Die Feldgleichungen der Gravitation, Sitzungsber. 844-847 (ADS scan)", "url": "https://articles.adsabs.harvard.edu/pdf/1915SPAW.......844E", "file": "einstein1915-844.pdf", "sha256": "e0c0d9ea15607c960c4ad7371b6c1623ecb61d471fe3979ad0899feaa9c3620a", "format": "pdf", "firstPage": 844, "ocrPages": [1], "note": "The running head of p. 847 is not machine-readable (OCR reads 84'), so the end of the range is confirmed by the Wikisource record, not by the scan." },
+    { "key": "wikisource-feldgleichungen", "title": "Wikisource record of Die Feldgleichungen der Gravitation", "url": "https://de.wikisource.org/wiki/Die_Feldgleichungen_der_Gravitation", "file": "wikisource-feldgleichungen.html", "sha256": "d0204fb439238fec509700ec1036bfe0eb20b91ab0ab1cd710990e7ed4213b3b", "format": "html" },
+    { "key": "carroll1997", "title": "Carroll, Lecture Notes on General Relativity, arXiv:gr-qc/9712019", "url": "https://arxiv.org/pdf/gr-qc/9712019", "file": "carroll.pdf", "sha256": "d4cbfeed3a18370cb7e1a256da6fa7de722982ad7f6a146b4fc0fe14a6bebf6c", "format": "pdf" },
+    { "key": "tknn1982-abstract", "title": "Thouless, Kohmoto, Nightingale & den Nijs 1982: abstract page", "url": "https://digitalcommons.uri.edu/phys_facpubs/321/", "file": "tknn1982-abstract.html", "sha256": "53b780deedada8785ae63e3e90d559ec4667b3045386dcd14294081aa31c80a9", "format": "html", "note": "Abstract only; the full text was not accessed." },
+    { "key": "nobel2016", "title": "Scientific background on the Nobel Prize in Physics 2016", "url": "https://www.nobelprize.org/uploads/2018/06/advanced-physicsprize2016.pdf", "file": "nobel2016.pdf", "sha256": "0aa194f51d529c9201d6eae115ec220eaad35c059455308891039e8b46dddef4", "format": "pdf" },
+    { "key": "nyquist1928", "title": "Nyquist 1928, Phys. Rev. 32:110 (scan)", "url": "https://123.physics.ucdavis.edu/johnson_files/nyquist_1928.pdf", "file": "nyquist_ucd.pdf", "sha256": "d2d37ae4bccef4248cb83109ded861c33bc1c9aea28b71864bd8f160f8d7e21d", "format": "pdf", "firstPage": 110, "ocrPages": [3, 4] },
+    { "key": "josephson1973", "title": "Josephson, Nobel Lecture 1973", "url": "https://www.nobelprize.org/uploads/2018/06/josephson-lecture_new.pdf", "file": "josephson_lecture.pdf", "sha256": "de5ca2b8b8e81004a589e13e586145c22917adbbc31a3b0ec4be338a7f4d0c96", "format": "pdf", "ocrPages": [3] },
+    { "key": "bipm2019", "title": "BIPM, The International System of Units (SI), 9th edition, V4.01", "url": "https://www.bipm.org/documents/20126/41483022/SI-Brochure-9-EN.pdf", "file": "si.pdf", "sha256": "5442eea2c680caf77a9d96879205a97f57c7c270b98a0bd0126c18fefe47e02c", "format": "pdf" }
+  ],
+  "claims": [
+    { "comment": "BE-11/1", "token": "The Theory of Open Quantum Systems", "checks": [{ "kind": "span", "source": "bp2002-crossref", "text": "The Theory of Open Quantum Systems" }] },
+    { "comment": "BE-11/1", "token": "Weak-coupling Limit", "checks": [{ "kind": "span", "source": "bp2002-toc", "text": "3.3.1 Weak-coupling Limit" }] },
+    { "comment": "BE-11/1", "token": "obviously a weak-coupling condition", "checks": [{ "kind": "declared", "status": "SNIPPET-ONLY", "reason": "p. 146, read by the sample check in a search snippet; the book is not available as a file" }] },
+    { "comment": "BE-11/1", "token": "pp. 116, 136 and 146", "checks": [{ "kind": "declared", "status": "SNIPPET-ONLY", "reason": "the pages of the three search snippets" }] },
+    { "comment": "BE-11/1", "token": "p. 116", "checks": [{ "kind": "declared", "status": "SNIPPET-ONLY", "reason": "partial trace, read in a search snippet" }] },
+    { "comment": "BE-11/1", "token": "p. 136", "checks": [
+      { "kind": "declared", "status": "SNIPPET-ONLY", "reason": "tau_B small compared to the relaxation time, read in a search snippet" },
+      { "kind": "toc-range", "source": "bp2002-toc", "entry": "3.3.1 Weak-coupling Limit", "next": "3.3.2 Relaxation to equilibrium", "page": 136 }
+    ] },
+    { "comment": "BE-11/1", "token": "section 3.3.1", "checks": [{ "kind": "span", "source": "bp2002-toc", "text": "3.3.1 Weak-coupling Limit" }] },
+    { "comment": "BE-11/1", "token": "p. 146", "checks": [{ "kind": "declared", "status": "SNIPPET-ONLY", "reason": "the weak-coupling-condition sentence, read in a search snippet" }] },
+    { "comment": "BE-11/1", "token": "(source)", "checks": [{ "kind": "declared", "status": "SNIPPET-ONLY", "reason": "the book text is available only as search snippets; its title and contents are matched from Crossref and the GBV scan" }] },
+
+    { "comment": "BE-21/1", "token": "eqs. 5-7, 14", "checks": [
+      { "kind": "label", "source": "kss2005", "label": "(5)", "near": "rotationally invariant field theory" },
+      { "kind": "label", "source": "kss2005", "label": "(6)", "near": "normalization of the graviton" },
+      { "kind": "label", "source": "kss2005", "label": "(7)", "near": "Comparing (5) and (6), we find" },
+      { "kind": "label", "source": "kss2005", "label": "(14)", "near": "are now restored" }
+    ] },
+    { "comment": "BE-21/1", "token": "eq. (16)", "checks": [{ "kind": "label", "source": "kss2005", "label": "(16)", "near": "The correction is positive" }] },
+    { "comment": "BE-21/2", "token": "We speculate", "checks": [{ "kind": "span", "source": "kss2005", "text": "We speculate" }] },
+    { "comment": "BE-21/2", "token": "eq. (1)", "checks": [{ "kind": "label", "source": "kss2005", "label": "(1)", "near": "has a universal value" }] },
+
+    { "comment": "BE-35/1", "token": "a consistency condition on the CFT data", "checks": [{ "kind": "span", "source": "prv2019", "text": "a consistency condition on the CFT data", "section": { "chain": ["II. CONFORMAL BOOTSTRAP: INFORMAL OVERVIEW"], "end": "III. CONFORMAL FIELD THEORY TECHNIQUES IN d DIMENSIONS" } }] },
+    { "comment": "BE-35/1", "token": "a set of crossing symmetry constraints for the function g(u, v)", "checks": [{ "kind": "span", "source": "rrtv2008", "text": "a set of crossing symmetry constraints for the function g(u, v)", "section": { "chain": ["4 Crossing symmetry and the sum rule"], "end": "5 Main results" } }] },
+    { "comment": "BE-35/1", "token": "Sec. III.I", "checks": [{ "kind": "span", "source": "prv2019", "text": "OPE channels, referred to as the s- and t-channels", "section": { "chain": ["III. CONFORMAL FIELD THEORY TECHNIQUES IN d DIMENSIONS", "I. Crossing relations"], "end": "IV. NUMERICAL METHODS" } }] },
+    { "comment": "BE-35/1", "token": "Sec. II", "checks": [{ "kind": "span", "source": "prv2019", "text": "a consistency condition on the CFT data", "section": { "chain": ["II. CONFORMAL BOOTSTRAP: INFORMAL OVERVIEW"], "end": "III. CONFORMAL FIELD THEORY TECHNIQUES IN d DIMENSIONS" } }] },
+    { "comment": "BE-35/1", "token": "Sec. 4", "checks": [{ "kind": "span", "source": "rrtv2008", "text": "a set of crossing symmetry constraints for the function g(u, v)", "section": { "chain": ["4 Crossing symmetry and the sum rule"], "end": "5 Main results" } }] },
+
+    { "comment": "BE-37/1", "token": "eq. 1", "checks": [{ "kind": "label", "source": "shapiro1964", "label": "(1)", "near": "echo reception, we find", "page": 789, "lines": 25, "reference": "The right-hand side of Eq. (1)" }] },
+    { "comment": "BE-37/1", "token": "Eq. (1)", "checks": [{ "kind": "label", "source": "shapiro1964", "label": "(1)", "near": "echo reception, we find", "page": 789, "lines": 25, "reference": "The right-hand side of Eq. (1)" }] },
+
+    { "comment": "BE-48/1", "token": "§6.4", "checks": [{ "kind": "span", "source": "bassi2003", "text": "the center of mass is affected by the same process with a rate", "section": { "chain": ["6.4 Macroscopic dynamics from the microscopic one"], "end": "6.5 Choice of the parameters and its consequences" } }] },
+    { "comment": "BE-48/1", "token": "§8.3", "checks": [{ "kind": "span", "source": "bassi2003", "text": "being the number of particles of the body", "section": { "chain": ["8.3 Reduction rates"], "end": "8.4 Position and momentum spreads" } }] },
+
+    { "comment": "BE-51/1", "token": "Spacetime and Geometry", "checks": [{ "kind": "span", "source": "carroll2004-crossref", "text": "Spacetime and Geometry" }] },
+    { "comment": "BE-51/1", "token": "p. 834", "checks": [{ "kind": "span", "source": "einstein1915", "text": "Ablenkung von 1.7", "page": 834 }] },
+    { "comment": "BE-51/1", "token": "pp. 844-847", "checks": [
+      { "kind": "span", "source": "einstein1915-844", "text": "Feldgleichungen der Gravitation", "page": 844 },
+      { "kind": "span", "source": "wikisource-feldgleichungen", "text": "Sitzungsberichte, 1915 (Teil 2), 844–847" }
+    ] },
+
+    { "comment": "BE-52/1", "token": "eqs. (13)-(14)", "checks": [
+      { "kind": "label", "source": "einstein1915", "label": "(13)", "near": "Umlauf", "page": 838 },
+      { "kind": "label", "source": "einstein1915", "label": "(14)", "near": "Lichtgeschwindigkeit", "page": 839 }
+    ] },
+    { "comment": "BE-52/1", "token": "p. 833", "checks": [{ "kind": "span", "source": "einstein1915", "text": "durch die Sonnenmasse bestimmte Konstante", "page": 833 }] },
+    { "comment": "BE-52/1", "token": "eq. 7.56", "checks": [{ "kind": "label", "source": "carroll1997", "label": "(7.56)", "near": "For details you can look in Weinberg" }] },
+
+    { "comment": "BE-55/1", "token": "The Kubo formula is written in a form that makes apparent the quantization when the Fermi energy lies in a gap.", "checks": [{ "kind": "span", "source": "tknn1982-abstract", "text": "The Kubo formula is written in a form that makes apparent the quantization when the Fermi energy lies in a gap." }] },
+    { "comment": "BE-55/1", "token": "the relation to the mathematics of fibre bundles was established", "checks": [{ "kind": "span", "source": "nobel2016", "text": "the relation to the mathematics of fibre bundles was established", "section": { "chain": ["4 Quantum Hall conductance and topological band theory"], "end": "5 Quantum spin chains and symmetry-protected topological phases of matter" } }] },
+    { "comment": "BE-55/1", "token": "§4", "checks": [{ "kind": "span", "source": "nobel2016", "text": "the relation to the mathematics of fibre bundles was established", "section": { "chain": ["4 Quantum Hall conductance and topological band theory"], "end": "5 Quantum spin chains and symmetry-protected topological phases of matter" } }] },
+    { "comment": "BE-55/1", "token": "eq. 9", "checks": [{ "kind": "label", "source": "nobel2016", "label": "(9)", "near": "where n is an integer" }] },
+    { "comment": "BE-55/1", "token": "eq. 10", "checks": [{ "kind": "label", "source": "nobel2016", "label": "(10)", "near": "Berry field strength" }] },
+    { "comment": "BE-55/1", "token": "eq. 13", "checks": [{ "kind": "label", "source": "nobel2016", "label": "(13)", "near": "first Chern number" }] },
+
+    { "comment": "BE-55/2", "token": "eq. 4", "checks": [{ "kind": "declared", "status": "BOT-WALL", "reason": "von Klitzing, Dorda & Pepper 1980: APS serves the open-access PDF behind a bot check, so automation cannot fetch it; the owner can check eq. 4 in a browser" }] },
+
+    { "comment": "BE-58/1", "token": "eq. 1", "checks": [{ "kind": "label", "source": "nyquist1928", "label": "(1)", "near": "the square of the voltage within the interval", "page": 112 }] },
+    { "comment": "BE-58/1", "token": "eq. (1)", "checks": [{ "kind": "label", "source": "nyquist1928", "label": "(1)", "near": "the square of the voltage within the interval", "page": 112 }] },
+    { "comment": "BE-58/1", "token": "eq. (8)", "checks": [{ "kind": "label", "source": "nyquist1928", "label": "(8)", "near": "in the interval", "page": 113 }] },
+    { "comment": "BE-58/2", "token": "cycles per second", "checks": [{ "kind": "span", "source": "nyquist1928", "text": "cycles per second", "page": 112 }] },
+    { "comment": "BE-58/2", "token": "eq. (1)", "checks": [{ "kind": "label", "source": "nyquist1928", "label": "(1)", "near": "the square of the voltage within the interval", "page": 112 }] },
+    { "comment": "BE-58/2", "token": "p. 112", "checks": [{ "kind": "span", "source": "nyquist1928", "text": "cycles per second", "page": 112 }] },
+
+    { "comment": "BE-59/1", "token": "a periodically varying current at a frequency 2eV/h", "checks": [
+      { "kind": "span", "source": "josephson1973", "text": "a periodically varying current at a frequency 2eV/h" },
+      { "kind": "order", "source": "josephson1973", "label": "(5)", "text": "a periodically varying current at a frequency 2eV/h" }
+    ] },
+    { "comment": "BE-59/1", "token": "eq. 4", "checks": [{ "kind": "label", "source": "josephson1973", "label": "(4)", "near": "time dependence of" }] },
+    { "comment": "BE-59/1", "token": "eq. (5)", "checks": [{ "kind": "label", "source": "josephson1973", "label": "(5)", "near": "a periodically varying current" }] },
+    { "comment": "BE-59/1", "token": "(source)", "checks": [{ "kind": "declared", "status": "UNREAD", "reason": "Josephson 1962 Phys. Lett. 1:251 (finding C6): paywalled, not read; the comment says so" }] },
+
+    { "comment": "BE-59/2", "token": "The International System of Units (SI)", "checks": [{ "kind": "span", "source": "bipm2019", "text": "The International System of Units (SI)" }] }
+  ]
+}

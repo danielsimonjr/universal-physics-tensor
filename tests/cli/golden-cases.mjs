@@ -19,7 +19,8 @@ export const GOLDEN_CASES = [
   { name: 'map-dot',             args: ['map', '--format=dot'] },
   { name: 'map-mermaid-proposed', args: ['map', '--format=mermaid', '--proposed'] },
   { name: 'map-equation-ok',     args: ['map', '--source=canonical', '--equation', 'period = 2*pi*sqrt(length/gravity)'] },
-  { name: 'map-equation-mismatch', args: ['map', '--source=canonical', '--equation', 'period = mass'] },
+  // A dimension mismatch is a failed check: exit 3 since 0.47.0 (persona finding F2).
+  { name: 'map-equation-mismatch', args: ['map', '--source=canonical', '--equation', 'period = mass'], exitCode: 3 },
   // Visual mode routes the landing report to STDERR (stdout stays pure diagram
   // source) — pinStderr captures <name>.stderr.txt alongside the stdout golden.
   { name: 'map-equation-visual', args: ['map', '--source=canonical', '--format=mermaid', '--equation', 'period = 2*pi*sqrt(length/gravity)'], pinStderr: true },

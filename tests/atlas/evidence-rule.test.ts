@@ -33,6 +33,7 @@ const KNOWN_WITNESSES: readonly string[] = [
   'W2',
   'W2b',
   'W3',
+  'W3b',
   'W4',
   'W5',
   'W6',
@@ -42,6 +43,7 @@ const KNOWN_WITNESSES: readonly string[] = [
   'W8',
   'W8b',
   'W9',
+  'W9b',
   // Phase 4 S4.3 — CAS checks of the spring ↔ circuit dictionary, run into
   // data/atlas/witness-results.json and named in tests/atlas/witness-results.test.ts.
   'W1s',

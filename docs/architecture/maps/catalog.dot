@@ -1,5 +1,5 @@
 digraph PhysicsMap {
-  label="UPT physics map — catalog (44-bridge)";
+  label="UPT physics map — catalog (55-bridge)";
   rankdir=LR;
   node [fontname="Helvetica"];
   subgraph cluster_0 {

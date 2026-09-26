@@ -197,36 +197,35 @@ describe('W1a — spring and LC trajectories coincide under the map (numeric)', 
   });
 });
 
-describe('W1b — the inverse maps round-trip (numeric)', () => {
+describe('W1b — the inverse map carries a solution of u″ + u = 0 to one of m x″ + k x = 0 (numeric)', () => {
+  // The previous W1b checked x0·u/x0 = u, which no bridge claim can falsify. This one integrates the
+  // DIMENSIONED spring on its own, from the inverse-mapped initial conditions, and compares.
+  const [mM, kK] = [2, 8];
+  const omega0 = Math.sqrt(kK / mM);
   const x0 = 0.37;
-  const omega0 = 2;
   const uPrime0 = 0.6;
+  // u(τ) = cos τ + u′(0) sin τ solves u″ + u = 0 with u(0) = 1.
+  const u = (tau: number): number => Math.cos(tau) + uPrime0 * Math.sin(tau);
 
-  it('x = x0 u, t = τ/ω0 round-trips a sampled trajectory within 1e-12', () => {
-    const { samples } = rk4(
-      (_t, y) => [y[1], -y[0]],
-      [1, uPrime0],
-      0,
-      2 * Math.PI,
-      6280,
-      100,
-    );
-    expect(samples.length).toBeGreaterThan(10);
-
-    for (const s of samples) {
-      const x = x0 * s.y[0];
-      const t = s.t / omega0;
-      // Inverse: u = x/x0, τ = ω0 t.
-      expect(Math.abs(x / x0 - s.y[0])).toBeLessThan(1e-12);
-      expect(Math.abs(omega0 * t - s.t)).toBeLessThan(1e-12);
+  /** Worst |x_direct(t) − x0·u(w0 t)| over the sample τ, mapping with the frequency `w0`. */
+  function mappedMinusDirect(w0: number): number {
+    const xDot0 = x0 * w0 * uPrime0;
+    let worst = 0;
+    for (const tau of TAUS) {
+      const t = tau / w0;
+      const { y } = rk4((_t, yy) => [yy[1], (-kK * yy[0]) / mM], [x0 * u(0), xDot0], 0, t, Math.max(1000, Math.ceil(t * 4000)));
+      worst = Math.max(worst, Math.abs(y[0] - x0 * u(w0 * t)));
     }
+    return worst;
+  }
+
+  it('x = x0·u(ω0 t) with ω0 = √(k/m) solves the dimensioned spring within 1e-8', () => {
+    expect(omega0).toBe(2);
+    expect(mappedMinusDirect(omega0)).toBeLessThan(1e-8);
   });
 
-  it("initial conditions map as x'(0) = x0 ω0 u'(0)", () => {
-    const xDot0 = x0 * omega0 * uPrime0;
-    expect(xDot0).toBeCloseTo(0.444, 12);
-    // Round-trip the derivative back through the inverse map.
-    expect(Math.abs(xDot0 / (x0 * omega0) - uPrime0)).toBeLessThan(1e-12);
+  it('NEGATIVE CONTROL: the same map with a 1% wrong ω0 misses by more than 1e-3', () => {
+    expect(mappedMinusDirect(1.01 * omega0)).toBeGreaterThan(1e-3);
   });
 });
 

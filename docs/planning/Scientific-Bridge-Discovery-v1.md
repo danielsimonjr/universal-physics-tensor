@@ -37,7 +37,7 @@ The original roadmap had a sound scientific direction but proposed a parallel UP
 16. Candidate explosion needs hard resource governance.
 17. Persistence needs versioned schemas.
 18. Public API evolves additively first.
-19. The active engineering backlog and this roadmap stay separate (`docs/planning/ACTIVE.md`).
+19. The active engineering backlog and this roadmap stay separate (`ACTIVE.md`).
 20. “No credible candidate found” is a successful scientific outcome.
 
 ### 0.2 Second audit (2026-08-19) — what the first pass still got wrong
@@ -1669,7 +1669,7 @@ Do **not** begin by integrating a symbolic-regression package. Do **not** begin 
 - run-manifest schema round-trips;
 - CI green on the new tests + existing suite at the release/gate sense (scoped vitest during TDD);
 - architecture/scientific review completed before Phase 1 overlay expansion;
-- `docs/planning/ACTIVE.md` still contains **no** release-blocking probe tasks until a tranche is explicitly promoted.
+- `ACTIVE.md` still contains **no** release-blocking probe tasks until a tranche is explicitly promoted.
 
 This tranche converts the roadmap from aspiration into a measurable scientific-development program while keeping risk low and leaving the coincidence-rejector intact.
 

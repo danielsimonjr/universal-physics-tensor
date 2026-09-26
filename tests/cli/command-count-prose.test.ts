@@ -1,7 +1,7 @@
 /**
  * The stated command counts must equal the REGISTRY, not each other.
  *
- * This number is restated in prose in four places — `CLAUDE.md`'s architecture table and three
+ * This number is restated in prose in four places — `NOTES.md` (formerly `CLAUDE.md`) and three
  * spots in `cli/README.md` — and nothing failed when one drifted. On 2026-09-22 all four were
  * stale AND TWO DISAGREED WITH EACH OTHER: the README said "19 commands" in one sentence and
  * "all 15 — every command in the tables above except `help` and `version`" in another, which are
@@ -45,7 +45,7 @@ async function registeredCommands(): Promise<string[]> {
 }
 
 describe('the stated command count matches the registry', () => {
-  it('CLAUDE.md and cli/README.md agree with `upt --help`, not with each other', async () => {
+  it('NOTES.md and cli/README.md agree with `upt --help`, not with each other', async () => {
     const all = await registeredCommands();
     const dataBearing = all.filter((n) => n !== 'help' && n !== 'version');
 
@@ -53,11 +53,11 @@ describe('the stated command count matches the registry', () => {
     // the difference below changes and this test should be revisited rather than re-baselined.
     expect(all.length - dataBearing.length).toBe(2);
 
-    const claude = read('CLAUDE.md');
+    const notes = read('NOTES.md');
     const readme = read('cli/README.md');
 
-    // CLAUDE.md architecture table.
-    expect(claude).toContain(`(${dataBearing.length} data-bearing commands + \`help\`/\`version\``);
+    // NOTES.md, measured facts about the tree.
+    expect(notes).toContain(`(${dataBearing.length} data-bearing commands + \`help\`/\`version\``);
 
     // cli/README.md — the total, including help and version.
     expect(readme).toContain(`${all.length} commands, grouped by what they do.`);
@@ -74,7 +74,9 @@ describe('the stated command count matches the registry', () => {
     // sensitive to that figure: the neighbouring values must NOT appear in the same sentences,
     // which is exactly what a stale count would look like.
     const readme = read('cli/README.md');
+    const notes = read('NOTES.md');
     for (const wrong of [dataBearing.length - 1, dataBearing.length + 1]) {
+      expect(notes).not.toContain(`(${wrong} data-bearing commands + \`help\`/\`version\``);
       expect(readme).not.toContain(`Every data-bearing command (all ${wrong} —`);
       expect(readme).not.toContain(`| \`--json\` | All ${wrong} data-bearing commands |`);
     }
