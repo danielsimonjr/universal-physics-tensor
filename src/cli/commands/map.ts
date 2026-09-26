@@ -201,7 +201,9 @@ function printEquationReport(
     out(
       `  ● your equation joins ${L.anchored ? 'the ANCHORED cluster' : 'a cluster'} of ${L.clusterSize} via {${L.sharedQuantities.join(', ')}}`
     );
-    if (L.connectedJunctionIds.length) out(`     connects to: ${L.connectedJunctionIds.join(', ')}`);
+    // W3/I3: do not dump ~100 edge ids — that made shared length/temperature look
+    // like a physics claim. Summarise nearest equations by shared-quantity overlap.
+    for (const line of api.formatConnectedSummary(model, L)) out(line);
   }
   for (const h of user.hints ?? []) {
     if (!h.suggestions.length) {

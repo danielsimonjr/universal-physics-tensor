@@ -36,6 +36,8 @@ export {
   buckinghamPi,
   dimensionallyDetermines,
 } from './index.js';
+// Landing-report summariser (persona W3) — internal, not on the public barrel.
+export { formatConnectedSummary } from './composition/user-equation.js';
 
 // Internal analysis surface (bridge-analysis.ts).
 export {

@@ -329,6 +329,47 @@ export function equationLanding(model: VizModel, userJunctionId: string): Equati
   };
 }
 
+/**
+ * One or two lines summarising `connects to:` (persona findings W3 / I3).
+ * Dumping ~100 edge ids next to a correct pendulum equation made shared
+ * `length`/`temperature` look like a physics claim. Rank by overlap with the
+ * user's shared quantities first, then textbook/law over bridges, then name.
+ * When the list is long, state the structural caveat explicitly.
+ *
+ * @internal
+ */
+export function formatConnectedSummary(
+  model: VizModel,
+  landing: EquationLanding,
+  maxShow = 5,
+): readonly string[] {
+  const ids = landing.connectedJunctionIds;
+  if (ids.length === 0) return [];
+  const shared = new Set(landing.sharedQuantities);
+  const byId = new Map(model.junctions.map((j) => [j.id, j]));
+  const tier = (id: string): number =>
+    id.startsWith('CE-') || id.startsWith('law-') ? 0 : id.startsWith('be-') ? 1 : 2;
+  const overlap = (id: string): number => {
+    const j = byId.get(id);
+    if (!j) return 0;
+    let n = 0;
+    for (const qn of [...j.sources, j.target]) if (shared.has(qn)) n++;
+    return n;
+  };
+  const ranked = [...ids].sort(
+    (a, b) => overlap(b) - overlap(a) || tier(a) - tier(b) || a.localeCompare(b),
+  );
+  const shown = ranked.slice(0, maxShow);
+  const more = ranked.length - shown.length;
+  if (more <= 0) {
+    return [`     nearest equations: ${shown.join(', ')}`];
+  }
+  return [
+    `     nearest equations: ${shown.join(', ')} (+${more} more)`,
+    '     (shared-quantity connectivity, not a physics claim)',
+  ];
+}
+
 /** A "did you mean?" suggestion for an unmatched symbol. */
 export interface EquationHint {
   readonly name: string;

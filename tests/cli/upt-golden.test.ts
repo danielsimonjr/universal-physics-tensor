@@ -29,7 +29,8 @@ function normalize(text: string): string {
 // continuations) — environment-dependent optional-peer warnings (WASM-fallback
 // noise embedding absolute paths) must not be pinned. Keep in sync with
 // golden-capture.mjs.
-const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+// Landing continuations: former `connects to:`, W3 `nearest equations:` / caveat.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     (?:connects to:|nearest equations:|\(shared-quantity)/u;
 
 function filterReportLines(text: string): string {
   return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');

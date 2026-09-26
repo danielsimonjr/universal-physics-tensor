@@ -13,6 +13,7 @@ import {
   suggestQuantities,
   suggestByDimension,
   equationLanding,
+  formatConnectedSummary,
   analyzeUserEquation,
   rewriteCatalogHyphens,
   UserEquationError,
@@ -151,6 +152,43 @@ describe('suggestByDimension', () => {
   it('excludes non-matching dimensions and respects k', () => {
     expect(suggestByDimension(ENERGY, cat, 1)).toEqual(['erasure-energy']);
     expect(suggestByDimension(MASS, cat)).toEqual(['mass']);
+  });
+});
+
+describe('W3: formatConnectedSummary', () => {
+  it('ranks by shared-quantity overlap so the restated law leads, and caps the rest', () => {
+    const junctions: VizJunction[] = [
+      { id: 'user-equation', label: 'user', status: 'user', sources: ['length', 'gravity'], target: 'period' },
+      { id: 'CE-pendulum-period', label: 'pendulum', status: 'law', sources: ['length', 'gravity'], target: 'period' },
+      { id: 'CE-wien', label: 'wien', status: 'law', sources: ['temperature'], target: 'peak-wavelength' },
+      { id: 'be-11-zurek', label: 'zurek', status: 'speculative', sources: ['temperature'], target: 'decoherence-rate' },
+      { id: 'CE-kepler-third', label: 'kepler', status: 'law', sources: ['gravity'], target: 'period' },
+      { id: 'be-12', label: 'be12', status: 'speculative', sources: ['temperature'], target: 'thermal-wavelength' },
+      { id: 'be-16', label: 'be16', status: 'speculative', sources: ['temperature'], target: 'landauer-erasure-energy' },
+      { id: 'be-23', label: 'be23', status: 'speculative', sources: ['temperature'], target: 'relaxation-rate' },
+    ];
+    const model = {
+      junctions,
+      clusters: [{ id: 'c0', size: junctions.length, anchored: true, junctionIds: junctions.map((j) => j.id) }],
+      filterStats: { kept: 0, droppedNoOverlay: 0, droppedNoMatch: 0 },
+      filterLegend: null,
+      toMermaid: () => '',
+      toDot: () => '',
+    };
+    const landing = {
+      isolated: false,
+      clusterSize: junctions.length,
+      anchored: true,
+      sharedQuantities: ['gravity', 'length', 'period'],
+      connectedJunctionIds: junctions.filter((j) => j.id !== 'user-equation').map((j) => j.id),
+    };
+
+    const lines = formatConnectedSummary(model, landing, 3);
+    expect(lines[0]).toMatch(/^     nearest equations: CE-pendulum-period/);
+    expect(lines[0]).toMatch(/CE-kepler-third/);
+    expect(lines[0]).toMatch(/\(\+4 more\)/);
+    expect(lines[1]).toBe('     (shared-quantity connectivity, not a physics claim)');
+    expect(lines.join('\n')).not.toMatch(/be-23/);
   });
 });
 
