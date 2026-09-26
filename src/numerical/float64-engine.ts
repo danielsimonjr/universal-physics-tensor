@@ -581,39 +581,48 @@ export class Float64ReferenceEngine implements TensorEngine {
       contractAxesByOp[ob].push({ varIdx: v, axis: axb });
     });
 
-    const opIdxCache = new Array<number[]>(ops.length);
-    for (let i = 0; i < ops.length; i++) {
-      opIdxCache[i] = new Array<number>(ops[i].shape.length).fill(0);
-    }
-
     // For a given assignment of (free vars, contract vars), compute the flat
     // index into each operand using the precomputed per-operand axis maps.
-
 
     const freeVals = new Array<number>(outShape.length).fill(0);
     const contractVals = new Array<number>(contractSizes.length).fill(0);
     const outTotal = outShape.length === 0 ? 1 : Float64Tensor.sizeOf(outShape);
     const contractTotal = contractSizes.length === 0 ? 1 : Float64Tensor.sizeOf(contractSizes);
 
+    // Bolt: Hoist array allocations and flatIndex math out of the innermost loop.
+    // freeBaseIndices[o] tracks the base flat index of operand o for the current freeVals.
+    const freeBaseIndices = new Int32Array(ops.length);
+    const contractBaseIndices = new Int32Array(ops.length);
+
     for (let i = 0; i < outTotal; i++) {
       let acc = 0;
 
+      for (let o = 0; o < ops.length; o++) {
+        let f = 0;
+        const fa = freeAxesByOp[o];
+        const s = inStrides[o];
+        for (let m = 0; m < fa.length; m++) {
+          f += freeVals[fa[m].varIdx] * s[fa[m].axis];
+        }
+        freeBaseIndices[o] = f;
+      }
+
       for (let j = 0; j < contractVals.length; j++) contractVals[j] = 0;
       for (let j = 0; j < contractTotal; j++) {
+        // Pre-compute contract indices for this iteration of contractVals
+        for (let o = 0; o < ops.length; o++) {
+          let f = freeBaseIndices[o];
+          const ca = contractAxesByOp[o];
+          const s = inStrides[o];
+          for (let m = 0; m < ca.length; m++) {
+            f += contractVals[ca[m].varIdx] * s[ca[m].axis];
+          }
+          contractBaseIndices[o] = f;
+        }
+
         let product = 1;
         for (let o = 0; o < ops.length; o++) {
-          // Inline operandFlatIndex
-          const idx = opIdxCache[o];
-          const fa = freeAxesByOp[o];
-          for (let m = 0; m < fa.length; m++) idx[fa[m].axis] = freeVals[fa[m].varIdx];
-          const ca = contractAxesByOp[o];
-          for (let m = 0; m < ca.length; m++) idx[ca[m].axis] = contractVals[ca[m].varIdx];
-
-          const s = inStrides[o];
-          let f = 0;
-          for (let k = 0; k < idx.length; k++) f += idx[k] * s[k];
-
-          product *= ops[o].data[f];
+          product *= ops[o].data[contractBaseIndices[o]];
         }
         acc += product;
 
