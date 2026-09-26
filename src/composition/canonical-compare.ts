@@ -105,6 +105,54 @@ function pairSources(
   return open.length === 0 ? pairs : 'ambiguous';
 }
 
+/**
+ * Peel user sources that restate a CE governing *constant* (persona finding W1).
+ *
+ * CE-mass-energy lists `c` as governing, but `c` is in {@link CONSTANTS}, so it is not a free
+ * variable of the comparison. Writing the catalog quantity `speed-of-light` (same dimension) must
+ * not make the source set look larger than `{mass}` and skip the prefactor check. A source pairs
+ * with a constant by name, or by a dimension that exactly one remaining constant carries and that
+ * no free variable carries (variables win — `velocity` still pairs with CE-kinetic-energy's
+ * `speed`). Returns the sources left for {@link pairSources}, plus user→constant name pairs.
+ * Leftover sources that match no variable and no unique constant make the entry a non-match
+ * (`null` from the caller when `forVariables` then fails to pair).
+ */
+function peelConstantAliases(
+  sources: readonly { name: string; dim?: Dimension }[],
+  variables: readonly { name: string; dim: Dimension }[],
+  constants: readonly { name: string; dim: Dimension }[],
+): { forVariables: { name: string; dim?: Dimension }[]; constPairs: Map<string, string> } {
+  const constPairs = new Map<string, string>();
+  const freeConsts = new Map(constants.map((c) => [normalize(c.name), c.dim]));
+  const forVariables: { name: string; dim?: Dimension }[] = [];
+  for (const s of sources) {
+    if (variables.some((v) => normalize(v.name) === s.name)) {
+      forVariables.push(s);
+      continue;
+    }
+    if (freeConsts.has(s.name)) {
+      constPairs.set(s.name, s.name);
+      freeConsts.delete(s.name);
+      continue;
+    }
+    if (s.dim !== undefined) {
+      const varHits = variables.filter((v) => equals(v.dim, s.dim!));
+      if (varHits.length > 0) {
+        forVariables.push(s);
+        continue;
+      }
+      const constHits = [...freeConsts].filter(([, dim]) => equals(dim, s.dim!));
+      if (constHits.length === 1) {
+        constPairs.set(s.name, constHits[0]![0]);
+        freeConsts.delete(constHits[0]![0]);
+        continue;
+      }
+    }
+    forVariables.push(s);
+  }
+  return { forVariables, constPairs };
+}
+
 /** A governing variable that is a registered physical constant of the same dimension. */
 function isConstant(v: { name: string; dim: Dimension }): boolean {
   const c = CONSTANTS[v.name];
@@ -206,7 +254,15 @@ export function compareWithCanonical(
     const d = entry.dimensional;
     if (normalize(d.target.name) !== wantTarget) continue;
     const variables = d.governing.filter((g) => !isConstant(g));
-    const pairing = pairSources([...wantSources.values()], variables);
+    const constants = d.governing.filter(isConstant);
+    // W1: sources that restate a governing constant (speed-of-light ↔ c) peel off first so they
+    // do not inflate the free-variable count and skip the prefactor check.
+    const { forVariables, constPairs } = peelConstantAliases(
+      [...wantSources.values()],
+      variables,
+      constants,
+    );
+    const pairing = pairSources(forVariables, variables);
     if (pairing === null) continue;
     if (pairing === 'ambiguous') {
       results.push({
@@ -217,15 +273,31 @@ export function compareWithCanonical(
       });
       continue;
     }
-    const byDimension = [...pairing].filter(([u, c]) => u !== c).sort(([a], [b]) => a.localeCompare(b));
+    const byDimension = [...pairing, ...constPairs]
+      .filter(([u, c]) => u !== c)
+      .sort(([a], [b]) => a.localeCompare(b));
     const paired = byDimension.length > 0 ? { paired: byDimension } : {};
     const names = variables.map((g) => normalize(g.name)).sort();
 
     const points = FIXED_POINT_EXPONENTS.map((p) =>
       Object.fromEntries(names.map((n, i) => [n, Math.pow(1.7 + i, p)])),
     );
+    // Constant aliases bind to the registered SI value (same as the canonical AST's CONSTANTS
+    // lookup), not to a fixed-point sample — otherwise the ratio would wander with the points.
+    const constBindings = Object.fromEntries(
+      [...constPairs].map(([u, cName]) => {
+        const c = CONSTANTS[cName];
+        if (c === undefined) {
+          throw new Error(`compareWithCanonical: governing constant '${cName}' is not in CONSTANTS`);
+        }
+        return [u, c.value];
+      }),
+    );
     const userAt = (p: Readonly<Record<string, number>>) =>
-      evaluateUser(Object.fromEntries([...pairing].map(([u, c]) => [u, p[c]!])));
+      evaluateUser({
+        ...Object.fromEntries([...pairing].map(([u, c]) => [u, p[c]!])),
+        ...constBindings,
+      });
 
     // A prefactor the entry does not record may come from the sourced table,
     // which lives outside the pinned src/canonical tree.
