@@ -8,6 +8,15 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Added
+
+- **CLI applied-physicist persona retest on 0.47.1 (post fix-batch)** (2026-09-26). Model persona
+  dogfood after W1–Q2; findings in `docs/research/cli-physicist-persona-0.47.1-post-fix.md`. Prior
+  fixes still hold. New open findings (no code in this commit): W4 Kepler/Schwarzschild prefactor
+  ratios (~1e5 / ~1e-28) from monomial constants evaluated as 1; W5 Planck length RHS refused as
+  all-constant; W6 bare `a` binds perihelion not acceleration for Unruh; W7 Landauer `ln(2)` not
+  compared while stub `ln2` agrees; L5–L8 vocabulary/output/frontier friction.
+
 ### Fixed
 
 - **CLI applied-physicist persona findings on 0.47.1** (2026-09-26). Model persona dogfood;

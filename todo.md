@@ -275,6 +275,11 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
+- [ ] **0.47.1 CLI applied-physicist persona retest triage (2026-09-26).** After the W1–Q2 fix batch;
+  findings in `docs/research/cli-physicist-persona-0.47.1-post-fix.md`. Open: W4 (Kepler/Schwarzschild
+  monomial binds G/c as 1), W5 (Planck all-constant RHS refused), W6 (`a`→perihelion), W7 (Landauer
+  `ln(2)` vs `ln2`), L5–L8, Q3–Q4, I5–I8. Docs-only pass; Mothership to order fixes.
+
 - [x] **0.47.1 CLI applied-physicist persona pass + fix batch (2026-09-26).** Findings in
   `docs/research/cli-physicist-persona-0.47.1.md`. Fixed: W1 (c vs speed-of-light), W2 (RHS kebabs),
   W3/I3 (landing summary), L1 (named dim products), L2/I1 (`canonical --vars`), L3/I4 (probe
