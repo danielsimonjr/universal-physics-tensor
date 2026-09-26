@@ -21,8 +21,9 @@ const FLAGS: FlagSpec[] = [
 const HELP = `upt derive <target:dim> <var:dim> ... [--formula "<expr>"]
         Derive YOUR OWN equation's dimensional form. <dim> is a named
         dimension (length, time, mass, velocity, ...), a constant (hbar, c,
-        G, k_B, e), or explicit (L^3.M^-1.T^-2). With --formula, also verify
-        it and recover the dimensionless prefactor.
+        G, k_B, e), a named product/quotient (power/area, length*temperature),
+        or explicit (L^3.M^-1.T^-2). With --formula, also verify it and
+        recover the dimensionless prefactor.
         e.g.  upt derive period:time length:length gravity:acceleration \\
                        --formula "2*pi*sqrt(length/gravity)"`;
 

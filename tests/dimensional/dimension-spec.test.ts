@@ -14,8 +14,11 @@ import {
   ACTION,
   ENTROPY,
   AREA,
+  POWER,
+  TEMPERATURE,
   DIMENSIONLESS,
 } from '../../src/dimensional/types.js';
+import { divide, multiply } from '../../src/dimensional/algebra.js';
 
 describe('parseDimensionSpec — named dimensions', () => {
   it('resolves named dimensions case-insensitively', () => {
@@ -41,6 +44,24 @@ describe('parseDimensionSpec — constants (exact-case)', () => {
     // not silently become Newton's constant.
     expect(parseDimensionSpec('G').L).toBe(3);
     expect(() => parseDimensionSpec('g')).toThrow(DimensionSpecError);
+  });
+});
+
+describe('L1: named products and quotients', () => {
+  it('parses power/area as flux', () => {
+    expect(parseDimensionSpec('power/area')).toEqual(divide(POWER, AREA));
+  });
+
+  it('parses length*temperature (Wien b)', () => {
+    expect(parseDimensionSpec('length*temperature')).toEqual(multiply(LENGTH, TEMPERATURE));
+  });
+
+  it('accepts mixed constant × named dim', () => {
+    expect(parseDimensionSpec('c*mass')).toEqual(multiply(VELOCITY, parseDimensionSpec('mass')));
+  });
+
+  it('still rejects parentheses (use explicit bases for those)', () => {
+    expect(() => parseDimensionSpec('power/(area*temperature)')).toThrow(DimensionSpecError);
   });
 });
 
