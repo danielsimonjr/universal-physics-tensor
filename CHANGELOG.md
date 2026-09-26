@@ -8,6 +8,13 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
+### Documented
+
+- **CLI applied-physicist persona pass on 0.47.1** (2026-09-26). Model persona, not a human
+  reviewer. Session used the built CLI to test textbook formulas, wrong prefactors, and new-bridge
+  ideas. Findings (W1–W3, L1–L4, Q1–Q2, I1–I4) are in
+  `docs/research/cli-physicist-persona-0.47.1.md`. No code change; open for Mothership triage.
+
 ## [0.47.1] - 2026-09-25
 
 ### Release summary

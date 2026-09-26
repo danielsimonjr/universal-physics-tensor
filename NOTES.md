@@ -9,6 +9,13 @@ nothing validates prose and the next reader cannot tell.
 
 ---
 
+## As of 2026-09-26
+
+- **CLI applied-physicist persona pass on 0.47.1** (model persona, not a human reviewer): findings in
+  `docs/research/cli-physicist-persona-0.47.1.md`. Open triage: W1 (`c` vs `speed-of-light` disables
+  the prefactor check), W2 (RHS hyphens parsed as minus), W3 (overlong `connects to:` list), L1–L4,
+  Q1–Q2, I1–I4. No code change in that pass; Mothership to triage.
+
 ## As of 2026-09-23
 
 ### Phase exit criteria — kept separate from "tasks landed"
