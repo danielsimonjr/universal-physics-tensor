@@ -24,6 +24,8 @@ const FLAGS: FlagSpec[] = [
   { name: '--bounds', valueStyle: 'attached' },
   { name: '--h1', valueStyle: 'attached' },
   { name: '--h2', valueStyle: 'attached' },
+  { name: '--searchable-only', valueStyle: 'none' },
+  { name: '--all', valueStyle: 'none' },
 ];
 
 const HELP = `upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
@@ -31,7 +33,7 @@ const HELP = `upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
         \`upt discover\`, which vets quantity identifications a≡b and is frozen.
         Relation-link / regime-transition gaps are not searchable here — use
         \`upt discover\`.
-        scan                 typed frontier gaps (Product A wrappers + notes)
+        scan                 typed frontier gaps (default: searchable only)
         show <gap-id>        one gap
         run --problem=FILE   bounded native search (MHC / holdout / budget)
         candidates           same as run; list stored statuses
@@ -39,6 +41,8 @@ const HELP = `upt probe <scan|show|run|candidates|falsify|rank|design|reproduce>
         rank                 run + Pareto front
         design --h1= --h2= --bounds=   discriminating experiment suggestion
         reproduce --problem=FILE       re-run a problem (same stop contract)
+        --searchable-only    scan: only Product-B-searchable gaps (default)
+        --all                scan: include Product A wrappers (not searchable)
         --budget-ms=N        wall-clock cap (default 5000)
         --holdout-tol=X      relative holdout RMSE cap (default 0.15)
         --worker=PATH        optional NDJSON worker (spawned as node PATH)
@@ -164,12 +168,50 @@ async function run(ctx: CommandCtx): Promise<number> {
   const { graph, source } = resolveGraph(api, args.flags);
 
   if (sub === 'scan') {
-    const gaps = api.scanFrontier(graph);
+    if (args.flags.has('searchable-only') && args.flags.has('all')) {
+      throw new UsageError('upt probe scan: pick one of --searchable-only or --all');
+    }
+    // Default: searchable only (persona L3/I4). Today that is often empty —
+    // say so, and point at `upt discover` / `--all` rather than dumping 200+
+    // Product A wrappers as if they were a Product B frontier.
+    const showAll = args.flags.has('all');
+    const allGaps = api.scanFrontier(graph);
+    const searchable = allGaps.filter((g) => g.searchability.searchable);
+    const gaps = showAll ? allGaps : searchable;
     if (args.flags.has('json')) {
-      emitJson({ command: 'probe', source, epistemics: EPISTEMICS, result: gaps }, ctx.write);
+      emitJson(
+        {
+          command: 'probe',
+          source,
+          epistemics: EPISTEMICS,
+          options: {
+            scan: {
+              total: allGaps.length,
+              searchable: searchable.length,
+              showing: showAll ? 'all' : 'searchable-only',
+            },
+          },
+          result: gaps,
+        },
+        ctx.write,
+      );
+      return 0;
+    }
+    if (!showAll && searchable.length === 0 && allGaps.length > 0) {
+      out('upt probe scan — typed frontier gaps');
+      out(
+        `⚠ 0 of ${allGaps.length} gaps are searchable by Product B ` +
+          `(all are relation-link / regime-transition).`,
+      );
+      out('  Use `upt discover` for those. Pass --all to list them here.');
       return 0;
     }
     out(api.formatFrontierScan(gaps));
+    if (!showAll && allGaps.length > searchable.length) {
+      out(
+        `  (${allGaps.length - searchable.length} Product A wrappers hidden; pass --all to list them)`,
+      );
+    }
     return 0;
   }
 
