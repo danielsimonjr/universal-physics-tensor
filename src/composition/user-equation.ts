@@ -8,10 +8,11 @@
  * — extracted by the active formula parser via {@link getFormulaParser} (the
  * MathTS expression parser when the optional peer is installed, else the built-in
  * one; both already drop constants like `pi`/`tau`, numbers, and functions) —
- * minus the physics {@link CONSTANTS}. Multi-word quantities are typed with
- * underscores; resolution tries the literal form first, then the `_`↔`-` swap, so
- * both the catalog's hyphenated (`photon-energy`) and underscored
- * (`impact_parameter`) names connect.
+ * minus the physics {@link CONSTANTS}. Multi-word quantities may be typed with
+ * underscores **or** the catalog's own hyphens (`planck-length`): before parse,
+ * {@link rewriteCatalogHyphens} rewrites kebab catalog names to underscores so
+ * `-` is not read as subtraction (persona finding W2). Resolution still tries
+ * the literal form first, then the `_`↔`-` swap.
  *
  * Pure: no file I/O. The injected junction is rendered as an `extraJunction`
  * (status `'user'`) and is never written into the catalog.
@@ -63,21 +64,88 @@ export interface UserEquation {
 /** Upper bound on user `--equation` text to keep hint computation bounded. */
 const MAX_USER_EQUATION_LEN = 8192;
 
-export async function parseUserEquation(equation: string): Promise<UserEquation> {
+/** Escape a string for use inside a {@link RegExp} character class / pattern. */
+function escapeRegExp(s: string): string {
+  return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+}
+
+/**
+ * Rewrite catalog kebab-case names (`planck-length`) to underscored forms
+ * (`planck_length`) in a formula string so the parser does not treat `-` as
+ * subtraction (persona finding W2). Longest match first so
+ * `hawking-temperature` wins over `temperature`. Names without a hyphen are
+ * left alone. Pure.
+ *
+ * @public
+ */
+export function rewriteCatalogHyphens(
+  text: string,
+  catalogNames: ReadonlySet<string> | Iterable<string>,
+): string {
+  const names = [...catalogNames]
+    .filter((n) => n.includes('-'))
+    .sort((a, b) => b.length - a.length || a.localeCompare(b));
+  let out = text;
+  for (const name of names) {
+    const underscored = name.replace(/-/g, '_');
+    // Not a word-char on either side — keeps `planck-length` from eating into
+    // `fooplanck-length` / `planck-lengthbar`, and leaves arithmetic `a-b` alone
+    // when `a-b` is not a catalog name.
+    const re = new RegExp(`(?<![A-Za-z0-9_])${escapeRegExp(name)}(?![A-Za-z0-9_])`, 'g');
+    out = out.replace(re, underscored);
+  }
+  return out;
+}
+
+/**
+ * When a subtract/dimension error still names a hyphenated token that is a
+ * catalog quantity, tell the user `-` is arithmetic and to use underscores.
+ * Persona finding I2 — clarity even if a rewrite path was skipped.
+ *
+ * @internal
+ */
+export function hyphenSubtractHint(
+  parseError: string,
+  rhs: string,
+  catalogNames: ReadonlySet<string>,
+): string | null {
+  if (!/subtract/i.test(parseError) && !/dimension mismatch/i.test(parseError)) return null;
+  const kebabs = [...catalogNames].filter((n) => n.includes('-') && rhs.includes(n));
+  if (kebabs.length === 0) {
+    // RHS may already have been split; look for catalog prefixes joined by -
+    const tokens = rhs.match(/[A-Za-z_][A-Za-z0-9_]*(?:-[A-Za-z0-9_]+)+/g) ?? [];
+    for (const t of tokens) {
+      if (catalogNames.has(t)) kebabs.push(t);
+    }
+  }
+  if (kebabs.length === 0) return null;
+  const example = kebabs.sort((a, b) => b.length - a.length)[0]!;
+  return (
+    `'-' is arithmetic here; multi-word catalog names use underscores ` +
+    `(${example} → ${example.replace(/-/g, '_')})`
+  );
+}
+
+export async function parseUserEquation(
+  equation: string,
+  catalogNames?: ReadonlySet<string> | Iterable<string>,
+): Promise<UserEquation> {
   if (equation.length > MAX_USER_EQUATION_LEN) {
     throw new UserEquationError(
       `equation exceeds ${MAX_USER_EQUATION_LEN} characters (${equation.length})`,
     );
   }
-  const eqIdx = equation.indexOf('=');
+  const rewritten =
+    catalogNames === undefined ? equation : rewriteCatalogHyphens(equation, catalogNames);
+  const eqIdx = rewritten.indexOf('=');
   if (eqIdx < 0) {
     throw new UserEquationError(
       `equation must be "TARGET = EXPR" (no "=" found in '${equation}')`,
     );
   }
-  const target = equation.slice(0, eqIdx).trim();
+  const target = rewritten.slice(0, eqIdx).trim();
   if (!target) throw new UserEquationError('equation has an empty target (left of "=")');
-  const rhs = equation.slice(eqIdx + 1).trim();
+  const rhs = rewritten.slice(eqIdx + 1).trim();
   if (!rhs) throw new UserEquationError('equation has an empty right-hand side');
 
   let variables: readonly string[];
@@ -85,9 +153,12 @@ export async function parseUserEquation(equation: string): Promise<UserEquation>
     const parser = await getFormulaParser();
     ({ variables } = parser.parse(rhs));
   } catch (e) {
-    throw new UserEquationError(
-      `could not parse the right-hand side '${rhs}': ${(e as Error).message}`,
-    );
+    const base = `could not parse the right-hand side '${rhs}': ${(e as Error).message}`;
+    const hint =
+      catalogNames === undefined
+        ? null
+        : hyphenSubtractHint(String((e as Error).message), equation.slice(equation.indexOf('=') + 1), new Set(catalogNames));
+    throw new UserEquationError(hint ? `${base}. ${hint}` : base);
   }
   const sources = variables.filter(
     (v) => !Object.prototype.hasOwnProperty.call(CONSTANTS, v),
@@ -97,13 +168,23 @@ export async function parseUserEquation(equation: string): Promise<UserEquation>
       `no source quantities in '${rhs}' (only constants/numbers?)`,
     );
   }
-  return { target, sources, text: equation.trim() };
+  return { target, sources, text: rewritten.trim() };
 }
 
 /**
+ * Single-letter / latex-style aliases that map onto a catalog quantity when the
+ * long name is present and the short token is not (persona finding L4). `T` is
+ * temperature in every CE formula_latex that uses it; the pendulum period is
+ * named `period`, not `T`, in this catalog.
+ */
+const FORMULA_ALIASES: Readonly<Record<string, string>> = {
+  T: 'temperature',
+};
+
+/**
  * Resolve a user symbol to a catalog quantity name: the literal name first, then
- * the `_`→`-` and `-`→`_` swaps, against `catalogNames`. Returns `null` if none
- * match.
+ * the `_`→`-` and `-`→`_` swaps, then {@link FORMULA_ALIASES}, against
+ * `catalogNames`. Returns `null` if none match.
  *
  * @public
  */
@@ -116,6 +197,8 @@ export function resolveToCatalogName(
   if (underToHyphen !== name && catalogNames.has(underToHyphen)) return underToHyphen;
   const hyphenToUnder = name.replace(/-/g, '_');
   if (hyphenToUnder !== name && catalogNames.has(hyphenToUnder)) return hyphenToUnder;
+  const alias = FORMULA_ALIASES[name];
+  if (alias !== undefined && catalogNames.has(alias)) return alias;
   return null;
 }
 
@@ -258,6 +341,47 @@ export function equationLanding(model: VizModel, userJunctionId: string): Equati
   };
 }
 
+/**
+ * One or two lines summarising `connects to:` (persona findings W3 / I3).
+ * Dumping ~100 edge ids next to a correct pendulum equation made shared
+ * `length`/`temperature` look like a physics claim. Rank by overlap with the
+ * user's shared quantities first, then textbook/law over bridges, then name.
+ * When the list is long, state the structural caveat explicitly.
+ *
+ * @internal
+ */
+export function formatConnectedSummary(
+  model: VizModel,
+  landing: EquationLanding,
+  maxShow = 5,
+): readonly string[] {
+  const ids = landing.connectedJunctionIds;
+  if (ids.length === 0) return [];
+  const shared = new Set(landing.sharedQuantities);
+  const byId = new Map(model.junctions.map((j) => [j.id, j]));
+  const tier = (id: string): number =>
+    id.startsWith('CE-') || id.startsWith('law-') ? 0 : id.startsWith('be-') ? 1 : 2;
+  const overlap = (id: string): number => {
+    const j = byId.get(id);
+    if (!j) return 0;
+    let n = 0;
+    for (const qn of [...j.sources, j.target]) if (shared.has(qn)) n++;
+    return n;
+  };
+  const ranked = [...ids].sort(
+    (a, b) => overlap(b) - overlap(a) || tier(a) - tier(b) || a.localeCompare(b),
+  );
+  const shown = ranked.slice(0, maxShow);
+  const more = ranked.length - shown.length;
+  if (more <= 0) {
+    return [`     nearest equations: ${shown.join(', ')}`];
+  }
+  return [
+    `     nearest equations: ${shown.join(', ')} (+${more} more)`,
+    '     (shared-quantity connectivity, not a physics claim)',
+  ];
+}
+
 /** A "did you mean?" suggestion for an unmatched symbol. */
 export interface EquationHint {
   readonly name: string;
@@ -300,8 +424,9 @@ export async function analyzeUserEquation(
   equation: string,
   catalogDims: ReadonlyMap<string, Dimension>,
 ): Promise<EquationAnalysis> {
-  const eq = await parseUserEquation(equation);
   const catalogNames = new Set(catalogDims.keys());
+  // W2: rewrite catalog kebabs before either parser sees `-` as subtraction.
+  const eq = await parseUserEquation(equation, catalogNames);
   const resolve = (n: string): string | null => resolveToCatalogName(n, catalogNames);
 
   // dims for parsePhysics: physics constants carry their REAL dimensions; matched
@@ -313,7 +438,9 @@ export async function analyzeUserEquation(
     const r = resolve(s);
     dims[s] = r ? (catalogDims.get(r) as Dimension) : DIMENSIONLESS;
   }
-  const rhsText = equation.slice(equation.indexOf('=') + 1);
+  // Use the rewritten equation's RHS (eq.text) so planck-length has already
+  // become planck_length before dimensional parse.
+  const rhsText = eq.text.slice(eq.text.indexOf('=') + 1);
 
   let rhsDimension: Dimension | null = null;
   let exprForInference: import('../dimensional/validator.js').ExprNode | null = null;
@@ -323,7 +450,9 @@ export async function analyzeUserEquation(
     rhsDimension = parsed.dimension;
     exprForInference = parsed.expr;
   } catch (e) {
-    parseError = e instanceof Error ? e.message : String(e);
+    const msg = e instanceof Error ? e.message : String(e);
+    const hint = hyphenSubtractHint(msg, equation.slice(equation.indexOf('=') + 1), catalogNames);
+    parseError = hint ? `${msg}. ${hint}` : msg;
   }
 
   const resolvedTarget = resolve(eq.target);

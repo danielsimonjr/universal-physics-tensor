@@ -97,6 +97,63 @@ describe('upt derive — a variable is a constant only when its name AND dimensi
   });
 });
 
+// 0.47.1 persona finding L4: Wien's latex uses T, but typing T was an unknown
+// dimensionless placeholder while `temperature` matched CE-wien.
+describe('L4: latex T resolves to temperature for Wien', () => {
+  it('map: peak-wavelength = b/T agrees with CE-wien', async () => {
+    const t = await text(['map', '--equation', 'peak-wavelength = b/T']);
+    expect(t).toMatch(/✓ agrees with CE-wien/);
+    expect(t).not.toMatch(/UNKNOWN/);
+  });
+
+  it('map: peak-wavelength = 2*b/T differs by the factor 2', async () => {
+    const t = await text(['map', '--equation', 'peak-wavelength = 2*b/T'], 3);
+    expect(t).toMatch(/⚠ differs from CE-wien .* yours\/canonical = 2\.00000/);
+  });
+});
+
+// 0.47.1 persona finding W2: catalog kebabs on the RHS were parsed as subtraction
+// (`planck-length` → planck − length → "Cannot subtract…").
+describe('W2: catalog kebabs on the RHS are identifiers', () => {
+  it('map: length = 2*planck-length is dimensionally consistent (exit 0)', async () => {
+    const t = await text(['map', '--equation', 'length = 2*planck-length']);
+    expect(t).toMatch(/✓ dimensionally consistent: \[length\]/);
+    expect(t).not.toMatch(/Cannot subtract/);
+  });
+
+  it('map: rest-energy = mass*speed-of-light^2 agrees with CE-mass-energy', async () => {
+    const t = await text(['map', '--equation', 'rest-energy = mass*speed-of-light^2']);
+    expect(t).toMatch(/✓ agrees with CE-mass-energy/);
+    expect(t).not.toMatch(/Cannot subtract/);
+  });
+});
+
+// 0.47.1 persona finding W1: writing the catalog name `speed_of_light` for CE-mass-energy's
+// constant `c` skipped the prefactor check (exit 0) while `2*mass*c^2` was caught (exit 3).
+describe('W1: speed-of-light must not disable the E=mc² prefactor check', () => {
+  it('map: E = 2 m speed_of_light² differs by the factor 2 and exits 3', async () => {
+    const t = await text(['map', '--equation', 'rest_energy = 2*mass*speed_of_light^2'], 3);
+    expect(t).toMatch(
+      /⚠ differs from CE-mass-energy \(Mass–energy equivalence; your speed-of-light as its c, paired by dimension\) by a constant factor: yours\/canonical = 2\.00000/,
+    );
+  });
+
+  it('map: E = m speed_of_light² agrees', async () => {
+    const t = await text(['map', '--equation', 'rest_energy = mass*speed_of_light^2']);
+    expect(t).toMatch(
+      /✓ agrees with CE-mass-energy \(Mass–energy equivalence; your speed-of-light as its c, paired by dimension\)/,
+    );
+  });
+
+  it('derive: speed_of_light:velocity is paired the same way', async () => {
+    const t = await text(
+      ['derive', 'rest-energy:energy', 'mass:mass', 'speed_of_light:velocity', '--formula', '2*mass*speed_of_light^2'],
+      3,
+    );
+    expect(t).toMatch(/differs from CE-mass-energy \(Mass–energy equivalence; your speed-of-light as its c, paired by dimension\)/);
+  });
+});
+
 // 0.47.0 persona finding N1: CE-kinetic-energy names its variable `speed`, and `velocity` (the
 // name CE-lorentz-factor uses) switched the check off with "prefactor NOT checked" and exit 0.
 describe('N1: a velocity/speed synonym no longer switches the prefactor check off', () => {

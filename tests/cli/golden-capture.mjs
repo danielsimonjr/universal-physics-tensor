@@ -35,7 +35,8 @@ function normalize(text) {
 // in bin/upt.mjs: blank lines, `  ✓/⚠/·/●` lines, `     connects to:`
 // continuations) — environment-dependent optional-peer warnings (WASM-fallback
 // noise embedding absolute paths) must not be pinned.
-const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+// Landing continuations: former `connects to:`, W3 `nearest equations:` / caveat.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     (?:connects to:|nearest equations:|\(shared-quantity)/u;
 
 function filterReportLines(text) {
   return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');

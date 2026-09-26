@@ -94,7 +94,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 
 | Command (aliases) | What it does |
 |---|---|
-| `canonical` (`laws`) | List the canonical-equation registry — the textbook "answer key" L-layer, each entry's fidelity (L0/L1/L2), domain, bridge partners, and the coverage gap. |
+| `canonical` (`laws`) | List the canonical-equation registry — the textbook "answer key" L-layer, each entry's fidelity (L0/L1/L2), domain, bridge partners, and the coverage gap. `--vars` also prints each entry's target and governing variable names (the vocabulary for `map --equation` / `derive`). |
 | `recover` (`recovery`, `validate`) | Validate bridges against standard physics: classify each bridge↔canonical link as `restates-canonical` (F4 circularity — *not* a discovery), `recovers` (undeclared structural match), or `dimensional-only`. Prints one advisory line under a row whose canonical equation and bridge edge DECLARE conflicting sign/unit conventions; an undeclared convention is unknown, never a conflict, so no row triggers it today. |
 
 ### Symbolic composition
@@ -108,7 +108,7 @@ pure connectivity questions (see [The `--source` flag](#the---source-flag)).
 | Command (aliases) | What it does |
 |---|---|
 | `eval "<formula>" name=value …` (`calc`) | Evaluate **your own** scalar formula (safe — arithmetic only). Knows `pi`/`tau` and `sqrt`/`exp`/`ln`/`sin`/…; any other name must be supplied. |
-| `derive <target:dim> <var:dim> … [--formula "<expr>"]` (`dim`) | Derive **your own** equation's dimensional form, and (with `--formula`) verify it and recover the dimensionless prefactor. With `--formula` it also compares the formula with the canonical equation of the same target and variables, at fixed points: agrees, differs by a constant factor, differs in form, or the prefactor is NOT checked because the registry holds the law only up to a constant. `upt map --equation` reports the same comparison. |
+| `derive <target:dim> <var:dim> … [--formula "<expr>"]` (`dim`) | Derive **your own** equation's dimensional form, and (with `--formula`) verify it and recover the dimensionless prefactor. `<dim>` may be a named dimension, a constant, a named product/quotient (`power/area`, `length*temperature`), or explicit bases (`L^3.M^-1.T^-2`). With `--formula` it also compares the formula with the canonical equation of the same target and variables, at fixed points: agrees, differs by a constant factor, differs in form, or the prefactor is NOT checked because the registry holds the law only up to a constant. `upt map --equation` reports the same comparison. |
 
 ### Data confrontation
 
@@ -146,7 +146,7 @@ Do not use `probe` to vet identifications; do not use `discover` to search expre
 
 | Command (aliases) | What it does |
 |---|---|
-| `probe <scan\|show\|run\|candidates\|falsify\|rank\|design\|reproduce>` | Bounded expression/residual search. `scan` / `show` list typed frontier gaps (`fg-*`); relation-link and regime-transition gaps are **not searchable** here — use `upt discover`. `run --problem=FILE` enumerates dimensional monomials under a search budget, fits a prefactor on exploratory data only, scores locked holdout, compares `normalForm` to the in-repo corpus, and never prints a status stronger than the stored lifecycle. `no-credible-candidate` is an honest abstention. Optional `--worker=PATH` spawns an NDJSON worker as `node PATH` (no shell, no vendored Python). Experimental subpath: `universal-physics-tensor/probe`. The `--problem` file format, with a minimal example, is in `upt help probe`. |
+| `probe <scan\|show\|run\|candidates\|falsify\|rank\|design\|reproduce>` | Bounded expression/residual search. `scan` defaults to **searchable** gaps only; when none exist it says so and points at `upt discover` (pass `--all` for Product A wrappers). `show` lists one gap (`fg-*`). Relation-link and regime-transition gaps are **not searchable** here — use `upt discover`. `run --problem=FILE` enumerates dimensional monomials under a search budget, fits a prefactor on exploratory data only, scores locked holdout, compares `normalForm` to the in-repo corpus, and never prints a status stronger than the stored lifecycle. `no-credible-candidate` is an honest abstention. Optional `--worker=PATH` spawns an NDJSON worker as `node PATH` (no shell, no vendored Python). Experimental subpath: `universal-physics-tensor/probe`. The `--problem` file format, with a minimal example, is in `upt help probe`. |
 
 ### Help
 
@@ -375,7 +375,7 @@ candidates.
 | `--format=text\|mermaid\|dot\|svg` | `map` | Output format. `text` (default) is the linkage printout; `mermaid`/`dot` emit the visual map source; `svg` renders it (needs the optional `@viz-js/viz` peer). |
 | `--proposed` | `map` (with `--format`) | Overlay the unadjudicated identity-consequence relations as gray-dashed junctions. |
 | `--out=PATH` | `map` (with `--format`) | Write the diagram source to a file instead of stdout. |
-| `--equation "TARGET = EXPR"` | `map` | Inject your own equation as a violet `user` node; reports where it lands + a "did you mean?" hint. Multi-word quantities use underscores (`photon_energy` → `photon-energy`). |
+| `--equation "TARGET = EXPR"` | `map` | Inject your own equation as a violet `user` node; reports where it lands (nearest equations by shared-quantity overlap, not a full edge dump) + a "did you mean?" hint. Multi-word quantities may use underscores or the catalog's own hyphens (`planck-length` / `planck_length`). |
 | `--relation=TYPE` | `map` | Keep only edges whose recorded Atlas relation is `derivation`, `exact-equivalence`, `restriction`, `approximation`, `coarse-graining`, `analytic-continuation`, `structural-analogy` or `deformation-quantization`. An unknown value exits 1. |
 | `--evidence=TAG` | `map` | Keep only edges whose evidence set contains the tag. Evidence is **derived at read time** from the catalog row the edge names — it is never stored on a row or an edge, so no filter can be satisfied by an unchecked assertion. Tags: `proposed`, `reviewed`, `dimension-checked`, `convention-checked`, `symbolically-checked`, `numerically-supported`, `formally-proved`, `empirically-supported`, `contradicted`, `unresolved`. An unknown value exits 1. |
 | `--max-orders=N` | `discover`, `map` (with `--proposed`) | Tune the magnitude-clash threshold (default `3`); `map --proposed` shares `discover`'s parsing, so it reshapes the proposed overlay too. |

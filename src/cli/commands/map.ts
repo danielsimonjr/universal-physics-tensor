@@ -67,9 +67,10 @@ const HELP = `upt map [--source=catalog|canonical|both|poster] [--format=text|me
         identity-consequence relations (gray dashed). --out writes to a file
         (default stdout).
         --equation "TARGET = EXPR" injects YOUR OWN equation as a violet 'user'
-        node and reports where it lands (which cluster / shared quantities), with
-        a "did you mean?" hint for names that miss the catalog vocabulary. Use
-        underscores for multi-word quantities (photon_energy -> photon-energy).
+        node, dimensionally checks it, compares with the canonical registry, and
+        reports nearest equations by shared-quantity overlap (not a full edge
+        dump). Multi-word names may use underscores or catalog hyphens
+        (planck_length / planck-length). Unknown names get a "did you mean?".
         --relation=TYPE keeps only edges whose recorded Atlas relation is that
         type; --evidence=TAG keeps only edges whose evidence set, DERIVED from
         the catalog row at read time, contains that tag.
@@ -201,7 +202,9 @@ function printEquationReport(
     out(
       `  ● your equation joins ${L.anchored ? 'the ANCHORED cluster' : 'a cluster'} of ${L.clusterSize} via {${L.sharedQuantities.join(', ')}}`
     );
-    if (L.connectedJunctionIds.length) out(`     connects to: ${L.connectedJunctionIds.join(', ')}`);
+    // W3/I3: do not dump ~100 edge ids — that made shared length/temperature look
+    // like a physics claim. Summarise nearest equations by shared-quantity overlap.
+    for (const line of api.formatConnectedSummary(model, L)) out(line);
   }
   for (const h of user.hints ?? []) {
     if (!h.suggestions.length) {

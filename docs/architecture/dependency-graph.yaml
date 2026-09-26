@@ -3,7 +3,7 @@ metadata:
   version: 0.47.1
   totalFiles: 351
   totalModules: 11
-  totalExports: 2471
+  totalExports: 2475
 entryPoints:
   - file: src/index.ts
     type: main
@@ -7215,6 +7215,10 @@ modules:
             - buckinghamPi
             - dimensionallyDetermines
           reExport: true
+        - file: ./composition/user-equation.js
+          imports:
+            - formatConnectedSummary
+          reExport: true
         - file: ./composition/bridge-analysis.js
           imports:
             - bridgePriority
@@ -7476,6 +7480,7 @@ modules:
         - suggestQuantities
         - buckinghamPi
         - dimensionallyDetermines
+        - formatConnectedSummary
         - bridgePriority
         - attemptDerivation
         - dimensionalFreedom
@@ -7596,6 +7601,7 @@ modules:
         - suggestQuantities
         - buckinghamPi
         - dimensionallyDetermines
+        - formatConnectedSummary
         - bridgePriority
         - attemptDerivation
         - dimensionalFreedom
@@ -11676,11 +11682,14 @@ modules:
           imports:
             - inferUnknownDimension
       exports:
+        - rewriteCatalogHyphens
+        - hyphenSubtractHint
         - parseUserEquation
         - resolveToCatalogName
         - suggestQuantities
         - suggestByDimension
         - equationLanding
+        - formatConnectedSummary
         - analyzeUserEquation
         - UserEquationError
       classes:
@@ -11691,11 +11700,14 @@ modules:
         - EquationHint
         - EquationAnalysis
       functions:
+        - rewriteCatalogHyphens
+        - hyphenSubtractHint
         - parseUserEquation
         - resolveToCatalogName
         - suggestQuantities
         - suggestByDimension
         - equationLanding
+        - formatConnectedSummary
         - analyzeUserEquation
   core:
     src/core/axes-registry.ts:
@@ -12540,6 +12552,10 @@ modules:
             - TEMPERATURE
             - ENTROPY
             - CHARGE
+        - file: ./algebra.js
+          imports:
+            - multiply
+            - divide
       exports:
         - parseDimensionSpec
         - DimensionSpecError
@@ -16914,15 +16930,15 @@ dependencyGraph:
 statistics:
   totalTypeScriptFiles: 351
   totalModules: 11
-  totalLinesOfCode: 70143
-  totalExports: 2471
+  totalLinesOfCode: 70485
+  totalExports: 2475
   totalClasses: 58
   totalInterfaces: 362
-  totalFunctions: 563
+  totalFunctions: 566
   totalTypeGuards: 4
   totalEnums: 0
   totalConstants: 608
-  totalReExports: 1241
+  totalReExports: 1242
   totalTypeOnlyImports: 490
   runtimeCircularDeps: 0
   typeOnlyCircularDeps: 0

@@ -172,3 +172,4 @@ export {
   analyzeUserEquation,
   UserEquationError,
 } from './user-equation.js';
+// formatConnectedSummary stays internal — CLI reaches it via cli-api.

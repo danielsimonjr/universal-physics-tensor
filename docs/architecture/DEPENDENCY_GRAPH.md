@@ -3338,6 +3338,7 @@ The codebase is organized into the following modules:
 | File | Imports | Type |
 |------|---------|------|
 | `./index.js` | `explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic, be42Edge, be16Edge, lawSchwarzschildRadius, be42ViaRsEdge, format, buildVizModel, renderDotToSvg, equationLanding, analyzeUserEquation, resolveToCatalogName, suggestQuantities, buckinghamPi, dimensionallyDetermines` | Re-export |
+| `./composition/user-equation.js` | `formatConnectedSummary` | Re-export |
 | `./composition/bridge-analysis.js` | `bridgePriority, attemptDerivation, dimensionalFreedom, linkageMap, proposeLinkCandidates, proposeOrphanConnectors` | Re-export |
 | `./numerical/formula-registry.js` | `getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker` | Re-export |
 | `./dimensional/dimension-spec.js` | `parseDimensionSpec` | Re-export |
@@ -3393,26 +3394,27 @@ The codebase is organized into the following modules:
   explainQuantity, CATALOG_GRAPH, CANONICAL_GRAPH, M_SUN_KG, composeSymbolic, be42Edge, be16Edge,
   lawSchwarzschildRadius, be42ViaRsEdge, format, buildVizModel, renderDotToSvg, equationLanding,
   analyzeUserEquation, resolveToCatalogName, suggestQuantities, buckinghamPi, dimensionallyDetermines,
-  bridgePriority, attemptDerivation, dimensionalFreedom, linkageMap, proposeLinkCandidates,
-  proposeOrphanConnectors, getFormulaParser, getFormulaParserKind, getFormulaDimensionChecker,
-  parseDimensionSpec, predictMissingBridges, rankDiscoveries, BRIDGE_EQUATIONS, auditCoverage,
-  CONFRONTATIONS, listConfrontations, runConfrontation, confrontationRigor, rigorDistribution,
-  ConfrontationEntry, RigorTier, ConfrontationOutcome, decidingMeasurement, BRIDGE_EVALUATORS,
-  evaluateBridge, EvaluatorSpec, auditAxisDiscrimination, AxisDiscrimination, AXES, AxisSpec,
-  simplifyObservable, CANONICAL_EQUATIONS, bridgesWithoutCanonicalPartner, scanLinkages,
-  deriveProposedBridges, filterEdges, deriveEdgeEvidence, formatFilterLegend, POSTER_GRAPH,
-  posterJunctions, validatePoster, describePosterSource, PosterGraph, PosterValidation,
-  DEFAULT_SEARCH_BUDGET, scanFrontier, findFrontierGap, problemFromResidualGap, makeResidualGap,
-  loadSearchProblemFromJson, parseExprJson, runProbeSearch, formatProbeReport, formatFrontierScan,
-  formatFrontierGap, suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto,
-  annotateAdjudications, adjudicationFor, candidateId, ADJUDICATIONS, AnnotatedCandidate,
-  CandidateAdjudication, annotateConsequences, ConsequenceAnnotatedCandidate, ConsequenceSignal,
-  ConsequenceEvidence, checkConventions, unknownConventionKeys, ConventionKey, describeGrounding,
-  REPRESENTATIVE_VALUES, compareWithCanonical, compareUserEquation, describeComparison,
-  describeComparisons, CanonicalComparison, CONSTANTS, CandidateGrounding, OSCILLATOR_FAMILY,
-  ATLAS_FAMILIES, deriveEvidence, NO_PASSING_WITNESSES, AtlasFamily, regimeHolds, regimeOverlap,
-  uncoveredRegions, RegimeCheck, RegimeOverlap, RegionSample, findPath, boundPath, PathBoundResult,
-  PathBoundClaim, PathNoClaim, AtlasBridge, RegimeInequality, AtlasModel, ModelId
+  formatConnectedSummary, bridgePriority, attemptDerivation, dimensionalFreedom, linkageMap,
+  proposeLinkCandidates, proposeOrphanConnectors, getFormulaParser, getFormulaParserKind,
+  getFormulaDimensionChecker, parseDimensionSpec, predictMissingBridges, rankDiscoveries,
+  BRIDGE_EQUATIONS, auditCoverage, CONFRONTATIONS, listConfrontations, runConfrontation,
+  confrontationRigor, rigorDistribution, ConfrontationEntry, RigorTier, ConfrontationOutcome,
+  decidingMeasurement, BRIDGE_EVALUATORS, evaluateBridge, EvaluatorSpec, auditAxisDiscrimination,
+  AxisDiscrimination, AXES, AxisSpec, simplifyObservable, CANONICAL_EQUATIONS,
+  bridgesWithoutCanonicalPartner, scanLinkages, deriveProposedBridges, filterEdges,
+  deriveEdgeEvidence, formatFilterLegend, POSTER_GRAPH, posterJunctions, validatePoster,
+  describePosterSource, PosterGraph, PosterValidation, DEFAULT_SEARCH_BUDGET, scanFrontier,
+  findFrontierGap, problemFromResidualGap, makeResidualGap, loadSearchProblemFromJson, parseExprJson,
+  runProbeSearch, formatProbeReport, formatFrontierScan, formatFrontierGap,
+  suggestDiscriminatingPoint, parseDesignBounds, runFalsification, rankPareto, annotateAdjudications,
+  adjudicationFor, candidateId, ADJUDICATIONS, AnnotatedCandidate, CandidateAdjudication,
+  annotateConsequences, ConsequenceAnnotatedCandidate, ConsequenceSignal, ConsequenceEvidence,
+  checkConventions, unknownConventionKeys, ConventionKey, describeGrounding, REPRESENTATIVE_VALUES,
+  compareWithCanonical, compareUserEquation, describeComparison, describeComparisons,
+  CanonicalComparison, CONSTANTS, CandidateGrounding, OSCILLATOR_FAMILY, ATLAS_FAMILIES,
+  deriveEvidence, NO_PASSING_WITNESSES, AtlasFamily, regimeHolds, regimeOverlap, uncoveredRegions,
+  RegimeCheck, RegimeOverlap, RegionSample, findPath, boundPath, PathBoundResult, PathBoundClaim,
+  PathNoClaim, AtlasBridge, RegimeInequality, AtlasModel, ModelId
   ```
 
 
@@ -4840,7 +4842,13 @@ The codebase is organized into the following modules:
 **Exports:**
 - Classes: `UserEquationError`
 - Interfaces: `UserEquation`, `EquationLanding`, `EquationHint`, `EquationAnalysis`
-- Functions: `parseUserEquation`, `resolveToCatalogName`, `suggestQuantities`, `suggestByDimension`, `equationLanding`, `analyzeUserEquation`
+- Functions:
+
+  ```text
+  rewriteCatalogHyphens, hyphenSubtractHint, parseUserEquation, resolveToCatalogName,
+  suggestQuantities, suggestByDimension, equationLanding, formatConnectedSummary, analyzeUserEquation
+  ```
+
 
 ---
 
@@ -5230,6 +5238,7 @@ The codebase is organized into the following modules:
 |------|---------|------|
 | `./types.js` | `Dimension` | Import (type-only) |
 | `./types.js` | `DIMENSIONLESS, LENGTH, AREA, TIME, FREQUENCY, MASS, VELOCITY, ACCELERATION, FORCE, ENERGY, POWER, ACTION, TEMPERATURE, ENTROPY, CHARGE` | Import |
+| `./algebra.js` | `multiply, divide` | Import |
 
 **Exports:**
 - Classes: `DimensionSpecError`
@@ -6614,12 +6623,12 @@ graph TD
 |----------|-------|
 | Total TypeScript Files | 351 |
 | Total Modules | 11 |
-| Total Lines of Code | 70143 |
-| Total Exports | 2471 |
-| Total Re-exports | 1241 |
+| Total Lines of Code | 70485 |
+| Total Exports | 2475 |
+| Total Re-exports | 1242 |
 | Total Classes | 58 |
 | Total Interfaces | 362 |
-| Total Functions | 563 |
+| Total Functions | 566 |
 | Total Type Guards | 4 |
 | Total Enums | 0 |
 | Type-only Imports | 490 |

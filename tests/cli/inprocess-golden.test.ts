@@ -80,7 +80,8 @@ function readStderrGolden(name: string): string {
 // lines, `  ✓/⚠/·/●` lines, `     connects to:` continuations) — the CLI's
 // own stderr output. Environment-dependent optional-peer warnings must not
 // be pinned.
-const REPORT_LINE = /^$|^  [✓⚠·●]|^     connects to:/u;
+// Landing continuations: former `connects to:`, W3 `nearest equations:` / caveat.
+const REPORT_LINE = /^$|^  [✓⚠·●]|^     (?:connects to:|nearest equations:|\(shared-quantity)/u;
 
 function filterReportLines(text: string): string {
   return text.split('\n').filter((line) => REPORT_LINE.test(line)).join('\n');

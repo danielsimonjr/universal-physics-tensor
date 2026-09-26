@@ -4,7 +4,7 @@
     "version": "0.47.1",
     "totalFiles": 351,
     "totalModules": 11,
-    "totalExports": 2471
+    "totalExports": 2475
   },
   "entryPoints": [
     {
@@ -10892,6 +10892,13 @@
             "reExport": true
           },
           {
+            "file": "./composition/user-equation.js",
+            "imports": [
+              "formatConnectedSummary"
+            ],
+            "reExport": true
+          },
+          {
             "file": "./composition/bridge-analysis.js",
             "imports": [
               "bridgePriority",
@@ -11294,6 +11301,7 @@
           "suggestQuantities",
           "buckinghamPi",
           "dimensionallyDetermines",
+          "formatConnectedSummary",
           "bridgePriority",
           "attemptDerivation",
           "dimensionalFreedom",
@@ -11415,6 +11423,7 @@
           "suggestQuantities",
           "buckinghamPi",
           "dimensionallyDetermines",
+          "formatConnectedSummary",
           "bridgePriority",
           "attemptDerivation",
           "dimensionalFreedom",
@@ -17139,11 +17148,14 @@
           }
         ],
         "exports": [
+          "rewriteCatalogHyphens",
+          "hyphenSubtractHint",
           "parseUserEquation",
           "resolveToCatalogName",
           "suggestQuantities",
           "suggestByDimension",
           "equationLanding",
+          "formatConnectedSummary",
           "analyzeUserEquation",
           "UserEquationError"
         ],
@@ -17157,11 +17169,14 @@
           "EquationAnalysis"
         ],
         "functions": [
+          "rewriteCatalogHyphens",
+          "hyphenSubtractHint",
           "parseUserEquation",
           "resolveToCatalogName",
           "suggestQuantities",
           "suggestByDimension",
           "equationLanding",
+          "formatConnectedSummary",
           "analyzeUserEquation"
         ]
       }
@@ -18362,6 +18377,13 @@
               "TEMPERATURE",
               "ENTROPY",
               "CHARGE"
+            ]
+          },
+          {
+            "file": "./algebra.js",
+            "imports": [
+              "multiply",
+              "divide"
             ]
           }
         ],
@@ -24214,15 +24236,15 @@
   "statistics": {
     "totalTypeScriptFiles": 351,
     "totalModules": 11,
-    "totalLinesOfCode": 70143,
-    "totalExports": 2471,
+    "totalLinesOfCode": 70485,
+    "totalExports": 2475,
     "totalClasses": 58,
     "totalInterfaces": 362,
-    "totalFunctions": 563,
+    "totalFunctions": 566,
     "totalTypeGuards": 4,
     "totalEnums": 0,
     "totalConstants": 608,
-    "totalReExports": 1241,
+    "totalReExports": 1242,
     "totalTypeOnlyImports": 490,
     "runtimeCircularDeps": 0,
     "typeOnlyCircularDeps": 0,
