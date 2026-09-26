@@ -172,9 +172,19 @@ export async function parseUserEquation(
 }
 
 /**
+ * Single-letter / latex-style aliases that map onto a catalog quantity when the
+ * long name is present and the short token is not (persona finding L4). `T` is
+ * temperature in every CE formula_latex that uses it; the pendulum period is
+ * named `period`, not `T`, in this catalog.
+ */
+const FORMULA_ALIASES: Readonly<Record<string, string>> = {
+  T: 'temperature',
+};
+
+/**
  * Resolve a user symbol to a catalog quantity name: the literal name first, then
- * the `_`→`-` and `-`→`_` swaps, against `catalogNames`. Returns `null` if none
- * match.
+ * the `_`→`-` and `-`→`_` swaps, then {@link FORMULA_ALIASES}, against
+ * `catalogNames`. Returns `null` if none match.
  *
  * @public
  */
@@ -187,6 +197,8 @@ export function resolveToCatalogName(
   if (underToHyphen !== name && catalogNames.has(underToHyphen)) return underToHyphen;
   const hyphenToUnder = name.replace(/-/g, '_');
   if (hyphenToUnder !== name && catalogNames.has(hyphenToUnder)) return hyphenToUnder;
+  const alias = FORMULA_ALIASES[name];
+  if (alias !== undefined && catalogNames.has(alias)) return alias;
   return null;
 }
 

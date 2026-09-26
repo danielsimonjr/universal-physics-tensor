@@ -105,11 +105,16 @@ describe('W2: catalog kebabs are identifiers, not subtraction', () => {
 });
 
 describe('resolveToCatalogName', () => {
-  const names = new Set(['photon-energy', 'impact_parameter', 'mass']);
+  const names = new Set(['photon-energy', 'impact_parameter', 'mass', 'temperature']);
   it('matches a literal name', () => {
     expect(resolveToCatalogName('mass', names)).toBe('mass');
     expect(resolveToCatalogName('photon-energy', names)).toBe('photon-energy');
     expect(resolveToCatalogName('impact_parameter', names)).toBe('impact_parameter');
+  });
+
+  it('L4: latex T resolves to temperature when temperature is in the catalog', () => {
+    expect(resolveToCatalogName('T', names)).toBe('temperature');
+    expect(resolveToCatalogName('T', new Set(['mass']))).toBeNull();
   });
   it('matches via the _<->- swap (both directions)', () => {
     expect(resolveToCatalogName('photon_energy', names)).toBe('photon-energy');

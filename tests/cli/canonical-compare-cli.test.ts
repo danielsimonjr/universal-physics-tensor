@@ -97,6 +97,21 @@ describe('upt derive — a variable is a constant only when its name AND dimensi
   });
 });
 
+// 0.47.1 persona finding L4: Wien's latex uses T, but typing T was an unknown
+// dimensionless placeholder while `temperature` matched CE-wien.
+describe('L4: latex T resolves to temperature for Wien', () => {
+  it('map: peak-wavelength = b/T agrees with CE-wien', async () => {
+    const t = await text(['map', '--equation', 'peak-wavelength = b/T']);
+    expect(t).toMatch(/✓ agrees with CE-wien/);
+    expect(t).not.toMatch(/UNKNOWN/);
+  });
+
+  it('map: peak-wavelength = 2*b/T differs by the factor 2', async () => {
+    const t = await text(['map', '--equation', 'peak-wavelength = 2*b/T'], 3);
+    expect(t).toMatch(/⚠ differs from CE-wien .* yours\/canonical = 2\.00000/);
+  });
+});
+
 // 0.47.1 persona finding W2: catalog kebabs on the RHS were parsed as subtraction
 // (`planck-length` → planck − length → "Cannot subtract…").
 describe('W2: catalog kebabs on the RHS are identifiers', () => {
