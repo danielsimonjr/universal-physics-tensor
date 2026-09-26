@@ -7,6 +7,11 @@ honest about scope. The collection spans the composition/linkage analyses,
 the bridges-vs-canonical map, the canonical-only baseline, and the
 adjudication/calibration notes that close out the discovery pipeline
 (proposed equations + orphan connectors → 0 promoted; precision calibration).
+- **`cli-physicist-persona-0.47.1-post-fix.md` — retest after the W1–Q2 batch (2026-09-26).**
+  Model persona again on built `upt` at 0.47.1 (`a9eff31`). Prior fixes hold. New
+  open findings: W4 (Kepler/Schwarzschild monomial constants→1), W5 (Planck
+  all-constant RHS refused), W6 (`a`→perihelion), W7 (Landauer `ln(2)` vs `ln2`),
+  L5–L8, Q3–Q4, I5–I8.
 - **`cli-physicist-persona-0.47.1.md` — CLI dogfood pass as an applied physicist (2026-09-26).**
   Model persona on the built `upt` CLI at 0.47.1; not a human reviewer. W1–W3,
   L1–L4, Q1–Q2 and I1–I4 fixed in the follow-up patch batch (dispositions in the

@@ -11,6 +11,11 @@ nothing validates prose and the next reader cannot tell.
 
 ## As of 2026-09-26
 
+- **CLI applied-physicist persona retest on 0.47.1 after the fix batch** (model persona, not a human
+  reviewer): findings in `docs/research/cli-physicist-persona-0.47.1-post-fix.md`. Prior W1–Q2 still
+  hold. New open triage: W4 (Kepler/Schwarzschild monomial constants→1), W5 (Planck all-constant
+  RHS refused), W6 (`a`→perihelion not acceleration), W7 (Landauer `ln(2)` vs `ln2`), L5–L8, Q3–Q4,
+  I5–I8. No code change in that pass; Mothership to triage.
 - **CLI applied-physicist persona pass on 0.47.1** (model persona, not a human reviewer): findings in
   `docs/research/cli-physicist-persona-0.47.1.md`. W1–W3, L1–L4, Q1–Q2, I1–I4 fixed in the patch
   batch on `cursor/persona-cli-fixes-b6c5` (dispositions in that note).
