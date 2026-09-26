@@ -8,9 +8,9 @@ the bridges-vs-canonical map, the canonical-only baseline, and the
 adjudication/calibration notes that close out the discovery pipeline
 (proposed equations + orphan connectors → 0 promoted; precision calibration).
 - **`cli-physicist-persona-0.47.1.md` — CLI dogfood pass as an applied physicist (2026-09-26).**
-  Model persona on the built `upt` CLI at 0.47.1; not a human reviewer. Prefactor catching works
-  on the constant-token vocabulary; three wrong/misleading defects (W1–W3) and four clarity
-  frictions (L1–L4) are open for triage.
+  Model persona on the built `upt` CLI at 0.47.1; not a human reviewer. W1–W3,
+  L1–L4, Q1–Q2 and I1–I4 fixed in the follow-up patch batch (dispositions in the
+  note).
 - **`pi-instrument-results.md` — the flagship PI-facing output (2026-07-04).**
   UPT read as an honest FALSIFICATION INSTRUMENT: a trustworthy *no*, an
   extraordinary *yes*. Consolidates the three first-class outputs — the

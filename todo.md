@@ -275,11 +275,10 @@ warning-silencing, not debug logging).
 
 ## Active queue
 
-- [ ] **0.47.1 CLI applied-physicist persona pass (2026-09-26).** Findings recorded in
-  `docs/research/cli-physicist-persona-0.47.1.md` (model persona, not a human reviewer). Open for
-  Mothership triage before any fix batch. Headline defects: W1 (`c` vs `speed-of-light` silently
-  disables prefactor check), W2 (RHS kebab-case parsed as subtraction), W3 (overlong `connects to:`
-  list reads like a physics claim). Also L1–L4, Q1–Q2, I1–I4.
+- [x] **0.47.1 CLI applied-physicist persona pass + fix batch (2026-09-26).** Findings in
+  `docs/research/cli-physicist-persona-0.47.1.md`. Fixed: W1 (c vs speed-of-light), W2 (RHS kebabs),
+  W3/I3 (landing summary), L1 (named dim products), L2/I1 (`canonical --vars`), L3/I4 (probe
+  searchable-only default), L4 (T→temperature), Q1 (PROMISING sort), Q2 (CONTRIBUTING 55).
 
 - [x] **0.47.1 patch batch from the 0.47.0 persona re-test (Mothership ruling 2026-09-25).** After the hermetic-tests fix; one PR per item, in this order. Findings: `C:\dogfood\upt-persona-047\FINDINGS.md`.
       - [x] N1 (limits): the prefactor check matches variable names exactly; `kinetic_energy = mass*velocity^2` reports "prefactor NOT checked" and exits 0, because CE-kinetic-energy names its variable `speed`. Resolve names through the CLI's synonym/alias layer; test velocity AND speed, plus one name that must stay unresolved.

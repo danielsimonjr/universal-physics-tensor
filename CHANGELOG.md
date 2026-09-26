@@ -8,12 +8,19 @@ from v0.1.0 onward.
 
 ## [Unreleased]
 
-### Documented
+### Fixed
 
-- **CLI applied-physicist persona pass on 0.47.1** (2026-09-26). Model persona, not a human
-  reviewer. Session used the built CLI to test textbook formulas, wrong prefactors, and new-bridge
-  ideas. Findings (W1–W3, L1–L4, Q1–Q2, I1–I4) are in
-  `docs/research/cli-physicist-persona-0.47.1.md`. No code change; open for Mothership triage.
+- **CLI applied-physicist persona findings on 0.47.1** (2026-09-26). Model persona dogfood;
+  dispositions in `docs/research/cli-physicist-persona-0.47.1.md`.
+  - **W1** — `speed-of-light` no longer skips the E=mc² prefactor check (constant-alias peel).
+  - **W2** — catalog kebabs on the equation RHS are identifiers, not subtraction.
+  - **W3 / I3** — equation landing summarises nearest equations; no ~100-id dump.
+  - **L1** — `upt derive` accepts named dim products/quotients (`power/area`, `length*temperature`).
+  - **L2 / I1** — `upt canonical --vars` prints target and governing names.
+  - **L3 / I4** — `upt probe scan` defaults to searchable-only; empty case points at discover / `--all`.
+  - **L4** — latex `T` resolves to `temperature` for Wien; CE-wien AST aligned.
+  - **Q1** — discover PROMISING lists consequence/magnitude before bare inconclusive.
+  - **Q2** — CONTRIBUTING.md catalog count 44 → 55.
 
 ## [0.47.1] - 2026-09-25
 

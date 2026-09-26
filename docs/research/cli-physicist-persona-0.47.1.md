@@ -84,5 +84,18 @@ product ideas. Severity: **W** = wrong or silently misleading about physics;
 
 ## Disposition
 
-Open. No code was changed in this pass. Mothership to triage W/L into a patch
-batch; Q/I are product calls.
+Fixed on branch `cursor/persona-cli-fixes-b6c5` (2026-09-26), one finding per
+commit. Dispositions:
+
+| ID | Disposition |
+|---|---|
+| W1 | Fixed. `peelConstantAliases` in `canonical-compare.ts`; sources that restate a governing constant (speed-of-light ↔ c) bind to the SI value so the prefactor check still runs. |
+| W2 | Fixed. `rewriteCatalogHyphens` before parse; subtract-error hint names the underscore form. |
+| W3 / I3 | Fixed. `formatConnectedSummary` ranks by shared-quantity overlap, caps the list, states the structural caveat. |
+| L1 | Fixed. `parseDimensionSpec` accepts named `*` / `/` products (power/area, length*temperature). |
+| L2 / I1 | Fixed. `upt canonical --vars` prints target and governing names. |
+| L3 / I4 | Fixed. `upt probe scan` defaults to searchable-only; empty case points at `upt discover` / `--all`. |
+| L4 | Fixed. Formula alias `T` → `temperature`; CE-wien AST symbol aligned with governing name. |
+| Q1 | Fixed. PROMISING print order: consequence signal, then magnitude-backed, then score. |
+| Q2 | Fixed. CONTRIBUTING.md 44 → 55. |
+| I2 | Covered by W2's subtract-error hint. |
