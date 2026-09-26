@@ -67,9 +67,10 @@ const HELP = `upt map [--source=catalog|canonical|both|poster] [--format=text|me
         identity-consequence relations (gray dashed). --out writes to a file
         (default stdout).
         --equation "TARGET = EXPR" injects YOUR OWN equation as a violet 'user'
-        node and reports where it lands (which cluster / shared quantities), with
-        a "did you mean?" hint for names that miss the catalog vocabulary. Use
-        underscores for multi-word quantities (photon_energy -> photon-energy).
+        node, dimensionally checks it, compares with the canonical registry, and
+        reports nearest equations by shared-quantity overlap (not a full edge
+        dump). Multi-word names may use underscores or catalog hyphens
+        (planck_length / planck-length). Unknown names get a "did you mean?".
         --relation=TYPE keeps only edges whose recorded Atlas relation is that
         type; --evidence=TAG keeps only edges whose evidence set, DERIVED from
         the catalog row at read time, contains that tag.
