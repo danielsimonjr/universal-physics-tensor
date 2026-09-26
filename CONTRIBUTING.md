@@ -73,7 +73,7 @@ gathered. Open an issue (or PR against the JSON/markdown directly):
 ### The JSON review surface
 
 `data/bridge-catalog.json` is a generated, schema-validated projection
-of the full 44-entry catalog (formulas, statuses, known issues,
+of the full 55-entry catalog (formulas, statuses, known issues,
 references, notes). Read it, annotate it, PR it — a maintainer will
 mirror accepted changes into the TypeScript source of truth
 (`src/bridges/index.ts`; regenerate with `bun run catalog:json`).
